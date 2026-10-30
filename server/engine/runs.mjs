@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { runShopper } from './run.mjs';
-import { PERSONAS } from './session.mjs';
+import { PERSONAS, FINAL_ACTION } from './session.mjs';
 import { DEFAULT_GOAL, GOALS, EXTERNAL_GOAL } from './prompts.mjs';
 import { scriptedBrain } from './brains/scripted.mjs';
 import { externalBrain } from './brains/external.mjs';
@@ -14,14 +14,25 @@ import { scanShop } from '../scan/axe.mjs';
 export async function reachedPayment(page) {
   if (!page) return false;
   try {
-    const h = await page.evaluate(() => {
-      const cc = document.querySelector('input[autocomplete^="cc-"], input[name*="cardnumber" i], input[name*="card_number" i], input[id*="card-number" i], input[name="number"][inputmode="numeric"]');
-      const frames = [...document.querySelectorAll('iframe')].some((f) => /stripe|paypal|braintree|adyen|checkout\.com|shopifycs|card-fields|payment/i.test(`${f.src || ''} ${f.title || ''} ${f.name || ''}`));
-      const text = /payment method|card number|pay with card|payment details|credit card|debit card/i.test(document.body.innerText || '');
-      return { cc: !!cc, frames, text, url: location.href };
-    });
+    const h = await page.evaluate((finalSource) => {
+      const FINAL = new RegExp(finalSource, 'i');
+      const visible = (el) => {
+        const r = el.getBoundingClientRect();
+        const cs = getComputedStyle(el);
+        return r.width > 40 && r.height > 20 && cs.visibility !== 'hidden' && cs.display !== 'none' && r.bottom > 0;
+      };
+      // Only a card field or a payment iframe the customer can actually see counts; words alone do not.
+      const cc = [...document.querySelectorAll('input[autocomplete^="cc-"], input[name*="cardnumber" i], input[name*="card_number" i], input[id*="card-number" i]')].some(visible);
+      const frames = [...document.querySelectorAll('iframe')].filter(visible)
+        .some((f) => /card|payment|stripe|adyen|braintree|shopifycs|paypal|checkout\.com/i.test(`${f.src || ''} ${f.title || ''} ${f.name || ''}`));
+      // Or the last step: an enabled button that would pay or place the order is on screen.
+      const finalButton = [...document.querySelectorAll('button, [role="button"], input[type="submit"]')]
+        .filter((el) => visible(el) && !el.disabled && el.getAttribute('aria-disabled') !== 'true')
+        .some((el) => FINAL.test(`${el.getAttribute('aria-label') || ''} ${el.innerText || el.value || ''}`.trim()));
+      return { cc, frames, finalButton, url: location.href };
+    }, FINAL_ACTION.source);
     const atCheckout = /checkout|payment|pay\b/i.test(h.url);
-    return h.cc || (h.frames && atCheckout) || (h.text && atCheckout);
+    return h.cc || (h.frames && atCheckout) || (h.finalButton && atCheckout);
   } catch { return false; }
 }
 

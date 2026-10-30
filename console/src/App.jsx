@@ -6,6 +6,7 @@ import RunView from './RunView.jsx';
 import RunsGrid from './RunsGrid.jsx';
 import Defects from './Defects.jsx';
 import Landing from './Landing.jsx';
+import Analytics from './Analytics.jsx';
 import './landing.css';
 
 function useHash() {
@@ -28,7 +29,7 @@ export default function App() {
 
   const route = hash.replace(/^#/, '') || '/';
   const runMatch = route.match(/^\/runs\/([\w-]+)/);
-  const nav = [['#/', 'Product', route === '/'], ['#/test', 'Run a test', route === '/test'], ['#/runs', 'Runs', route.startsWith('/runs')], ['#/defects', 'Defects and results', route === '/defects']];
+  const nav = [['#/', 'Product', route === '/'], ['#/test', 'Run a test', route === '/test'], ['#/analytics', 'Analytics', route === '/analytics'], ['#/runs', 'Runs', route.startsWith('/runs')], ['#/defects', 'Defects and results', route === '/defects']];
 
   let page;
   if (!meta) page = <div className="page"><p className="empty">{error || 'Loading…'}</p></div>;
@@ -36,6 +37,7 @@ export default function App() {
   else if (route === '/runs') page = <RunsGrid meta={meta} />;
   else if (route === '/defects') page = <Defects meta={meta} />;
   else if (route === '/test') page = <NewTest meta={meta} />;
+  else if (route === '/analytics') page = <Analytics meta={meta} />;
   else page = <Landing meta={meta} />;
 
   return (

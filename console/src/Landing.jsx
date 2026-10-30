@@ -285,6 +285,7 @@ export default function Landing({ meta }) {
           <h2 id="lp-final-t">See your checkout through your customers.</h2>
           <div className="lp-cta center">
             <a className="lp-btn primary" href="#/test">Run a test</a>
+            <a className="lp-btn" href="#/analytics">See the analytics</a>
             <a className="lp-btn" href="#/runs">Browse all runs</a>
           </div>
         </div>

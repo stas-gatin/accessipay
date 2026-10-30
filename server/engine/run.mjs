@@ -53,7 +53,7 @@ export async function runShopper({ browser, startUrl, persona, brain, goal, maxS
         // One last turn so the shopper can report what was hard, even though it succeeded.
         if (step > 1) {
           const obs = await session.observe();
-          const last = await brain.decide({ persona, goal, observation: obs.text, step, maxSteps, lastResult: `${lastResult} The page now confirms your order. Finish: reply with action "done" and your findings.` });
+          const last = await brain.decide({ persona, goal, observation: obs.text, step, maxSteps, lastResult: `${lastResult} ${external ? 'A payment form is now on screen: you have reached the payment step. Do not pay.' : 'The page now confirms your order.'} Finish: reply with action "done" and your findings.` });
           findings = last.findings || [];
           emit({ type: 'decide', step, action: 'done', args: {}, thought: last.thought, final: true });
         }

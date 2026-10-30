@@ -34,6 +34,26 @@ const noUrls = (s) => {
   // A line that ended in ":" only because its URL child was removed loses the colon.
   return lines.map((l, i) => (l.endsWith(':') && !(lines[i + 1] && indent(lines[i + 1]) > indent(l)) ? l.slice(0, -1) : l)).join('\n');
 };
+// Long option lists are summarised the way a screen reader announces them ("list, 250 options"),
+// keeping the selected option and a few neighbours, so the rest of the form stays in view.
+export const collapseOptions = (s) => {
+  const lines = s.split('\n');
+  const out = [];
+  for (let i = 0; i < lines.length;) {
+    if (!/^\s*- option /.test(lines[i])) { out.push(lines[i]); i += 1; continue; }
+    let j = i;
+    while (j < lines.length && /^\s*- option /.test(lines[j])) j += 1;
+    const run = lines.slice(i, j);
+    if (run.length <= 12) out.push(...run);
+    else {
+      const indent = run[0].match(/^\s*/)[0];
+      const selected = run.filter((l) => /\[selected\]/.test(l));
+      out.push(...run.slice(0, 4), ...selected.filter((l) => !run.slice(0, 4).includes(l)), `${indent}- (${run.length} options in total; choose one by its name)`);
+    }
+    i = j;
+  }
+  return out.join('\n');
+};
 const clip = (s, n = MAX_TREE) => (s.length > n ? s.slice(0, n) + '\n[... page continues ...]' : s);
 const firstLine = (e) => String(e?.message || e).split('\n')[0].replace(/\u001b\[[0-9;]*m/g, '').slice(0, 220);
 
@@ -79,7 +99,7 @@ export class Session {
   }
 
   async tree() {
-    try { return noUrls((await this.page.locator('body').ariaSnapshot()).trim()); } catch (e) { return `(page unreadable: ${firstLine(e)})`; }
+    try { return collapseOptions(noUrls((await this.page.locator('body').ariaSnapshot()).trim())); } catch (e) { return `(page unreadable: ${firstLine(e)})`; }
   }
 
   async focusForScreenReader() {
@@ -154,7 +174,7 @@ export class Session {
       text = `Page title: ${title}\n\nWhat is visible on screen:\n${clip(visible.trim())}\n\nKeyboard focus: ${await this.focusForSighted()}`;
     } else {
       const focus = this.persona === 'screenreader' ? `\n\nKeyboard focus: ${await this.focusForScreenReader()}` : '';
-      text = `Page title: ${title}\n\nPage as an accessibility tree:\n${clip(await this.tree())}${focus}`;
+      text = `Page title: ${title}\n\nPage as an accessibility tree:\n${clip(await this.tree(), this.external ? 16000 : MAX_TREE)}${focus}`;
     }
     return { title, path, url, text };
   }

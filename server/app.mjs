@@ -12,6 +12,7 @@ import { createRuns } from './engine/runs.mjs';
 import { createPayPal } from './paypal/client.mjs';
 import { createFixes } from './fixer/fixer.mjs';
 import { scanShop } from './scan/axe.mjs';
+import { analytics } from './analytics.mjs';
 
 export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, env = process.env, extend }) {
   const paypal = createPayPal(env);
@@ -45,7 +46,7 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
   app.post('/api/runs', (req, res) => {
     try {
       const rec = runs.start(req.body || {});
-      res.json({ id: rec.id, instanceId: rec.instanceId, shopUrl: `/s/${rec.instanceId}/` });
+      res.json({ id: rec.id, instanceId: rec.instanceId, shopUrl: rec.site ? rec.site.url : `/s/${rec.instanceId}/` });
     } catch (e) { res.status(400).json({ error: e.message }); }
   });
   app.get('/api/runs', (req, res) => res.json(runs.list()));
@@ -116,6 +117,11 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
     const r = fixes.submit(req.params.id, req.body?.text ?? JSON.stringify(req.body));
     if (!r.ok) return res.status(400).json({ error: r.error || r.job?.error, job: r.job && (({ prompt, system, ...j }) => j)(r.job) });
     res.json((({ prompt, system, ...j }) => j)(r.job));
+  });
+
+  app.get('/api/analytics', (req, res) => {
+    const all = runs.list().map((r) => runs.get(r.id)).map((r) => (r && r.brain ? runs.plain(r) : r));
+    res.json(analytics(all));
   });
 
   app.get('/api/eval', (req, res) => {

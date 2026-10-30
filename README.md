@@ -38,13 +38,26 @@ Measured, not estimated. Runs below used the real PayPal sandbox; the shopper's 
 | Same agent after the AI fix (1 patch: a real `<button>`) | bought it in 18 steps, order `COMPLETED` |
 | AI shopping agent, task stated as a need ("keep me dry on hikes, under $100, fast") | chose the Rain Jacket with express delivery, $94.00, order `COMPLETED` |
 
-These six runs, their screenshots and the two fixes are in `data/recorded/` and can be replayed in the console. The full evaluation (every defect, every persona, Claude API, holdout set) is `eval/run-eval.mjs`; its results appear under *Defects and results* once it has run.
+### Real sites
+
+The AI shopping agent also went through the public demo stores of three real e-commerce platforms. On real sites it goes as far as the payment step and stops: the engine refuses to pay, place an order or type card data, and axe-core scans every page the agent saw, in that state.
+
+| Site | Platform | Outcome | axe-core | What blocked or confused the agent |
+|---|---|---|---|---|
+| hydrogen.shop | Shopify Hydrogen | reached the payment form, 7 steps | 24 issues on 4 pages | card fields are iframes with no accessible name; variant options do not say which is selected; "added to cart" is not announced |
+| next.medusajs.com | Medusa | reached "Place order", 28 steps | 52 issues on 6 pages | every checkout text field and the country select have no accessible name, so fields can only be told apart by position; the email field is named by its error text |
+| storefront.saleor.io | Saleor | blocked at payment, 28 steps | 49 issues on 5 pages | the demo has no payment gateway configured; phone validation rejects valid numbers with an error not tied to the field |
+
+Most axe-core issues on these sites are colour contrast and landmark rules; the problems that actually stopped or slowed the agent are mostly different ones.
+
+These runs, the six demo shop runs, their screenshots and the two fixes are in `data/recorded/` and can be replayed in the console. The full evaluation (every defect, every persona, Claude API, holdout set) is `eval/run-eval.mjs`; its results appear under *Defects and results* once it has run.
 
 ## What it does not claim
 
 - It is not a WCAG audit or certificate, and it does not replace testing with real people who use assistive technology.
 - The personas are models. The screen reader persona models focus navigation plus an elements list; it does not model browse-mode activation of elements that cannot take focus.
 - The twelve defects were written by us. The holdout set was not used while writing the shopper prompts.
+- On real sites the agent stops before paying, so "reached payment" means a payment form or an enabled pay or place-order button was on screen, not that a payment would have succeeded.
 - In mock mode no PayPal call is made, and the console says so on every page.
 
 ## Run it
