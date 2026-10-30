@@ -12,6 +12,7 @@ export default function NewTest({ meta }) {
   const [custom, setCustom] = useState([]);
   const [persona, setPersona] = useState('screenreader');
   const [brain, setBrain] = useState(meta.claude ? 'anthropic' : 'external');
+  const [goalId, setGoalId] = useState('checkout');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [recent, setRecent] = useState([]);
@@ -29,7 +30,7 @@ export default function NewTest({ meta }) {
   async function start() {
     setBusy(true); setError('');
     try {
-      const r = await api('/api/runs', { persona, brain, defects });
+      const r = await api('/api/runs', { persona, brain, defects, goalId: persona === 'agent' ? goalId : 'checkout' });
       location.hash = `#/runs/${r.id}`;
     } catch (e) { setError(e.message); setBusy(false); }
   }
@@ -103,6 +104,19 @@ export default function NewTest({ meta }) {
               ))}
             </div>
           </section>
+
+          {persona === 'agent' && (
+            <section className="card" aria-labelledby="s-task">
+              <h2 className="section-title" id="s-task"><span className="step-no">+</span>What the agent is asked to do</h2>
+              <div style={{ display: 'grid', gap: 8 }}>
+                {Object.entries(meta.goals).map(([id, g]) => (
+                  <button key={id} type="button" className="choice" aria-pressed={goalId === id} onClick={() => setGoalId(id)}>
+                    <strong>{g.label}</strong><span>{id === 'agentic' ? 'The customer describes a need. The agent chooses the product and the delivery, then pays. It only counts if it bought the right thing.' : 'Buy one Trail Backpack with standard delivery.'}</span>
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
 
           <section className="card" aria-labelledby="s3">
             <h2 className="section-title" id="s3"><span className="step-no">3</span>Who decides each step</h2>

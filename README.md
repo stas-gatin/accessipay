@@ -62,7 +62,7 @@ Environment (`.env` in the project root, never committed):
 | `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` | PayPal sandbox REST app. Without them the shop runs in clearly labelled mock mode. |
 | `ANTHROPIC_API_KEY` | Claude API for the live shopper and fixer. Without it, runs can be driven by a Claude Code agent. |
 | `ACCESSIPAY_MODEL`, `ACCESSIPAY_FIX_MODEL` | Model ids for the shopper and the fixer (default `claude-opus-5-5`). |
-| `PUBLIC_ORIGIN`, `PORT` | Public address and port of the server. |
+| `PORT` | Port of the server (default 4300). |
 
 Drive a run with a Claude Code agent or by hand:
 

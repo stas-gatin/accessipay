@@ -61,3 +61,13 @@ test('every page of a clean shop is clean for axe-core', async () => {
   }
   await context.close();
 });
+
+test('agentic buyer: the right product counts, the wrong one is reported as wrong-item', async () => {
+  const right = JSON.parse(fs.readFileSync(new URL('./fixtures/agentic-purchase.json', import.meta.url), 'utf8'));
+  const ok = await finished(ctx.runs.start({ persona: 'agent', brain: 'scripted', script: right, goalId: 'agentic' }).id);
+  assert.equal(ok.outcome.status, 'purchased', ok.outcome.reason);
+  assert.equal(ok.goalCheck.met, true);
+  const wrong = await finished(ctx.runs.start({ persona: 'agent', brain: 'scripted', script: AGENT_PURCHASE, goalId: 'agentic' }).id);
+  assert.equal(wrong.outcome.status, 'wrong-item');
+  assert.equal(wrong.goalCheck.met, false);
+});

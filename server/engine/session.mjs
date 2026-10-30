@@ -28,7 +28,12 @@ const KEYS = new Set(['Enter', 'Space', 'Escape', 'Tab', 'Shift+Tab', 'ArrowDown
 const MAX_TREE = 7000;
 
 // Screen readers do not read link targets aloud; dropping them also keeps instance ids out.
-const noUrls = (s) => s.split('\n').filter((l) => !/^\s*- \/url:/.test(l)).join('\n').replace(/:\n(?=\S|$)/g, '\n').replace(/:$/, '');
+const noUrls = (s) => {
+  const lines = s.split('\n').filter((l) => !/^\s*- \/url:/.test(l));
+  const indent = (l) => l.length - l.trimStart().length;
+  // A line that ended in ":" only because its URL child was removed loses the colon.
+  return lines.map((l, i) => (l.endsWith(':') && !(lines[i + 1] && indent(lines[i + 1]) > indent(l)) ? l.slice(0, -1) : l)).join('\n');
+};
 const clip = (s, n = MAX_TREE) => (s.length > n ? s.slice(0, n) + '\n[... page continues ...]' : s);
 const firstLine = (e) => String(e?.message || e).split('\n')[0].replace(/\u001b\[[0-9;]*m/g, '').slice(0, 220);
 

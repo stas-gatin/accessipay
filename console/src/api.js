@@ -10,6 +10,7 @@ export const OUTCOME = {
   blocked: { label: 'Blocked', tone: 'bad' },
   stopped: { label: 'Stopped', tone: 'muted' },
   error: { label: 'Error', tone: 'bad' },
+  'wrong-item': { label: 'Wrong item', tone: 'warn' },
 };
 
 export function shortDate(iso) {

@@ -5,7 +5,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { runShopper } from './run.mjs';
 import { PERSONAS } from './session.mjs';
-import { DEFAULT_GOAL } from './prompts.mjs';
+import { DEFAULT_GOAL, GOALS } from './prompts.mjs';
 import { scriptedBrain } from './brains/scripted.mjs';
 import { externalBrain } from './brains/external.mjs';
 import { scanShop } from '../scan/axe.mjs';
@@ -41,13 +41,14 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
     if (opts.instanceId && opts.resetCart !== false) { inst.cart = []; inst.coupon = ''; inst.shipping = null; inst.order = null; shop.save(inst); }
 
     const id = new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + crypto.randomBytes(3).toString('hex');
+    const goalId = GOALS[opts.goalId] ? opts.goalId : 'checkout';
     const brain = makeBrain(opts.brain || 'external', opts);
     const abort = new AbortController();
     const rec = {
       id, createdAt: new Date().toISOString(), label: opts.label || '',
       persona, brainKind: brain.kind, model: brain.model || null,
       instanceId: inst.id, defects: [...inst.defects], patches: inst.patches.map((p) => p.id || p.find.slice(0, 40)),
-      paypalMode: paypal.mode, goal: opts.goal || DEFAULT_GOAL, maxSteps: opts.maxSteps || PERSONAS[persona].maxSteps || 40,
+      paypalMode: paypal.mode, goalId, goal: opts.goal || GOALS[goalId].text || DEFAULT_GOAL, maxSteps: opts.maxSteps || PERSONAS[persona].maxSteps || 40,
       status: 'running', outcome: null, findings: [], events: [], brain, abort,
     };
     runs.set(id, rec);
@@ -78,6 +79,14 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
           publish(rec, { t: new Date().toISOString(), type: 'oracle', payment: rec.payment });
           if (rec.outcome.status === 'purchased' && rec.payment.status !== 'COMPLETED') {
             rec.outcome = { status: 'blocked', reason: `PayPal reports the order as ${rec.payment.status}.` };
+          }
+          // Did it buy what the customer actually needed?
+          const want = GOALS[goalId].expect;
+          const lines = inst.order.lines || [];
+          rec.goalCheck = { expected: want, bought: lines.map((l) => `${l.qty} x ${l.sku}`), delivery: inst.order.delivery,
+            met: lines.length === 1 && lines[0].sku === want.sku && lines[0].qty === 1 && inst.order.delivery === want.delivery };
+          if (rec.outcome.status === 'purchased' && !rec.goalCheck.met) {
+            rec.outcome = { status: 'wrong-item', reason: `Paid, but not what the customer asked for (${rec.goalCheck.bought.join(', ')}, ${inst.order.delivery} delivery).` };
           }
         }
       })
@@ -118,7 +127,7 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
     const ids = [...new Set([...runs.keys(), ...fromDisk])].sort().reverse();
     return ids.map((id) => {
       const r = get(id);
-      return r && { id: r.id, createdAt: r.createdAt, label: r.label, persona: r.persona, brainKind: r.brainKind, model: r.model, defects: r.defects, patches: r.patches, status: r.status, outcome: r.outcome, steps: r.steps, payment: r.payment, usage: r.usage, findings: r.findings, scan: r.scan && { totalViolations: r.scan.totalViolations }, recorded: !!r.recorded, instanceId: r.instanceId };
+      return r && { id: r.id, createdAt: r.createdAt, label: r.label, persona: r.persona, brainKind: r.brainKind, model: r.model, defects: r.defects, patches: r.patches, status: r.status, outcome: r.outcome, steps: r.steps, payment: r.payment, goalId: r.goalId, goalCheck: r.goalCheck, usage: r.usage, findings: r.findings, scan: r.scan && { totalViolations: r.scan.totalViolations }, recorded: !!r.recorded, instanceId: r.instanceId };
     }).filter(Boolean);
   }
 

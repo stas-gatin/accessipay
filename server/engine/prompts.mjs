@@ -3,6 +3,22 @@
 
 import { PERSONAS } from './session.mjs';
 
+// Agentic commerce: the customer states a need, the agent picks the product and buys it.
+export const AGENTIC_GOAL = [
+  'You are shopping on behalf of a customer who asked:',
+  '"Get me something that keeps me dry on hikes, under $100, and I need it fast."',
+  'Pick the one product that fits and the delivery that fits, then buy it.',
+  'Customer details: full name Alex Morgan, email alex.morgan@example.com, street address 12 Market Street,',
+  'city Springfield, ZIP 62701, country United States.',
+  'Pay by card: name on card Alex Morgan, card number 4111 1111 1111 1111, expiry 12/30, security code 123.',
+  'Agree to the terms of sale. The customer does not want newsletters or promotions.',
+].join(' ');
+
+export const GOALS = {
+  checkout: { label: 'Buy a known item', text: undefined, expect: { sku: 'bp-01', delivery: 'standard' } },
+  agentic: { label: 'Agentic buyer: find what the customer needs', text: AGENTIC_GOAL, expect: { sku: 'rj-03', delivery: 'express' } },
+};
+
 export const DEFAULT_GOAL = [
   'Buy one Trail Backpack with standard delivery.',
   'Your details: full name Alex Morgan, email alex.morgan@example.com, street address 12 Market Street,',

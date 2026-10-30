@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { createShop } from './shop/instances.mjs';
 import { DEFECTS } from './shop/defects.mjs';
 import { PERSONAS } from './engine/session.mjs';
-import { DEFAULT_GOAL } from './engine/prompts.mjs';
+import { DEFAULT_GOAL, GOALS } from './engine/prompts.mjs';
 import { createRuns } from './engine/runs.mjs';
 import { createPayPal } from './paypal/client.mjs';
 import { createFixes } from './fixer/fixer.mjs';
@@ -28,12 +28,12 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
 
   const claudeReady = () => !!(env.ANTHROPIC_API_KEY || env.ANTHROPIC_AUTH_TOKEN);
   app.get('/api/health', (req, res) => res.json({ ok: true, paypal: paypal.mode, claude: claudeReady(), brains: ['external', 'scripted', ...Object.keys(brains)] }));
-  app.get('/api/meta', (req, res) => res.json({ defects: DEFECTS, personas: PERSONAS, goal: DEFAULT_GOAL, paypal: paypal.mode, claude: claudeReady(), brains: ['external', 'scripted', ...Object.keys(brains)] }));
+  app.get('/api/meta', (req, res) => res.json({ defects: DEFECTS, personas: PERSONAS, goal: DEFAULT_GOAL, goals: Object.fromEntries(Object.entries(GOALS).map(([k, g]) => [k, { label: g.label, text: g.text || DEFAULT_GOAL }])), paypal: paypal.mode, claude: claudeReady(), brains: ['external', 'scripted', ...Object.keys(brains)] }));
 
   app.post('/api/instances', (req, res) => {
     try {
       const inst = shop.create({ defects: req.body.defects || [] });
-      res.json({ id: inst.id, url: `${origin}/s/${inst.id}/`, defects: inst.defects });
+      res.json({ id: inst.id, url: `/s/${inst.id}/`, defects: inst.defects });
     } catch (e) { res.status(400).json({ error: e.message }); }
   });
   app.get('/api/instances/:iid', (req, res) => {
@@ -45,7 +45,7 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
   app.post('/api/runs', (req, res) => {
     try {
       const rec = runs.start(req.body || {});
-      res.json({ id: rec.id, instanceId: rec.instanceId, shopUrl: `${origin}/s/${rec.instanceId}/` });
+      res.json({ id: rec.id, instanceId: rec.instanceId, shopUrl: `/s/${rec.instanceId}/` });
     } catch (e) { res.status(400).json({ error: e.message }); }
   });
   app.get('/api/runs', (req, res) => res.json(runs.list()));

@@ -1,0 +1,10 @@
+node_modules
+console/dist
+data/runs
+data/instances
+data/archive-dev-runs
+data/eval
+spike/runs
+.env
+.git
+.claude

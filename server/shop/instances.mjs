@@ -142,7 +142,8 @@ export function createShop({ paypal, dataDir }) {
         description: inst.cart.map((l) => `${l.qty} x ${l.name}`).join(', '),
       });
       if (!r.ok) return res.json({ ok: false, errors: r.errors });
-      inst.order = { id: 'PP-' + inst.id.toUpperCase(), name: inst.shipping.name, total: t.total, paypalOrderId: r.id, captureId: r.captureId, status: r.status, mode: paypal.mode };
+      inst.order = { id: 'PP-' + inst.id.toUpperCase(), name: inst.shipping.name, total: t.total, lines: inst.cart.map((l) => ({ sku: l.sku, qty: l.qty })), delivery: inst.shipping.delivery, paypalOrderId: r.id, captureId: r.captureId, status: r.status, mode: paypal.mode };
+      inst.cart = [];
       res.json({ ok: true });
     } catch (e) {
       console.error(`[pay ${inst.id}] ${e.message}`);

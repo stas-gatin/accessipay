@@ -166,6 +166,9 @@ export default function RunView({ id, meta }) {
         Shop: {defects.length ? defects.join(', ') : 'clean, no defects'}{run.patches?.length ? `, after an AI fix of ${run.patches.length} change${run.patches.length === 1 ? '' : 's'}` : ''}.
       </p>
 
+      {run.goalId === 'agentic' && (
+        <p className="callout note" style={{ marginBottom: 16 }}>Agentic buyer task: {run.goal.split('"')[1]} {run.goalCheck && <strong>{run.goalCheck.met ? 'It bought the right item.' : `It bought ${run.goalCheck.bought.join(', ')} with ${run.goalCheck.delivery} delivery, which is not what was asked.`}</strong>}</p>
+      )}
       <div className="verdict" role="group" aria-label="The scanner's verdict compared with what really happened">
         <div>
           <p className="label">The scanner says</p>
