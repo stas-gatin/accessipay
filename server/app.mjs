@@ -26,8 +26,9 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
   app.use('/runs-data', express.static(path.join(dataDir, 'recorded'), { maxAge: '1h' }));
   app.use('/api', express.json({ limit: '1mb' }));
 
-  app.get('/api/health', (req, res) => res.json({ ok: true, paypal: paypal.mode, brains: ['external', 'scripted', ...Object.keys(brains)] }));
-  app.get('/api/meta', (req, res) => res.json({ defects: DEFECTS, personas: PERSONAS, goal: DEFAULT_GOAL, paypal: paypal.mode, brains: ['external', 'scripted', ...Object.keys(brains)] }));
+  const claudeReady = () => !!(env.ANTHROPIC_API_KEY || env.ANTHROPIC_AUTH_TOKEN);
+  app.get('/api/health', (req, res) => res.json({ ok: true, paypal: paypal.mode, claude: claudeReady(), brains: ['external', 'scripted', ...Object.keys(brains)] }));
+  app.get('/api/meta', (req, res) => res.json({ defects: DEFECTS, personas: PERSONAS, goal: DEFAULT_GOAL, paypal: paypal.mode, claude: claudeReady(), brains: ['external', 'scripted', ...Object.keys(brains)] }));
 
   app.post('/api/instances', (req, res) => {
     try {

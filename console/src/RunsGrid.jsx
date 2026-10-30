@@ -1,11 +1,30 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { themeQuartz } from 'ag-grid-community';
+import { themeQuartz, colorSchemeDark } from 'ag-grid-community';
 import { api, OUTCOME } from './api.js';
 
-export const theme = themeQuartz.withParams({ accentColor: '#0b4f6c', headerFontWeight: 700, fontSize: 14, borderRadius: 8, wrapperBorderRadius: 12 });
+export const theme = themeQuartz.withPart(colorSchemeDark).withParams({
+  backgroundColor: '#0d0e10',
+  foregroundColor: '#f4f5f6',
+  headerBackgroundColor: '#141619',
+  headerTextColor: '#a3abb4',
+  headerFontWeight: 600,
+  headerFontSize: 11,
+  borderColor: '#24272c',
+  rowHoverColor: '#16181b',
+  selectedRowBackgroundColor: 'rgba(212, 255, 58, 0.08)',
+  accentColor: '#d4ff3a',
+  fontFamily: 'Inter, system-ui, sans-serif',
+  fontSize: 14,
+  rowHeight: 46,
+  headerHeight: 44,
+  borderRadius: 8,
+  wrapperBorderRadius: 18,
+  spacing: 8,
+});
 
-function OutcomeCell({ value }) {
+function OutcomeCell({ value, node }) {
+  if (node?.group) return null;
   const o = OUTCOME[value];
   return o ? <span className={`pill ${o.tone}`}>{o.label}</span> : <span className="pill muted">{value || 'running'}</span>;
 }
@@ -45,7 +64,7 @@ export default function RunsGrid({ meta }) {
     { field: 'personaLabel', headerName: 'Shopper', flex: 1, minWidth: 160, rowGroup: groupBy === 'persona', hide: groupBy === 'persona', enableRowGroup: true },
     { field: 'fixed', headerName: 'Fix', width: 120, enableRowGroup: true },
     { field: 'scanViolations', headerName: 'axe-core violations', width: 160, type: 'numericColumn' },
-    { field: 'outcomeStatus', headerName: 'Outcome', width: 130, cellRenderer: OutcomeCell, enableRowGroup: true },
+    { field: 'outcomeStatus', headerName: 'Outcome', width: 160, cellRenderer: OutcomeCell, enableRowGroup: true },
     { field: 'steps', headerName: 'Steps', width: 90, type: 'numericColumn' },
     { field: 'brain', headerName: 'Decided by', flex: 1, minWidth: 170 },
     { field: 'cost', headerName: 'API cost', width: 110, valueFormatter: (p) => (p.value == null ? '' : `$${p.value.toFixed(3)}`) },
@@ -59,7 +78,7 @@ export default function RunsGrid({ meta }) {
       <div className="row" style={{ marginBottom: 10 }} role="group" aria-label="Group runs by">
         <span className="note">Group by</span>
         {[['scenario', 'Shop'], ['persona', 'Shopper'], ['none', 'Nothing']].map(([v, l]) => (
-          <button key={v} type="button" className="btn small" aria-pressed={groupBy === v} onClick={() => setGroupBy(v)} style={groupBy === v ? { background: 'var(--brand)', color: '#fff' } : undefined}>{l}</button>
+          <button key={v} type="button" className="btn small" aria-pressed={groupBy === v} onClick={() => setGroupBy(v)} >{l}</button>
         ))}
       </div>
       <div className="grid-box">

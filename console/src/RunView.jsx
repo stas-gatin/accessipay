@@ -38,7 +38,7 @@ function Diff({ text }) {
 
 function FixPanel({ run, meta }) {
   const [fix, setFix] = useState(null);
-  const [fixer, setFixer] = useState(meta.brains.includes('anthropic') ? 'anthropic' : 'external');
+  const [fixer, setFixer] = useState(meta.claude ? 'anthropic' : 'external');
   const [error, setError] = useState('');
   const [rerunning, setRerunning] = useState(false);
 
@@ -75,7 +75,7 @@ function FixPanel({ run, meta }) {
           <div className="row">
             <label className="row note">Fixer
               <select value={fixer} onChange={(e) => setFixer(e.target.value)}>
-                {meta.brains.includes('anthropic') && <option value="anthropic">Claude API</option>}
+                {meta.claude && <option value="anthropic">Claude API</option>}
                 <option value="external">Claude Code agent</option>
               </select>
             </label>
@@ -160,7 +160,7 @@ export default function RunView({ id, meta }) {
   return (
     <div className="page">
       <p className="note"><a href="#/runs">All runs</a> · {shortDate(run.createdAt)} · {run.brainKind === 'anthropic' ? `Claude API (${run.model})` : run.brainKind === 'external' ? 'Claude Code agent' : run.brainKind}{run.recorded ? ' · recorded run' : ''}</p>
-      <h1>{persona?.label} {run.status === 'running' ? 'is shopping…' : outcome?.tone === 'ok' ? 'bought it' : 'could not buy'}</h1>
+      <h1>{persona?.label}<br /><span style={{ color: run.status === 'running' ? 'var(--muted)' : outcome?.tone === 'ok' ? 'var(--lime)' : 'var(--red)' }}>{run.status === 'running' ? 'is shopping…' : outcome?.tone === 'ok' ? 'bought it' : 'could not buy'}</span></h1>
       <p className="lead">
         Shop: {defects.length ? defects.join('; ') : 'clean, no defects'}{run.patches?.length ? ` · with ${run.patches.length} fix change(s) applied` : ''}.
       </p>

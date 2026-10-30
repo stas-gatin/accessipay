@@ -35,7 +35,17 @@ export async function runShopper({ browser, startUrl, persona, brain, goal, maxS
 
     for (let step = 1; step <= maxSteps; step++) {
       if (signal?.aborted) { outcome = { status: 'stopped', reason: 'Run stopped by the operator.' }; break; }
-      if (await oracle()) { outcome = { status: 'purchased', reason: 'The order is confirmed by the payment oracle.' }; break; }
+      if (await oracle()) {
+        outcome = { status: 'purchased', reason: 'The order is confirmed by the payment oracle.' };
+        // One last turn so the shopper can report what was hard, even though it succeeded.
+        if (step > 1) {
+          const obs = await session.observe();
+          const last = await brain.decide({ persona, goal, observation: obs.text, step, maxSteps, lastResult: `${lastResult} The page now confirms your order. Finish: reply with action "done" and your findings.` });
+          findings = last.findings || [];
+          emit({ type: 'decide', step, action: 'done', args: {}, thought: last.thought, final: true });
+        }
+        break;
+      }
 
       const obs = await session.observe();
       const image = await shot(step);

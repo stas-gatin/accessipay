@@ -11,7 +11,7 @@ export default function NewTest({ meta }) {
   const [scenario, setScenario] = useState('focus-trap-modal');
   const [custom, setCustom] = useState([]);
   const [persona, setPersona] = useState('screenreader');
-  const [brain, setBrain] = useState(meta.brains.includes('anthropic') ? 'anthropic' : 'external');
+  const [brain, setBrain] = useState(meta.claude ? 'anthropic' : 'external');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [recent, setRecent] = useState([]);
@@ -35,15 +35,26 @@ export default function NewTest({ meta }) {
 
   return (
     <div className="page">
-      <h1>Can a real customer finish checkout?</h1>
-      <p className="lead">
-        An accessibility scanner checks rules. AccessiPay checks the outcome: a shopper who cannot see the screen, cannot use a mouse,
-        or is an AI agent tries to buy, and only a paid order counts as success. When it fails, AI proposes a fix and the shopper tries again.
-      </p>
+      <section className="hero" aria-labelledby="hero-title">
+        <div>
+          <p className="eyebrow">Checkout accessibility, tested by outcome</p>
+          <h1 id="hero-title">Zero violations.<br /><em>Zero purchases.</em></h1>
+          <p className="lead" style={{ marginBottom: 0 }}>
+            Scanners check rules. AccessiPay sends a shopper who cannot see the screen, cannot use a mouse, or is an AI agent
+            to buy through PayPal. Only a paid order counts. When the shopper gets stuck, AI fixes the page and the same shopper tries again.
+          </p>
+        </div>
+        <div className="stats" role="group" aria-label="Demo shop facts">
+          <div className="stat"><div className="num">{meta.defects.length}</div><div className="lbl">Real checkout defects</div></div>
+          <div className="stat"><div className="num red">{meta.defects.filter((d) => d.axeExpected).length}</div><div className="lbl">Flagged by axe-core</div></div>
+          <div className="stat"><div className="num">{Object.keys(meta.personas).length}</div><div className="lbl">Kinds of shopper</div></div>
+          <div className="stat"><div className="num lime">1</div><div className="lbl">Judge of success: a paid order</div></div>
+        </div>
+      </section>
 
       <div className="grid-2">
         <section className="card" aria-labelledby="s1">
-          <h2 className="section-title" id="s1">1. Shop to test</h2>
+          <h2 className="section-title" id="s1"><span className="step-no">01</span>Shop to test</h2>
           <div style={{ display: 'grid', gap: 8 }}>
             {scenarios.map((s) => (
               <button key={s.id} type="button" className="choice" aria-pressed={scenario === s.id} onClick={() => setScenario(s.id)}>
@@ -66,7 +77,7 @@ export default function NewTest({ meta }) {
 
         <div style={{ display: 'grid', gap: 16, alignContent: 'start' }}>
           <section className="card" aria-labelledby="s2">
-            <h2 className="section-title" id="s2">2. Who is shopping</h2>
+            <h2 className="section-title" id="s2"><span className="step-no">02</span>Who is shopping</h2>
             <div style={{ display: 'grid', gap: 8 }}>
               {Object.entries(meta.personas).map(([id, p]) => (
                 <button key={id} type="button" className="choice" aria-pressed={persona === id} onClick={() => setPersona(id)}>
@@ -77,10 +88,10 @@ export default function NewTest({ meta }) {
           </section>
 
           <section className="card" aria-labelledby="s3">
-            <h2 className="section-title" id="s3">3. Who decides each step</h2>
+            <h2 className="section-title" id="s3"><span className="step-no">03</span>Who decides each step</h2>
             <div className="grid-2">
               {BRAINS.filter((b) => meta.brains.includes(b.id)).map((b) => (
-                <button key={b.id} type="button" className="choice" aria-pressed={brain === b.id} onClick={() => setBrain(b.id)}>
+                <button key={b.id} type="button" className="choice" aria-pressed={brain === b.id} onClick={() => setBrain(b.id)} disabled={b.id === 'anthropic' && !meta.claude} title={b.id === 'anthropic' && !meta.claude ? 'No Claude API key on the server yet' : undefined}>
                   <strong>{b.label}</strong><span>{b.note}</span>
                 </button>
               ))}

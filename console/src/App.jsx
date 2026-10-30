@@ -46,7 +46,8 @@ export default function App() {
         </nav>
         {meta && (
           <div className="header-right">
-            <span className={`pill ${meta.paypal === 'sandbox' ? 'ok' : 'warn'}`}>PayPal {meta.paypal === 'sandbox' ? 'sandbox' : 'mock mode'}</span>
+            <span className={`pill ${meta.paypal === 'sandbox' ? 'ok' : 'warn'}`}>PayPal {meta.paypal === 'sandbox' ? 'sandbox' : 'mock'}</span>
+            <span className={`pill ${meta.claude ? 'ok' : 'muted'}`}>Claude API {meta.claude ? 'on' : 'off'}</span>
           </div>
         )}
       </header>
