@@ -221,7 +221,10 @@ line.ax-axis { stroke: var(--ax-axis); stroke-width: 1; }
 /* Real sites */
 .ax-sites { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
 .ax-site { display: grid; gap: 10px; align-content: start; border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; text-decoration: none; color: var(--ink); background: var(--surface); box-shadow: var(--shadow); transition: border-color .15s, transform .15s; }
-.ax-site:hover { border-color: var(--line-2); transform: translateY(-1px); }
+.ax-site { transition: border-color 240ms cubic-bezier(.2, .8, .2, 1), transform 240ms cubic-bezier(.2, .8, .2, 1), box-shadow 240ms cubic-bezier(.2, .8, .2, 1); }
+.ax-site:hover { border-color: var(--accent-line); box-shadow: 0 14px 32px rgba(11, 27, 51, .12); }
+:root[data-theme='dark'] .ax-site:hover { box-shadow: 0 16px 38px rgba(0, 0, 0, .5); }
+@media (prefers-reduced-motion: no-preference) { .ax-site:hover { transform: translateY(-4px); } }
 .ax-site .pill { justify-self: start; }
 .ax-site-host { font-family: var(--head); font-weight: 700; font-size: 18px; overflow-wrap: anywhere; }
 .ax-site-stats { display: grid; gap: 3px; font-size: 14px; color: var(--muted); }

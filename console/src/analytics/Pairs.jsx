@@ -32,7 +32,7 @@ function PairRow({ which, id, outcome, stage, steps, keys, order, seen, delay })
         <span className={`pill ${ok ? 'ok' : 'bad'}`}>{where}</span>
         <span><b>{steps}</b> steps</span>
         <span><b>{keys}</b> {keys === 1 ? 'keypress' : 'keypresses'}</span>
-        {order && <span>PayPal order <code>{order}</code></span>}
+        {order && <span>PayPal confirmed</span>}
         <a href={`#/runs/${id}`}>Open run {shortId(id)}<span className="sr-only"> ({which.toLowerCase()})</span></a>
       </span>
     </div>

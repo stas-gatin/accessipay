@@ -129,7 +129,7 @@ export default function Analytics({ meta }) {
       </Section>
 
       <Section id="an-sites" n={7} title="Real sites" intro="Public demo stores of real e-commerce platforms. The customer goes as far as the payment step and stops; nothing is paid. axe-core scans every page the customer saw, in that state.">
-        <Sites data={a.sites} meta={meta} />
+        <Sites data={a.sites} untested={a.untested || []} meta={meta} />
       </Section>
 
       <Section id="an-method" n={8} title="Method and transparency">

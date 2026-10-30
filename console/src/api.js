@@ -12,6 +12,7 @@ export const OUTCOME = {
   error: { label: 'Error', tone: 'bad' },
   'wrong-item': { label: 'Wrong item', tone: 'warn' },
   'reached-payment': { label: 'Reached payment', tone: 'ok' },
+  'not-testable': { label: 'Not testable', tone: 'muted' },
 };
 
 export function shortDate(iso) {

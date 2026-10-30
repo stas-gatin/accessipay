@@ -18,8 +18,9 @@ export function SectionHead({ eyebrow, title, id, lead, light = false, center = 
 export function Arrow() { return <span aria-hidden="true" className="arr">→</span>; }
 
 // M4: the keyboard transcript plays line by line when it scrolls into view.
+// Steps 6 to 15 of run cea700, shortened.
 const TRAP_LINES = [
-  ['Tab', 'Focus moved to: link “Cart (1)”'],
+  ['Shift+Tab', 'Focus moved to: link “Cart (1)”'],
   ['Enter', 'Opened the cart. A promo popup takes focus.'],
   ['Escape', 'Nothing happens.'],
   ['Shift+Tab', 'Focus moved to: button “Subscribe”'],
@@ -73,18 +74,18 @@ export function TwoVerdicts() {
 const LANES = [
   {
     name: 'Screen reader customer', shop: 'Clean shop',
-    before: { stop: 4, paid: true, text: 'Paid in 35 steps', run: RUNS.screenReader, order: ORDERS.screenReader.id },
-    after: { stop: 4, paid: true, text: 'Paid in 35 steps (no fix needed)', run: RUNS.screenReader, order: ORDERS.screenReader.id },
+    before: { stop: 4, paid: true, text: 'Paid in 36 steps', run: RUNS.screenReader },
+    after: { stop: 4, paid: true, text: 'Paid in 36 steps (no fix needed)', run: RUNS.screenReader },
   },
   {
     name: 'Keyboard-only customer', shop: 'Popup that traps focus',
     before: { stop: 1, text: 'Blocked at Cart: the promo popup traps focus and Escape does nothing', run: RUNS.keyboardBlocked },
-    after: { stop: 4, paid: true, text: 'Paid in 46 steps after 7 patches', run: RUNS.keyboardFixed, order: ORDERS.keyboardFixed.id },
+    after: { stop: 4, paid: true, text: 'Paid in 49 steps after 7 patches', run: RUNS.keyboardFixed },
   },
   {
     name: 'AI shopping agent', shop: 'Pay button is a <div>',
     before: { stop: 3, text: 'Blocked at Payment: no Pay button in the accessibility tree', run: RUNS.agentBlocked },
-    after: { stop: 4, paid: true, text: 'Paid in 18 steps after 1 patch', run: RUNS.agentFixed, order: ORDERS.agentFixed.id },
+    after: { stop: 4, paid: true, text: 'Paid in 19 steps after 5 patches', run: RUNS.agentFixed },
   },
 ];
 const STAGES = ['Browse', 'Cart', 'Details', 'Payment', 'PayPal confirmed'];
@@ -118,7 +119,7 @@ export function JourneyMap() {
               </div>
               <p className={`jm-out ${r.paid ? 'ok' : 'bad'}`}>
                 <span className="dot-word">{r.paid ? 'Paid' : 'Blocked'}</span>
-                {' '}{r.text}{r.order && <>, PayPal order <span className="mono">{r.order}</span></>}.{' '}
+                {' '}{r.text}{r.paid && '; PayPal confirmed the payment'}.{' '}
                 <a href={`#/runs/${r.run}`}>Replay<span className="sr-only"> the {l.name.toLowerCase()} run</span></a>
               </p>
             </li>
@@ -148,7 +149,6 @@ export function PayPalConfirms() {
           <span className="ppc-k">3</span>
           <h3>PayPal says COMPLETED</h3>
           <dl>
-            <div><dt>Order</dt><dd className="mono">{ORDERS.agentFixed.id}</dd></div>
             <div><dt>Amount</dt><dd className="mono">$54.00</dd></div>
             <div><dt>Status</dt><dd><span className="status-fill">COMPLETED</span></dd></div>
           </dl>
@@ -203,8 +203,8 @@ export function CopyCode({ text, label = 'Copy patch' }) {
 }
 
 const FIX_ROWS = [
-  { title: 'Promo popup traps the keyboard', page: 'Cart', who: 'Keyboard-only customer', run: RUNS.keyboardBlocked, wcag: '2.1.2 No Keyboard Trap', after: 'Paid in 46 steps after 7 patches' },
-  { title: 'Pay button is a <div>', page: 'Payment', who: 'AI shopping agent', run: RUNS.agentBlocked, wcag: '4.1.2 Name, Role, Value', after: 'Paid in 18 steps after 1 patch' },
+  { title: 'Promo popup traps the keyboard', page: 'Cart', who: 'Keyboard-only customer', run: RUNS.keyboardBlocked, wcag: '2.1.2 No Keyboard Trap', after: 'Paid in 49 steps after 7 patches' },
+  { title: 'Pay button is a <div>', page: 'Payment', who: 'AI shopping agent', run: RUNS.agentBlocked, wcag: '4.1.2 Name, Role, Value', after: 'Paid in 19 steps after 5 patches' },
 ];
 
 export function OwnerOutputs() {
@@ -233,7 +233,7 @@ export function OwnerOutputs() {
         <ul className="bt-checks">
           <li><span>Matched the page</span><b>exactly once</b></li>
           <li><span>Same agent, rerun</span><b>paid in {ORDERS.agentFixed.steps} steps</b></li>
-          <li><span>PayPal order</span><b className="mono">{ORDERS.agentFixed.id}</b></li>
+          <li><span>PayPal</span><b>payment confirmed</b></li>
         </ul>
       </article>
       <article className="bt bt-shot">
@@ -254,7 +254,7 @@ export function OwnerOutputs() {
             <div className="pdf-lines"><i /><i style={{ width: '78%' }} /></div>
           </div>
         </div>
-        <a className="lp-link" href="/api/report/case/20261030-ee0cff.pdf">Download a real report (PDF) <Arrow /></a>{' '}<a className="lp-link" href="#/report/case/20261030-ee0cff">Open it in the browser <Arrow /></a>
+        <a className="lp-link" href={`/api/report/case/${RUNS.agentBlocked}.pdf`}>Download a real report (PDF) <Arrow /></a>{' '}<a className="lp-link" href={`#/report/case/${RUNS.agentBlocked}`}>Open it in the browser <Arrow /></a>
       </article>
     </Reveal>
   );
@@ -313,7 +313,7 @@ export function Ledger({ meta }) {
   return (
     <div className="ledger">
       <div className="ledger-head" aria-hidden="true">
-        <span>Customer</span><span>Shop</span><span>Scanner</span><span>Outcome</span><span className="num">Amount</span><span>PayPal order</span>
+        <span>Customer</span><span>Shop</span><span>Scanner</span><span>Outcome</span><span className="num">Amount</span><span>PayPal</span>
       </div>
       <ul className="ledger-list" aria-label="Recorded runs against the PayPal sandbox">
         {(rows || []).map((r) => {
@@ -325,7 +325,7 @@ export function Ledger({ meta }) {
               <span>{r.scan?.totalViolations ?? '—'} violations<span className="sr-only">,</span></span>
               <span><span className={`dot-word ${ok ? 'ok' : 'bad'}`}>{ok ? 'Paid' : 'Blocked'}</span><span className="sr-only">,</span></span>
               <span className="num mono">{r.payment ? `$${Number(r.payment.amount).toFixed(2)}` : <span aria-hidden="true">—</span>}</span>
-              <span className="mono">{r.payment ? <><span className="sr-only">PayPal order </span>{r.payment.orderId}</> : 'no order'}</span>
+              <span>{r.payment?.status === 'COMPLETED' ? 'Confirmed' : 'No payment'}</span>
             </a></li>
           );
         })}

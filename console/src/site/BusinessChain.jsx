@@ -130,7 +130,7 @@ export function Calculator() {
 
       <fieldset className="calc-measured">
         <legend><Kind k="measured" /> Customer types your test found blocked</legend>
-        <p className="calc-help">Set here from the demo shop’s test: the keyboard-only customer (<a href={`#/runs/${RUNS.keyboardBlocked}`}>run 003839</a>) and the AI agent (<a href={`#/runs/${RUNS.agentBlocked}`}>run ee0cff</a>) were blocked; both paid after the fix (orders {ORDERS.keyboardFixed.id}, {ORDERS.agentFixed.id}). Your own test sets these.</p>
+        <p className="calc-help">Set here from the demo shop’s test: the keyboard-only customer (<a href={`#/runs/${RUNS.keyboardBlocked}`}>run {RUNS.keyboardBlocked.slice(-6)}</a>) and the AI agent (<a href={`#/runs/${RUNS.agentBlocked}`}>run {RUNS.agentBlocked.slice(-6)}</a>) were blocked; both paid after the fix, confirmed by PayPal. Your own test sets these.</p>
         <div className="calc-checks">
           {[['sr', 'Screen reader'], ['kb', 'Keyboard-only'], ['ag', 'AI agent']].map(([k, l]) => (
             <label key={k} className="calc-check">

@@ -130,8 +130,18 @@ export function Themes({ data, findings }) {
   );
 }
 
-export function Sites({ data, meta }) {
-  if (!data.length) return <p className="ax-empty">No real-site runs yet.</p>;
+function Untested({ list }) {
+  if (!list.length) return null;
+  const hosts = [...new Set(list.map((s) => s.host))];
+  return (
+    <p className="ax-note">
+      Not testable: {hosts.join(', ')}. {hosts.length === 1 ? 'This site' : `These ${hosts.length} sites`} showed bot protection or asked not to be visited, so AccessiPay stopped before any step. An automated shopping agent can meet the same wall.
+    </p>
+  );
+}
+
+export function Sites({ data, meta, untested = [] }) {
+  if (!data.length) return untested.length ? <Untested list={untested} /> : <p className="ax-empty">No real-site runs yet.</p>;
   const reached = data.filter((s) => s.outcome === 'reached-payment').length;
   const issues = data.reduce((t, s) => t + (s.violations || 0), 0);
   const reports = data.reduce((t, s) => t + s.findings, 0);
@@ -154,6 +164,7 @@ export function Sites({ data, meta }) {
       </div>
       <DataTable caption="Real sites" numeric={[3, 4, 5, 6]} head={['Site', 'Customer', 'Outcome', 'Steps', 'Pages scanned', 'axe-core issues', 'Problems reported', 'axe-core rules']}
         rows={data.map((s) => [s.host, personaLabel(meta, s.persona), s.outcome === 'reached-payment' ? 'Reached payment' : s.outcome, s.steps, s.pages, s.violations ?? '—', s.findings, s.rules.join(', ')])} />
+      <Untested list={untested} />
     </>
   );
 }

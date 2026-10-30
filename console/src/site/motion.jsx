@@ -79,7 +79,7 @@ export function CountUp({ value, prefix = '', suffix = '', duration = 900 }) {
   );
 }
 
-// Founder-generated brand images live in /img/brand/. Until they exist (or if one fails to load),
+// Founder-generated brand images live in /img/brand/ (compressed to WebP; callers keep the .png names from the plan). Until they exist (or if one fails to load),
 // a geometric drawing in the same palette fills the slot, so the layout always looks complete.
 export function BrandImg({ name, alt = '', art, className = '', ratio = '4 / 3', eager = false }) {
   const [state, setState] = useState('loading');
@@ -88,7 +88,7 @@ export function BrandImg({ name, alt = '', art, className = '', ratio = '4 / 3',
       <BrandArt kind={art} />
       {state !== 'failed' && (
         <img
-          src={`/img/brand/${name}`}
+          src={`/img/brand/${name.replace(/\.png$/, '.webp')}`}
           alt={alt}
           loading={eager ? 'eager' : 'lazy'}
           decoding="async"

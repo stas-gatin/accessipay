@@ -34,7 +34,7 @@ function Artifact({ a }) {
   if (a.kind === 'receipt') {
     return (
       <dl className="art-receipt">
-        <div><dt>PayPal order</dt><dd className="mono">{ORDERS.agentFixed.id}</dd></div>
+        <div><dt>PayPal</dt><dd>Payment confirmed</dd></div>
         <div><dt>Amount</dt><dd className="mono">$54.00</dd></div>
         <div><dt>Status</dt><dd><span className="status-fill">COMPLETED</span></dd></div>
       </dl>
@@ -60,7 +60,7 @@ export function MethodPage() {
     <div className="lp">
       <PageHero eyebrow="Method" title="Nine stages. Each one leaves a real artifact." img="06-method.png" art="method"
         alt="A relief map with a green dotted path climbing to a marker."
-        lead="From reading the shop to handing the owner a fix. Every example below comes from the recorded run pair: the AI agent blocked by a <div> Pay button, then paying after a one-line fix." />
+        lead="From reading the shop to handing the owner a fix. Every example below comes from the recorded run pair: the AI agent blocked by a <div> Pay button, then paying after the AI fix." />
       <section className="s-light sec" aria-label="The nine stages">
         <div className="wrap method">
           <nav className="m-index" aria-label="Stages">
@@ -115,7 +115,7 @@ export function CustomersPage() {
                 <div><dt>What it cannot tell you</dt><dd>{c.cannotClaim}</dd></div>
               </dl>
               <p className="cust-proof">
-                <span className="dot-word ok">Recorded</span> {c.proof.text}, PayPal order <span className="mono">{c.proof.order}</span>.{' '}
+                <span className="dot-word ok">Recorded</span> {c.proof.text}; PayPal confirmed the payment.{' '}
                 <a href={`#/runs/${c.proof.run}`}>Replay<span className="sr-only"> the {c.name.toLowerCase()} run</span></a>
               </p>
             </Reveal>
@@ -191,10 +191,10 @@ export function PayPalPage() {
           <SectionHead eyebrow="How PayPal is used today" id="pp-int" title="Orders v2 in the PayPal sandbox."
             lead="The demo shop creates and captures each order through PayPal Orders v2, then reads it back. A run counts only when that read-back says COMPLETED and the right item was bought." />
           <Reveal className="pp-orders" stagger>
-            <div><b className="mono">{ORDERS.screenReader.id}</b><span>Screen reader customer, clean shop</span></div>
-            <div><b className="mono">{ORDERS.keyboardFixed.id}</b><span>Keyboard-only customer, after the fix</span></div>
-            <div><b className="mono">{ORDERS.agentFixed.id}</b><span>AI agent, after the one-line fix, $54.00</span></div>
-            <div><b className="mono">{ORDERS.agentic.id}</b><span>Agentic buyer, Rain Jacket with express delivery, $94.00</span></div>
+            <div><b>Confirmed by PayPal</b><span>Screen reader customer, clean shop, $54.00</span></div>
+            <div><b>Confirmed by PayPal</b><span>Keyboard-only customer, after the fix, $54.00</span></div>
+            <div><b>Confirmed by PayPal</b><span>AI agent, after the fix, $54.00</span></div>
+            <div><b>Confirmed by PayPal</b><span>Agentic buyer, Rain Jacket with express delivery, $94.00</span></div>
           </Reveal>
         </div>
       </section>
@@ -230,7 +230,7 @@ export function HonestyPage() {
               <li>Outcome: “Paid” only when PayPal Orders v2 reports the sandbox order COMPLETED and the right item was bought.</li>
               <li>Effort is counted in steps. We never show run time as a customer’s time: most of it is the model thinking between steps.</li>
               <li>Blocked to paid is “impossible to possible”, not “faster”.</li>
-              <li>Some cases were repeated: before the fix, the keyboard customer gave up after 18 and 20 steps, and the agent on the <code>&lt;div&gt;</code> shop after 20 and 21 steps. Most results are still single runs.</li>
+              <li>Some cases were repeated: before the fix, the keyboard customer gave up after 15, 18 and 20 steps, and the agent on the <code>&lt;div&gt;</code> shop after 20, 21 and 22 steps. Most results are still single runs.</li>
               <li>In the recorded runs, each step was decided by a Claude model through the engine’s agent interface.</li>
             </ul>
           </Reveal>

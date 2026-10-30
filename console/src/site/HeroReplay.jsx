@@ -3,8 +3,8 @@ import { api } from '../api.js';
 import { RUNS, ORDERS, PAY_FIX } from './facts.js';
 import { useInView, usePageVisible, useReducedMotion } from './motion.jsx';
 
-// M1: replay of the real run pair. Run ee0cff (AI agent blocked: the Pay button is a <div>),
-// then run a29ad7 (after a one-line fix, PayPal sandbox order COMPLETED).
+// M1: replay of the real run pair. Run c2dca6 (AI agent blocked: the Pay button is a <div>),
+// then run 2514af (after the AI fix, PayPal sandbox order COMPLETED).
 // Frames, paths and the agent's own words come from GET /api/runs/:id. The runs do not record
 // element boxes yet, so ring positions are measured once from the 1280 x 860 screenshots.
 const W = 1280;
@@ -72,9 +72,9 @@ export default function HeroReplay() {
     });
   }, [runs]);
 
-  const blockedSteps = runs.blocked?.steps ?? 20;
+  const blockedSteps = runs.blocked?.steps ?? 22;
   const fixedSteps = runs.fixed?.steps ?? ORDERS.agentFixed.steps;
-  const pay = runs.fixed?.payment || { orderId: ORDERS.agentFixed.id, amount: ORDERS.agentFixed.amount, status: 'COMPLETED' };
+  const pay = runs.fixed?.payment || { amount: ORDERS.agentFixed.amount, status: 'COMPLETED' };
   const blockedViolations = runs.blocked?.scan?.totalViolations ?? 0;
 
   const reduced = useReducedMotion();
@@ -106,7 +106,7 @@ export default function HeroReplay() {
       <p className="sr-only">
         Replay of two recorded runs. An AI shopping agent fills in the demo shop’s checkout but finds no Pay button,
         because the button is a div. It gives up after {blockedSteps} steps while axe-core reports {blockedViolations} violations.
-        After a one-line AI fix the same agent pays in {fixedSteps} steps and PayPal reports sandbox order {pay.orderId} as {pay.status}.
+        After the AI fix the same agent pays in {fixedSteps} steps and PayPal confirms the payment.
       </p>
       <div className="rp-card" aria-hidden="true">
         <div className="rp-head">
@@ -138,11 +138,10 @@ export default function HeroReplay() {
             <div className={`rp-paid ${f.mode === 'paid' ? 'show' : ''}`}>
               <div className="rp-paid-head"><span>PayPal Orders v2 · sandbox</span></div>
               <dl>
-                <div><dt>Order</dt><dd className="mono">{pay.orderId}</dd></div>
                 <div><dt>Amount</dt><dd className="mono">${Number(pay.amount).toFixed(2)}</dd></div>
                 <div><dt>Status</dt><dd><span className="rp-status">{pay.status}</span></dd></div>
               </dl>
-              <p>Paid in {fixedSteps} steps after a one-line fix.</p>
+              <p>Paid in {fixedSteps} steps after the AI fix.</p>
             </div>
           </div>
         </div>

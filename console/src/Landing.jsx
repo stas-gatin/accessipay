@@ -80,7 +80,7 @@ export default function Landing({ meta }) {
               <div className="who-body">
                 <p className="who-k">People with disabilities</p>
                 <h3>Customers who navigate without a mouse or without seeing the screen.</h3>
-                <p>Our simulated keyboard-only customer was trapped by a promo popup on the cart page while axe-core reported 0 violations. After a 7-patch AI fix, the same customer bought in 46 steps, PayPal order <span className="mono">{ORDERS.keyboardFixed.id}</span>.</p>
+                <p>Our simulated keyboard-only customer was trapped by a promo popup on the cart page while axe-core reported 0 violations. After a 7-patch AI fix, the same customer bought in 49 steps, and PayPal confirmed the payment.</p>
                 <p className="who-also">Also: a broken trackpad, a tremor, a temporary injury, people who simply prefer the keyboard.</p>
                 <a className="lp-link" href="#/customers">The simulated customers <Arrow /></a>
               </div>
@@ -90,7 +90,7 @@ export default function Landing({ meta }) {
               <div className="who-body">
                 <p className="who-k">AI shopping agents</p>
                 <h3>Agents read your page the way screen readers do.</h3>
-                <p>Our agent could not find a Pay button that was a <code>&lt;div&gt;</code>. After a one-line fix it bought in 18 steps, PayPal order <span className="mono">{ORDERS.agentFixed.id}</span>.</p>
+                <p>Our agent could not find a Pay button that was a <code>&lt;div&gt;</code>. After the AI turned it into a real button, the agent bought in 19 steps, and PayPal confirmed the payment.</p>
                 <a className="lp-link" href="#agents">How agents shop <Arrow /></a>
               </div>
             </article>
@@ -117,14 +117,14 @@ export default function Landing({ meta }) {
             <p className="eyebrow-lp light">Agentic commerce</p>
             <h2 id="agent-t">A checkout a blind customer cannot finish is a checkout an AI agent cannot finish either.</h2>
             <p className="lead-lp light">AccessiPay tests both, and checks that the agent bought what the person actually asked for.</p>
-            <pre className="codeblock on-navy" aria-label="The one-line fix that let the agent pay"><span className="c-meta">The fix that unblocked the agent</span>{'\n'}<span className="del">- {PAY_FIX.before}</span>{'\n'}<span className="add">+ {PAY_FIX.after}</span></pre>
+            <pre className="codeblock on-navy" aria-label="The line of the fix that let the agent pay"><span className="c-meta">The fix that unblocked the agent</span>{'\n'}<span className="del">- {PAY_FIX.before}</span>{'\n'}<span className="add">+ {PAY_FIX.after}</span></pre>
           </Reveal>
           <Reveal className="chat" role="group" aria-label="A recorded agentic buyer run">
             <div className="bubble user">Get me something that keeps me dry on hikes, under $100, and I need it fast.</div>
             <div className="bubble agent">Rain Jacket, $79.00, with express delivery. The backpack and the bottle do not keep you dry.</div>
             <div className="receipt-dark">
               <div><span>Total</span><b className="mono">$94.00</b></div>
-              <div><span>PayPal order</span><b className="mono">{ORDERS.agentic.id}</b></div>
+              <div><span>PayPal</span><b>Payment confirmed</b></div>
               <div><span>Status</span><b><span className="status-fill">COMPLETED</span></b></div>
               <div><span>Right item</span><b>Yes: rain jacket, express</b></div>
             </div>
@@ -147,7 +147,7 @@ export default function Landing({ meta }) {
       <section className="s-white sec" aria-labelledby="jm-t">
         <div className="wrap">
           <SectionHead eyebrow="Can they finish?" id="jm-t" title="Where each customer stopped, and what changed after the fix."
-            lead="Blocked to paid is not “faster”. It is impossible becoming possible. After the fix, the agent’s path was 18 steps, the same as on the shop without the defect." />
+            lead="Blocked to paid is not “faster”. It is impossible becoming possible. After the fix, the same agent paid in 19 steps." />
           <JourneyMap />
         </div>
       </section>

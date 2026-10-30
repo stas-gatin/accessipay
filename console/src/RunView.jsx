@@ -20,6 +20,7 @@ const CHIP = {
   'wrong-item': { label: 'Wrong item', tone: 'warn' },
   stopped: { label: 'Stopped', tone: 'muted' },
   error: { label: 'Error', tone: 'bad' },
+  'not-testable': { label: 'Not testable', tone: 'muted' },
 };
 
 function useReducedMotion() {
@@ -50,7 +51,7 @@ function OutcomeBanner({ run, steps, metrics }) {
     const p = run.payment;
     return (
       <section className="rv-banner ok" role="status" aria-label="Outcome">
-        <p className="rv-banner-title"><span aria-hidden="true">✓ </span>Paid in {n} steps.{p ? ` PayPal ${p.mode === 'mock' ? 'mock' : 'sandbox'} order ${p.orderId} ${p.status}${p.amount != null ? `, $${Number(p.amount).toFixed(2)}` : ''}.` : ''}</p>
+        <p className="rv-banner-title"><span aria-hidden="true">✓ </span>Paid in {n} steps.{p ? ` ${p.mode === 'mock' ? 'Mock payment' : 'PayPal confirmed the payment'}${p.amount != null ? ` of $${Number(p.amount).toFixed(2)}` : ''}.` : ''}</p>
         {p && p.mode !== 'mock' && <p className="rv-banner-sub">Verified with PayPal Orders v2: the test counts only because PayPal confirms the order.</p>}
         {effort}
       </section>
@@ -301,7 +302,7 @@ export default function RunView({ id, meta }) {
         <div>
           <p className="label">What really happened</p>
           <p className={`value ${outcome?.tone || 'neutral'}`}>{running ? `Step ${total}` : run.outcome?.status === 'reached-payment' ? 'Reached payment' : outcome?.tone === 'ok' ? 'Bought it' : outcome?.tone === 'bad' ? 'Could not buy' : outcome?.label || '—'}</p>
-          <p className="sub">{run.outcome?.reason}{run.payment ? ` PayPal ${run.payment.mode === 'mock' ? 'mock' : 'sandbox'} order ${run.payment.orderId}: ${run.payment.status}.` : ''}</p>
+          <p className="sub">{run.outcome?.reason}{run.payment?.status === 'COMPLETED' ? (run.payment.mode === 'mock' ? ' Mock payment.' : ' PayPal confirmed the payment.') : ''}</p>
         </div>
       </div>
       {external && <p className="note" style={{ marginTop: 8 }}>Real site: <a href={run.site.url} target="_blank" rel="noreferrer">{run.site.host}<span className="sr-only"> (opens in a new tab)</span></a>. The customer goes as far as the payment step; nothing is paid.</p>}
