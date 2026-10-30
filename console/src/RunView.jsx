@@ -229,6 +229,14 @@ export default function RunView({ id, meta }) {
         <StageRail step={current} run={run} />
       </header>
 
+      {run.status === 'finished' && (
+        <p className="note rv-report-links">
+          <a href={`#/report/${run.site ? 'site' : 'run'}/${run.id}`}>Owner report</a>
+          {' · '}
+          <a href={`/api/report/${run.site ? 'site' : 'run'}/${run.id}.pdf`} download>Download PDF</a>
+        </p>
+      )}
+
       <div className="rv-theater">
         <section className="rv-left card" aria-labelledby="rv-screen-title">
           <h2 className="sr-only" id="rv-screen-title">What a sighted person would see</h2>

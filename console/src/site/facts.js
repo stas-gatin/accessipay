@@ -14,7 +14,7 @@ export const RUNS = {
 };
 
 // The owner report is being built by another engineer; until then, link to the run behind it.
-export const REPORT_HREF = `#/runs/${RUNS.keyboardBlocked}`;
+export const REPORT_HREF = `#/report/case/${RUNS.keyboardBlocked}`;
 
 export const ORDERS = {
   agentFixed: { id: '0CS292858A5878721', amount: 54, steps: 18 },

@@ -242,8 +242,8 @@ export function OwnerOutputs() {
         <AnnotatedShot />
       </article>
       <article className="bt bt-pdf">
-        <header><span className="bt-n">4</span><h3>PDF report</h3><span className="dot-chip muted">In progress</span></header>
-        <p>The same content as a tagged, accessible PDF for the team that will fix it. This shows the format.</p>
+        <header><span className="bt-n">4</span><h3>PDF report</h3><span className="dot-chip ok">Ready</span></header>
+        <p>The same content as a tagged, accessible PDF for the team that will fix it: verdict, scorecard, annotated screenshots, ready code, PayPal proof.</p>
         <div className="pdf-stack" aria-hidden="true">
           <div className="pdf-page back" />
           <div className="pdf-page">
@@ -254,7 +254,7 @@ export function OwnerOutputs() {
             <div className="pdf-lines"><i /><i style={{ width: '78%' }} /></div>
           </div>
         </div>
-        <a className="lp-link" href={REPORT_HREF}>See the run behind this report <Arrow /></a>
+        <a className="lp-link" href="/api/report/case/20261030-ee0cff.pdf">Download a real report (PDF) <Arrow /></a>{' '}<a className="lp-link" href="#/report/case/20261030-ee0cff">Open it in the browser <Arrow /></a>
       </article>
     </Reveal>
   );
