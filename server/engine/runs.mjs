@@ -55,7 +55,11 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
     const startUrl = `${origin}/s/${inst.id}${opts.startPath || '/'}`;
     runShopper({
       browser, startUrl, persona, brain, goal: rec.goal, maxSteps: rec.maxSteps,
-      oracle: async () => inst.order?.status === 'COMPLETED',
+      // A payment can still be in flight (the sandbox takes a few seconds): wait for it before judging.
+      oracle: async () => {
+        for (let i = 0; i < 60 && inst.paying; i++) await new Promise((r) => setTimeout(r, 500));
+        return inst.order?.status === 'COMPLETED';
+      },
       onEvent: (e) => publish(rec, e),
       shotsDir: path.join(runsDir, id),
       signal: abort.signal,

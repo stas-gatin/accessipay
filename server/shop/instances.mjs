@@ -132,6 +132,8 @@ export function createShop({ paypal, dataDir }) {
     if (!inst.shipping || !inst.cart.length) return res.json({ ok: false, errors: ['Complete checkout first.'] });
     if (inst.order?.status === 'COMPLETED') return res.json({ ok: true });
     const t = totals(inst);
+    if (inst.paying) return res.json({ ok: false, errors: ['The payment is already being processed.'] });
+    inst.paying = true;
     try {
       const r = await paypal.payWithCard({
         amount: t.total,
@@ -143,7 +145,10 @@ export function createShop({ paypal, dataDir }) {
       inst.order = { id: 'PP-' + inst.id.toUpperCase(), name: inst.shipping.name, total: t.total, paypalOrderId: r.id, captureId: r.captureId, status: r.status, mode: paypal.mode };
       res.json({ ok: true });
     } catch (e) {
-      res.json({ ok: false, errors: ['The payment service is not available right now.'], detail: e.message });
+      console.error(`[pay ${inst.id}] ${e.message}`);
+      res.json({ ok: false, errors: ['The payment service is not available right now.'] });
+    } finally {
+      inst.paying = false;
     }
   });
 

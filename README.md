@@ -76,7 +76,8 @@ node tools/agent.mjs fix-reply <fix id> reply.json
 
 ## How PayPal and AI are used
 
-- **PayPal Orders v2** (sandbox): the card payment on the shop's payment page, and the read-back of the order that decides whether a run succeeded. Calls go through a token bucket because the sandbox blocks an IP after about 50 requests a minute.
+- **PayPal Orders v2** (sandbox): the card payment on the shop's payment page, and the read-back of the order that decides whether a run succeeded. Verified against the live sandbox: create with a card payment source, capture, read back as `COMPLETED`, refund (`npm test` includes this when sandbox keys are present). Calls go through a token bucket because the sandbox blocks an IP after about 50 requests a minute.
+- The demo shop posts test card numbers to its own server and on to PayPal. That is fine for sandbox test cards only; a production checkout would use PayPal's hosted card fields so card data never touches the merchant server.
 - **Claude**: the shopper's decision at each step (one request per step with a cached persona prompt) and the fixer's patch proposal. Prompts live in `server/engine/prompts.mjs` and `server/fixer/fixer.mjs`.
 - **Playwright** drives a real Chromium; **axe-core** is the scanner it is compared with; **AG Grid** powers the runs and defects tables.
 
