@@ -34,7 +34,7 @@ export default function RunsGrid({ meta }) {
   const data = useMemo(() => (rows || []).map((r) => ({
     ...r,
     personaLabel: meta.personas[r.persona]?.label || r.persona,
-    scenario: r.defects?.length ? r.defects.map((d) => meta.defects.find((x) => x.id === d)?.short || d).join(' + ') : 'Clean shop',
+    scenario: r.site ? `Real site: ${r.site.host}` : r.defects?.length ? r.defects.map((d) => meta.defects.find((x) => x.id === d)?.short || d).join(' + ') : 'Clean shop',
     fixed: r.patches?.length ? 'After AI fix' : 'As built',
     brain: r.brainKind === 'anthropic' ? `Claude API · ${r.model}` : r.brainKind === 'external' ? 'Claude Code agent' : r.brainKind,
     outcomeStatus: r.outcome?.status,

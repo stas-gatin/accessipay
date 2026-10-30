@@ -13,6 +13,7 @@ export default function NewTest({ meta }) {
   const [persona, setPersona] = useState('screenreader');
   const [brain, setBrain] = useState(meta.claude ? 'anthropic' : 'external');
   const [goalId, setGoalId] = useState('checkout');
+  const [siteUrl, setSiteUrl] = useState('https://hydrogen.shop');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [recent, setRecent] = useState([]);
@@ -24,13 +25,14 @@ export default function NewTest({ meta }) {
     { id: 'clean', title: 'Clean shop', note: 'No defects. The control: every customer should be able to buy.' },
     ...train.map((d) => ({ id: d.id, title: d.short, note: `${d.title}. ${d.page[0].toUpperCase() + d.page.slice(1)} page.` })),
     { id: 'custom', title: 'Pick defects', note: 'Any mix, including the holdout set.' },
+    { id: 'site', title: 'A real site', note: 'Goes as far as the payment step and stops. Never pays, never types card data.' },
   ];
   const defects = scenario === 'clean' ? [] : scenario === 'custom' ? custom : [scenario];
 
   async function start() {
     setBusy(true); setError('');
     try {
-      const r = await api('/api/runs', { persona, brain, defects, goalId: persona === 'agent' ? goalId : 'checkout' });
+      const r = await api('/api/runs', scenario === 'site' ? { persona, brain, url: siteUrl } : { persona, brain, defects, goalId: persona === 'agent' ? goalId : 'checkout' });
       location.hash = `#/runs/${r.id}`;
     } catch (e) { setError(e.message); setBusy(false); }
   }
@@ -40,6 +42,7 @@ export default function NewTest({ meta }) {
       <p className="eyebrow">Console</p>
       <h1>Run a test</h1>
       <p className="lead">Pick a shop, a customer and who decides each step. The run streams live; the scanner checks the same pages at the end.</p>
+      <p className="note" style={{ marginTop: -16, marginBottom: 24 }}>Payments: {meta.paypal === 'sandbox' ? 'PayPal sandbox' : 'mock mode, no PayPal call'}. Claude API: {meta.claude ? 'connected' : 'not connected, runs are driven by a Claude Code agent'}.</p>
 
       <div className="grid-2">
         <section className="card" aria-labelledby="s1">
@@ -51,6 +54,13 @@ export default function NewTest({ meta }) {
               </button>
             ))}
           </div>
+          {scenario === 'site' && (
+            <div style={{ paddingTop: 12 }}>
+              <label htmlFor="site-url" className="note" style={{ display: 'block', marginBottom: 6 }}>Shop address</label>
+              <input id="site-url" type="url" value={siteUrl} onChange={(e) => setSiteUrl(e.target.value)} style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid var(--line-2)', background: 'var(--surface)' }} />
+              <p className="note">Public demo stores of real platforms work well: hydrogen.shop (Shopify Hydrogen), storefront.saleor.io (Saleor), next.medusajs.com (Medusa).</p>
+            </div>
+          )}
           {scenario === 'custom' && (
             <fieldset style={{ border: 0, padding: '10px 0 0', margin: 0 }}>
               <legend className="note">Defects to switch on</legend>
@@ -76,7 +86,7 @@ export default function NewTest({ meta }) {
             </div>
           </section>
 
-          {persona === 'agent' && (
+          {persona === 'agent' && scenario !== 'site' && (
             <section className="card" aria-labelledby="s-task">
               <h2 className="section-title" id="s-task"><span className="step-no">+</span>What the agent is asked to do</h2>
               <div style={{ display: 'grid', gap: 8 }}>

@@ -71,3 +71,11 @@ test('agentic buyer: the right product counts, the wrong one is reported as wron
   assert.equal(wrong.outcome.status, 'wrong-item');
   assert.equal(wrong.goalCheck.met, false);
 });
+
+test('real-site guards refuse paying, placing orders and card fields', async () => {
+  const { FINAL_ACTION, CARD_FIELD } = await import('../server/engine/session.mjs');
+  for (const name of ['Place order', 'Pay now', 'Pay $54.00', 'Pay with PayPal', 'Complete purchase', 'Buy it now', 'Submit order', 'Express checkout']) assert.match(name, FINAL_ACTION, name);
+  for (const name of ['Continue to payment', 'Add to cart', 'Checkout', 'Continue to shipping', 'Proceed to checkout']) assert.doesNotMatch(name, FINAL_ACTION, name);
+  for (const name of ['Card number', 'Name on card', 'Security code', 'Expiry date (MM/YY)', 'CVC']) assert.match(name, CARD_FIELD, name);
+  assert.doesNotMatch('Email', CARD_FIELD);
+});

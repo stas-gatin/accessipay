@@ -54,12 +54,6 @@ export default function App() {
           <button type="button" className="theme-toggle" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'dark'}>
             <span aria-hidden="true">{theme === 'dark' ? '☾' : '☀'}</span> Dark theme
           </button>
-        {meta && (
-          <>
-            <span className={`pill ${meta.paypal === 'sandbox' ? 'ok' : 'warn'}`}>PayPal {meta.paypal === 'sandbox' ? 'sandbox' : 'mock'}</span>
-            <span className={`pill ${meta.claude ? 'ok' : 'muted'}`}>Claude API {meta.claude ? 'on' : 'off'}</span>
-          </>
-        )}
         </div>
       </header>
       <main>{page}</main>

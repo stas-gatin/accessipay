@@ -11,6 +11,7 @@ export const OUTCOME = {
   stopped: { label: 'Stopped', tone: 'muted' },
   error: { label: 'Error', tone: 'bad' },
   'wrong-item': { label: 'Wrong item', tone: 'warn' },
+  'reached-payment': { label: 'Reached payment', tone: 'ok' },
 };
 
 export function shortDate(iso) {

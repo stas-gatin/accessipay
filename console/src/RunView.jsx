@@ -168,13 +168,14 @@ export default function RunView({ id, meta }) {
   const outcome = run.outcome && OUTCOME[run.outcome.status];
   const scanTotal = run.scan?.totalViolations;
   const defects = run.defects.map((d) => meta.defects.find((x) => x.id === d)?.short || d);
+  const external = !!run.site;
 
   return (
     <div className="page">
       <p className="note"><a href="#/runs">All runs</a> · {shortDate(run.createdAt)} · {run.brainKind === 'anthropic' ? `Claude API (${run.model})` : run.brainKind === 'external' ? 'Claude Code agent' : run.brainKind}{run.recorded ? ' · recorded run' : ''}</p>
-      <h1>{persona?.label} <span style={{ color: run.status === 'running' ? 'var(--muted)' : outcome?.tone === 'ok' ? 'var(--ok)' : 'var(--bad)' }}>{run.status === 'running' ? 'is shopping…' : outcome?.tone === 'ok' ? 'bought it' : 'could not buy'}</span></h1>
+      <h1>{persona?.label} <span style={{ color: run.status === 'running' ? 'var(--muted)' : outcome?.tone === 'ok' ? 'var(--ok)' : 'var(--bad)' }}>{run.status === 'running' ? 'is shopping…' : run.outcome?.status === 'reached-payment' ? 'reached payment' : outcome?.tone === 'ok' ? 'bought it' : 'could not buy'}</span></h1>
       <p className="lead">
-        Shop: {defects.length ? defects.join(', ') : 'clean, no defects'}{run.patches?.length ? `, after an AI fix of ${run.patches.length} change${run.patches.length === 1 ? '' : 's'}` : ''}.
+        {external ? <>Real site: <a href={run.site.url} target="_blank" rel="noreferrer">{run.site.host}</a>. Goes as far as the payment step; nothing is paid</> : <>Shop: {defects.length ? defects.join(', ') : 'clean, no defects'}</>}{run.patches?.length ? `, after an AI fix of ${run.patches.length} change${run.patches.length === 1 ? '' : 's'}` : ''}.
       </p>
 
       {run.goalId === 'agentic' && (
@@ -184,11 +185,11 @@ export default function RunView({ id, meta }) {
         <div>
           <p className="label">The scanner says</p>
           <p className={`value ${scanTotal === 0 ? 'ok' : scanTotal > 0 ? 'bad' : 'neutral'}`}>{scanTotal == null ? (run.status === 'running' ? 'Scanning at the end' : 'Not scanned') : `${scanTotal} violation${scanTotal === 1 ? '' : 's'}`}</p>
-          <p className="sub">axe-core, default rules, the same pages with the same defects and fixes</p>
+          <p className="sub">{external ? `axe-core on each of the ${run.scan?.pages?.length ?? 0} pages the shopper saw, in the state they saw it` : 'axe-core, default rules, the same pages with the same defects and fixes'}</p>
         </div>
         <div>
           <p className="label">What really happened</p>
-          <p className={`value ${outcome?.tone || 'neutral'}`}>{run.status === 'running' ? `Step ${steps.filter((s) => !s.final).length}` : outcome?.tone === 'ok' ? 'Bought it' : outcome?.tone === 'bad' ? 'Could not buy' : outcome?.label || '—'}</p>
+          <p className={`value ${outcome?.tone || 'neutral'}`}>{run.status === 'running' ? `Step ${steps.filter((s) => !s.final).length}` : run.outcome?.status === 'reached-payment' ? 'Reached payment' : outcome?.tone === 'ok' ? 'Bought it' : outcome?.tone === 'bad' ? 'Could not buy' : outcome?.label || '—'}</p>
           <p className="sub">{run.outcome?.reason}{run.payment ? ` PayPal ${run.payment.mode === 'mock' ? 'mock' : 'sandbox'} order ${run.payment.orderId}: ${run.payment.status}.` : ''}</p>
         </div>
       </div>
@@ -238,7 +239,7 @@ export default function RunView({ id, meta }) {
         </section>
       </div>
 
-      {run.status === 'finished' && <FixPanel run={run} meta={meta} />}
+      {run.status === 'finished' && !external && <FixPanel run={run} meta={meta} />}
     </div>
   );
 }

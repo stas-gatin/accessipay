@@ -5,10 +5,33 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { runShopper } from './run.mjs';
 import { PERSONAS } from './session.mjs';
-import { DEFAULT_GOAL, GOALS } from './prompts.mjs';
+import { DEFAULT_GOAL, GOALS, EXTERNAL_GOAL } from './prompts.mjs';
 import { scriptedBrain } from './brains/scripted.mjs';
 import { externalBrain } from './brains/external.mjs';
 import { scanShop } from '../scan/axe.mjs';
+
+// Real sites: the run ends successfully when a payment form is on screen.
+export async function reachedPayment(page) {
+  if (!page) return false;
+  try {
+    const h = await page.evaluate(() => {
+      const cc = document.querySelector('input[autocomplete^="cc-"], input[name*="cardnumber" i], input[name*="card_number" i], input[id*="card-number" i], input[name="number"][inputmode="numeric"]');
+      const frames = [...document.querySelectorAll('iframe')].some((f) => /stripe|paypal|braintree|adyen|checkout\.com|shopifycs|card-fields|payment/i.test(`${f.src || ''} ${f.title || ''} ${f.name || ''}`));
+      const text = /payment method|card number|pay with card|payment details|credit card|debit card/i.test(document.body.innerText || '');
+      return { cc: !!cc, frames, text, url: location.href };
+    });
+    const atCheckout = /checkout|payment|pay\b/i.test(h.url);
+    return h.cc || (h.frames && atCheckout) || (h.text && atCheckout);
+  } catch { return false; }
+}
+
+function checkExternalUrl(raw) {
+  let u;
+  try { u = new URL(raw); } catch { throw new Error('That is not a valid URL'); }
+  if (!/^https?:$/.test(u.protocol)) throw new Error('Only http and https sites can be tested');
+  if (/^(localhost|127\.|0\.0\.0\.0|10\.|192\.168\.|169\.254\.|\[?::1)/.test(u.hostname)) throw new Error('Local and private addresses cannot be tested');
+  return u;
+}
 
 export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {} }) {
   const runs = new Map();
@@ -36,9 +59,10 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
   function start(opts) {
     const persona = opts.persona || 'screenreader';
     if (!PERSONAS[persona]) throw new Error(`Unknown persona "${persona}"`);
-    const inst = opts.instanceId ? shop.get(opts.instanceId) : shop.create({ defects: opts.defects || [] });
-    if (!inst) throw new Error('Shop instance not found');
-    if (opts.instanceId && opts.resetCart !== false) { inst.cart = []; inst.coupon = ''; inst.shipping = null; inst.order = null; shop.save(inst); }
+    const site = opts.url ? checkExternalUrl(opts.url) : null;
+    const inst = site ? null : opts.instanceId ? shop.get(opts.instanceId) : shop.create({ defects: opts.defects || [] });
+    if (!site && !inst) throw new Error('Shop instance not found');
+    if (inst && opts.instanceId && opts.resetCart !== false) { inst.cart = []; inst.coupon = ''; inst.shipping = null; inst.order = null; shop.save(inst); }
 
     const id = new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + crypto.randomBytes(3).toString('hex');
     const goalId = GOALS[opts.goalId] ? opts.goalId : 'checkout';
@@ -47,20 +71,22 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
     const rec = {
       id, createdAt: new Date().toISOString(), label: opts.label || '',
       persona, brainKind: brain.kind, model: brain.model || null,
-      instanceId: inst.id, defects: [...inst.defects], patches: inst.patches.map((p) => p.id || p.find.slice(0, 40)),
-      paypalMode: paypal.mode, goalId, goal: opts.goal || GOALS[goalId].text || DEFAULT_GOAL, maxSteps: opts.maxSteps || PERSONAS[persona].maxSteps || 40,
+      instanceId: inst?.id || null, defects: inst ? [...inst.defects] : [], patches: inst ? inst.patches.map((p) => p.id || p.find.slice(0, 40)) : [],
+      site: site ? { url: site.href, host: site.hostname } : null,
+      paypalMode: paypal.mode, goalId, goal: opts.goal || (site ? EXTERNAL_GOAL : GOALS[goalId].text || DEFAULT_GOAL), maxSteps: opts.maxSteps || PERSONAS[persona].maxSteps || 40,
       status: 'running', outcome: null, findings: [], events: [], brain, abort,
     };
     runs.set(id, rec);
 
-    const startUrl = `${origin}/s/${inst.id}${opts.startPath || '/'}`;
+    const startUrl = site ? site.href : `${origin}/s/${inst.id}${opts.startPath || '/'}`;
     runShopper({
       browser, startUrl, persona, brain, goal: rec.goal, maxSteps: rec.maxSteps,
       // A payment can still be in flight (the sandbox takes a few seconds): wait for it before judging.
-      oracle: async () => {
+      oracle: site ? reachedPayment : async () => {
         for (let i = 0; i < 60 && inst.paying; i++) await new Promise((r) => setTimeout(r, 500));
         return inst.order?.status === 'COMPLETED';
       },
+      external: !!site,
       onEvent: (e) => publish(rec, e),
       shotsDir: path.join(runsDir, id),
       signal: abort.signal,
@@ -69,7 +95,8 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
         rec.outcome = r.outcome;
         rec.findings = r.findings;
         rec.steps = r.steps;
-        if (inst.order) {
+        if (site) rec.scan = { totalViolations: r.pageScans.reduce((s, p) => s + (p.violations || 0), 0), pages: r.pageScans, inRun: true };
+        if (inst && inst.order) {
           try {
             const o = await paypal.getOrder(inst.order.paypalOrderId);
             rec.payment = { mode: paypal.mode, orderId: inst.order.paypalOrderId, status: o?.status || 'NOT FOUND', amount: inst.order.total };
@@ -91,6 +118,7 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
         }
       })
       .then(async () => {
+        if (site) return;
         // The scanner's view of the very same shop (defects and patches), kept with the run.
         try {
           rec.scan = await scanShop({ browser, shop, origin, defects: inst.defects, patches: inst.patches });
@@ -127,7 +155,7 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
     const ids = [...new Set([...runs.keys(), ...fromDisk])].sort().reverse();
     return ids.map((id) => {
       const r = get(id);
-      return r && { id: r.id, createdAt: r.createdAt, label: r.label, persona: r.persona, brainKind: r.brainKind, model: r.model, defects: r.defects, patches: r.patches, status: r.status, outcome: r.outcome, steps: r.steps, payment: r.payment, goalId: r.goalId, goalCheck: r.goalCheck, usage: r.usage, findings: r.findings, scan: r.scan && { totalViolations: r.scan.totalViolations }, recorded: !!r.recorded, instanceId: r.instanceId };
+      return r && { id: r.id, createdAt: r.createdAt, label: r.label, persona: r.persona, brainKind: r.brainKind, model: r.model, defects: r.defects, patches: r.patches, status: r.status, outcome: r.outcome, steps: r.steps, payment: r.payment, site: r.site, goalId: r.goalId, goalCheck: r.goalCheck, usage: r.usage, findings: r.findings, scan: r.scan && { totalViolations: r.scan.totalViolations }, recorded: !!r.recorded, instanceId: r.instanceId };
     }).filter(Boolean);
   }
 

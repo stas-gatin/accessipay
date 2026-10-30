@@ -14,6 +14,16 @@ export const AGENTIC_GOAL = [
   'Agree to the terms of sale. The customer does not want newsletters or promotions.',
 ].join(' ');
 
+// Real sites: go as far as the payment step and stop there. Nothing is paid or ordered.
+export const EXTERNAL_GOAL = [
+  'This is a real online shop. Add any one in-stock product to the cart and go through checkout as far as the payment step, then stop.',
+  'Never pay, never place or submit an order, never create an account or sign in, never type card details.',
+  'If the shop asks for contact or shipping details before payment, use: full name Alex Morgan, email alex.morgan@example.com,',
+  'street address 12 Market Street, city Springfield, ZIP 62701, country United States (or the closest option the shop offers), phone 555 010 0199.',
+  'Decline cookie banners, newsletters and promotions. When you see the payment form or a button that would pay or place the order,',
+  'finish with done and your findings. If you cannot get that far, give up with honest findings.',
+].join(' ');
+
 export const GOALS = {
   checkout: { label: 'Buy a known item', text: undefined, expect: { sku: 'bp-01', delivery: 'standard' } },
   agentic: { label: 'Agentic buyer: find what the customer needs', text: AGENTIC_GOAL, expect: { sku: 'rj-03', delivery: 'express' } },

@@ -37,11 +37,39 @@ const noUrls = (s) => {
 const clip = (s, n = MAX_TREE) => (s.length > n ? s.slice(0, n) + '\n[... page continues ...]' : s);
 const firstLine = (e) => String(e?.message || e).split('\n')[0].replace(/\u001b\[[0-9;]*m/g, '').slice(0, 220);
 
+// On real sites the shopper must never pay, place an order, or type card data.
+export const FINAL_ACTION = /\b(place|complete|submit|confirm)\s+(my\s+)?(order|purchase|payment)\b|\bpay\s*(now|\$|€|£|\d)|^\s*pay\b|\bpay\s+with\b|\bbuy\s+(it\s+)?now\b|\bcomplete\s+checkout\b|^\s*purchase\b|\bcheckout\s+with\b|\bexpress\s+checkout\b/i;
+export const CARD_FIELD = /card\s*number|cardholder|name on card|\bcvv\b|\bcvc\b|security code|expir|\biban\b|account number|routing/i;
+
 export class Session {
-  constructor(page, persona) {
+  constructor(page, persona, { external = false } = {}) {
     if (!PERSONAS[persona]) throw new Error(`Unknown persona ${persona}`);
     this.page = page;
     this.persona = persona;
+    this.external = external;
+  }
+
+  async focusedName() {
+    return this.page.evaluate(() => {
+      const el = document.activeElement;
+      if (!el || el === document.body) return '';
+      const label = el.labels && el.labels[0] ? el.labels[0].innerText : '';
+      return [el.getAttribute('aria-label'), label, el.getAttribute('placeholder'), el.getAttribute('autocomplete'), el.getAttribute('name'), el.innerText, el.value].filter(Boolean).join(' ').slice(0, 200);
+    }).catch(() => '');
+  }
+
+  // Returns a refusal message when an action on a real site would pay, order, or enter card data.
+  async refuse(d) {
+    if (!this.external) return null;
+    const a = d.args || {};
+    const stop = 'Not allowed on a real site: AccessiPay never pays or places orders. You have reached the payment step; finish with done and your findings.';
+    if (['click', 'check'].includes(d.action) && FINAL_ACTION.test(a.name || '')) return stop;
+    if (d.action === 'fill' && CARD_FIELD.test(a.name || '')) return 'Not allowed on a real site: AccessiPay never types card data. Finish with done and your findings.';
+    if (d.action === 'activate' || (d.action === 'press' && (a.key === 'Enter' || a.key === 'Space'))) {
+      if (FINAL_ACTION.test(await this.focusedName())) return stop;
+    }
+    if (d.action === 'type' && CARD_FIELD.test(await this.focusedName())) return 'Not allowed on a real site: AccessiPay never types card data. Finish with done and your findings.';
+    return null;
   }
 
   async settle() {
@@ -118,7 +146,8 @@ export class Session {
   async observe() {
     const page = this.page;
     const title = await page.title().catch(() => '');
-    const path = new URL(page.url()).pathname.replace(/^\/s\/[^/]+/, '') || '/';
+    const url = page.url();
+    const path = this.external ? new URL(url).pathname : (new URL(url).pathname.replace(/^\/s\/[^/]+/, '') || '/');
     let text;
     if (this.persona === 'keyboard') {
       const visible = await page.evaluate(() => document.body.innerText).catch(() => '');
@@ -127,7 +156,7 @@ export class Session {
       const focus = this.persona === 'screenreader' ? `\n\nKeyboard focus: ${await this.focusForScreenReader()}` : '';
       text = `Page title: ${title}\n\nPage as an accessibility tree:\n${clip(await this.tree())}${focus}`;
     }
-    return { title, path, text };
+    return { title, path, url, text };
   }
 
   async act(d) {
@@ -135,6 +164,8 @@ export class Session {
     const a = d.args || {};
     const allowed = PERSONAS[this.persona].actions;
     if (!allowed.includes(d.action)) return `Action "${d.action}" is not available to this persona.`;
+    const refusal = await this.refuse(d);
+    if (refusal) return refusal;
     try {
       switch (d.action) {
         case 'read':
