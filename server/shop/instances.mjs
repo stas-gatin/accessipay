@@ -56,7 +56,8 @@ export function createShop({ paypal, dataDir }) {
       base, has, mode: paypal.mode, paypalClientId: paypal.clientId, cart: inst.cart, coupon: inst.coupon, shipping: inst.shipping,
       totals: totals(inst), order: inst.order, cartCount: inst.cart.reduce((s, l) => s + l.qty, 0),
     });
-    for (const p of inst.patches.filter((x) => x.page === page)) {
+    // A patch on page '*' changes the shared layout, so it applies to every page.
+    for (const p of inst.patches.filter((x) => x.page === page || x.page === '*')) {
       if (html.split(p.find).length === 2) html = html.replace(p.find, () => p.replace);
     }
     return html;

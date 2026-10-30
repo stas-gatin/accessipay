@@ -65,7 +65,9 @@ export function parseFix(text) {
 
 // Validates patches against the current page HTML and applies the valid ones in order.
 export function applyPatches({ shop, inst, page, base, patches }) {
-  const before = shop.render(inst, page, base);
+  // '*' means the shared layout: validate against one page, apply everywhere.
+  const view = page === '*' ? 'catalog' : page;
+  const before = shop.render(inst, view, base);
   let html = before;
   const accepted = [];
   const rejected = [];
@@ -79,7 +81,7 @@ export function applyPatches({ shop, inst, page, base, patches }) {
   // Store as one patch per accepted edit, applied on top of what was already there.
   inst.patches.push(...accepted);
   shop.save(inst);
-  const after = shop.render(inst, page, base);
+  const after = shop.render(inst, view, base);
   const diff = createTwoFilesPatch(`${page}.html (before)`, `${page}.html (after)`, before, after, '', '', { context: 2 });
   return { accepted, rejected, diff, changed: before !== after };
 }
@@ -120,15 +122,16 @@ export function createFixes({ shop, runs, origin, fixers = {}, dataDir }) {
     }
   }
 
-  function start({ runId, fixer = 'external' }) {
+  function start({ runId, fixer = 'external', page: pageOverride }) {
     const run = runs.get(runId);
     if (!run) throw new Error('Run not found');
     if (run.status !== 'finished') throw new Error('The run is still going');
     const inst = shop.get(run.instanceId);
     if (!inst) throw new Error('The shop instance of this run has expired');
-    const page = stuckPage(run);
+    // A friction run is not stuck anywhere; the caller can name the page, or '*' for the shared layout.
+    const page = ['catalog', 'cart', 'checkout', 'pay', 'done', '*'].includes(pageOverride) ? pageOverride : stuckPage(run);
     const base = `/s/${inst.id}`;
-    const html = shop.render(inst, page, base);
+    const html = shop.render(inst, page === '*' ? 'catalog' : page, base);
     const id = crypto.randomBytes(4).toString('hex');
     const job = { id, runId, instanceId: inst.id, page, fixer, status: 'waiting', createdAt: new Date().toISOString(), system: FIXER_SYSTEM, prompt: fixPrompt({ run, page, html }) };
     jobs.set(id, job);

@@ -172,7 +172,9 @@ export class Session {
 
   // What a sighted keyboard user sees on the focused element.
   async focusForSighted() {
-    return this.page.evaluate(() => {
+    const frame = await this.focusFrame();
+    const inFrame = frame !== this.page.mainFrame();
+    const text = await frame.evaluate(() => {
       const el = document.activeElement;
       if (!el || el === document.body) return 'nothing focused (top of page)';
       const tag = el.tagName.toLowerCase();
@@ -182,11 +184,13 @@ export class Session {
       const icon = el.querySelector('svg') ? ' [shows an icon]' : '';
       let label = '';
       if (el.labels && el.labels.length) label = ` next to the text "${el.labels[0].innerText.trim()}"`;
+      else if (el.getAttribute('aria-label') || el.getAttribute('placeholder')) label = ` showing "${el.getAttribute('aria-label') || el.getAttribute('placeholder')}"`;
       const shown = tag === 'select' ? el.options[el.selectedIndex]?.text : el.value;
       const value = 'value' in el && shown && tag !== 'button' ? ` value "${shown}"` : '';
       const checked = el.type === 'checkbox' || el.type === 'radio' ? (el.checked ? ' (checked)' : ' (not checked)') : '';
       return `${kind}${text ? ` "${text.slice(0, 80)}"` : ''}${icon}${label}${value}${checked}`;
-    });
+    }).catch(() => 'a field');
+    return inFrame ? `${text} (inside an embedded payment field)` : text;
   }
 
   // A closed native <select> works the same on every OS here: arrows and Home/End change the

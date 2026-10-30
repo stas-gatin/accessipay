@@ -81,10 +81,15 @@ main:focus { outline:none; }
 .dd-list li:hover { background:#e8eef3; }
 .fake-check { width:20px; height:20px; border:2px solid #6b7785; border-radius:4px; display:inline-block; cursor:pointer; background:#ffffff; }
 .fake-check.on { background:var(--brand); border-color:var(--brand); }
+.cats { background:#ffffff; border-bottom:1px solid var(--line); padding:6px 24px; }
+.cats ul { list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:4px 14px; }
+.cats a { color:var(--ink); font-size:14px; }
 .foot { text-align:center; color:var(--muted); font-size:14px; padding:24px; }
 `;
 
-function layout({ title, base, cartCount, body, script = '', mode }) {
+const CATEGORIES = ['Tents', 'Sleeping bags', 'Sleeping pads', 'Backpacks', 'Daypacks', 'Rain jackets', 'Down jackets', 'Fleeces', 'Base layers', 'Trousers', 'Hiking boots', 'Trail shoes', 'Socks', 'Hats', 'Gloves', 'Stoves', 'Cookware', 'Water bottles', 'Filters', 'Headlamps', 'Navigation', 'First aid', 'Trekking poles', 'Gift cards'];
+
+function layout({ title, base, cartCount, body, script = '', mode, has = () => false }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -94,11 +99,12 @@ function layout({ title, base, cartCount, body, script = '', mode }) {
 <style>${CSS}</style>
 </head>
 <body>
-<a class="skip" href="#main">Skip to main content</a>
+${has('mega-menu-no-skip') ? '' : '<a class="skip" href="#main">Skip to main content</a>'}
 <header class="top">
   <a class="brand" href="${base}/">Pine and Peak Outfitters</a>
   <nav aria-label="Main"><a href="${base}/cart">Cart (<span id="cart-count">${cartCount}</span>)</a></nav>
 </header>
+${has('mega-menu-no-skip') ? `<nav class="cats" aria-label="Categories"><ul>${CATEGORIES.map((c) => `<li><a href="${base}/">${c}</a></li>`).join('')}</ul></nav>` : ''}
 <main id="main" tabindex="-1">
 ${body}
 </main>
@@ -131,7 +137,7 @@ export function catalogPage(ctx) {
   }).join('\n  ');
   const event = has('mousedown-add-to-cart') ? 'mousedown' : 'click';
   return layout({
-    title: 'Shop', base, cartCount, mode,
+    title: 'Shop', base, cartCount, mode, has,
     body: `<h1>Gear for the trail</h1>
 <ul class="grid">
   ${cards}
@@ -212,7 +218,7 @@ document.getElementById('promo-close').addEventListener('click', closePromo);`;
 
   const restoreFocus = !has('focus-lost-on-update');
   return layout({
-    title: 'Your cart', base, cartCount, mode,
+    title: 'Your cart', base, cartCount, mode, has,
     body: `<h1 tabindex="-1">Your cart</h1>
 <div class="panel">
   <ul class="lines" id="lines">
@@ -302,7 +308,7 @@ export function checkoutPage(ctx) {
 
   const silent = has('silent-validation');
   return layout({
-    title: 'Checkout', base, cartCount, mode,
+    title: 'Checkout', base, cartCount, mode, has,
     body: `<h1>Checkout</h1>
 <div id="errors" class="errors" tabindex="-1" ${silent ? 'aria-hidden="true"' : 'role="alert"'}></div>
 <form id="checkout" novalidate>
@@ -382,7 +388,7 @@ export function payPage(ctx) {
     ? `<div class="btn primary" id="pay-button">${payLabel}</div>`
     : `<button type="submit" class="primary" id="pay-button">${payLabel}</button>`;
   return layout({
-    title: 'Payment', base, cartCount, mode,
+    title: 'Payment', base, cartCount, mode, has,
     body: `<h1>Payment</h1>
 <div class="panel totals">
   <h2>Order summary</h2>
@@ -427,7 +433,7 @@ function payPageSdk(ctx) {
     ? `<div class="btn primary" id="pay-button">${payLabel}</div>`
     : `<button type="submit" class="primary" id="pay-button">${payLabel}</button>`;
   return layout({
-    title: 'Payment', base, cartCount, mode,
+    title: 'Payment', base, cartCount, mode, has,
     body: `<h1>Payment</h1>
 <div class="panel totals">
   <h2>Order summary</h2>
@@ -494,5 +500,5 @@ export function donePage(ctx) {
   <p><a href="${base}/">Back to the shop</a></p>
 </div>`
     : `<h1>No order yet</h1><p><a href="${base}/">Back to the shop</a></p>`;
-  return layout({ title: order ? 'Order confirmed' : 'No order', base, cartCount, mode, body });
+  return layout({ title: order ? 'Order confirmed' : 'No order', base, cartCount, mode, has: ctx.has, body });
 }

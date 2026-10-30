@@ -7,6 +7,17 @@
 
 export const DEFECTS = [
   {
+    id: 'mega-menu-no-skip',
+    short: 'Long menu, no skip link',
+    split: 'friction',
+    page: 'all',
+    title: 'Every page opens with a 24-link category menu and no way to skip it',
+    wcag: '2.4.1 Bypass Blocks',
+    blocks: [],
+    axeExpected: false,
+    match: ['menu', 'skip', 'tab', 'links', 'navigation', 'every page'],
+  },
+  {
     id: 'meaningless-button-names',
     short: 'Unnamed add-to-cart buttons',
     split: 'train',

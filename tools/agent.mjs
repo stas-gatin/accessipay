@@ -2,7 +2,7 @@
 //   node tools/agent.mjs start <persona> [defect,defect]   -> prints the run id
 //   node tools/agent.mjs turn <runId>                      -> instructions (first time) and what you perceive now
 //   node tools/agent.mjs decide <runId> '<json decision>'  -> submits, then prints the next turn
-//   node tools/agent.mjs fix <runId>                       -> opens a fix job, prints its id, instructions and prompt
+//   node tools/agent.mjs fix <runId> [page|*]              -> opens a fix job, prints its id, instructions and prompt
 //   node tools/agent.mjs fix-reply <fixId> <file.json>     -> submits the fixer reply stored in a file
 // Env: ACCESSIPAY_URL (default http://127.0.0.1:4300)
 const BASE = process.env.ACCESSIPAY_URL || 'http://127.0.0.1:4300';
@@ -35,7 +35,7 @@ if (cmd === 'start') {
   if (!r.ok) { console.log(`Not accepted: ${r.error}`); process.exit(1); }
   await printTurn(a, false);
 } else if (cmd === 'fix') {
-  const j = await api('/api/fixes', { runId: a, fixer: 'external' });
+  const j = await api('/api/fixes', { runId: a, fixer: 'external', page: b });
   if (j.error) { console.log(j.error); process.exit(1); }
   const full = await api(`/api/fixes/${j.id}?full=1`);
   console.log(`FIX ID: ${j.id}\n=== INSTRUCTIONS ===\n${full.system}\n=== REQUEST ===\n${full.prompt}`);
