@@ -9,9 +9,13 @@ import { Session } from './session.mjs';
 import AxeBuilder from '@axe-core/playwright';
 import { performance } from 'node:perf_hooks';
 import { stageOfPage } from '../../shared/stages.js';
+import { detectBotWall } from './preflight.mjs';
+import { splitByFrame } from '../scan/axe.mjs';
 
 // Hosts that take payment data. On real sites nothing but reading may be sent to them.
 const PAYMENT_HOSTS = /(^|\.)(stripe\.com|stripe\.network|paypal\.com|paypalobjects\.com|braintreegateway\.com|braintree-api\.com|adyen\.com|adyenpayments\.com|checkout\.com|shopifycs\.com|klarna\.com|affirm\.com|squareup\.com|authorize\.net)$/i;
+// Real sites: at least this long between two actions, so a run never looks like a burst of traffic.
+export const EXTERNAL_PAUSE_MS = 3000;
 const FAILED = /did not work|There is no|cannot take keyboard focus|not available|Nothing was typed|Not allowed/;
 
 function keysFor(d) {
@@ -42,6 +46,19 @@ export async function runShopper({ browser, startUrl, persona, brain, goal, maxS
       return route.continue();
     });
   }
+  // Real sites: a 429 on any page load, or a bot check on screen, ends the run as "not testable".
+  let wall = null;
+  if (external) {
+    page.on('response', (res) => {
+      if (res.request().isNavigationRequest() && res.request().frame() === page.mainFrame() && res.status() === 429) wall ||= 'The site answered 429 Too Many Requests.';
+    });
+  }
+  async function walled() {
+    if (!external) return null;
+    if (!wall) wall = await detectBotWall(page);
+    return wall;
+  }
+  const notTestable = (reason) => ({ status: 'not-testable', reason: `${reason} AccessiPay does not get past bot protection, so this site was not tested.` });
   const session = new Session(page, persona, { external });
   const scanned = new Map();
   // Real sites: scan each page with axe-core the moment the shopper sees it, in the same state.
@@ -49,9 +66,11 @@ export async function runShopper({ browser, startUrl, persona, brain, goal, maxS
     if (!external || scanned.has(url) || scanned.size >= 8) return;
     try {
       const r = await new AxeBuilder({ page }).analyze();
-      const v = r.violations.reduce((s, x) => s + x.nodes.length, 0);
-      scanned.set(url, { url, violations: v, rules: r.violations.map((x) => x.id) });
-      emit({ type: 'scan-page', url, violations: v, rules: r.violations.map((x) => x.id) });
+      const { own, embedded } = splitByFrame(r.violations);
+      const v = own.reduce((s, x) => s + x.nodes, 0);
+      const inFrames = embedded.reduce((s, x) => s + x.nodes, 0);
+      scanned.set(url, { url, violations: v, rules: own.map((x) => x.id), embedded: inFrames, embeddedRules: embedded.map((x) => x.id) });
+      emit({ type: 'scan-page', url, violations: v, rules: own.map((x) => x.id), embedded: inFrames });
     } catch { scanned.set(url, { url, violations: null, rules: [] }); }
   }
   const seen = [];
@@ -69,12 +88,15 @@ export async function runShopper({ browser, startUrl, persona, brain, goal, maxS
   }
 
   try {
-    await page.goto(startUrl, { waitUntil: 'load' });
+    const first = await page.goto(startUrl, { waitUntil: 'load' });
+    if (external && first && first.status() >= 400) wall ||= `The site answered HTTP ${first.status()} to the first page.`;
     await page.waitForTimeout(500);
     emit({ type: 'start', persona, startUrl });
 
     for (let step = 1; step <= maxSteps; step++) {
       if (signal?.aborted) { outcome = { status: 'stopped', reason: 'Run stopped by the operator.' }; break; }
+      const blockedBy = await walled();
+      if (blockedBy) { emit({ type: 'guard', blocked: blockedBy }); outcome = notTestable(blockedBy); break; }
       if (await oracle(page)) {
         outcome = external ? { status: 'reached-payment', reason: 'Reached the payment step. Stopped there: nothing was paid.' } : { status: 'purchased', reason: 'The order is confirmed by the payment oracle.' };
         // One last turn so the shopper can report what was hard, even though it succeeded.
@@ -118,7 +140,7 @@ export async function runShopper({ browser, startUrl, persona, brain, goal, maxS
         }
         emit({ type: 'target', step, ...target, image });
       }
-      if (external) await page.waitForTimeout(1200);
+      if (external) await page.waitForTimeout(EXTERNAL_PAUSE_MS);
       const a0 = performance.now();
       lastResult = await session.act(decision);
       const actMs = Math.round(performance.now() - a0);

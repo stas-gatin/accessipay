@@ -9,6 +9,7 @@ import { DEFAULT_GOAL, GOALS, EXTERNAL_GOAL } from './prompts.mjs';
 import { scriptedBrain } from './brains/scripted.mjs';
 import { externalBrain } from './brains/external.mjs';
 import { scanShop } from '../scan/axe.mjs';
+import { checkRobots } from './preflight.mjs';
 
 // Real sites: the run ends successfully when a payment form is on screen.
 export async function reachedPayment(page) {
@@ -90,7 +91,14 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
     runs.set(id, rec);
 
     const startUrl = site ? site.href : `${origin}/s/${inst.id}${opts.startPath || '/'}`;
-    runShopper({
+    // Real sites: robots.txt first. A site that asks not to be visited is not visited.
+    (site ? checkRobots(site.href) : Promise.resolve(null)).then((robots) => {
+      if (robots) rec.robots = robots;
+      if (robots && !robots.ok) {
+        publish(rec, { t: new Date().toISOString(), type: 'guard', blocked: robots.reason });
+        return { outcome: { status: 'not-testable', reason: `${robots.reason} The site was not visited.` }, findings: [], steps: 0, pageScans: [] };
+      }
+      return runShopper({
       browser, startUrl, persona, brain, goal: rec.goal, maxSteps: rec.maxSteps,
       // A payment can still be in flight (the sandbox takes a few seconds): wait for it before judging.
       oracle: site ? reachedPayment : async (page, opts = {}) => {
@@ -107,6 +115,7 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
       onEvent: (e) => publish(rec, e),
       shotsDir: path.join(runsDir, id),
       signal: abort.signal,
+    });
     })
       .then(async (r) => {
         rec.outcome = r.outcome;

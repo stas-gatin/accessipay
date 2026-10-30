@@ -88,11 +88,18 @@ export class Session {
   }
 
   // The frame that holds keyboard focus: an iframe's document when focus is inside it, else the page.
+  // Follows document.activeElement through nested iframes (a ':focus' locator waits forever on a focused iframe).
   async focusFrame() {
-    const inFrame = await this.page.evaluate(() => document.activeElement?.tagName === 'IFRAME').catch(() => false);
-    if (!inFrame) return this.page.mainFrame();
-    const h = await this.page.locator(':focus').first().elementHandle().catch(() => null);
-    return (h && (await h.contentFrame().catch(() => null))) || this.page.mainFrame();
+    let frame = this.page.mainFrame();
+    for (let depth = 0; depth < 4; depth++) {
+      const h = await frame.evaluateHandle(() => (document.activeElement?.tagName === 'IFRAME' ? document.activeElement : null)).catch(() => null);
+      const el = h?.asElement();
+      if (!el) break;
+      const inner = await el.contentFrame().catch(() => null);
+      if (!inner) break;
+      frame = inner;
+    }
+    return frame;
   }
 
   // Finds an element by role and exact name on the page, then inside visible iframes.
@@ -165,9 +172,14 @@ export class Session {
   }
 
   async focusForScreenReader() {
-    const loc = (await this.focusFrame()).locator(':focus');
-    if ((await loc.count()) === 0) return 'nothing focused (top of page)';
-    try { return noUrls((await loc.first().ariaSnapshot()).trim()).replace(/^- /, ''); } catch { return 'an element with no name'; }
+    const frame = await this.focusFrame();
+    const inFrame = frame !== this.page.mainFrame();
+    const loc = frame.locator(':focus');
+    if ((await loc.count()) === 0) return inFrame ? 'an embedded frame with nothing focused inside it' : 'nothing focused (top of page)';
+    try {
+      const said = noUrls((await loc.first().ariaSnapshot({ timeout: 2000 })).trim()).replace(/^- /, '');
+      return inFrame ? `${said} (inside an embedded payment field)` : said;
+    } catch { return 'an element with no name'; }
   }
 
   // What a sighted keyboard user sees on the focused element.
@@ -236,8 +248,8 @@ export class Session {
     const role = { click: a.role, fill: a.role || 'textbox', select: 'combobox', check: a.role || 'checkbox', jump: a.role }[d.action];
     if (!role && !['activate', 'press', 'type'].includes(d.action)) return null;
     try {
-      const loc = role ? await this.byRole(role, a.name, a.nth || 0) : this.page.locator(':focus');
-      if ((await loc.count()) === 0) return { missing: true, role: role || null, name: a.name || null };
+      const loc = role ? await this.byRole(role, a.name, a.nth || 0) : await this.focusedHandle();
+      if (!loc || (role && (await loc.count()) === 0)) return { missing: true, role: role || null, name: a.name || null };
       let box = await loc.boundingBox();
       let scrolled = false;
       const vp = this.page.viewportSize();
@@ -253,11 +265,16 @@ export class Session {
     }
   }
 
+  // The focused element on the page itself; when focus is inside an iframe, that iframe.
+  async focusedHandle() {
+    const h = await this.page.evaluateHandle(() => (document.activeElement && document.activeElement !== document.body ? document.activeElement : null)).catch(() => null);
+    return h?.asElement() || null;
+  }
+
   async focusBox() {
     try {
-      const loc = this.page.locator(':focus');
-      if ((await loc.count()) === 0) return null;
-      const box = await loc.first().boundingBox();
+      const el = await this.focusedHandle();
+      const box = el && (await el.boundingBox());
       return box && roundBox(box);
     } catch { return null; }
   }

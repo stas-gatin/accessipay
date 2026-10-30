@@ -139,6 +139,7 @@ function scorecard(run, rerun, baseline) {
     const s = r.outcome?.status;
     if (s === 'purchased') return r.payment ? `Paid (PayPal ${r.payment.mode} ${r.payment.status})` : 'Paid';
     if (s === 'reached-payment') return 'Reached payment (stopped, nothing paid)';
+    if (s === 'not-testable') return 'Not testable (bot protection or robots.txt)';
     if (s === 'blocked') return r.outcome?.claimedDone ? 'Could not pay (claimed done, no order)' : 'Could not pay (gave up)';
     return s || '—';
   };

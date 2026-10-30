@@ -28,7 +28,9 @@ function stageOf(run) {
 }
 
 export function analytics(runs) {
-  const done = runs.filter((r) => r && r.status === 'finished' && r.outcome && r.brainKind !== 'scripted' && r.outcome.status !== 'error' && r.outcome.status !== 'stopped');
+  const done = runs.filter((r) => r && r.status === 'finished' && r.outcome && r.brainKind !== 'scripted' && r.outcome.status !== 'error' && r.outcome.status !== 'stopped' && r.outcome.status !== 'not-testable');
+  // Sites behind bot protection are listed, never counted as passed or blocked.
+  const untested = runs.filter((r) => r && r.status === 'finished' && r.site && r.outcome?.status === 'not-testable' && r.brainKind !== 'scripted');
   const success = (r) => ['purchased', 'reached-payment'].includes(r.outcome.status);
   const demo = done.filter((r) => !r.site);
   const real = done.filter((r) => r.site);
@@ -91,6 +93,7 @@ export function analytics(runs) {
       paid: demo.filter((r) => r.outcome.status === 'purchased').length,
       blockedWhileClean: matrix.cleanBlocked,
       sites: new Set(real.map((r) => r.site.host)).size,
+      notTestable: new Set(untested.map((r) => r.site.host)).size,
       medianStepsToBuy,
       findings: findings.length,
       sandboxOrders: demo.filter((r) => r.payment?.mode === 'sandbox' && r.payment.status === 'COMPLETED').length,
@@ -107,5 +110,6 @@ export function analytics(runs) {
     matrix,
     themes,
     sites,
+    untested: untested.map((r) => ({ id: r.id, host: r.site.host, reason: r.outcome.reason })),
   };
 }

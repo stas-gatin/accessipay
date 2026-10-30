@@ -80,6 +80,7 @@ export function narrate(step, persona = 'agent', ctx = {}) {
       : o === 'wrong-item' ? 'Paid, but not for what the customer asked.'
       : o === 'blocked' ? `Could not buy. The customer stopped at the ${ctx.stageName || 'last'} step.`
       : o === 'stopped' ? 'The run was stopped.'
+      : o === 'not-testable' ? 'Not tested: the site shows bot protection or asks not to be visited.'
       : 'The run ended.';
     return { text, tone: o === 'purchased' || o === 'reached-payment' ? 'done' : 'bad', perceived: null };
   }

@@ -9,3 +9,5 @@ console/dist/
 data/archive-dev-runs/
 data/fixes/
 data/reports/
+data/private/
+spike/runs/
