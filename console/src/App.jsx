@@ -8,32 +8,58 @@ import Defects from './Defects.jsx';
 import Landing from './Landing.jsx';
 import Analytics from './Analytics.jsx';
 import Report from './Report.jsx';
+import Logo from './Logo.jsx';
+import { MethodPage, CustomersPage, PayPalPage, HonestyPage } from './site/pages.jsx';
 import './landing.css';
 
+// Routes live in the hash and always start with "#/". Any other hash ("#owner") is an in-page anchor:
+// the router ignores it so the browser can scroll to the section.
 function useHash() {
-  const [hash, setHash] = useState(location.hash || '#/');
+  const read = () => (location.hash.startsWith('#/') ? location.hash : '#/');
+  const [hash, setHash] = useState(read);
   useEffect(() => {
-    const on = () => { setHash(location.hash || '#/'); window.scrollTo(0, 0); };
+    const on = () => {
+      if (location.hash && !location.hash.startsWith('#/')) return;
+      setHash(read());
+      window.scrollTo(0, 0);
+    };
     window.addEventListener('hashchange', on);
     return () => window.removeEventListener('hashchange', on);
   }, []);
   return hash;
 }
 
+const SITE_ROUTES = new Set(['/', '/method', '/customers', '/paypal', '/honesty']);
+
 export default function App() {
   const hash = useHash();
   const [meta, setMeta] = useState(null);
   const [error, setError] = useState('');
   const [theme, setTheme] = useState(initialTheme);
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => { applyTheme(theme); }, [theme]);
   useEffect(() => { api('/api/meta').then(setMeta).catch((e) => setError(e.message)); }, []);
+  useEffect(() => { setMenuOpen(false); }, [hash]);
 
   const route = hash.replace(/^#/, '') || '/';
   const runMatch = route.match(/^\/runs\/([\w-]+)/);
-  const nav = [['#/', 'Product', route === '/'], ['#/test', 'Run a test', route === '/test'], ['#/analytics', 'Analytics', route === '/analytics'], ['#/runs', 'Runs', route.startsWith('/runs')], ['#/defects', 'Defects and results', route === '/defects']];
+  const nav = [
+    ['#/', 'Overview', route === '/'],
+    ['#/method', 'Method', route === '/method'],
+    ['#/customers', 'Customers', route === '/customers'],
+    ['#/paypal', 'For PayPal', route === '/paypal'],
+    ['#/analytics', 'Analytics', route === '/analytics'],
+    ['#/runs', 'Runs', route.startsWith('/runs')],
+    ['#/defects', 'Defects', route === '/defects'],
+    ['#/honesty', 'Honesty', route === '/honesty'],
+  ];
 
   let page;
-  if (!meta) page = <div className="page"><p className="empty">{error || 'Loading…'}</p></div>;
+  if (route === '/method') page = <MethodPage />;
+  else if (route === '/customers') page = <CustomersPage />;
+  else if (route === '/paypal') page = <PayPalPage />;
+  else if (route === '/honesty') page = <HonestyPage />;
+  else if (!meta) page = <div className="page"><p className="empty">{error || 'Loading…'}</p></div>;
   else if (runMatch) page = <RunView id={runMatch[1]} meta={meta} />;
   else if (/^\/report\/(run|case|site)\/[\w-]+$/.test(route)) page = <Report route={route} meta={meta} />;
   else if (route === '/runs') page = <RunsGrid meta={meta} />;
@@ -44,23 +70,26 @@ export default function App() {
 
   return (
     <ThemeContext.Provider value={theme}>
-      <header className="app-header">
-        <a className="logo" href="#/">
-          <span className="logo-mark" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M5 13l4 4 10-11" stroke="#fff" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          </span>
-          AccessiPay
+      <a className="skip-link" href="#main" onClick={(e) => { e.preventDefault(); document.getElementById('main')?.focus(); }}>Skip to content</a>
+      <header className={`app-header site-header${SITE_ROUTES.has(route) ? ' on-site' : ''}${menuOpen ? ' menu-open' : ''}`}>
+        <a className="logo" href="#/" aria-label="AccessiPay, home">
+          <Logo size={34} draw />
         </a>
-        <nav aria-label="Main">
+        <button type="button" className="menu-btn" aria-expanded={menuOpen} aria-controls="main-nav" onClick={() => setMenuOpen(!menuOpen)}>
+          <span className="menu-ico" aria-hidden="true"><i /><i /><i /></span>Menu
+        </button>
+        <nav id="main-nav" aria-label="Main">
           {nav.map(([href, label, active]) => <a key={href} href={href} className={active ? 'active' : ''} aria-current={active ? 'page' : undefined}>{label}</a>)}
+          <a href="#/test" className={`nav-mobile-only${route === '/test' ? ' active' : ''}`} aria-current={route === '/test' ? 'page' : undefined}>Run a test</a>
         </nav>
         <div className="header-right">
           <button type="button" className="theme-toggle" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'dark'}>
-            <span aria-hidden="true">{theme === 'dark' ? '☾' : '☀'}</span> Dark theme
+            <span aria-hidden="true">{theme === 'dark' ? '☾' : '☀'}</span><span className="tt-label">Dark theme</span>
           </button>
+          <a className={`header-cta${route === '/test' ? ' active' : ''}`} href="#/test" aria-current={route === '/test' ? 'page' : undefined}>Run a test</a>
         </div>
       </header>
-      <main>{page}</main>
+      <main id="main" tabIndex={-1}>{page}</main>
     </ThemeContext.Provider>
   );
 }
