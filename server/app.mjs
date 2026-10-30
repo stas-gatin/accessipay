@@ -127,8 +127,11 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
   // The console (built with Vite) and its client-side routes.
   const consoleDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'console', 'dist');
   if (fs.existsSync(consoleDir)) {
-    app.use(express.static(consoleDir));
-    app.get(/^\/(?!api|s\/|runs-data).*/, (req, res) => res.sendFile(path.join(consoleDir, 'index.html')));
+    // Hashed assets can be cached for long; index.html never, so a new build shows up at once.
+    app.use(express.static(consoleDir, {
+      setHeaders: (res, file) => res.set('cache-control', file.endsWith('.html') ? 'no-cache' : 'public, max-age=31536000, immutable'),
+    }));
+    app.get(/^\/(?!api|s\/|runs-data).*/, (req, res) => res.set('cache-control', 'no-cache').sendFile(path.join(consoleDir, 'index.html')));
   }
 
   extend?.(app, { shop, runs, paypal, browser, fixes });

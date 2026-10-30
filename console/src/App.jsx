@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { api } from './api.js';
+import { ThemeContext, initialTheme, applyTheme } from './theme.js';
 import NewTest from './NewTest.jsx';
 import RunView from './RunView.jsx';
 import RunsGrid from './RunsGrid.jsx';
@@ -19,6 +20,8 @@ export default function App() {
   const hash = useHash();
   const [meta, setMeta] = useState(null);
   const [error, setError] = useState('');
+  const [theme, setTheme] = useState(initialTheme);
+  useEffect(() => { applyTheme(theme); }, [theme]);
   useEffect(() => { api('/api/meta').then(setMeta).catch((e) => setError(e.message)); }, []);
 
   const route = hash.replace(/^#/, '') || '/';
@@ -33,7 +36,7 @@ export default function App() {
   else page = <NewTest meta={meta} />;
 
   return (
-    <>
+    <ThemeContext.Provider value={theme}>
       <header className="app-header">
         <a className="logo" href="#/">
           <span className="logo-mark" aria-hidden="true">
@@ -44,14 +47,19 @@ export default function App() {
         <nav aria-label="Main">
           {nav.map(([href, label, active]) => <a key={href} href={href} className={active ? 'active' : ''} aria-current={active ? 'page' : undefined}>{label}</a>)}
         </nav>
+        <div className="header-right">
+          <button type="button" className="theme-toggle" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'dark'}>
+            <span aria-hidden="true">{theme === 'dark' ? '☾' : '☀'}</span> Dark theme
+          </button>
         {meta && (
-          <div className="header-right">
+          <>
             <span className={`pill ${meta.paypal === 'sandbox' ? 'ok' : 'warn'}`}>PayPal {meta.paypal === 'sandbox' ? 'sandbox' : 'mock'}</span>
             <span className={`pill ${meta.claude ? 'ok' : 'muted'}`}>Claude API {meta.claude ? 'on' : 'off'}</span>
-          </div>
+          </>
         )}
+        </div>
       </header>
       <main>{page}</main>
-    </>
+    </ThemeContext.Provider>
   );
 }

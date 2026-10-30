@@ -118,6 +118,7 @@ export default function RunView({ id, meta }) {
 
   useEffect(() => {
     setRun(null); setEvents([]); setSel(null); followRef.current = true;
+    window.scrollTo(0, 0);
     let es;
     api(`/api/runs/${id}`).then((r) => {
       setRun(r);
@@ -155,33 +156,33 @@ export default function RunView({ id, meta }) {
   const persona = meta.personas[run.persona];
   const outcome = run.outcome && OUTCOME[run.outcome.status];
   const scanTotal = run.scan?.totalViolations;
-  const defects = run.defects.map((d) => meta.defects.find((x) => x.id === d)?.title || d);
+  const defects = run.defects.map((d) => meta.defects.find((x) => x.id === d)?.short || d);
 
   return (
     <div className="page">
       <p className="note"><a href="#/runs">All runs</a> · {shortDate(run.createdAt)} · {run.brainKind === 'anthropic' ? `Claude API (${run.model})` : run.brainKind === 'external' ? 'Claude Code agent' : run.brainKind}{run.recorded ? ' · recorded run' : ''}</p>
-      <h1>{persona?.label}<br /><span style={{ color: run.status === 'running' ? 'var(--muted)' : outcome?.tone === 'ok' ? 'var(--lime)' : 'var(--red)' }}>{run.status === 'running' ? 'is shopping…' : outcome?.tone === 'ok' ? 'bought it' : 'could not buy'}</span></h1>
+      <h1>{persona?.label} <span style={{ color: run.status === 'running' ? 'var(--muted)' : outcome?.tone === 'ok' ? 'var(--ok)' : 'var(--bad)' }}>{run.status === 'running' ? 'is shopping…' : outcome?.tone === 'ok' ? 'bought it' : 'could not buy'}</span></h1>
       <p className="lead">
-        Shop: {defects.length ? defects.join('; ') : 'clean, no defects'}{run.patches?.length ? ` · with ${run.patches.length} fix change(s) applied` : ''}.
+        Shop: {defects.length ? defects.join(', ') : 'clean, no defects'}{run.patches?.length ? `, after an AI fix of ${run.patches.length} change${run.patches.length === 1 ? '' : 's'}` : ''}.
       </p>
 
-      <div className="versus" role="group" aria-label="Scanner compared with the real outcome">
+      <div className="verdict" role="group" aria-label="The scanner's verdict compared with what really happened">
         <div>
-          <p className="section-title">What the scanner says (axe-core, all rules)</p>
-          <p className={`big-number ${scanTotal === 0 ? 'ok' : scanTotal > 0 ? 'bad' : ''}`}>{scanTotal == null ? (run.status === 'running' ? '…' : 'not scanned') : `${scanTotal} violation${scanTotal === 1 ? '' : 's'}`}</p>
-          <p className="note">Same pages, same state, same defects and fixes.</p>
+          <p className="label">The scanner says</p>
+          <p className={`value ${scanTotal === 0 ? 'ok' : scanTotal > 0 ? 'bad' : 'neutral'}`}>{scanTotal == null ? (run.status === 'running' ? 'Scanning at the end' : 'Not scanned') : `${scanTotal} violation${scanTotal === 1 ? '' : 's'}`}</p>
+          <p className="sub">axe-core, default rules, the same pages with the same defects and fixes</p>
         </div>
         <div>
-          <p className="section-title">What actually happened</p>
-          <p className={`big-number ${outcome?.tone || ''}`}>{run.status === 'running' ? `Step ${steps.filter((s) => !s.final).length}…` : outcome?.label || '—'}</p>
-          <p className="note">{run.outcome?.reason}{run.payment ? ` PayPal ${run.payment.mode === 'mock' ? '(mock)' : 'sandbox'} order ${run.payment.orderId}: ${run.payment.status}.` : ''}</p>
+          <p className="label">What really happened</p>
+          <p className={`value ${outcome?.tone || 'neutral'}`}>{run.status === 'running' ? `Step ${steps.filter((s) => !s.final).length}` : outcome?.tone === 'ok' ? 'Bought it' : outcome?.tone === 'bad' ? 'Could not buy' : outcome?.label || '—'}</p>
+          <p className="sub">{run.outcome?.reason}{run.payment ? ` PayPal ${run.payment.mode === 'mock' ? 'mock' : 'sandbox'} order ${run.payment.orderId}: ${run.payment.status}.` : ''}</p>
         </div>
       </div>
 
       <div className="run-layout">
         <section className="card" aria-labelledby="see">
           <div className="row" style={{ justifyContent: 'space-between' }}>
-            <h2 className="section-title" id="see" style={{ margin: 0 }}>What a sighted person would see · {current?.final ? 'end' : `step ${current?.n ?? ''}`}</h2>
+            <h2 className="section-title" id="see" style={{ margin: 0 }}>What a sighted person would see, {current?.final ? 'at the end' : `step ${current?.n ?? ''}`}</h2>
             <button type="button" className="btn small" onClick={() => { if (!playing && current?.n === steps.at(-1)?.n) setSel(steps[0]?.n); setPlaying(!playing); }}>{playing ? 'Pause' : 'Replay'}</button>
           </div>
           {current?.image ? <img className="shot" style={{ marginTop: 10 }} src={`/runs-data/${run.id}/${current.image}`} alt={`Screenshot of ${current.title || 'the page'}`} /> : <p className="empty">No screenshot yet.</p>}

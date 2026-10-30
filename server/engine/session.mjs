@@ -61,7 +61,8 @@ export class Session {
       const el = document.activeElement;
       if (!el || el === document.body) return 'nothing focused (top of page)';
       const tag = el.tagName.toLowerCase();
-      const kind = el.getAttribute('type') ? `${tag} ${el.getAttribute('type')}` : tag;
+      const type = el.getAttribute('type');
+      const kind = type && tag === 'input' ? `${type === 'text' ? 'text field' : type}` : tag === 'a' ? 'link' : tag;
       const text = (el.innerText || '').trim().replace(/\s+/g, ' ');
       const icon = el.querySelector('svg') ? ' [shows an icon]' : '';
       let label = '';

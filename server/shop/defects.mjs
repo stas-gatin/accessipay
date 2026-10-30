@@ -8,6 +8,7 @@
 export const DEFECTS = [
   {
     id: 'meaningless-button-names',
+    short: 'Unnamed add-to-cart buttons',
     split: 'train',
     page: 'catalog',
     title: 'Add-to-cart buttons are all named "button"',
@@ -18,6 +19,7 @@ export const DEFECTS = [
   },
   {
     id: 'div-pay-button',
+    short: 'Pay button is a <div>',
     split: 'train',
     page: 'pay',
     title: 'The Pay button is a clickable <div> with no role and no keyboard access',
@@ -28,6 +30,7 @@ export const DEFECTS = [
   },
   {
     id: 'focus-trap-modal',
+    short: 'Popup that traps the keyboard',
     split: 'train',
     page: 'cart',
     title: 'A promo popup traps keyboard focus and cannot be closed without a mouse',
@@ -38,6 +41,7 @@ export const DEFECTS = [
   },
   {
     id: 'silent-validation',
+    short: 'Silent form errors',
     split: 'train',
     page: 'checkout',
     title: 'Form errors are hidden from assistive technology and focus does not move',
@@ -48,6 +52,7 @@ export const DEFECTS = [
   },
   {
     id: 'unnamed-checkout-link',
+    short: 'Unnamed Checkout link',
     split: 'train',
     page: 'cart',
     title: 'The Checkout link is an arrow icon with no accessible name',
@@ -58,6 +63,7 @@ export const DEFECTS = [
   },
   {
     id: 'custom-country-dropdown',
+    short: 'Mouse-only country list',
     split: 'holdout',
     page: 'checkout',
     title: 'Country is a custom dropdown that opens only on mouse click and exposes no roles',
@@ -68,6 +74,7 @@ export const DEFECTS = [
   },
   {
     id: 'swapped-labels',
+    short: 'Swapped name and email labels',
     split: 'holdout',
     page: 'checkout',
     title: 'The "Full name" and "Email" labels point to each other\'s fields',
@@ -78,6 +85,7 @@ export const DEFECTS = [
   },
   {
     id: 'fake-terms-checkbox',
+    short: 'Fake terms checkbox',
     split: 'holdout',
     page: 'checkout',
     title: 'The required terms checkbox is a styled <div>; the real input is hidden',
@@ -88,6 +96,7 @@ export const DEFECTS = [
   },
   {
     id: 'placeholder-only-card-fields',
+    short: 'Placeholder-only card fields',
     split: 'holdout',
     page: 'pay',
     title: 'Card fields are labelled only by placeholder text that disappears when typing',
@@ -98,6 +107,7 @@ export const DEFECTS = [
   },
   {
     id: 'mousedown-add-to-cart',
+    short: 'Add to cart needs a mouse',
     split: 'holdout',
     page: 'catalog',
     title: 'Add-to-cart reacts to mouse down only, so Enter and Space do nothing',
@@ -108,6 +118,7 @@ export const DEFECTS = [
   },
   {
     id: 'unlabeled-city-field',
+    short: 'Unlabelled City field',
     split: 'holdout',
     page: 'checkout',
     title: 'The City field has no label at all',
@@ -118,6 +129,7 @@ export const DEFECTS = [
   },
   {
     id: 'focus-lost-on-update',
+    short: 'Focus lost after update',
     split: 'holdout',
     page: 'cart',
     title: 'Changing quantity re-renders the cart and drops keyboard focus to the top of the page',

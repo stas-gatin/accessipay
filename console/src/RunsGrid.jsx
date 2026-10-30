@@ -1,27 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { themeQuartz, colorSchemeDark } from 'ag-grid-community';
+import { gridTheme, useTheme } from './theme.js';
 import { api, OUTCOME } from './api.js';
 
-export const theme = themeQuartz.withPart(colorSchemeDark).withParams({
-  backgroundColor: '#0d0e10',
-  foregroundColor: '#f4f5f6',
-  headerBackgroundColor: '#141619',
-  headerTextColor: '#a3abb4',
-  headerFontWeight: 600,
-  headerFontSize: 11,
-  borderColor: '#24272c',
-  rowHoverColor: '#16181b',
-  selectedRowBackgroundColor: 'rgba(212, 255, 58, 0.08)',
-  accentColor: '#d4ff3a',
-  fontFamily: 'Inter, system-ui, sans-serif',
-  fontSize: 14,
-  rowHeight: 46,
-  headerHeight: 44,
-  borderRadius: 8,
-  wrapperBorderRadius: 18,
-  spacing: 8,
-});
+
 
 function OutcomeCell({ value, node }) {
   if (node?.group) return null;
@@ -44,6 +26,7 @@ function RunDetail({ data }) {
 }
 
 export default function RunsGrid({ meta }) {
+  const t = useTheme();
   const [rows, setRows] = useState(null);
   const [groupBy, setGroupBy] = useState('scenario');
   useEffect(() => { api('/api/runs').then(setRows).catch(() => setRows([])); }, []);
@@ -51,8 +34,8 @@ export default function RunsGrid({ meta }) {
   const data = useMemo(() => (rows || []).map((r) => ({
     ...r,
     personaLabel: meta.personas[r.persona]?.label || r.persona,
-    scenario: r.defects?.length ? r.defects.map((d) => meta.defects.find((x) => x.id === d)?.title || d).join(' + ') : 'Clean shop',
-    fixed: r.patches?.length ? 'After fix' : 'Before fix',
+    scenario: r.defects?.length ? r.defects.map((d) => meta.defects.find((x) => x.id === d)?.short || d).join(' + ') : 'Clean shop',
+    fixed: r.patches?.length ? 'After AI fix' : 'As built',
     brain: r.brainKind === 'anthropic' ? `Claude API · ${r.model}` : r.brainKind === 'external' ? 'Claude Code agent' : r.brainKind,
     outcomeStatus: r.outcome?.status,
     scanViolations: r.scan?.totalViolations,
@@ -61,14 +44,14 @@ export default function RunsGrid({ meta }) {
 
   const cols = useMemo(() => [
     { field: 'scenario', headerName: 'Shop', flex: 2, minWidth: 220, rowGroup: groupBy === 'scenario', hide: groupBy === 'scenario', enableRowGroup: true },
-    { field: 'personaLabel', headerName: 'Shopper', flex: 1, minWidth: 160, rowGroup: groupBy === 'persona', hide: groupBy === 'persona', enableRowGroup: true },
-    { field: 'fixed', headerName: 'Fix', width: 120, enableRowGroup: true },
-    { field: 'scanViolations', headerName: 'axe-core violations', width: 160, type: 'numericColumn' },
-    { field: 'outcomeStatus', headerName: 'Outcome', width: 160, cellRenderer: OutcomeCell, enableRowGroup: true },
-    { field: 'steps', headerName: 'Steps', width: 90, type: 'numericColumn' },
-    { field: 'brain', headerName: 'Decided by', flex: 1, minWidth: 170 },
-    { field: 'cost', headerName: 'API cost', width: 110, valueFormatter: (p) => (p.value == null ? '' : `$${p.value.toFixed(3)}`) },
-    { field: 'createdAt', headerName: 'Started', width: 170, sort: 'desc', valueFormatter: (p) => (p.value ? new Date(p.value).toLocaleString() : '') },
+    { field: 'personaLabel', headerName: 'Shopper', flex: 1, minWidth: 200, rowGroup: groupBy === 'persona', hide: groupBy === 'persona', enableRowGroup: true },
+    { field: 'fixed', headerName: 'Version', width: 140, enableRowGroup: true },
+    { field: 'scanViolations', headerName: 'Scanner', width: 130, type: 'numericColumn', valueFormatter: (p) => (p.value == null ? '' : `${p.value} found`) },
+    { field: 'outcomeStatus', headerName: 'Outcome', width: 150, cellRenderer: OutcomeCell, enableRowGroup: true },
+    { field: 'steps', headerName: 'Steps', width: 110, type: 'numericColumn' },
+    { field: 'brain', headerName: 'Decided by', flex: 1, minWidth: 190 },
+    { field: 'cost', headerName: 'API cost', width: 120, valueFormatter: (p) => (p.value == null ? '—' : `$${p.value.toFixed(3)}`) },
+    { field: 'createdAt', headerName: 'Started', width: 180, sort: 'desc', valueFormatter: (p) => (p.value ? new Date(p.value).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '') },
   ], [groupBy]);
 
   return (
@@ -84,11 +67,11 @@ export default function RunsGrid({ meta }) {
       <div className="grid-box">
         {rows === null ? <p className="empty">Loading…</p> : (
           <AgGridReact
-            theme={theme}
+            theme={gridTheme(t)}
             rowData={data}
             columnDefs={cols}
-            defaultColDef={{ sortable: true, filter: true, resizable: true }}
-            autoGroupColumnDef={{ headerName: groupBy === 'persona' ? 'Shopper' : 'Shop', minWidth: 280, cellRendererParams: { suppressCount: false } }}
+            defaultColDef={{ sortable: true, filter: true, resizable: true, suppressHeaderMenuButton: true }}
+            autoGroupColumnDef={{ headerName: groupBy === 'persona' ? 'Shopper' : 'Shop', minWidth: 330, flex: 1.8, cellRendererParams: { suppressCount: false } }}
             groupDefaultExpanded={1}
             rowGroupPanelShow="always"
             masterDetail
