@@ -35,3 +35,17 @@ test('open dialogs are perceived first, even when the page is long', () => {
   assert.match(out, /The page:\n- banner:/);
   assert.doesNotMatch(out.split('The page:')[1], /Cookies/);
 });
+
+test('on a real site, a payment method choice at checkout counts as the payment step', async () => {
+  const { reachedPayment } = await import('../server/engine/runs.mjs');
+  const page = await browser.newPage();
+  await page.route('https://shop.example/**', (r) => r.fulfill({ contentType: 'text/html', body: `<h1>Payment</h1>
+    <fieldset><legend>Payment method</legend>
+    <label><input type="radio" name="m"> PayPal</label><label><input type="radio" name="m"> Cash on delivery</label><label><input type="radio" name="m"> Bank transfer</label></fieldset>
+    <button>Next</button>` }));
+  await page.goto('https://shop.example/checkout/select-payment');
+  assert.equal(await reachedPayment(page), true);
+  await page.goto('https://shop.example/product/mug');
+  assert.equal(await reachedPayment(page), false);
+  await page.close();
+});

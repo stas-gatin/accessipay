@@ -30,10 +30,16 @@ export async function reachedPayment(page) {
       const finalButton = [...document.querySelectorAll('button, [role="button"], input[type="submit"]')]
         .filter((el) => visible(el) && !el.disabled && el.getAttribute('aria-disabled') !== 'true')
         .some((el) => FINAL.test(`${el.getAttribute('aria-label') || ''} ${el.innerText || el.value || ''}`.trim()));
-      return { cc, frames, finalButton, url: location.href };
+      const shown = (el) => { const r = el.getBoundingClientRect(); const cs = getComputedStyle(el); return r.width > 4 && r.height > 4 && cs.visibility !== 'hidden' && cs.display !== 'none'; };
+      // Or the payment method choice itself: at least two visible options that name ways to pay.
+      const METHOD = /paypal|credit card|debit card|card payment|pay by card|cash on delivery|bank transfer|invoice|klarna|apple pay|google pay|check \/ money order|afterpay/i;
+      const labelOf = (el) => `${el.getAttribute('aria-label') || ''} ${el.labels?.[0]?.innerText || ''} ${el.closest('label')?.innerText || ''} ${el.innerText || ''}`;
+      const methods = [...document.querySelectorAll('input[type="radio"], [role="radio"]')]
+        .filter((el) => METHOD.test(labelOf(el)) && [el, el.labels?.[0], el.closest('label')].some((x) => x && shown(x)));
+      return { cc, frames, finalButton, methodChoice: methods.length >= 2, url: location.href };
     }, FINAL_ACTION.source);
     const atCheckout = /checkout|payment|pay\b/i.test(h.url);
-    return h.cc || (h.frames && atCheckout) || (h.finalButton && atCheckout);
+    return h.cc || (h.frames && atCheckout) || (h.finalButton && atCheckout) || (h.methodChoice && atCheckout);
   } catch { return false; }
 }
 

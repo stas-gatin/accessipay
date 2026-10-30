@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { api } from '../api.js';
 import Logo, { LogoMark } from '../Logo.jsx';
-import { RUNS, ORDERS, PAY_FIX, SKIP_FIX, REAL_SITES, REPORT_HREF, METHOD } from './facts.js';
+import { RUNS, ORDERS, PAY_FIX, SKIP_FIX, REAL_SITES, PLATFORMS, REPORT_HREF, METHOD } from './facts.js';
 import { useInView, useReducedMotion, Reveal } from './motion.jsx';
 
 export function SectionHead({ eyebrow, title, id, lead, light = false, center = false, children }) {
@@ -338,6 +338,60 @@ export function RealSites() {
         </article>
       ))}
     </Reveal>
+  );
+}
+
+// Every customer on every real site, from the recorded runs. Grows as the sweep runs.
+const SWEEP_PERSONAS = [['screenreader', 'Screen reader'], ['keyboard', 'Keyboard only'], ['agent', 'AI agent']];
+const isRetailer = (host) => /^Retailer /.test(host);
+const cellText = (r) => (r.outcome === 'reached-payment' ? `${r.steps} steps` : `at ${r.stage} · ${r.steps} steps`);
+
+export function SweepMatrix() {
+  const [a, setA] = useState(null);
+  useEffect(() => { api('/api/analytics').then(setA).catch(() => setA(null)); }, []);
+  if (!a) return null;
+  const latest = (host, persona) => a.sites.filter((s) => s.host === host && s.persona === persona).sort((x, y) => (x.id < y.id ? 1 : -1))[0];
+  const hosts = Object.keys(PLATFORMS).filter((h) => a.sites.some((s) => s.host === h));
+  const shops = a.sites.filter((s) => isRetailer(s.host));
+  const untested = [...new Set((a.untested || []).filter((u) => isRetailer(u.host)).map((u) => u.host))];
+  const tested = new Set(shops.map((s) => s.host));
+  return (
+    <div className="sweep">
+      <div className="sweep-table" role="table" aria-label="Open-source platform demos, by customer type">
+        <div className="sweep-row sweep-head" role="row">
+          <span role="columnheader">Platform demo</span>
+          {SWEEP_PERSONAS.map(([, l]) => <span role="columnheader" key={l}>{l}</span>)}
+        </div>
+        {hosts.map((h) => (
+          <div className="sweep-row" role="row" key={h}>
+            <span role="rowheader"><b>{PLATFORMS[h]}</b><i className="mono">{h}</i></span>
+            {SWEEP_PERSONAS.map(([p, l]) => {
+              const r = latest(h, p);
+              return (
+                <span role="cell" key={p} className={r ? (r.outcome === 'reached-payment' ? 'ok' : 'bad') : 'none'}>
+                  <em className="sweep-pl" aria-hidden="true">{l}</em>
+                  {r ? <a href={`#/runs/${r.id}`}><span className="dot-word">{r.outcome === 'reached-payment' ? 'Reached payment' : 'Stopped'}</span> {cellText(r)}<span className="sr-only">, {l}, {PLATFORMS[h]}</span></a> : <span className="sweep-wait">not run yet</span>}
+                </span>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+      <div className="sweep-shops">
+        <h3>Large retailers, names withheld</h3>
+        <ul className="sweep-stats">
+          <li><b>{tested.size + untested.length}</b><span>checked</span></li>
+          <li><b>{untested.length}</b><span>not testable: bot protection or a maintenance page</span></li>
+          {SWEEP_PERSONAS.map(([p, l]) => {
+            const runs = shops.filter((s) => s.persona === p);
+            if (!runs.length) return null;
+            const ok = runs.filter((s) => s.outcome === 'reached-payment').length;
+            return <li key={p}><b>{ok} of {runs.length}</b><span>{l}: reached the payment form</span></li>;
+          })}
+        </ul>
+        <p className="sweep-note">Each retailer is visited at most once a day, by one customer type. No purchase is made: the customer stops when the payment form is on screen.</p>
+      </div>
+    </div>
   );
 }
 

@@ -76,7 +76,7 @@ export async function checkRobots(url, { fetchImpl = fetch, timeoutMs = 8000 } =
 }
 
 const CHALLENGE_HOSTS = /(^|\.)(challenges\.cloudflare\.com|hcaptcha\.com|recaptcha\.net|captcha-delivery\.com|perimeterx\.net|px-cloud\.net|px-cdn\.net|arkoselabs\.com|funcaptcha\.com|geo\.captcha-delivery\.com)$/i;
-const CHALLENGE_TEXT = /verify (that )?you are (a )?human|confirm you.re (a )?human|are you a robot|not a bot|quick verification|checking your browser|press (&|and) hold|pardon our interruption|access (to this page has been )?denied|unusual traffic|complete the security check|just a moment\.\.\.|attention required|request unsuccessful\. incapsula|enable javascript and cookies to continue/i;
+const CHALLENGE_TEXT = /verify (that )?you are (a )?human|confirm you.re (a )?human|are you a robot|not a bot|quick verification|checking your browser|press (&|and) hold|pardon our interruption|access (to this page has been )?denied|unusual (traffic|activity)|automated (traffic|access)|complete the security check|just a moment\.\.\.|attention required|request unsuccessful\. incapsula|enable javascript and cookies to continue/i;
 
 const MAINTENANCE_TEXT = /system maintenance|maintenance (is )?in progress|we.re working on it|temporarily unavailable|we.ll be (right )?back/i;
 // Known challenge widgets, by element. The invisible reCAPTCHA badge many checkouts carry is not one.
@@ -89,7 +89,11 @@ export async function detectBotWall(page) {
     let host = '';
     try { host = new URL(f.url()).hostname; } catch {}
     if (host && CHALLENGE_HOSTS.test(host) && /challenge|captcha|turnstile|hcaptcha|recaptcha\/api2\/(anchor|bframe)/i.test(f.url())) {
-      return `A bot check from ${host} is on the page.`;
+      // Many checkouts load an invisible bot score in a hidden frame. Only a challenge the customer can see is a wall.
+      const el = await f.frameElement().catch(() => null);
+      const box = el && (await el.boundingBox().catch(() => null));
+      const shown = el && (await el.isVisible().catch(() => false));
+      if (shown && box && box.width >= 60 && box.height >= 60) return `A bot check from ${host} is on the page.`;
     }
   }
   for (const f of page.frames()) {

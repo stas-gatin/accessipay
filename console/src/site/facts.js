@@ -91,6 +91,18 @@ export const METHOD = [
   { n: 9, title: 'Hand the owner the result', short: 'Fix list, ready code, screenshot, PDF.', detail: 'The owner gets the list of fixes ranked by who they block, the code ready to apply, a screenshot with the problem circled, and the same content as a PDF (in progress).', artifact: { kind: 'list', items: ['List of fixes', 'Ready code', 'Annotated screenshot', 'PDF report (in progress)'] }, run: RUNS.keyboardBlocked },
 ];
 
+// Open-source platform demos are named; large retailers are recorded only as "Retailer A" and so on.
+export const PLATFORMS = {
+  'hydrogen.shop': 'Shopify Hydrogen',
+  'next.medusajs.com': 'Medusa',
+  'storefront.saleor.io': 'Saleor',
+  'demo.solidus.io': 'Solidus',
+  'v2.demo.sylius.com': 'Sylius',
+  'demo-frontends.shopware.store': 'Shopware Frontends',
+  'vercel.store': 'Next.js Commerce',
+  'magento2-demo.magebit.com': 'Magento 2 (Magebit demo)',
+};
+
 export const REAL_SITES = [
   {
     platform: 'Shopify Hydrogen', host: 'hydrogen.shop', run: RUNS.hydrogen, image: 'step-007.jpg',

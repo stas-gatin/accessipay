@@ -52,6 +52,11 @@ test('detectBotWall sees a challenge page and leaves a normal shop alone', async
     assert.match(await detectBotWall(page), /bot check/);
     await page.setContent('<title>Shop</title><h1>We are working on it.</h1><p>System maintenance is in progress.</p>');
     assert.match(await detectBotWall(page), /maintenance/);
+    // A hidden bot-score frame (as Shopify checkouts load) is not a wall either.
+    await page.route('https://newassets.hcaptcha.com/**', (r) => r.fulfill({ body: '<p>score</p>', contentType: 'text/html' }));
+    await page.setContent('<title>Checkout</title><h1>Checkout</h1><label>Email <input></label><iframe src="https://newassets.hcaptcha.com/captcha/v1/x/static/hcaptcha.html" style="width:0;height:0;border:0"></iframe>');
+    await page.waitForTimeout(300);
+    assert.equal(await detectBotWall(page), null);
     // The invisible reCAPTCHA badge on a normal checkout is not a wall.
     await page.setContent('<title>Checkout</title><h1>Checkout</h1><label>Email <input></label><div class="grecaptcha-badge"></div>');
     assert.equal(await detectBotWall(page), null);

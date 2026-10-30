@@ -5,7 +5,7 @@ import HeroReplay from './site/HeroReplay.jsx';
 import { Chain, Calculator, KindLegend } from './site/BusinessChain.jsx';
 import { BrandImg, CountUp, Reveal } from './site/motion.jsx';
 import {
-  Arrow, SectionHead, TwoVerdicts, JourneyMap, EffortBlock, PayPalConfirms, OwnerOutputs, RealSites, MethodStrip, Ledger, SiteFooter,
+  Arrow, SectionHead, TwoVerdicts, JourneyMap, EffortBlock, SweepMatrix, PayPalConfirms, OwnerOutputs, RealSites, MethodStrip, Ledger, SiteFooter,
 } from './site/blocks.jsx';
 import { RUNS, ORDERS, PAY_FIX, EAA_DATE } from './site/facts.js';
 
@@ -179,8 +179,10 @@ export default function Landing({ meta }) {
       {/* 10. Real open-source storefronts */}
       <section className="s-light sec" id="real-sites" aria-labelledby="real-t">
         <div className="wrap">
-          <SectionHead eyebrow="Outside our demo shop" id="real-t" title="We sent the agent to the public demo stores of three open-source commerce platforms."
-            lead="Shops are built from these templates, so a barrier in the template ships to every shop that copies it. The agent stops at the payment step: no order, no card data." />
+          <SectionHead eyebrow="Outside our demo shop" id="real-t" title="We sent our customers to real shops."
+            lead="Public demo stores of open-source commerce platforms, and large retailers. Shops are built from these templates, so a barrier in the template ships to every shop that copies it. Every customer stops at the payment step: no order, no card data." />
+          <SweepMatrix />
+          <h3 className="sweep-h">Three findings, checked by hand</h3>
           <RealSites />
           <p className="foot-note">axe-core counts are rule violations per page, summed. Most of them are colour contrast and landmark rules; what stopped or slowed the agent was mostly something else.</p>
         </div>
