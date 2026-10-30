@@ -13,6 +13,8 @@ import { createPayPal } from './paypal/client.mjs';
 import { createFixes } from './fixer/fixer.mjs';
 import { scanShop } from './scan/axe.mjs';
 import { analytics } from './analytics.mjs';
+import { runMetrics } from './metrics.mjs';
+import { mountReports } from './report/routes.mjs';
 
 export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, env = process.env, extend }) {
   const paypal = createPayPal(env);
@@ -54,6 +56,11 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
     const r = runs.get(req.params.id);
     if (!r) return res.status(404).json({ error: 'not found' });
     res.json(r.brain ? runs.plain(r) : r);
+  });
+  app.get('/api/runs/:id/metrics', (req, res) => {
+    const r = runs.get(req.params.id);
+    if (!r) return res.status(404).json({ error: 'not found' });
+    res.json(runMetrics(r.brain ? runs.plain(r) : r));
   });
   app.post('/api/runs/:id/stop', (req, res) => res.json({ ok: runs.stop(req.params.id) }));
 
@@ -137,9 +144,10 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
     app.use(express.static(consoleDir, {
       setHeaders: (res, file) => res.set('cache-control', file.endsWith('.html') ? 'no-cache' : 'public, max-age=31536000, immutable'),
     }));
-    app.get(/^\/(?!api|s\/|runs-data).*/, (req, res) => res.set('cache-control', 'no-cache').sendFile(path.join(consoleDir, 'index.html')));
+    app.get(/^\/(?!api|s\/|runs-data|report\/).*/, (req, res) => res.set('cache-control', 'no-cache').sendFile(path.join(consoleDir, 'index.html')));
   }
 
+  mountReports(app, { shop, runs, paypal, browser, fixes, origin, dataDir });
   extend?.(app, { shop, runs, paypal, browser, fixes });
   return { app, shop, runs, paypal, fixes };
 }

@@ -8,8 +8,8 @@ export const AGENTIC_GOAL = [
   'You are shopping on behalf of a customer who asked:',
   '"Get me something that keeps me dry on hikes, under $100, and I need it fast."',
   'Pick the one product that fits and the delivery that fits, then buy it.',
-  'Customer details: full name Alex Morgan, email alex.morgan@example.com, street address 12 Market Street,',
-  'city Springfield, ZIP 62701, country United States.',
+  'Customer details: full name Alex Morgan, email alex.morgan@example.com, street address 100 Example Avenue,',
+  'city Testville, ZIP 99999, country United States.',
   'Pay by card: name on card Alex Morgan, card number 4111 1111 1111 1111, expiry 12/30, security code 123.',
   'Agree to the terms of sale. The customer does not want newsletters or promotions.',
 ].join(' ');
@@ -19,7 +19,7 @@ export const EXTERNAL_GOAL = [
   'This is a real online shop. Add any one in-stock product to the cart and go through checkout as far as the payment step, then stop.',
   'Never pay, never place or submit an order, never create an account or sign in, never type card details.',
   'If the shop asks for contact or shipping details before payment, use: full name Alex Morgan, email alex.morgan@example.com,',
-  'street address 12 Market Street, city Springfield, ZIP 62701, country United States (or the closest option the shop offers), phone 555 010 0199.',
+  'street address 100 Example Avenue, city Testville, ZIP 99999, country United States (or the closest option the shop offers), phone (212) 555-0142.',
   'Decline cookie banners, newsletters and promotions. When you see the payment form or a button that would pay or place the order,',
   'finish with done and your findings. If you cannot get that far, give up with honest findings.',
 ].join(' ');
@@ -31,8 +31,8 @@ export const GOALS = {
 
 export const DEFAULT_GOAL = [
   'Buy one Trail Backpack with standard delivery.',
-  'Your details: full name Alex Morgan, email alex.morgan@example.com, street address 12 Market Street,',
-  'city Springfield, ZIP 62701, country United States.',
+  'Your details: full name Alex Morgan, email alex.morgan@example.com, street address 100 Example Avenue,',
+  'city Testville, ZIP 99999, country United States.',
   'Pay by card: name on card Alex Morgan, card number 4111 1111 1111 1111, expiry 12/30, security code 123.',
   'Agree to the terms of sale. You do not want newsletters or promotions.',
 ].join(' ');
@@ -71,7 +71,7 @@ export function systemPrompt(persona) {
     '',
     'Reply with one JSON object only, no other text:',
     '{"thought": "one short sentence on why", "action": "...", "args": {...}}',
-    'When you choose "done" or "give_up", also add "findings": a list of every accessibility problem you met, each {"page": "page title", "problem": "what blocked or confused you, in plain words"}. Use an empty list if there were none.',
+    'When you choose "done" or "give_up", also add "findings": a list of every accessibility problem you met, each {"page": "page title", "problem": "what blocked or confused you, in plain words", "step": step number where you met it, "element": {"role": "...", "name": "..."} if it is about one element}. Use an empty list if there were none.',
   ].join('\n');
 }
 

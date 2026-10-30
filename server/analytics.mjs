@@ -1,4 +1,5 @@
 // Aggregates for the analytics page, computed from every finished run on disk (live and recorded).
+import { runMetrics, compareRuns } from './metrics.mjs';
 
 export const STAGES = ['Browse', 'Cart', 'Checkout', 'Payment', 'Paid'];
 
@@ -59,7 +60,28 @@ export function analytics(runs) {
   }));
 
   const stepsToBuy = demo.filter(success).map((r) => r.steps || 0).sort((a, b) => a - b);
-  const median = stepsToBuy.length ? stepsToBuy[Math.floor(stepsToBuy.length / 2)] : null;
+  const medianStepsToBuy = stepsToBuy.length ? stepsToBuy[Math.floor(stepsToBuy.length / 2)] : null;
+
+  const median = (xs) => { const v = xs.filter((x) => x != null).sort((p, q) => p - q); return v.length ? v[Math.floor(v.length / 2)] : null; };
+  const withMetrics = done.map((r) => ({ run: r, m: runMetrics(r) }));
+  const effort = Object.keys(personas).map((p) => {
+    const ok = withMetrics.filter((x) => x.run.persona === p && x.m.success && !x.run.site);
+    return { persona: p, runs: ok.length, medianSteps: median(ok.map((x) => x.m.steps)), medianKeys: median(ok.map((x) => x.m.keys)), medianKlm: median(ok.map((x) => x.m.klmSeconds)) };
+  });
+
+  // Before and after: the same customer on the same shop, first as built, then after an AI fix.
+  const pairs = [];
+  for (const r of demo.filter((x) => x.patches?.length)) {
+    const before = demo.filter((x) => x.instanceId === r.instanceId && !x.patches?.length && x.persona === r.persona).sort((p, q) => (p.createdAt < q.createdAt ? 1 : -1))[0];
+    if (!before) continue;
+    const c = compareRuns(before, r);
+    pairs.push({ before: before.id, after: r.id, persona: r.persona, defect: r.defects[0] || null, label: c.label, kind: c.kind,
+      beforeOutcome: c.before.outcome, afterOutcome: c.after.outcome, beforeSteps: c.before.steps, afterSteps: c.after.steps,
+      beforeKeys: c.before.keys, afterKeys: c.after.keys, beforeStage: c.before.furthestStage, afterStage: c.after.furthestStage,
+      order: r.payment?.orderId || null });
+  }
+
+  const runRows = withMetrics.map(({ run: r, m }) => ({ id: r.id, persona: r.persona, site: r.site?.host || null, defect: r.defects?.[0] || null, fixed: !!r.patches?.length, ...m }));
 
   return {
     totals: {
@@ -69,10 +91,17 @@ export function analytics(runs) {
       paid: demo.filter((r) => r.outcome.status === 'purchased').length,
       blockedWhileClean: matrix.cleanBlocked,
       sites: new Set(real.map((r) => r.site.host)).size,
-      medianStepsToBuy: median,
+      medianStepsToBuy,
       findings: findings.length,
       sandboxOrders: demo.filter((r) => r.payment?.mode === 'sandbox' && r.payment.status === 'COMPLETED').length,
+      unblockedByFix: pairs.filter((p) => p.kind === 'unblocked').length,
+      deadEnds: withMetrics.reduce((t, x) => t + x.m.deadEnds, 0),
+      keys: withMetrics.reduce((t, x) => t + x.m.keys, 0),
+      steps: withMetrics.reduce((t, x) => t + x.m.steps, 0),
     },
+    effort,
+    pairs,
+    runRows,
     personas: Object.values(personas).map(({ steps, ...p }) => ({ ...p, medianSteps: steps.length ? steps.sort((a, b) => a - b)[Math.floor(steps.length / 2)] : null })),
     funnel,
     matrix,

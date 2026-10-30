@@ -54,11 +54,14 @@ export const collapseOptions = (s) => {
   }
   return out.join('\n');
 };
+const roundBox = (b) => ({ x: Math.round(b.x), y: Math.round(b.y), width: Math.round(b.width), height: Math.round(b.height) });
 const clip = (s, n = MAX_TREE) => (s.length > n ? s.slice(0, n) + '\n[... page continues ...]' : s);
 const firstLine = (e) => String(e?.message || e).split('\n')[0].replace(/\u001b\[[0-9;]*m/g, '').slice(0, 220);
 
 // On real sites the shopper must never pay, place an order, or type card data.
 export const FINAL_ACTION = /\b(place|complete|submit|confirm)\s+(my\s+)?(order|purchase|payment)\b|\bpay\s*(now|\$|€|£|\d)|^\s*pay\b|\bpay\s+with\b|\bbuy\s+(it\s+)?now\b|\bcomplete\s+checkout\b|^\s*purchase\b|\bcheckout\s+with\b|\bexpress\s+checkout\b/i;
+// Accounts are out of scope on real sites: no passwords, no sign-in, no sign-up.
+export const ACCOUNT_ACTION = /\b(sign\s*in|log\s*in|sign\s*up|register|create\s+(an\s+)?account)\b/i;
 export const CARD_FIELD = /card\s*number|cardholder|name on card|\bcvv\b|\bcvc\b|security code|expir|\biban\b|account number|routing/i;
 
 export class Session {
@@ -89,6 +92,14 @@ export class Session {
       if (FINAL_ACTION.test(await this.focusedName())) return stop;
     }
     if (d.action === 'type' && CARD_FIELD.test(await this.focusedName())) return 'Not allowed on a real site: AccessiPay never types card data. Finish with done and your findings.';
+    const account = 'Not allowed on a real site: AccessiPay never signs in, signs up or types passwords. Continue as a guest, or finish with your findings.';
+    if (['click', 'check'].includes(d.action) && ACCOUNT_ACTION.test(a.name || '')) return account;
+    if (d.action === 'fill' && /password/i.test(a.name || '')) return account;
+    if (d.action === 'type' || d.action === 'activate') {
+      const isPassword = await this.page.evaluate(() => document.activeElement?.type === 'password').catch(() => false);
+      if (isPassword) return account;
+      if (d.action === 'activate' && ACCOUNT_ACTION.test(await this.focusedName())) return account;
+    }
     return null;
   }
 
@@ -163,6 +174,39 @@ export class Session {
     }, text);
   }
 
+  // Where the element the brain is about to act on sits on the screen. Role-based actions resolve by
+  // role and name; keyboard actions resolve to the focused element. A missing element is evidence too.
+  async locate(d) {
+    const a = d.args || {};
+    const role = { click: a.role, fill: a.role || 'textbox', select: 'combobox', check: a.role || 'checkbox', jump: a.role }[d.action];
+    if (!role && !['activate', 'press', 'type'].includes(d.action)) return null;
+    try {
+      const loc = role ? this.page.getByRole(role, { name: a.name, exact: true }).nth(a.nth || 0) : this.page.locator(':focus');
+      if ((await loc.count()) === 0) return { missing: true, role: role || null, name: a.name || null };
+      let box = await loc.boundingBox();
+      let scrolled = false;
+      const vp = this.page.viewportSize();
+      if (box && vp && (box.y < 0 || box.y + box.height > vp.height)) {
+        await loc.scrollIntoViewIfNeeded({ timeout: 1500 }).catch(() => {});
+        box = await loc.boundingBox();
+        scrolled = true;
+      }
+      const info = await loc.evaluate((el) => ({ tag: el.tagName.toLowerCase(), outer: el.outerHTML.slice(0, 600) }));
+      return { box: box && roundBox(box), role: role || null, name: a.name || null, scrolled, ...info };
+    } catch (e) {
+      return { missing: true, role: role || null, name: a.name || null, error: String(e.message || e).split('\n')[0].slice(0, 160) };
+    }
+  }
+
+  async focusBox() {
+    try {
+      const loc = this.page.locator(':focus');
+      if ((await loc.count()) === 0) return null;
+      const box = await loc.first().boundingBox();
+      return box && roundBox(box);
+    } catch { return null; }
+  }
+
   async observe() {
     const page = this.page;
     const title = await page.title().catch(() => '');
@@ -176,7 +220,8 @@ export class Session {
       const focus = this.persona === 'screenreader' ? `\n\nKeyboard focus: ${await this.focusForScreenReader()}` : '';
       text = `Page title: ${title}\n\nPage as an accessibility tree:\n${clip(await this.tree(), this.external ? 16000 : MAX_TREE)}${focus}`;
     }
-    return { title, path, url, text };
+    const focus = this.persona === 'agent' ? null : await this.focusBox();
+    return { title, path, url, text, focus };
   }
 
   async act(d) {

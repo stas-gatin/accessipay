@@ -7,6 +7,20 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { Session } from './session.mjs';
 import AxeBuilder from '@axe-core/playwright';
+import { performance } from 'node:perf_hooks';
+import { stageOfPage } from '../../shared/stages.js';
+
+// Hosts that take payment data. On real sites nothing but reading may be sent to them.
+const PAYMENT_HOSTS = /(^|\.)(stripe\.com|stripe\.network|paypal\.com|paypalobjects\.com|braintreegateway\.com|braintree-api\.com|adyen\.com|adyenpayments\.com|checkout\.com|shopifycs\.com|klarna\.com|affirm\.com|squareup\.com|authorize\.net)$/i;
+const FAILED = /did not work|There is no|cannot take keyboard focus|not available|Nothing was typed|Not allowed/;
+
+function keysFor(d) {
+  const a = d.args || {};
+  if (['next', 'prev', 'activate', 'press'].includes(d.action)) return 1;
+  if (d.action === 'type') return String(a.text ?? '').length + 1;
+  if (d.action === 'jump') return 2;
+  return 0;
+}
 
 const hash = (s) => crypto.createHash('sha1').update(s).digest('hex').slice(0, 12);
 
@@ -14,7 +28,20 @@ export async function runShopper({ browser, startUrl, persona, brain, goal, maxS
   const emit = (e) => onEvent?.({ t: new Date().toISOString(), ...e });
   const context = await browser.newContext({ viewport: { width: 1280, height: 860 }, reducedMotion: 'reduce' });
   const page = await context.newPage();
-  if (external) page.setDefaultNavigationTimeout(30000);
+  if (external) {
+    page.setDefaultNavigationTimeout(30000);
+    // Network-level guard: block anything but reading to payment providers, so a payment can never be sent.
+    await context.route('**/*', (route) => {
+      const req = route.request();
+      let host = '';
+      try { host = new URL(req.url()).hostname; } catch {}
+      if (req.method() !== 'GET' && req.method() !== 'HEAD' && req.method() !== 'OPTIONS' && PAYMENT_HOSTS.test(host)) {
+        emit({ type: 'guard', blocked: `${req.method()} ${host}` });
+        return route.abort('blockedbyclient');
+      }
+      return route.continue();
+    });
+  }
   const session = new Session(page, persona, { external });
   const scanned = new Map();
   // Real sites: scan each page with axe-core the moment the shopper sees it, in the same state.
@@ -63,11 +90,14 @@ export async function runShopper({ browser, startUrl, persona, brain, goal, maxS
       const obs = await session.observe();
       await scanHere(obs.url);
       const image = await shot(step);
-      emit({ type: 'observe', step, path: obs.path, url: external ? obs.url : undefined, title: obs.title, text: obs.text, image });
+      emit({ type: 'observe', step, path: obs.path, url: external ? obs.url : undefined, title: obs.title, text: obs.text, image, focus: obs.focus, stage: stageOfPage(external ? obs.url : obs.path) });
+      emit({ type: 'thinking', step });
+      const t0 = performance.now();
 
       const decision = await brain.decide({ persona, goal, observation: obs.text, lastResult, step, maxSteps });
       steps = step;
-      emit({ type: 'decide', step, action: decision.action, args: decision.args, thought: decision.thought, parseError: decision.parseError });
+      const thinkMs = Math.round(performance.now() - t0);
+      emit({ type: 'decide', step, action: decision.action, args: decision.args, thought: decision.thought, parseError: decision.parseError, thinkMs });
 
       if (decision.action === 'done' || decision.action === 'give_up') {
         findings = decision.findings || [];
@@ -78,8 +108,21 @@ export async function runShopper({ browser, startUrl, persona, brain, goal, maxS
         break;
       }
 
+      const target = await session.locate(decision);
+      if (target) {
+        // If the element had to be scrolled into view, keep a screenshot that matches its box.
+        let image;
+        if (target.scrolled && shotsDir) {
+          image = `step-${String(step).padStart(3, '0')}-t.jpg`;
+          await page.screenshot({ path: path.join(shotsDir, image), type: 'jpeg', quality: 60 }).catch(() => { image = undefined; });
+        }
+        emit({ type: 'target', step, ...target, image });
+      }
+      if (external) await page.waitForTimeout(1200);
+      const a0 = performance.now();
       lastResult = await session.act(decision);
-      emit({ type: 'act', step, result: lastResult });
+      const actMs = Math.round(performance.now() - a0);
+      emit({ type: 'act', step, result: lastResult, actMs, keys: keysFor(decision), ok: !FAILED.test(lastResult), refused: /^Not allowed/.test(lastResult) });
 
       // Same page state and same action over and over: the shopper is going in circles.
       seen.push(hash(obs.text + JSON.stringify([decision.action, decision.args])));
