@@ -24,6 +24,8 @@ export const PERSONAS = {
 const KEYS = new Set(['Enter', 'Space', 'Escape', 'Tab', 'Shift+Tab', 'ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'Backspace']);
 const MAX_TREE = 7000;
 
+// Screen readers do not read link targets aloud; dropping them also keeps instance ids out.
+const noUrls = (s) => s.split('\n').filter((l) => !/^\s*- \/url:/.test(l)).join('\n').replace(/:\n(?=\S|$)/g, '\n').replace(/:$/, '');
 const clip = (s, n = MAX_TREE) => (s.length > n ? s.slice(0, n) + '\n[... page continues ...]' : s);
 const firstLine = (e) => String(e?.message || e).split('\n')[0].replace(/\u001b\[[0-9;]*m/g, '').slice(0, 220);
 
@@ -41,13 +43,13 @@ export class Session {
   }
 
   async tree() {
-    try { return (await this.page.locator('body').ariaSnapshot()).trim(); } catch (e) { return `(page unreadable: ${firstLine(e)})`; }
+    try { return noUrls((await this.page.locator('body').ariaSnapshot()).trim()); } catch (e) { return `(page unreadable: ${firstLine(e)})`; }
   }
 
   async focusForScreenReader() {
     const loc = this.page.locator(':focus');
     if ((await loc.count()) === 0) return 'nothing focused (top of page)';
-    try { return (await loc.first().ariaSnapshot()).trim().replace(/^- /, ''); } catch { return 'an element with no name'; }
+    try { return noUrls((await loc.first().ariaSnapshot()).trim()).replace(/^- /, ''); } catch { return 'an element with no name'; }
   }
 
   // What a sighted keyboard user sees on the focused element.
@@ -61,10 +63,47 @@ export class Session {
       const icon = el.querySelector('svg') ? ' [shows an icon]' : '';
       let label = '';
       if (el.labels && el.labels.length) label = ` next to the text "${el.labels[0].innerText.trim()}"`;
-      const value = 'value' in el && el.value && tag !== 'button' ? ` value "${el.value}"` : '';
+      const shown = tag === 'select' ? el.options[el.selectedIndex]?.text : el.value;
+      const value = 'value' in el && shown && tag !== 'button' ? ` value "${shown}"` : '';
       const checked = el.type === 'checkbox' || el.type === 'radio' ? (el.checked ? ' (checked)' : ' (not checked)') : '';
       return `${kind}${text ? ` "${text.slice(0, 80)}"` : ''}${icon}${label}${value}${checked}`;
     });
+  }
+
+  // A closed native <select> works the same on every OS here: arrows and Home/End change the
+  // choice, typing jumps to the first option that starts with the text (as on Windows and Linux).
+  // Headless Chromium on macOS would otherwise open a system menu that no automation can reach.
+  async selectKey(key) {
+    const r = await this.page.evaluate((key) => {
+      const el = document.activeElement;
+      if (!el || el.tagName !== 'SELECT') return null;
+      const n = el.options.length;
+      let i = el.selectedIndex;
+      if (key === 'ArrowDown' || key === 'ArrowRight') i = Math.min(n - 1, i + 1);
+      else if (key === 'ArrowUp' || key === 'ArrowLeft') i = Math.max(0, i - 1);
+      else if (key === 'Home') i = 0;
+      else if (key === 'End') i = n - 1;
+      else return 'The list is closed. Use the arrow keys or type the first letters of an option to choose.';
+      el.selectedIndex = i;
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      return `Selected "${el.options[i].text}".`;
+    }, key);
+    return r;
+  }
+
+  async selectType(text) {
+    return this.page.evaluate((text) => {
+      const el = document.activeElement;
+      if (!el || el.tagName !== 'SELECT') return null;
+      const t = text.trim().toLowerCase();
+      const i = Array.from(el.options).findIndex((o) => o.text.toLowerCase().startsWith(t));
+      if (i < 0) return `No option starts with "${text}".`;
+      el.selectedIndex = i;
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      return `Selected "${el.options[i].text}".`;
+    }, text);
   }
 
   async observe() {
@@ -104,6 +143,8 @@ export class Session {
         case 'press': {
           const key = a.key === 'Space' ? 'Space' : a.key;
           if (!KEYS.has(key)) return `Key "${a.key}" is not available.`;
+          const onSelect = await this.selectKey(key);
+          if (onSelect) return onSelect;
           await page.keyboard.press(key === 'Space' ? ' ' : key);
           await this.settle();
           return `Pressed ${key}.`;
@@ -113,6 +154,8 @@ export class Session {
             const el = document.activeElement;
             return !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
           });
+          const picked = await this.selectType(String(a.text ?? ''));
+          if (picked) return picked;
           if (!editable) return 'Nothing was typed: the focused element is not a text field.';
           await page.keyboard.press('ControlOrMeta+A');
           await page.keyboard.type(String(a.text ?? ''), { delay: 5 });

@@ -9,11 +9,14 @@ import { PERSONAS } from './engine/session.mjs';
 import { DEFAULT_GOAL } from './engine/prompts.mjs';
 import { createRuns } from './engine/runs.mjs';
 import { createPayPal } from './paypal/client.mjs';
+import { createFixes } from './fixer/fixer.mjs';
+import { scanShop } from './scan/axe.mjs';
 
-export function createApp({ browser, dataDir, origin, brains = {}, env = process.env, extend }) {
+export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, env = process.env, extend }) {
   const paypal = createPayPal(env);
   const shop = createShop({ paypal });
   const runs = createRuns({ browser, shop, paypal, dataDir, origin, brains });
+  const fixes = createFixes({ shop, runs, origin, fixers });
   const app = express();
   app.disable('x-powered-by');
 
@@ -78,8 +81,41 @@ export function createApp({ browser, dataDir, origin, brains = {}, env = process
     res.json(r.brain.submit(req.body?.text ?? req.body));
   });
 
-  extend?.(app, { shop, runs, paypal, browser });
-  return { app, shop, runs, paypal };
+  app.post('/api/instances/:iid/reset', (req, res) => {
+    const inst = shop.get(req.params.iid);
+    if (!inst) return res.status(404).json({ error: 'not found' });
+    inst.patches = [];
+    res.json({ ok: true });
+  });
+
+  // axe-core scan of the whole flow for a set of defects (and optionally the patches of an instance).
+  app.post('/api/scan', async (req, res) => {
+    try {
+      const inst = req.body.instanceId ? shop.get(req.body.instanceId) : null;
+      res.json(await scanShop({ browser, shop, origin, defects: inst ? inst.defects : (req.body.defects || []), patches: inst ? inst.patches : [] }));
+    } catch (e) { res.status(500).json({ error: e.message }); }
+  });
+
+  app.post('/api/fixes', (req, res) => {
+    try {
+      const job = fixes.start(req.body || {});
+      res.json({ id: job.id, page: job.page, status: job.status });
+    } catch (e) { res.status(400).json({ error: e.message }); }
+  });
+  app.get('/api/fixes', (req, res) => res.json(fixes.list().map(({ prompt, system, ...j }) => j)));
+  app.get('/api/fixes/:id', (req, res) => {
+    const job = fixes.get(req.params.id);
+    if (!job) return res.status(404).json({ error: 'not found' });
+    res.json(req.query.full ? job : (({ prompt, system, ...j }) => j)(job));
+  });
+  app.post('/api/fixes/:id/reply', (req, res) => {
+    const r = fixes.submit(req.params.id, req.body?.text ?? JSON.stringify(req.body));
+    if (!r.ok) return res.status(400).json({ error: r.error || r.job?.error, job: r.job && (({ prompt, system, ...j }) => j)(r.job) });
+    res.json((({ prompt, system, ...j }) => j)(r.job));
+  });
+
+  extend?.(app, { shop, runs, paypal, browser, fixes });
+  return { app, shop, runs, paypal, fixes };
 }
 
 export function loadEnv(file) {

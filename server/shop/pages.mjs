@@ -58,6 +58,9 @@ legend { font-weight:700; padding:0 6px; }
 .qty { width:80px; }
 .totals p { display:flex; justify-content:space-between; max-width:320px; margin:4px 0; }
 .mode { font-size:14px; color:var(--muted); }
+.skip { position:absolute; left:-9999px; top:8px; background:#ffffff; color:var(--brand); padding:8px 12px; border:2px solid var(--brand); border-radius:6px; z-index:10; }
+.skip:focus { left:8px; }
+main:focus { outline:none; }
 .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 .backdrop { position:fixed; inset:0; background:rgba(10,20,30,.55); display:flex; align-items:center; justify-content:center; }
 .modal { background:#ffffff; border-radius:12px; padding:20px 22px; width:min(420px,92vw); position:relative; }
@@ -82,11 +85,12 @@ function layout({ title, base, cartCount, body, script = '', mode }) {
 <style>${CSS}</style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to main content</a>
 <header class="top">
   <a class="brand" href="${base}/">Pine and Peak Outfitters</a>
   <nav aria-label="Main"><a href="${base}/cart">Cart (<span id="cart-count">${cartCount}</span>)</a></nav>
 </header>
-<main id="main">
+<main id="main" tabindex="-1">
 ${body}
 </main>
 <footer class="foot"><p>Demo store built for AccessiPay. ${mode === 'sandbox' ? 'Payments run in the PayPal sandbox.' : 'Payment mode: mock, no PayPal call is made.'}</p></footer>
@@ -192,14 +196,14 @@ function keys(e) {
   e.preventDefault();
   items[(i + (e.shiftKey ? items.length - 1 : 1) + items.length) % items.length].focus();
 }
-function closePromo() { promo.hidden = true; document.removeEventListener('keydown', keys, true); sessionStorage.setItem(KEY, '1'); if (before) before.focus(); }
+function closePromo() { promo.hidden = true; document.removeEventListener('keydown', keys, true); sessionStorage.setItem(KEY, '1'); (before && before !== document.body ? before : document.querySelector('h1')).focus(); }
 function openPromo() { before = document.activeElement; promo.hidden = false; document.addEventListener('keydown', keys, true); document.getElementById('promo-close').focus(); }
 document.getElementById('promo-close').addEventListener('click', closePromo);`;
 
   const restoreFocus = !has('focus-lost-on-update');
   return layout({
     title: 'Your cart', base, cartCount, mode,
-    body: `<h1>Your cart</h1>
+    body: `<h1 tabindex="-1">Your cart</h1>
 <div class="panel">
   <ul class="lines" id="lines">
 ${lines}
@@ -258,14 +262,14 @@ export function checkoutPage(ctx) {
   const v = (k) => esc(shipping?.[k] || '');
 
   const nameEmail = has('swapped-labels')
-    ? `<label for="email">Full name</label><input id="name" name="name" autocomplete="name" value="${v('name')}">
-    <label for="name">Email</label><input id="email" name="email" type="email" autocomplete="email" value="${v('email')}">`
-    : `<label for="name">Full name</label><input id="name" name="name" autocomplete="name" value="${v('name')}">
-    <label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" value="${v('email')}">`;
+    ? `<label for="email">Full name</label><input id="name" name="name" autocomplete="name" required value="${v('name')}">
+    <label for="name">Email</label><input id="email" name="email" type="email" autocomplete="email" required value="${v('email')}">`
+    : `<label for="name">Full name</label><input id="name" name="name" autocomplete="name" required value="${v('name')}">
+    <label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required value="${v('email')}">`;
 
   const city = has('unlabeled-city-field')
     ? `<div class="lbl">City</div><input id="city" name="city" value="${v('city')}">`
-    : `<label for="city">City</label><input id="city" name="city" autocomplete="address-level2" value="${v('city')}">`;
+    : `<label for="city">City</label><input id="city" name="city" autocomplete="address-level2" required value="${v('city')}">`;
 
   const country = has('custom-country-dropdown')
     ? `<div class="lbl">Country</div>
@@ -277,14 +281,14 @@ export function checkoutPage(ctx) {
     </div>
     <input type="hidden" id="country" name="country" value="${v('country')}">`
     : `<label for="country">Country</label>
-    <select id="country" name="country" autocomplete="country">
+    <select id="country" name="country" autocomplete="country" required>
       <option value="">Choose a country</option>
       ${COUNTRIES.map(([c, n]) => `<option value="${c}"${shipping?.country === c ? ' selected' : ''}>${n}</option>`).join('')}
     </select>`;
 
   const terms = has('fake-terms-checkbox')
     ? `<p class="row"><input type="checkbox" id="terms" name="terms" style="display:none"><span class="fake-check" id="fake-terms"></span> <span>I agree to the terms of sale</span></p>`
-    : `<p class="row"><input type="checkbox" id="terms" name="terms"> <label for="terms" class="choice">I agree to the terms of sale</label></p>`;
+    : `<p class="row"><input type="checkbox" id="terms" name="terms" required> <label for="terms" class="choice">I agree to the terms of sale</label></p>`;
 
   const silent = has('silent-validation');
   return layout({
@@ -298,9 +302,9 @@ export function checkoutPage(ctx) {
   </fieldset>
   <fieldset>
     <legend>Shipping address</legend>
-    <label for="street">Street address</label><input id="street" name="street" autocomplete="street-address" value="${v('street')}">
+    <label for="street">Street address</label><input id="street" name="street" autocomplete="street-address" required value="${v('street')}">
     ${city}
-    <label for="zip">ZIP or postal code</label><input id="zip" name="zip" autocomplete="postal-code" value="${v('zip')}">
+    <label for="zip">ZIP or postal code</label><input id="zip" name="zip" autocomplete="postal-code" required value="${v('zip')}">
     ${country}
   </fieldset>
   <fieldset>

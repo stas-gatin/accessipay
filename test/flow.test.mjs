@@ -19,27 +19,7 @@ before(async () => {
 });
 after(async () => { server?.close(); await browser?.close(); });
 
-const AGENT_PURCHASE = [
-  { action: 'click', args: { role: 'button', name: 'Add Trail Backpack to cart' } },
-  { action: 'click', args: { role: 'link', name: 'Cart (1)' } },
-  { action: 'click', args: { role: 'button', name: 'Close' } },
-  { action: 'click', args: { role: 'link', name: 'Checkout' } },
-  { action: 'fill', args: { name: 'Full name', text: 'Alex Morgan' } },
-  { action: 'fill', args: { name: 'Email', text: 'alex.morgan@example.com' } },
-  { action: 'fill', args: { name: 'Street address', text: '12 Market Street' } },
-  { action: 'fill', args: { name: 'City', text: 'Springfield' } },
-  { action: 'fill', args: { name: 'ZIP or postal code', text: '62701' } },
-  { action: 'select', args: { name: 'Country', option: 'United States' } },
-  { action: 'check', args: { role: 'radio', name: 'Standard delivery, 3 to 5 days, $5.00' } },
-  { action: 'check', args: { role: 'checkbox', name: 'I agree to the terms of sale' } },
-  { action: 'click', args: { role: 'button', name: 'Continue to payment' } },
-  { action: 'fill', args: { name: 'Name on card', text: 'Alex Morgan' } },
-  { action: 'fill', args: { name: 'Card number', text: '4111 1111 1111 1111' } },
-  { action: 'fill', args: { name: 'Expiry date (MM/YY)', text: '12/30' } },
-  { action: 'fill', args: { name: 'Security code', text: '123' } },
-  { action: 'click', args: { role: 'button', name: 'Pay $54.00' } },
-  { action: 'done', args: {} },
-];
+const AGENT_PURCHASE = JSON.parse(fs.readFileSync(new URL('./fixtures/agent-purchase.json', import.meta.url), 'utf8'));
 
 async function finished(id) {
   for (let i = 0; i < 300; i++) {

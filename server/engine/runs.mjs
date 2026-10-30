@@ -82,6 +82,7 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
       })
       .finally(() => {
         rec.status = 'finished';
+        if (rec.brain.usage) rec.usage = { ...rec.brain.usage };
         rec.brain.close?.();
         publish(rec, { t: new Date().toISOString(), type: 'finished', outcome: rec.outcome });
         save(rec);
@@ -101,7 +102,7 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
     const ids = [...new Set([...runs.keys(), ...fromDisk])].sort().reverse();
     return ids.map((id) => {
       const r = get(id);
-      return r && { id: r.id, createdAt: r.createdAt, label: r.label, persona: r.persona, brainKind: r.brainKind, model: r.model, defects: r.defects, patches: r.patches, status: r.status, outcome: r.outcome, steps: r.steps, payment: r.payment };
+      return r && { id: r.id, createdAt: r.createdAt, label: r.label, persona: r.persona, brainKind: r.brainKind, model: r.model, defects: r.defects, patches: r.patches, status: r.status, outcome: r.outcome, steps: r.steps, payment: r.payment, usage: r.usage, findings: r.findings };
     }).filter(Boolean);
   }
 
