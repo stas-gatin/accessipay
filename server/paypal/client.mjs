@@ -105,6 +105,24 @@ export function createPayPal(env = process.env) {
 
   return {
     mode,
+    clientId: mode === 'sandbox' ? env.PAYPAL_CLIENT_ID : null,
+
+    // JS SDK flow (PayPal buttons and Card Fields): the browser sends card data to PayPal, never to the shop.
+    async createOrder({ amount, currency = 'USD', invoiceId, description }) {
+      const value = Number(amount).toFixed(2);
+      const o = await call('POST', '/v2/checkout/orders', {
+        intent: 'CAPTURE',
+        purchase_units: [{ amount: { currency_code: currency, value }, invoice_id: invoiceId, description }],
+      }, `create-${invoiceId}`);
+      return { id: o.id, status: o.status };
+    },
+
+    async captureOrder(id) {
+      const r = await call('POST', `/v2/checkout/orders/${id}/capture`, {}, `capture-${id}`);
+      const capture = r.purchase_units?.[0]?.payments?.captures?.[0];
+      if (r.status !== 'COMPLETED' || capture?.status === 'DECLINED') return { ok: false, id: r.id, status: r.status, errors: ['The payment was not completed.'] };
+      return { ok: true, id: r.id, status: r.status, captureId: capture?.id, raw: r };
+    },
 
     // Charge a card for one shop order. Returns { id, status, raw }.
     async payWithCard({ amount, currency = 'USD', card, invoiceId, description }) {

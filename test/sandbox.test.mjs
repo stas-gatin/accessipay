@@ -10,7 +10,8 @@ import { createApp, loadEnv } from '../server/app.mjs';
 
 loadEnv(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env'));
 const hasKeys = !!(process.env.PAYPAL_CLIENT_ID && process.env.PAYPAL_CLIENT_SECRET);
-const PURCHASE = JSON.parse(fs.readFileSync(new URL('./fixtures/agent-purchase.json', import.meta.url), 'utf8'));
+// In the sandbox the payment page uses PayPal Card Fields, whose fields carry PayPal's own names.
+const PURCHASE = JSON.parse(fs.readFileSync(new URL('./fixtures/agent-purchase-sdk.json', import.meta.url), 'utf8'));
 
 let browser, server, ctx;
 before(async () => {
@@ -35,6 +36,7 @@ test('a purchase in the shop creates a COMPLETED order in the PayPal sandbox', {
   assert.equal(r.payment.mode, 'sandbox');
   assert.equal(r.payment.status, 'COMPLETED');
   assert.match(r.payment.orderId, /^[A-Z0-9]{17}$/);
+  assert.equal(ctx.shop.get(r.instanceId).order.via, 'paypal-js-sdk');
 
   // Leave the sandbox tidy: refund the capture.
   const inst = ctx.shop.get(r.instanceId);

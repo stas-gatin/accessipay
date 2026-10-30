@@ -72,8 +72,43 @@ export class Session {
     this.external = external;
   }
 
+  // Visible iframes in document order with their frames. Screen readers and browser agents read inside
+  // iframes (payment fields live there), so the customer perceives them as part of the page.
+  async visibleFrames() {
+    const out = [];
+    const handles = await this.page.locator('iframe').elementHandles().catch(() => []);
+    for (const h of handles) {
+      const box = await h.boundingBox().catch(() => null);
+      const hidden = await h.evaluate((el) => el.getAttribute('aria-hidden') === 'true' || getComputedStyle(el).visibility === 'hidden').catch(() => true);
+      if (!box || box.width < 2 || box.height < 2 || hidden) continue;
+      const frame = await h.contentFrame().catch(() => null);
+      if (frame) out.push({ frame, box });
+    }
+    return out;
+  }
+
+  // The frame that holds keyboard focus: an iframe's document when focus is inside it, else the page.
+  async focusFrame() {
+    const inFrame = await this.page.evaluate(() => document.activeElement?.tagName === 'IFRAME').catch(() => false);
+    if (!inFrame) return this.page.mainFrame();
+    const h = await this.page.locator(':focus').first().elementHandle().catch(() => null);
+    return (h && (await h.contentFrame().catch(() => null))) || this.page.mainFrame();
+  }
+
+  // Finds an element by role and exact name on the page, then inside visible iframes.
+  async byRole(role, name, nth = 0) {
+    const main = this.page.getByRole(role, { name, exact: true });
+    if ((await main.count()) > 0) return main.nth(nth);
+    for (const { frame } of await this.visibleFrames()) {
+      const loc = frame.getByRole(role, { name, exact: true });
+      if ((await loc.count()) > 0) return loc.nth(nth);
+    }
+    return main.nth(nth);
+  }
+
   async focusedName() {
-    return this.page.evaluate(() => {
+    const frame = await this.focusFrame();
+    return frame.evaluate(() => {
       const el = document.activeElement;
       if (!el || el === document.body) return '';
       const label = el.labels && el.labels[0] ? el.labels[0].innerText : '';
@@ -96,7 +131,7 @@ export class Session {
     if (['click', 'check'].includes(d.action) && ACCOUNT_ACTION.test(a.name || '')) return account;
     if (d.action === 'fill' && /password/i.test(a.name || '')) return account;
     if (d.action === 'type' || d.action === 'activate') {
-      const isPassword = await this.page.evaluate(() => document.activeElement?.type === 'password').catch(() => false);
+      const isPassword = await (await this.focusFrame()).evaluate(() => document.activeElement?.type === 'password').catch(() => false);
       if (isPassword) return account;
       if (d.action === 'activate' && ACCOUNT_ACTION.test(await this.focusedName())) return account;
     }
@@ -110,11 +145,27 @@ export class Session {
   }
 
   async tree() {
-    try { return collapseOptions(noUrls((await this.page.locator('body').ariaSnapshot()).trim())); } catch (e) { return `(page unreadable: ${firstLine(e)})`; }
+    try {
+      let main = (await this.page.locator('body').ariaSnapshot()).trim();
+      const frames = await this.visibleFrames();
+      if (frames.length && /^\s*- iframe\b/m.test(main)) {
+        let i = 0;
+        const lines = [];
+        for (const line of main.split('\n')) {
+          const m = line.match(/^(\s*)- iframe\b/);
+          if (!m || i >= frames.length) { lines.push(line); continue; }
+          const inner = await frames[i++].frame.locator('body').ariaSnapshot().catch(() => '');
+          lines.push(`${m[1]}- iframe:`);
+          for (const l of inner.trim().split('\n').filter(Boolean)) lines.push(`${m[1]}  ${l}`);
+        }
+        main = lines.join('\n');
+      }
+      return collapseOptions(noUrls(main));
+    } catch (e) { return `(page unreadable: ${firstLine(e)})`; }
   }
 
   async focusForScreenReader() {
-    const loc = this.page.locator(':focus');
+    const loc = (await this.focusFrame()).locator(':focus');
     if ((await loc.count()) === 0) return 'nothing focused (top of page)';
     try { return noUrls((await loc.first().ariaSnapshot()).trim()).replace(/^- /, ''); } catch { return 'an element with no name'; }
   }
@@ -181,7 +232,7 @@ export class Session {
     const role = { click: a.role, fill: a.role || 'textbox', select: 'combobox', check: a.role || 'checkbox', jump: a.role }[d.action];
     if (!role && !['activate', 'press', 'type'].includes(d.action)) return null;
     try {
-      const loc = role ? this.page.getByRole(role, { name: a.name, exact: true }).nth(a.nth || 0) : this.page.locator(':focus');
+      const loc = role ? await this.byRole(role, a.name, a.nth || 0) : this.page.locator(':focus');
       if ((await loc.count()) === 0) return { missing: true, role: role || null, name: a.name || null };
       let box = await loc.boundingBox();
       let scrolled = false;
@@ -244,7 +295,7 @@ export class Session {
         case 'jump': {
           // A screen reader's elements list: go straight to a control by role and name.
           // Only elements that can take keyboard focus can be reached this way.
-          const loc = page.getByRole(a.role, { name: a.name, exact: true }).nth(a.nth || 0);
+          const loc = await this.byRole(a.role, a.name, a.nth || 0);
           if ((await loc.count()) === 0) return `There is no ${a.role} named "${a.name}" on the page.`;
           const focusable = await loc.evaluate((el) => el.tabIndex >= 0 && !el.disabled && !el.closest('[inert],[aria-hidden="true"]'));
           if (!focusable) return `The ${a.role} "${a.name}" is on the page but cannot take keyboard focus.`;
@@ -265,7 +316,7 @@ export class Session {
           return `Pressed ${key}.`;
         }
         case 'type': {
-          const editable = await page.evaluate(() => {
+          const editable = await (await this.focusFrame()).evaluate(() => {
             const el = document.activeElement;
             return !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
           });
@@ -277,18 +328,25 @@ export class Session {
           return `Typed "${a.text}".`;
         }
         case 'click':
-          await page.getByRole(a.role, { name: a.name, exact: true }).nth(a.nth || 0).click({ timeout: 2500 });
+          await (await this.byRole(a.role, a.name, a.nth || 0)).click({ timeout: 2500 });
           await this.settle();
           return `Clicked ${a.role} "${a.name}".`;
         case 'fill':
-          await page.getByRole(a.role || 'textbox', { name: a.name, exact: true }).nth(a.nth || 0).fill(String(a.text ?? ''), { timeout: 2500 });
+          {
+            // Typed key by key like a person, so masked fields (card number, expiry) format correctly.
+            const field = await this.byRole(a.role || 'textbox', a.name, a.nth || 0);
+            await field.click({ timeout: 2500 });
+            await field.press('ControlOrMeta+A');
+            await field.press('Backspace');
+            await field.pressSequentially(String(a.text ?? ''), { delay: 12 });
+          }
           return `Filled ${a.role || 'textbox'} "${a.name}" with "${a.text}".`;
         case 'select':
-          await page.getByRole('combobox', { name: a.name, exact: true }).nth(a.nth || 0).selectOption({ label: a.option }, { timeout: 2500 });
+          await (await this.byRole('combobox', a.name, a.nth || 0)).selectOption({ label: a.option }, { timeout: 2500 });
           await this.settle();
           return `Selected "${a.option}" in "${a.name}".`;
         case 'check':
-          await page.getByRole(a.role || 'checkbox', { name: a.name, exact: true }).nth(a.nth || 0).check({ timeout: 2500 });
+          await (await this.byRole(a.role || 'checkbox', a.name, a.nth || 0)).check({ timeout: 2500 });
           await this.settle();
           return `Checked ${a.role || 'checkbox'} "${a.name}".`;
         default:

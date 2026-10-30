@@ -370,6 +370,9 @@ document.getElementById('checkout').addEventListener('submit', async function (e
 
 export function payPage(ctx) {
   const { base, has, cartCount, mode, totals, shipping } = ctx;
+  // In the sandbox the page uses PayPal's own JS SDK: PayPal buttons and Card Fields. Card data goes to
+  // PayPal and never reaches this shop's server. The placeholder-only defect keeps the shop's own fields.
+  if (mode === 'sandbox' && ctx.paypalClientId && !has('placeholder-only-card-fields')) return payPageSdk(ctx);
   const ph = has('placeholder-only-card-fields');
   const field = (id, label, extra, placeholder) => ph
     ? `<p><input id="${id}" name="${id}" placeholder="${placeholder}" ${extra}></p>`
@@ -411,6 +414,70 @@ async function pay(e) {
   busy = false;
   if (j.ok) { location.href = BASE + '/done'; return; }
   document.getElementById('pay-errors').innerHTML = '<ul>' + j.errors.map(function (m) { return '<li>' + m + '</li>'; }).join('') + '</ul>';
+}
+document.getElementById('pay').addEventListener('submit', pay);
+${has('div-pay-button') ? "document.getElementById('pay-button').addEventListener('click', pay);" : ''}`,
+  });
+}
+
+function payPageSdk(ctx) {
+  const { base, has, cartCount, mode, totals, shipping, paypalClientId } = ctx;
+  const payLabel = `Pay ${money(totals.total)}`;
+  const payButton = has('div-pay-button')
+    ? `<div class="btn primary" id="pay-button">${payLabel}</div>`
+    : `<button type="submit" class="primary" id="pay-button">${payLabel}</button>`;
+  return layout({
+    title: 'Payment', base, cartCount, mode,
+    body: `<h1>Payment</h1>
+<div class="panel totals">
+  <h2>Order summary</h2>
+  <p><span>Items</span><span>${money(totals.subtotal - totals.discount)}</span></p>
+  <p><span>Delivery</span><span>${money(totals.delivery)}</span></p>
+  <p><strong>Total</strong><strong>${money(totals.total)}</strong></p>
+  <p class="mode">Shipping to ${esc(shipping?.name || '')}, ${esc(shipping?.city || '')}</p>
+</div>
+<form id="pay" class="panel" novalidate>
+  <h2>Pay with PayPal</h2>
+  <div id="paypal-buttons" class="pp-buttons"></div>
+  <h2>Or pay by card</h2>
+  <p class="mode">Card details go straight to PayPal; this shop never sees them. PayPal sandbox: use a test card.</p>
+  <div id="card-name" class="pp-field"></div>
+  <div id="card-number" class="pp-field"></div>
+  <div class="row pp-row"><div id="card-expiry" class="pp-field"></div><div id="card-cvv" class="pp-field"></div></div>
+  <div id="pay-errors" class="errors" role="alert"></div>
+  <p>${payButton}</p>
+</form>
+<style>.pp-field { max-width: 420px; min-height: 52px; } .row .pp-field { flex: 1 1 180px; min-width: 160px; } .pp-row { max-width: 420px; } .pp-buttons { max-width: 420px; margin: 4px 0 18px; }</style>
+<script src="https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(paypalClientId)}&components=buttons,card-fields&currency=USD&intent=capture"></script>`,
+    script: `
+function showErrors(list) {
+  document.getElementById('pay-errors').innerHTML = '<ul>' + list.map(function (m) { return '<li>' + m + '</li>'; }).join('') + '</ul>';
+}
+function createOrder() {
+  return post('/api/paypal/order').then(function (j) { if (!j.id) throw new Error(j.error || 'order'); return j.id; });
+}
+function onApprove(data) {
+  return post('/api/paypal/capture', { orderID: data.orderID }).then(function (j) {
+    if (j.ok) { location.href = BASE + '/done'; return; }
+    showErrors(j.errors || ['The payment did not go through.']);
+  });
+}
+function onError() { showErrors(['The payment did not go through. Check the card details and try again.']); }
+paypal.Buttons({ createOrder: createOrder, onApprove: onApprove, onError: onError, style: { layout: 'horizontal', tagline: false, height: 44 } }).render('#paypal-buttons');
+const cardFields = paypal.CardFields({ createOrder: createOrder, onApprove: onApprove, onError: onError });
+if (cardFields.isEligible()) {
+  cardFields.NameField().render('#card-name');
+  cardFields.NumberField().render('#card-number');
+  cardFields.ExpiryField().render('#card-expiry');
+  cardFields.CVVField().render('#card-cvv');
+}
+let busy = false;
+async function pay(e) {
+  if (e) e.preventDefault();
+  if (busy) return;
+  busy = true;
+  try { await cardFields.submit(); } catch (err) { showErrors(['Check the card details: ' + (err && err.message ? err.message : 'the card was not accepted') + '.']); }
+  busy = false;
 }
 document.getElementById('pay').addEventListener('submit', pay);
 ${has('div-pay-button') ? "document.getElementById('pay-button').addEventListener('click', pay);" : ''}`,

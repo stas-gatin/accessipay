@@ -53,7 +53,7 @@ export function createShop({ paypal, dataDir }) {
   function render(inst, page, base) {
     const has = (d) => inst.defects.includes(d);
     let html = PAGES[page]({
-      base, has, mode: paypal.mode, cart: inst.cart, coupon: inst.coupon, shipping: inst.shipping,
+      base, has, mode: paypal.mode, paypalClientId: paypal.clientId, cart: inst.cart, coupon: inst.coupon, shipping: inst.shipping,
       totals: totals(inst), order: inst.order, cartCount: inst.cart.reduce((s, l) => s + l.qty, 0),
     });
     for (const p of inst.patches.filter((x) => x.page === page)) {
@@ -125,6 +125,44 @@ export function createShop({ paypal, dataDir }) {
     if (errors.length) return res.json({ ok: false, errors });
     req.inst.shipping = { name: b.name.trim(), email: b.email.trim(), street: b.street.trim(), city: b.city.trim(), zip: b.zip.trim(), country: b.country, delivery: b.delivery };
     res.json({ ok: true });
+  });
+
+  // JS SDK flow: the browser asks for an order, PayPal collects the card, the server captures.
+  router.post('/api/paypal/order', async (req, res) => {
+    const inst = req.inst;
+    if (!inst.shipping || !inst.cart.length) return res.status(400).json({ error: 'Complete checkout first.' });
+    if (paypal.mode !== 'sandbox') return res.status(400).json({ error: 'PayPal is in mock mode.' });
+    try {
+      const t = totals(inst);
+      const o = await paypal.createOrder({ amount: t.total, invoiceId: `AP-${inst.id}-${Date.now()}`, description: inst.cart.map((l) => `${l.qty} x ${l.name}`).join(', ') });
+      inst.pendingPaypalOrder = o.id;
+      inst.paying = true;
+      setTimeout(() => { if (inst.pendingPaypalOrder === o.id && !inst.order) inst.paying = false; }, 60000);
+      res.json({ id: o.id });
+    } catch (e) {
+      inst.paying = false;
+      console.error(`[paypal order ${inst.id}] ${e.message}`);
+      res.status(502).json({ error: 'PayPal could not create the order.' });
+    }
+  });
+
+  router.post('/api/paypal/capture', async (req, res) => {
+    const inst = req.inst;
+    const id = String(req.body?.orderID || '');
+    if (!id || id !== inst.pendingPaypalOrder) return res.status(400).json({ ok: false, errors: ['Unknown order.'] });
+    try {
+      const r = await paypal.captureOrder(id);
+      if (!r.ok) return res.json({ ok: false, errors: r.errors });
+      const t = totals(inst);
+      inst.order = { id: 'PP-' + inst.id.toUpperCase(), name: inst.shipping.name, total: t.total, lines: inst.cart.map((l) => ({ sku: l.sku, qty: l.qty })), delivery: inst.shipping.delivery, paypalOrderId: r.id, captureId: r.captureId, status: r.status, mode: paypal.mode, via: 'paypal-js-sdk' };
+      inst.cart = [];
+      res.json({ ok: true });
+    } catch (e) {
+      console.error(`[paypal capture ${inst.id}] ${e.message}`);
+      res.json({ ok: false, errors: ['The payment did not go through. Check the card details and try again.'] });
+    } finally {
+      inst.paying = false;
+    }
   });
 
   router.post('/api/pay', async (req, res) => {

@@ -101,7 +101,7 @@ export async function runShopper({ browser, startUrl, persona, brain, goal, maxS
 
       if (decision.action === 'done' || decision.action === 'give_up') {
         findings = decision.findings || [];
-        const ok = await oracle(page);
+        const ok = await oracle(page, { final: true });
         outcome = ok
           ? (external ? { status: 'reached-payment', reason: 'Reached the payment step. Stopped there: nothing was paid.' } : { status: 'purchased', reason: 'The order is confirmed by the payment oracle.' })
           : { status: 'blocked', reason: decision.action === 'done' ? (external ? 'The shopper said it reached payment, but no payment form was found.' : 'The agent said it was done, but no paid order exists.') : 'The agent gave up.', claimedDone: decision.action === 'done' };

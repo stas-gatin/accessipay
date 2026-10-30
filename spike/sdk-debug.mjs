@@ -1,0 +1,14 @@
+import fs from 'node:fs'; import os from 'node:os'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
+import { chromium } from 'playwright'; import { createApp, loadEnv } from '../server/app.mjs';
+loadEnv(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env'));
+const browser = await chromium.launch(); const port = 5555;
+const ctx = createApp({ browser, dataDir: fs.mkdtempSync(path.join(os.tmpdir(), 'ap-sdk-')), origin: `http://127.0.0.1:${port}`, env: process.env });
+const server = ctx.app.listen(port);
+const script = JSON.parse(fs.readFileSync(new URL('../test/fixtures/agent-purchase-sdk.json', import.meta.url), 'utf8'));
+const rec = ctx.runs.start({ persona: 'agent', brain: 'scripted', script });
+while (ctx.runs.get(rec.id).status !== 'finished') await new Promise((r) => setTimeout(r, 300));
+const r = ctx.runs.get(rec.id);
+for (const e of r.events.filter((e) => e.type === 'act').slice(-7)) console.log('act', e.result.slice(0, 110));
+const end = r.events.find((e) => e.type === 'end');
+console.log('--- end page ---\n' + (end?.text || '').slice(0, 1600));
+server.close(); await browser.close();
