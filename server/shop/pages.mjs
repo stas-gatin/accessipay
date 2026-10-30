@@ -19,6 +19,14 @@ export const COUNTRIES = [
   ['ES', 'Spain'],
 ];
 
+
+// Flat product illustrations, drawn here so the shop has no external assets.
+const ART = {
+  'bp-01': '<svg viewBox="0 0 200 140" role="img" aria-label="Trail Backpack, forest green with a front pocket" focusable="false"><rect width="200" height="140" rx="12" fill="#e6efe9"/><rect x="62" y="22" width="76" height="104" rx="22" fill="#2f6b4f"/><rect x="62" y="22" width="76" height="40" rx="20" fill="#3c8562"/><rect x="76" y="74" width="48" height="36" rx="10" fill="#245740"/><rect x="92" y="12" width="16" height="16" rx="6" fill="none" stroke="#245740" stroke-width="5"/><rect x="96" y="84" width="8" height="6" rx="2" fill="#c9e2d3"/></svg>',
+  'wb-02': '<svg viewBox="0 0 200 140" role="img" aria-label="Steel Water Bottle, brushed steel with a black cap" focusable="false"><rect width="200" height="140" rx="12" fill="#e9edf2"/><rect x="84" y="34" width="32" height="96" rx="12" fill="#a9b6c4"/><rect x="88" y="40" width="8" height="84" rx="4" fill="#cfd8e2"/><rect x="88" y="16" width="24" height="20" rx="6" fill="#23303d"/><rect x="92" y="10" width="16" height="8" rx="3" fill="#23303d"/></svg>',
+  'rj-03': '<svg viewBox="0 0 200 140" role="img" aria-label="Rain Jacket, bright yellow with a hood" focusable="false"><rect width="200" height="140" rx="12" fill="#fbf1d6"/><path d="M70 40 L100 28 L130 40 L150 70 L138 76 L130 62 L130 128 L70 128 L70 62 L62 76 L50 70 Z" fill="#f2b81e"/><path d="M84 34 Q100 12 116 34 Q100 44 84 34 Z" fill="#d99d0a"/><rect x="99" y="40" width="2" height="88" fill="#8a6200"/><rect x="78" y="86" width="14" height="4" rx="2" fill="#d99d0a"/><rect x="108" y="86" width="14" height="4" rx="2" fill="#d99d0a"/></svg>',
+};
+
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 export const money = (n) => '$' + Number(n).toFixed(2);
 
@@ -39,6 +47,7 @@ h2 { font-size:19px; margin:0 0 8px; }
 .grid { list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
 .card, .panel { background:#ffffff; border:1px solid var(--line); border-radius:10px; padding:16px; }
 .price { font-weight:700; margin:4px 0; }
+.art svg { display:block; width:100%; height:auto; border-radius:10px; margin:0 0 12px; }
 .btn, button { font:inherit; padding:9px 14px; border-radius:8px; border:1px solid var(--brand); background:#ffffff; color:var(--brand); cursor:pointer; text-decoration:none; display:inline-flex; gap:6px; align-items:center; }
 .btn.primary, button.primary { background:var(--brand); color:var(--brand-ink); }
 .icon { padding:8px; }
@@ -113,6 +122,7 @@ export function catalogPage(ctx) {
       ? `<button type="button" class="add icon" data-sku="${p.sku}" aria-label="button">${ICON_CART}</button>`
       : `<button type="button" class="add" data-sku="${p.sku}">${ICON_CART} Add <span class="sr-only">${esc(p.name)} </span>to cart</button>`;
     return `<li class="card">
+    <div class="art">${ART[p.sku] || ''}</div>
     <h2>${esc(p.name)}</h2>
     <p class="price">${money(p.price)}</p>
     <p>${esc(p.blurb)}</p>

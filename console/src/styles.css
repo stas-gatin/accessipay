@@ -3,18 +3,18 @@
    Every text colour meets WCAG AA on the background it is used on, in both themes. */
 :root {
   color-scheme: light;
-  --bg: #f6f7f9;
+  --bg: #f6f8fb;
   --surface: #ffffff;
   --surface-2: #f0f2f5;
-  --line: #e0e4e9;
+  --line: #e3e8ef;
   --line-2: #c9d0d8;
-  --ink: #0f141a;
-  --muted: #4d5864;
+  --ink: #0b1b33;
+  --muted: #4a586b;
   --dim: #5f6a76;
   --accent: #05664c;
-  --fill: #2ad4a2;
-  --fill-hover: #4fe0b5;
-  --fill-ink: #03120d;
+  --fill: #0b1b33;
+  --fill-hover: #1c2f4f;
+  --fill-ink: #ffffff;
   --accent-soft: rgba(5, 102, 76, .07);
   --accent-line: rgba(5, 102, 76, .35);
   --ok: #05664c;
@@ -23,7 +23,7 @@
   --bad-line: rgba(194, 54, 42, .35);
   --warn: #8a5800;
   --warn-soft: rgba(138, 88, 0, .08);
-  --header-bg: rgba(246, 247, 249, .85);
+  --header-bg: rgba(255, 255, 255, .88);
   --code-bg: #0d1117;
   --code-ink: #d6e2ee;
   --shadow: 0 1px 2px rgba(16, 24, 40, .04), 0 1px 3px rgba(16, 24, 40, .06);

@@ -37,40 +37,11 @@ export default function NewTest({ meta }) {
 
   return (
     <div className="page">
-      <section className="hero" aria-labelledby="hero-title" style={{ marginBottom: 20, borderBottom: 0, paddingBottom: 0 }}>
-        <div>
-          <p className="eyebrow">Checkout accessibility, tested by the outcome</p>
-          <h1 id="hero-title">Zero violations.<br /><em>Zero purchases.</em></h1>
-          <p className="lead" style={{ marginBottom: 0 }}>
-            Scanners check rules. AccessiPay sends a shopper who cannot see the screen, cannot use a mouse, or is an AI agent
-            to buy through PayPal. Only a paid order counts. When the shopper gets stuck, AI fixes the page and the same shopper tries again.
-          </p>
-        </div>
-        {proof ? (
-          <a href={`#/runs/${proof.id}`} className="verdict" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <div>
-              <p className="label">The scanner says</p>
-              <p className="value ok">{proof.scan.totalViolations} violations</p>
-              <p className="sub">axe-core, every page of the checkout</p>
-            </div>
-            <div>
-              <p className="label">{meta.personas[proof.persona]?.label}</p>
-              <p className="value bad">Could not buy</p>
-              <p className="sub">{proof.steps} steps, then stuck</p>
-            </div>
-            <div className="verdict-foot">A real run on this demo shop: {(meta.defects.find((d) => d.id === proof.defects[0]) || {}).short || 'clean shop'}. Open it →</div>
-          </a>
-        ) : <div />}
-      </section>
+      <p className="eyebrow">Console</p>
+      <h1>Run a test</h1>
+      <p className="lead">Pick a shop, a customer and who decides each step. The run streams live; the scanner checks the same pages at the end.</p>
 
-      <div className="facts" role="group" aria-label="About the demo shop">
-        <div className="fact"><div className="n">{meta.defects.length}</div><div className="t">real checkout defects</div></div>
-        <div className="fact"><div className="n">{meta.defects.filter((d) => d.axeExpected).length}</div><div className="t">of them flagged by axe-core</div></div>
-        <div className="fact"><div className="n">{Object.keys(meta.personas).length}</div><div className="t">kinds of shopper</div></div>
-        <div className="fact"><div className="n">1</div><div className="t">judge of success: a paid PayPal order</div></div>
-      </div>
-
-      <div className="grid-2" style={{ marginTop: 32 }}>
+      <div className="grid-2">
         <section className="card" aria-labelledby="s1">
           <h2 className="section-title" id="s1"><span className="step-no">1</span>Shop to test</h2>
           <div style={{ display: 'grid', gap: 8 }}>
