@@ -3,6 +3,8 @@
 // applied to the shop instance, and shown as a unified diff. A re-run then proves or disproves the fix.
 
 import crypto from 'node:crypto';
+import fs from 'node:fs';
+import path from 'node:path';
 import { createTwoFilesPatch } from 'diff';
 import Anthropic from '@anthropic-ai/sdk';
 import { PAGE_PATHS } from '../shop/instances.mjs';
@@ -104,8 +106,19 @@ export function anthropicFixer({ model = process.env.ACCESSIPAY_FIX_MODEL || 'cl
 }
 
 // Keeps fix jobs; an external fixer (a Claude Code agent) reads the prompt and posts its reply.
-export function createFixes({ shop, runs, origin, fixers = {} }) {
+export function createFixes({ shop, runs, origin, fixers = {}, dataDir }) {
   const jobs = new Map();
+  const dirs = dataDir ? [path.join(dataDir, 'fixes'), path.join(dataDir, 'recorded', 'fixes')] : [];
+  if (dirs[0]) fs.mkdirSync(dirs[0], { recursive: true });
+  const persist = (job) => { if (dirs[0]) fs.writeFileSync(path.join(dirs[0], `${job.id}.json`), JSON.stringify(job, null, 2)); };
+  // Fixes from earlier sessions and the recorded demo set.
+  for (const dir of dirs) {
+    if (!fs.existsSync(dir)) continue;
+    for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.json'))) {
+      const job = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+      if (!jobs.has(job.id)) jobs.set(job.id, job);
+    }
+  }
 
   function start({ runId, fixer = 'external' }) {
     const run = runs.get(runId);
@@ -119,11 +132,12 @@ export function createFixes({ shop, runs, origin, fixers = {} }) {
     const id = crypto.randomBytes(4).toString('hex');
     const job = { id, runId, instanceId: inst.id, page, fixer, status: 'waiting', createdAt: new Date().toISOString(), system: FIXER_SYSTEM, prompt: fixPrompt({ run, page, html }) };
     jobs.set(id, job);
+    persist(job);
     if (fixers[fixer]) {
       job.status = 'working';
       fixers[fixer]().propose(job.prompt)
         .then((r) => finish(job, r))
-        .catch((e) => { job.status = 'error'; job.error = e.message; });
+        .catch((e) => { job.status = 'error'; job.error = e.message; persist(job); });
     } else if (fixer !== 'external') {
       throw new Error(`Unknown fixer "${fixer}"`);
     }
@@ -136,6 +150,7 @@ export function createFixes({ shop, runs, origin, fixers = {} }) {
     if (reply.error && !reply.patches?.length) { job.status = 'error'; job.error = reply.error; return job; }
     const r = applyPatches({ shop, inst, page: job.page, base: `/s/${inst.id}`, patches: reply.patches || [] });
     Object.assign(job, { status: 'applied', summary: reply.summary, accepted: r.accepted, rejected: r.rejected, diff: r.diff, changed: r.changed, finishedAt: new Date().toISOString() });
+    persist(job);
     return job;
   }
 

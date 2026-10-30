@@ -20,7 +20,7 @@ const common = { fontFamily: 'Inter, system-ui, sans-serif', fontSize: 14, heade
 const light = themeQuartz.withParams({
   ...common,
   backgroundColor: '#ffffff', foregroundColor: '#0f141a', headerBackgroundColor: '#f0f2f5', headerTextColor: '#3f4a55',
-  borderColor: '#e0e4e9', rowHoverColor: '#f6f7f9', selectedRowBackgroundColor: 'rgba(7, 122, 92, 0.08)', accentColor: '#077a5c',
+  borderColor: '#e0e4e9', rowHoverColor: '#f6f7f9', selectedRowBackgroundColor: 'rgba(5, 102, 76, 0.08)', accentColor: '#05664c',
 });
 const dark = themeQuartz.withPart(colorSchemeDark).withParams({
   ...common,

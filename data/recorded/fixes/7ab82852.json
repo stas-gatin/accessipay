@@ -1,0 +1,23 @@
+{
+  "id": "7ab82852",
+  "runId": "20261030-ee0cff",
+  "instanceId": "865c46a671",
+  "page": "pay",
+  "fixer": "external",
+  "status": "applied",
+  "createdAt": "2026-10-30T15:59:46.889Z",
+  "summary": "The Pay control was a plain div, so it had no button role, could not be reached by keyboard, and Enter in the card fields did not submit. It is now a native submit button with the same styling, so it is exposed as button \"Pay $54.00\" and Enter submits the form.",
+  "accepted": [
+    {
+      "id": "c819e6",
+      "page": "pay",
+      "find": "<p><div class=\"btn primary\" id=\"pay-button\">Pay $54.00</div></p>",
+      "replace": "<p><button type=\"submit\" class=\"btn primary\" id=\"pay-button\">Pay $54.00</button></p>",
+      "why": "Native submit button gives role, name, focusability and Enter-key implicit submission; also removes the invalid div inside p that produced empty paragraphs."
+    }
+  ],
+  "rejected": [],
+  "changed": true,
+  "diff": "===================================================================\n--- pay.html (before)\n+++ pay.html (after)\n@@ -78,5 +78,5 @@\n   <label for=\"cc-csc\">Security code</label><input id=\"cc-csc\" name=\"cc-csc\" inputmode=\"numeric\" autocomplete=\"cc-csc\">\n   <div id=\"pay-errors\" class=\"errors\" role=\"alert\"></div>\n-  <p><div class=\"btn primary\" id=\"pay-button\">Pay $54.00</div></p>\n+  <p><button type=\"submit\" class=\"btn primary\" id=\"pay-button\">Pay $54.00</button></p>\n </form>\n </main>\n",
+  "note": "Rebuilt after a server restart from the fixer reply and the saved patches."
+}

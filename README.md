@@ -25,18 +25,20 @@ The same thing blocks AI shopping agents: they read pages through the accessibil
 
 ## Results so far
 
-Measured, not estimated:
+Measured, not estimated. Runs below used the real PayPal sandbox; the shopper's decisions came from Claude Code agents driving `tools/agent.mjs` (the built-in Claude API brain is implemented but has not been run yet).
 
 | What | Result |
 |---|---|
 | axe-core on the 12 defects, one defect per shop | flags 2 (`link-name`, `label`), passes 10 |
 | Clean shop, every page | 0 axe-core violations |
-| Screen reader shopper, clean shop (Claude Code agent as the brain) | purchased, 35 steps |
-| Keyboard-only shopper, promo popup that traps focus | blocked on the cart page |
-| Same shopper after the AI fix (9 patches to the cart page) | purchased, 47 steps |
-| AI shopping agent, Pay button made of a `<div>` | blocked on the payment page |
+| Screen reader shopper, clean shop | bought it in 35 steps, PayPal sandbox order `COMPLETED` |
+| Keyboard-only shopper, promo popup that traps focus (scanner: 0 violations) | blocked on the cart page |
+| Same shopper after the AI fix (7 patches to the cart page) | bought it in 46 steps, order `COMPLETED` |
+| AI shopping agent, Pay button made of a `<div>` (scanner: 0 violations) | blocked on the payment page |
+| Same agent after the AI fix (1 patch: a real `<button>`) | bought it in 18 steps, order `COMPLETED` |
+| AI shopping agent, task stated as a need ("keep me dry on hikes, under $100, fast") | chose the Rain Jacket with express delivery, $94.00, order `COMPLETED` |
 
-The full evaluation (every defect, every persona, Claude API, holdout set) is `eval/run-eval.mjs`; its results appear in the console under *Defects and results* once it has run.
+These six runs, their screenshots and the two fixes are in `data/recorded/` and can be replayed in the console. The full evaluation (every defect, every persona, Claude API, holdout set) is `eval/run-eval.mjs`; its results appear under *Defects and results* once it has run.
 
 ## What it does not claim
 

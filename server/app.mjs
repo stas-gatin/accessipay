@@ -17,7 +17,7 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
   const paypal = createPayPal(env);
   const shop = createShop({ paypal, dataDir });
   const runs = createRuns({ browser, shop, paypal, dataDir, origin, brains });
-  const fixes = createFixes({ shop, runs, origin, fixers });
+  const fixes = createFixes({ shop, runs, origin, fixers, dataDir });
   const app = express();
   app.disable('x-powered-by');
 

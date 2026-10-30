@@ -11,13 +11,13 @@
   --ink: #0f141a;
   --muted: #4d5864;
   --dim: #5f6a76;
-  --accent: #077a5c;
+  --accent: #05664c;
   --fill: #2ad4a2;
   --fill-hover: #4fe0b5;
   --fill-ink: #03120d;
-  --accent-soft: rgba(7, 122, 92, .08);
-  --accent-line: rgba(7, 122, 92, .35);
-  --ok: #077a5c;
+  --accent-soft: rgba(5, 102, 76, .07);
+  --accent-line: rgba(5, 102, 76, .35);
+  --ok: #05664c;
   --bad: #c2362a;
   --bad-soft: rgba(194, 54, 42, .08);
   --bad-line: rgba(194, 54, 42, .35);
