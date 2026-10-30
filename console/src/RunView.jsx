@@ -41,6 +41,12 @@ function FixPanel({ run, meta }) {
   const [fixer, setFixer] = useState(meta.claude ? 'anthropic' : 'external');
   const [error, setError] = useState('');
   const [rerunning, setRerunning] = useState(false);
+  const [after, setAfter] = useState(null);
+
+  useEffect(() => {
+    // The run of the same shop after this fix, if there is one.
+    api('/api/runs').then((list) => setAfter(list.find((r) => r.instanceId === run.instanceId && r.id !== run.id && r.patches?.length && r.createdAt > run.createdAt && r.status === 'finished') || null)).catch(() => {});
+  }, [run.id]);
 
   useEffect(() => {
     // Show the latest fix made for this run, if any.
@@ -96,7 +102,12 @@ function FixPanel({ run, meta }) {
           <p><strong>{fix.summary}</strong></p>
           <p className="note">{fix.accepted?.length} change(s) applied to the {fix.page} page{fix.rejected?.length ? `, ${fix.rejected.length} rejected because the text did not match exactly` : ''}.</p>
           <Diff text={fix.diff} />
-          {!run.recorded && (
+          {after && (
+            <p className="callout" style={{ marginTop: 12 }}>
+              After the fix, the same shopper tried again: <a href={`#/runs/${after.id}`}>{OUTCOME[after.outcome?.status]?.tone === 'ok' ? `bought it in ${after.steps} steps` : `${OUTCOME[after.outcome?.status]?.label || 'see the run'}`}{after.payment ? `, PayPal ${after.payment.mode} order ${after.payment.status}` : ''}</a>.
+            </p>
+          )}
+          {!run.recorded && !after && (
             <p className="row" style={{ marginTop: 12 }}>
               <button type="button" className="btn primary" onClick={rerun} disabled={rerunning}>{rerunning ? 'Starting…' : 'Re-run the same shopper'}</button>
             </p>
