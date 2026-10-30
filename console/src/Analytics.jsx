@@ -1,186 +1,53 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { api, OUTCOME } from './api.js';
+import React, { useEffect, useState } from 'react';
+import { api } from './api.js';
+import { CountUp, Section } from './analytics/kit.jsx';
+import Pairs from './analytics/Pairs.jsx';
+import { EffortCards, Formula, NavOverhead, WhereEffort } from './analytics/Effort.jsx';
+import Friction from './analytics/Friction.jsx';
+import { RunFilters, useRunFilter, ScatterCard, RunTable, Consistency } from './analytics/Runs.jsx';
+import { Matrix, Funnel, Outcomes, Themes, Sites } from './analytics/Kept.jsx';
+import { sum, plural, fmtSeconds, fmtRange, range, conditions, outcomeShape } from './analytics/derive.js';
+import './analytics/analytics.css';
 
-const reduced = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SECTIONS = [
+  ['an-fixed', 'Impossible → possible'],
+  ['an-scanner', 'Scanner versus reality'],
+  ['an-effort', 'Effort per customer'],
+  ['an-stuck', 'Where customers get stuck'],
+  ['an-runs', 'Every run'],
+  ['an-problems', 'What gets in the way'],
+  ['an-sites', 'Real sites'],
+  ['an-method', 'Method'],
+];
 
-// Counts up to the value once, unless the reader asked for reduced motion.
-function CountUp({ value, suffix = '' }) {
-  const [shown, setShown] = useState(reduced() ? value : 0);
-  useEffect(() => {
-    if (value == null || reduced()) { setShown(value); return; }
-    const start = performance.now();
-    let raf;
-    const tick = (t) => {
-      const k = Math.min(1, (t - start) / 900);
-      setShown(Math.round(value * (1 - Math.pow(1 - k, 3))));
-      if (k < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [value]);
-  return <>{shown == null ? '—' : shown}{suffix}</>;
-}
-
-// Bars grow from zero after the first paint.
-function useGrown() {
-  const [grown, setGrown] = useState(reduced());
-  useEffect(() => { const t = requestAnimationFrame(() => setGrown(true)); return () => cancelAnimationFrame(t); }, []);
-  return grown;
-}
-
-function DataTable({ caption, head, rows }) {
+function Kpi({ value, label, sub, tone = '' }) {
   return (
-    <details className="an-data">
-      <summary>Show the data</summary>
-      <table>
-        <caption className="sr-only">{caption}</caption>
-        <thead><tr>{head.map((h) => <th key={h} scope="col">{h}</th>)}</tr></thead>
-        <tbody>{rows.map((r, i) => <tr key={i}>{r.map((c, j) => (j === 0 ? <th key={j} scope="row">{c}</th> : <td key={j}>{c}</td>))}</tr>)}</tbody>
-      </table>
-    </details>
-  );
-}
-
-function Tip({ text, children }) {
-  const [show, setShow] = useState(false);
-  return (
-    <span className="an-tipwrap" onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} onFocus={() => setShow(true)} onBlur={() => setShow(false)}>
-      {children}
-      {show && <span className="an-tip" role="tooltip">{text}</span>}
-    </span>
-  );
-}
-
-function PersonaChart({ data, meta }) {
-  const grown = useGrown();
-  const max = Math.max(...data.map((d) => d.runs), 1);
-  return (
-    <figure className="an-card">
-      <figcaption><h2>Outcome by customer</h2><p>Every finished run, demo shop and real sites.</p></figcaption>
-      <div className="an-legend" aria-hidden="true">
-        <span><i className="sw ok" />Paid or reached payment</span><span><i className="sw bad" />Blocked</span>
-      </div>
-      <div className="an-rows">
-        {data.map((d) => (
-          <div className="an-row" key={d.persona}>
-            <span className="an-label">{meta.personas[d.persona]?.label}</span>
-            <span className="an-track" style={{ width: `${(d.runs / max) * 100}%` }}>
-              <Tip text={`${d.success} of ${d.runs} runs succeeded`}>
-                <span role="img" tabIndex={0} className="an-seg ok" style={{ width: grown ? `${(d.success / d.runs) * 100}%` : 0 }} aria-label={`${meta.personas[d.persona]?.label}: ${d.success} succeeded`} />
-              </Tip>
-              <Tip text={`${d.blocked} of ${d.runs} runs were blocked`}>
-                <span role="img" tabIndex={0} className="an-seg bad" style={{ width: grown ? `${(d.blocked / d.runs) * 100}%` : 0 }} aria-label={`${meta.personas[d.persona]?.label}: ${d.blocked} blocked`} />
-              </Tip>
-            </span>
-            <span className="an-val">{d.success} / {d.runs}</span>
-          </div>
-        ))}
-      </div>
-      <DataTable caption="Outcome by customer" head={['Customer', 'Runs', 'Succeeded', 'Blocked', 'Median steps to succeed']}
-        rows={data.map((d) => [meta.personas[d.persona]?.label, d.runs, d.success, d.blocked, d.medianSteps ?? '—'])} />
-    </figure>
-  );
-}
-
-function Funnel({ data }) {
-  const grown = useGrown();
-  const top = data[0]?.runs || 1;
-  return (
-    <figure className="an-card">
-      <figcaption><h2>Where customers stop</h2><p>Demo shop runs: how many reached each step of the checkout.</p></figcaption>
-      <ol className="an-funnel">
-        {data.map((d, i) => {
-          const lost = i > 0 ? data[i - 1].runs - d.runs : 0;
-          return (
-            <li key={d.stage}>
-              <span className="an-label">{d.stage}</span>
-              <span className="an-track full">
-                <Tip text={`${d.runs} of ${top} runs reached ${d.stage.toLowerCase()} (${Math.round((d.runs / top) * 100)}%)`}>
-                  <span role="img" tabIndex={0} className={`an-bar ${d.stage === 'Paid' ? 'ok' : ''}`} style={{ width: grown ? `${(d.runs / top) * 100}%` : 0, transitionDelay: `${i * 90}ms` }} aria-label={`${d.stage}: ${d.runs} runs`} />
-                </Tip>
-              </span>
-              <span className="an-val">{d.runs}{lost > 0 && <em className="an-lost"> −{lost}</em>}</span>
-            </li>
-          );
-        })}
-      </ol>
-      <DataTable caption="Where customers stop" head={['Step', 'Runs that reached it', 'Share of all runs']} rows={data.map((d) => [d.stage, d.runs, `${Math.round((d.runs / top) * 100)}%`])} />
-    </figure>
-  );
-}
-
-function Matrix({ m }) {
-  const cell = (label, value, cls, note) => (
-    <div className={`an-cell ${cls}`}>
-      <span className="an-cell-n"><CountUp value={value} /></span>
-      <span className="an-cell-l">{label}</span>
-      {note && <span className="an-cell-note">{note}</span>}
+    <div className={`ax-kpi ${tone}`}>
+      <span className="ax-kpi-n"><CountUp value={value} /></span>
+      <span className="ax-kpi-l">{label}</span>
+      {sub && <span className="ax-kpi-s">{sub}</span>}
     </div>
   );
-  return (
-    <figure className="an-card">
-      <figcaption><h2>Scanner versus reality</h2><p>Demo shop runs, by what axe-core said about the same pages.</p></figcaption>
-      <div className="an-matrix" role="group" aria-label="Scanner verdict against the real outcome">
-        <span />
-        <span className="an-axis">Customer paid</span>
-        <span className="an-axis">Customer blocked</span>
-        <span className="an-axis side">Scanner: clean</span>
-        {cell('clean and paid', m.cleanBought, 'neutral')}
-        {cell('clean, yet blocked', m.cleanBlocked, 'alert', 'The scanner said yes. The customer could not pay.')}
-        <span className="an-axis side">Scanner: issues</span>
-        {cell('flagged and paid', m.flaggedBought, 'neutral')}
-        {cell('flagged and blocked', m.flaggedBlocked, 'neutral')}
-      </div>
-    </figure>
-  );
 }
 
-function Themes({ data }) {
-  const grown = useGrown();
-  const sorted = [...data].sort((a, b) => b.count - a.count);
-  const max = Math.max(...sorted.map((d) => d.count), 1);
+function RunsSection({ a, meta }) {
+  const f = useRunFilter(a.runRows);
+  const blocked = f.filtered.filter((r) => outcomeShape(r.outcome) === 'blocked').length;
   return (
-    <figure className="an-card">
-      <figcaption><h2>What gets in the way</h2><p>Problems the customers reported, grouped by theme. One report can fall in two themes.</p></figcaption>
-      <div className="an-rows">
-        {sorted.map((d, i) => (
-          <div className="an-row" key={d.theme}>
-            <span className="an-label wide">{d.theme}</span>
-            <span className="an-track full">
-              <Tip text={`${d.count} reports`}>
-                <span role="img" tabIndex={0} className="an-bar" style={{ width: grown ? `${(d.count / max) * 100}%` : 0, transitionDelay: `${i * 80}ms` }} aria-label={`${d.theme}: ${d.count} reports`} />
-              </Tip>
-            </span>
-            <span className="an-val">{d.count}</span>
-          </div>
-        ))}
+    <>
+      <RunFilters meta={meta} rows={a.runRows} {...f} />
+      <p className="ax-count" aria-live="polite">Showing {plural(f.filtered.length, 'run')} of {a.runRows.length}: {f.filtered.length - blocked} paid or reached payment, {blocked} blocked.</p>
+      <div className="ax-grid">
+        <ScatterCard rows={f.filtered} meta={meta} />
+        <figure className="ax-card wide">
+          <figcaption>
+            <h3>All runs, all metrics</h3>
+            <p className="ax-note">Sort by any column. Real-site runs and demo-shop runs are listed together here but never averaged together anywhere on this page.</p>
+          </figcaption>
+          <RunTable rows={f.filtered} meta={meta} />
+        </figure>
       </div>
-      <DataTable caption="What gets in the way" head={['Theme', 'Reports']} rows={sorted.map((d) => [d.theme, d.count])} />
-    </figure>
-  );
-}
-
-function Sites({ data }) {
-  if (!data.length) return null;
-  return (
-    <section className="an-card an-span" aria-labelledby="an-sites">
-      <h2 id="an-sites">Real sites</h2>
-      <p className="an-sub">Public demo stores of real e-commerce platforms. The customer goes as far as the payment step and stops; nothing is paid. axe-core scans every page the customer saw, in that state.</p>
-      <div className="an-sites">
-        {data.map((s) => (
-          <a key={s.id} className="an-site" href={`#/runs/${s.id}`}>
-            <span className="an-site-host">{s.host}</span>
-            <span className={`pill ${OUTCOME[s.outcome]?.tone || 'muted'}`}>{s.outcome === 'reached-payment' ? 'Reached payment' : OUTCOME[s.outcome]?.label || s.outcome}</span>
-            <span className="an-site-stats">
-              <span><b>{s.violations ?? '—'}</b> axe-core issues on {s.pages} pages</span>
-              <span><b>{s.findings}</b> problems the agent reported</span>
-              <span><b>{s.steps}</b> steps</span>
-            </span>
-            <span className="an-site-rules">{s.rules.slice(0, 5).join(' · ')}</span>
-          </a>
-        ))}
-      </div>
-    </section>
+    </>
   );
 }
 
@@ -191,27 +58,102 @@ export default function Analytics({ meta }) {
   if (error) return <div className="page"><p className="empty" role="alert">{error}</p></div>;
   if (!a) return <div className="page"><p className="empty">Loading…</p></div>;
   const t = a.totals;
+  const think = sum(a.runRows.map((r) => r.aiThinkSeconds));
+  const thinkSteps = sum(a.runRows.filter((r) => r.aiThinkSeconds > 0).map((r) => r.steps));
+  const unblocked = a.pairs.filter((p) => p.kind === 'unblocked');
+  const conds = conditions(a.runRows, meta);
+
   return (
-    <div className="page an">
+    <div className="page ax">
       <p className="eyebrow">Analytics</p>
       <h1>What the runs show</h1>
-      <p className="lead">Every number here is computed from finished runs on this server: the demo shop with real PayPal sandbox payments, and public demo stores of real platforms.</p>
+      <p className="lead">Every number on this page is computed from the {t.runs} finished runs on this server: {t.demoRuns} in the demo shop, where PayPal sandbox confirms each payment, and {t.realRuns} on public demo stores of real e-commerce platforms. Each figure links back to the runs behind it.</p>
 
-      <div className="an-kpis">
-        <div className="an-kpi"><span className="an-kpi-n"><CountUp value={t.runs} /></span><span className="an-kpi-l">finished runs</span></div>
-        <div className="an-kpi"><span className="an-kpi-n ok"><CountUp value={t.paid} /></span><span className="an-kpi-l">paid orders in the demo shop ({t.sandboxOrders} in the PayPal sandbox)</span></div>
-        <div className="an-kpi alert"><span className="an-kpi-n bad"><CountUp value={t.blockedWhileClean} /></span><span className="an-kpi-l">customers blocked while the scanner said clean</span></div>
-        <div className="an-kpi"><span className="an-kpi-n"><CountUp value={t.medianStepsToBuy} /></span><span className="an-kpi-l">median steps to a paid order</span></div>
-        <div className="an-kpi"><span className="an-kpi-n"><CountUp value={t.sites} /></span><span className="an-kpi-l">real sites tested</span></div>
+      <div className="ax-kpis">
+        <Kpi value={t.runs} label="finished runs" sub={`${t.demoRuns} demo shop · ${t.realRuns} real sites`} />
+        <Kpi value={t.paid} label="paid orders in the demo shop" sub={`median ${t.medianStepsToBuy ?? '—'} steps each`} />
+        <Kpi value={t.sandboxOrders} label="orders PayPal sandbox confirmed" sub={`of the ${t.paid} paid orders, status COMPLETED`} />
+        <Kpi value={t.unblockedByFix} label="customers unblocked by an AI fix" sub="blocked before, paid after" tone="good" />
+        <Kpi value={t.blockedWhileClean} label="blocked while the scanner said clean" sub="axe-core found nothing" tone="alert" />
+        <Kpi value={t.steps} label="steps taken, all runs" sub="one decision each" />
+        <Kpi value={t.keys} label="keypresses, all runs" sub="Tab, Enter, typed characters" />
+        <Kpi value={t.deadEnds} label="dead ends" sub="actions that failed" />
+        <Kpi value={t.findings} label="problems customers reported" sub="in their own words" />
+        <Kpi value={t.sites} label="real sites tested" sub="stopped at payment" />
       </div>
 
-      <div className="an-grid">
-        <Matrix m={a.matrix} />
-        <Funnel data={a.funnel} />
-        <PersonaChart data={a.personas} meta={meta} />
-        <Themes data={a.themes} />
-        <Sites data={a.sites} />
-      </div>
+      <nav className="ax-toc" aria-label="Sections on this page">
+        <span>On this page</span>
+        <ol>{SECTIONS.map(([id, label]) => <li key={id}><a href={`#/analytics`} onClick={(e) => { e.preventDefault(); document.getElementById(id)?.scrollIntoView({ block: 'start' }); }}>{label}</a></li>)}</ol>
+      </nav>
+
+      <Section id="an-fixed" n={1} title="Impossible → possible"
+        intro={unblocked.length
+          ? `${plural(unblocked.length, 'customer')} could not pay on the shop as built. After one AI fix, the same customer type with the same task on the same shop paid, and PayPal returned an order id. That is a change from impossible to possible, not a speed-up.`
+          : 'The same customer on the same shop, before and after an AI fix.'}>
+        <Pairs a={a} meta={meta} />
+      </Section>
+
+      <Section id="an-scanner" n={2} title="Scanner versus reality" intro="What an automated scanner said about the pages, against what happened when a customer tried to pay.">
+        <div className="ax-grid">
+          <Matrix m={a.matrix} />
+          <Funnel data={a.funnel} />
+        </div>
+      </Section>
+
+      <Section id="an-effort" n={3} title="Effort per customer type" intro="How much work a paid order takes for each kind of customer, from paid demo-shop runs only. Medians, with the range and number of runs in each tooltip and table.">
+        <EffortCards a={a} meta={meta} />
+        <div className="ax-grid">
+          <Formula a={a} meta={meta} />
+          <NavOverhead a={a} meta={meta} />
+          <WhereEffort a={a} meta={meta} />
+        </div>
+      </Section>
+
+      <Section id="an-stuck" n={4} title="Where customers get stuck" intro="Blocked runs rarely end abruptly. They loop: the same screen, actions that change nothing, steps that lead nowhere new.">
+        <div className="ax-grid">
+          <Friction a={a} meta={meta} />
+          <Consistency a={a} meta={meta} />
+        </div>
+      </Section>
+
+      <Section id="an-runs" n={5} title="Every run" intro="Each run with its per-run metrics. Filter by customer type and by shop; both filters apply to the plot and the table.">
+        <RunsSection a={a} meta={meta} />
+      </Section>
+
+      <Section id="an-problems" n={6} title="What gets in the way" intro="Outcomes per customer type, and the problems customers described.">
+        <div className="ax-grid">
+          <Outcomes data={a.personas} meta={meta} />
+          <Themes data={a.themes} findings={t.findings} />
+        </div>
+      </Section>
+
+      <Section id="an-sites" n={7} title="Real sites" intro="Public demo stores of real e-commerce platforms. The customer goes as far as the payment step and stops; nothing is paid. axe-core scans every page the customer saw, in that state.">
+        <Sites data={a.sites} meta={meta} />
+      </Section>
+
+      <Section id="an-method" n={8} title="Method and transparency">
+        <div className="ax-grid">
+          <div className="ax-card">
+            <h3>Definitions</h3>
+            <dl className="ax-defs">
+              <dt>Step</dt><dd>One decision by the customer model: a key, a typed field, or one element used. Reading the page again is not a step.</dd>
+              <dt>Keypress</dt><dd>Tab, Shift+Tab, Enter and arrow keys count 1; typing counts each character plus Enter. The AI agent acts on elements and presses almost no keys.</dd>
+              <dt>Dead end</dt><dd>An action that failed: the element was missing, disabled or could not take focus.</dd>
+              <dt>Changed nothing</dt><dd>An action after which the page the customer perceives was identical.</dd>
+              <dt>Longest stall</dt><dd>The longest stretch of steps that only revisited screens already seen.</dd>
+              <dt>Time to pay (estimate)</dt><dd>Keystroke-level model for people only. Never wall-clock time.</dd>
+              <dt>Paid</dt><dd>Counted only when the payment completes and the goal check confirms the right item was bought. Most paid runs use the PayPal sandbox; a few earlier runs used a mock payment, which the sandbox figure leaves out.</dd>
+            </dl>
+          </div>
+          <div className="ax-card ax-think">
+            <h3>Transparency notes</h3>
+            <p><strong>AI think time.</strong> The deciding AI spent {fmtSeconds(think)} in total across {plural(thinkSteps, 'step')}, about {thinkSteps ? (think / thinkSteps).toFixed(1) : '—'} s per step. This is time the deciding AI spent; not the customer's time. It depends on the model and its load, so it is never used as a customer's time on this page.</p>
+            <p><strong>Simulated customers.</strong> The keyboard customer is told where focus is even when the focus ring is invisible, and the screen reader customer gets the whole page structure at once, so both find the way more easily than many real people would.</p>
+            <p><strong>Small numbers.</strong> Each demo-shop condition has {fmtRange(range(conds.map((g) => g.runs.length)))} runs. Ranges and run counts are shown with every median, and medians of real-site and demo-shop runs are never mixed.</p>
+          </div>
+        </div>
+      </Section>
     </div>
   );
 }
