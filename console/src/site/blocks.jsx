@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { api } from '../api.js';
 import Logo, { LogoMark } from '../Logo.jsx';
-import { RUNS, ORDERS, PAY_FIX, REAL_SITES, REPORT_HREF, METHOD } from './facts.js';
+import { RUNS, ORDERS, PAY_FIX, SKIP_FIX, REAL_SITES, REPORT_HREF, METHOD } from './facts.js';
 import { useInView, useReducedMotion, Reveal } from './motion.jsx';
 
 export function SectionHead({ eyebrow, title, id, lead, light = false, center = false, children }) {
@@ -161,6 +161,63 @@ export function PayPalConfirms() {
           we show how much easier the path became.
         </p>
       </Reveal>
+    </div>
+  );
+}
+
+// Not blocked, just slower: the keyboard customer on the long-menu shop, before and after a skip link.
+// Every number is computed from the recorded runs' metrics; medians over the runs listed in facts.js.
+const EFFORT = [
+  { k: 'steps', label: 'Steps', unit: '', cut: 'fewer' },
+  { k: 'keys', label: 'Keypresses', unit: '', cut: 'fewer' },
+  { k: 'klmSeconds', label: 'Estimated time for a person', unit: ' s', cut: 'less' },
+];
+const med = (xs) => { const v = xs.filter((x) => x != null).sort((a, b) => a - b); if (!v.length) return null; const m = Math.floor(v.length / 2); return v.length % 2 ? v[m] : Math.round((v[m - 1] + v[m]) / 2); };
+
+export function EffortBlock() {
+  const [m, setM] = useState(null);
+  const ref = useRef(null);
+  const inView = useInView(ref, { threshold: 0.3 });
+  useEffect(() => {
+    const ids = [...RUNS.frictionBefore, ...RUNS.frictionAfter];
+    Promise.all(ids.map((id) => api(`/api/runs/${id}/metrics`).then((x) => ({ id, ...x })).catch(() => null)))
+      .then((list) => {
+        const ok = list.filter(Boolean);
+        const pick = (group) => ok.filter((x) => group.includes(x.id) && x.success);
+        const before = pick(RUNS.frictionBefore);
+        const after = pick(RUNS.frictionAfter);
+        if (!before.length || !after.length) return;
+        setM(Object.fromEntries(EFFORT.map((e) => [e.k, { before: med(before.map((x) => x[e.k])), after: med(after.map((x) => x[e.k])), range: [before, after].map((g) => g.map((x) => x[e.k])) }]).concat([['n', [before.length, after.length]]])));
+      });
+  }, []);
+  const pct = (b, a) => Math.round(((b - a) / b) * 100);
+  // The wrapper is always rendered so the in-view observer has something to watch while data loads.
+  if (!m) return <div className="effort" ref={ref} />;
+  return (
+    <div className={`effort ${inView ? 'in' : ''}`} ref={ref}>
+      <div className="effort-bars" role="group" aria-label="Effort before and after the skip link">
+        {EFFORT.map((e) => {
+          const v = m[e.k];
+          const max = Math.max(v.before, v.after);
+          return (
+            <div className="effort-row" key={e.k}>
+              <p className="effort-k">{e.label} <span className="effort-cut">{pct(v.before, v.after)}% {e.cut}</span></p>
+              <div className="effort-bar before"><span style={{ '--w': `${(v.before / max) * 100}%` }} /><b>{v.before}{e.unit}</b><i>before</i></div>
+              <div className="effort-bar after"><span style={{ '--w': `${(v.after / max) * 100}%` }} /><b>{v.after}{e.unit}</b><i>after</i></div>
+            </div>
+          );
+        })}
+        <p className="effort-note">
+          Medians of {m.n[0]} runs before and {m.n[1]} after; before ranged {m.steps.range[0].join(' and ')} steps. The time is an estimate with the
+          keystroke-level model (0.28 s per key, 1.35 s per decision), not a stopwatch. axe-core found no problem on the shop’s own code before or after.
+          {' '}<a href={`#/runs/${RUNS.frictionBefore[0]}`}>Before</a> · <a href={`#/runs/${RUNS.frictionAfter[0]}`}>After</a> · <a href="#/analytics">All runs</a>
+        </p>
+      </div>
+      <div className="effort-fix">
+        <p className="effort-k">The whole fix, on every page</p>
+        <pre className="codeblock" aria-label="The patch that added a skip link"><span className="c-meta">layout, all pages</span>{'\n'}<span className="del">- {SKIP_FIX.before}</span>{'\n'}<span className="add">+ {SKIP_FIX.after}</span></pre>
+        <p>The keyboard-only customer could always pay. Before the fix it had to Tab past 25 category links on every page; after it, one link takes it to the content.</p>
+      </div>
     </div>
   );
 }

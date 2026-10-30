@@ -46,6 +46,15 @@ test('detectBotWall sees a challenge page and leaves a normal shop alone', async
     const page = await browser.newPage();
     await page.setContent('<title>Just a moment...</title><p>Checking your browser before accessing the site.</p>');
     assert.match(await detectBotWall(page), /bot check/);
+    // A bot check inside an iframe, with a normal page title on top.
+    await page.setContent('<title>Shop: Expect more</title><iframe srcdoc="<h2>Quick verification</h2><p>Press &amp; hold to confirm you are a human (and not a bot).</p><button></button>"></iframe>');
+    await page.waitForTimeout(200);
+    assert.match(await detectBotWall(page), /bot check/);
+    await page.setContent('<title>Shop</title><h1>We are working on it.</h1><p>System maintenance is in progress.</p>');
+    assert.match(await detectBotWall(page), /maintenance/);
+    // The invisible reCAPTCHA badge on a normal checkout is not a wall.
+    await page.setContent('<title>Checkout</title><h1>Checkout</h1><label>Email <input></label><div class="grecaptcha-badge"></div>');
+    assert.equal(await detectBotWall(page), null);
     await page.setContent('<title>Rain jackets</title><h1>Rain jackets</h1><p>Light, packable, fully taped seams.</p><button>Add to bag</button>');
     assert.equal(await detectBotWall(page), null);
   } finally {
@@ -54,12 +63,12 @@ test('detectBotWall sees a challenge page and leaves a normal shop alone', async
 });
 
 test('anonymize replaces the host and brand words in values, never in keys', () => {
-  const run = { site: { host: 'www.acme.com', url: 'https://www.acme.com/' }, events: [{ type: 'target', url: 'https://acme.com/cart', text: 'Acme bag (2)', image: 's.jpg' }] };
+  const run = { site: { host: 'www.acme.com', url: 'https://www.acme.com/' }, events: [{ type: 'target', url: 'https://acme.com/cart', text: 'Acme bag (2) #AcmeOnYou @acmeusa', image: 's.jpg' }] };
   const out = anonymize(run, 'Retailer A', ['Acme']);
   assert.deepEqual(out.site, { url: null, host: 'Retailer A', anonymized: true });
   assert.equal(out.events[0].type, 'target');
   assert.equal(out.events[0].url, 'https://retailer-a.example/cart');
-  assert.equal(out.events[0].text, 'Retailer A bag (2)');
+  assert.equal(out.events[0].text, 'Retailer A bag (2) #Retailer AOnYou @Retailer Ausa');
   assert.equal(out.events[0].image, undefined);
   assert.doesNotMatch(JSON.stringify(out), /acme/i);
 });

@@ -76,9 +76,14 @@ export async function checkRobots(url, { fetchImpl = fetch, timeoutMs = 8000 } =
 }
 
 const CHALLENGE_HOSTS = /(^|\.)(challenges\.cloudflare\.com|hcaptcha\.com|recaptcha\.net|captcha-delivery\.com|perimeterx\.net|px-cloud\.net|px-cdn\.net|arkoselabs\.com|funcaptcha\.com|geo\.captcha-delivery\.com)$/i;
-const CHALLENGE_TEXT = /verify (that )?you are (a )?human|are you a robot|checking your browser|press (&|and) hold|pardon our interruption|access (to this page has been )?denied|unusual traffic|complete the security check|just a moment\.\.\.|attention required|request unsuccessful\. incapsula|enable javascript and cookies to continue/i;
+const CHALLENGE_TEXT = /verify (that )?you are (a )?human|confirm you.re (a )?human|are you a robot|not a bot|quick verification|checking your browser|press (&|and) hold|pardon our interruption|access (to this page has been )?denied|unusual traffic|complete the security check|just a moment\.\.\.|attention required|request unsuccessful\. incapsula|enable javascript and cookies to continue/i;
 
-// Looks at the page the shopper is on. Returns a reason string when a bot wall is on screen.
+const MAINTENANCE_TEXT = /system maintenance|maintenance (is )?in progress|we.re working on it|temporarily unavailable|we.ll be (right )?back/i;
+// Known challenge widgets, by element. The invisible reCAPTCHA badge many checkouts carry is not one.
+const CHALLENGE_SELECTOR = '#px-captcha, #challenge-form, #challenge-stage, #cf-challenge-running, .cf-turnstile, .h-captcha, iframe[title*="challenge" i], iframe[src*="captcha-delivery"]';
+
+// Looks at the page the shopper is on, including every iframe (bot checks often render inside one).
+// Returns a reason string when a bot check or a maintenance page is on screen.
 export async function detectBotWall(page) {
   for (const f of page.frames()) {
     let host = '';
@@ -87,13 +92,20 @@ export async function detectBotWall(page) {
       return `A bot check from ${host} is on the page.`;
     }
   }
-  const info = await page.evaluate(() => ({
-    title: document.title || '',
-    text: (document.body?.innerText || '').slice(0, 3000),
-  })).catch(() => ({ title: '', text: '' }));
-  const short = info.text.length < 1500;
-  if (CHALLENGE_TEXT.test(info.title) || (short && CHALLENGE_TEXT.test(info.text))) {
-    return `The page shows a bot check: "${(info.title || info.text.split('\n')[0]).slice(0, 80)}".`;
+  for (const f of page.frames()) {
+    const info = await f.evaluate((sel) => ({
+      main: window === window.top,
+      title: document.title || '',
+      text: (document.body?.innerText || '').slice(0, 3000),
+      widget: !!document.querySelector(sel),
+    }), CHALLENGE_SELECTOR).catch(() => null);
+    if (!info) continue;
+    const short = info.text.length < 1500;
+    if (info.widget) return 'The page shows a bot check widget.';
+    if ((info.main && CHALLENGE_TEXT.test(info.title)) || (short && CHALLENGE_TEXT.test(info.text))) {
+      return `The page shows a bot check: "${(CHALLENGE_TEXT.exec(info.title) || CHALLENGE_TEXT.exec(info.text))[0]}".`;
+    }
+    if (info.main && short && MAINTENANCE_TEXT.test(info.text)) return 'The site showed a maintenance page instead of the shop.';
   }
   return null;
 }

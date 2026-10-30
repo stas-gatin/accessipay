@@ -799,3 +799,25 @@ main:focus { outline: none; }
   .fixlist li:hover, .calc-out li:hover, .pp-orders div:hover { transform: translateY(-3px); }
   .who-card:hover .bimg img, .site-card:hover img { transform: scale(1.045); }
 }
+
+/* ---------- Effort before and after (friction) ---------- */
+.effort { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.effort-bars, .effort-fix { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 28px; box-shadow: var(--sh); }
+.effort-row + .effort-row { margin-top: 22px; }
+.effort-k { display: flex; justify-content: space-between; gap: 12px; font-weight: 600; color: var(--ink); margin-bottom: 10px !important; }
+.effort-cut { color: var(--gtext); font-weight: 700; font-size: 14px; }
+.effort-bar { display: grid; grid-template-columns: 1fr 64px 48px; align-items: center; gap: 10px; height: 26px; }
+.effort-bar + .effort-bar { margin-top: 6px; }
+.effort-bar span { display: block; height: 14px; border-radius: 0 4px 4px 0; width: var(--w); background: var(--line-2); }
+.effort-bar.after span { background: var(--green); }
+.effort-bar b { font-family: var(--mono); font-size: 14px; text-align: right; color: var(--ink); }
+.effort-bar i { font-style: normal; font-size: 13px; color: var(--mut); }
+.effort-note { margin-top: 22px !important; font-size: 13.5px; color: var(--mut); line-height: 1.55; }
+.effort-fix p:last-child { color: var(--ink-2); font-size: 15.5px; margin-top: 14px; }
+.effort-fix .codeblock { white-space: pre-wrap; word-break: break-word; }
+@media (prefers-reduced-motion: no-preference) {
+  .effort-bar span { width: 0; transition: width 900ms var(--ease); }
+  .effort.in .effort-bar span { width: var(--w); }
+  .effort.in .effort-bar.after span { transition-delay: 250ms; }
+}
+@media (max-width: 900px) { .effort { grid-template-columns: 1fr; } }

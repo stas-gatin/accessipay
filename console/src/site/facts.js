@@ -8,6 +8,9 @@ export const RUNS = {
   keyboardBlocked: '20261030-cea700', // keyboard, focus-trapping popup, blocked on the cart after 15 steps, axe 0 on the shop's own code
   keyboardFixed: '20261030-0e4e77', // keyboard after a 7-patch fix, paid in 49 steps
   screenReader: '20261030-d7eaff', // screen reader, clean shop, paid in 36 steps through PayPal Card Fields
+  // Friction: 25 category links before the content and no skip link. Paid either way; the fix is one skip link.
+  frictionBefore: ['20261030-ca91a3', '20261030-9bcad1'],
+  frictionAfter: ['20261030-55d6a8', '20261030-0c895e'],
   hydrogen: '20261030-82bb98',
   medusa: '20261030-ac71b0',
   saleor: '20261030-f7ff60',
@@ -25,6 +28,12 @@ export const ORDERS = {
 };
 
 export const EAA_DATE = '28 June 2025';
+
+// The patch the AI fixer returned for the long-menu shop (fix e23bb10e), applied to every page.
+export const SKIP_FIX = {
+  before: '<header class="top">',
+  after: '<a class="skip" href="#main">Skip to main content</a><header class="top">',
+};
 
 // The key line of the fix the AI fixer returned for the blocked agent run (fix 46bd1fae, patch 1 of 5;
 // the other four only add group names around the card fields).

@@ -56,6 +56,27 @@ export const collapseOptions = (s) => {
 };
 const roundBox = (b) => ({ x: Math.round(b.x), y: Math.round(b.y), width: Math.round(b.width), height: Math.round(b.height) });
 const clip = (s, n = MAX_TREE) => (s.length > n ? s.slice(0, n) + '\n[... page continues ...]' : s);
+
+// Open dialogs (cookie banners, promos, modals) are often the last thing in the page, so a long page
+// would cut them off. People see them on top; the customer perceives them first too.
+// Playwright keeps the reasons (what intercepted a click, and so on) in a separate call log.
+const errorText = (e) => [String(e?.message || ''), ...(Array.isArray(e?.log) ? e.log : [])].join('\n');
+
+export function liftDialogs(tree) {
+  const lines = tree.split('\n');
+  const lifted = [];
+  const rest = [];
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(/^(\s*)- (dialog|alertdialog)\b/);
+    if (!m) { rest.push(lines[i]); continue; }
+    const block = [lines[i]];
+    while (i + 1 < lines.length && lines[i + 1].match(/^(\s*)/)[1].length > m[1].length) block.push(lines[++i]);
+    const indent = m[1].length;
+    lifted.push(...block.map((l) => l.slice(indent)));
+  }
+  if (!lifted.length) return tree;
+  return `Open dialogs (shown on top of the page):\n${lifted.join('\n')}\n\nThe page:\n${rest.join('\n')}`;
+}
 const firstLine = (e) => String(e?.message || e).split('\n')[0].replace(/\u001b\[[0-9;]*m/g, '').slice(0, 220);
 
 // On real sites the shopper must never pay, place an order, or type card data.
@@ -145,6 +166,27 @@ export class Session {
     return null;
   }
 
+  // Click or check like a person with a mouse. Two cases are not failures for a person:
+  // the page started loading a new address while the click was being confirmed, and a visually
+  // hidden radio or checkbox whose own <label> sits on top of it (clicking the label is the normal way).
+  async pointer(loc, how) {
+    const before = this.page.url();
+    try {
+      await loc[how]({ timeout: 2500 });
+    } catch (e) {
+      const msg = errorText(e);
+      if (this.page.url() !== before) {
+        await this.settle();
+        return `${how === 'check' ? 'Checked' : 'Clicked'}; the page moved to a new address.`;
+      }
+      if (/<label\b[^>]*>[^\n]*intercepts pointer events/.test(msg)) {
+        await loc[how]({ timeout: 2500, force: true });
+      } else throw e;
+    }
+    await this.settle();
+    return null;
+  }
+
   async settle() {
     await this.page.waitForTimeout(350);
     await this.page.waitForLoadState('load').catch(() => {});
@@ -167,7 +209,7 @@ export class Session {
         }
         main = lines.join('\n');
       }
-      return collapseOptions(noUrls(main));
+      return liftDialogs(collapseOptions(noUrls(main)));
     } catch (e) { return `(page unreadable: ${firstLine(e)})`; }
   }
 
@@ -348,10 +390,10 @@ export class Session {
           await page.keyboard.type(String(a.text ?? ''), { delay: 5 });
           return `Typed "${a.text}".`;
         }
-        case 'click':
-          await (await this.byRole(a.role, a.name, a.nth || 0)).click({ timeout: 2500 });
-          await this.settle();
-          return `Clicked ${a.role} "${a.name}".`;
+        case 'click': {
+          const r = await this.pointer(await this.byRole(a.role, a.name, a.nth || 0), 'click');
+          return r || `Clicked ${a.role} "${a.name}".`;
+        }
         case 'fill':
           {
             // Typed key by key like a person, so masked fields (card number, expiry) format correctly.
@@ -366,14 +408,19 @@ export class Session {
           await (await this.byRole('combobox', a.name, a.nth || 0)).selectOption({ label: a.option }, { timeout: 2500 });
           await this.settle();
           return `Selected "${a.option}" in "${a.name}".`;
-        case 'check':
-          await (await this.byRole(a.role || 'checkbox', a.name, a.nth || 0)).check({ timeout: 2500 });
-          await this.settle();
-          return `Checked ${a.role || 'checkbox'} "${a.name}".`;
+        case 'check': {
+          const r = await this.pointer(await this.byRole(a.role || 'checkbox', a.name, a.nth || 0), 'check');
+          return r || `Checked ${a.role || 'checkbox'} "${a.name}".`;
+        }
         default:
           return `Unknown action "${d.action}".`;
       }
     } catch (e) {
+      const covered = errorText(e).match(/- <([a-z0-9-]+)([^>]*)>[^\n]*? intercepts pointer events/i);
+      if (covered) {
+        const what = (covered[2].match(/(?:aria-label|id|class)="([^"]{1,60})/) || [])[1];
+        return `That did not work: something else on the page is covering it (a <${covered[1]}>${what ? ` "${what}"` : ''} is on top). Close or dismiss what is on top first.`;
+      }
       return `That did not work: ${firstLine(e)}`;
     }
   }

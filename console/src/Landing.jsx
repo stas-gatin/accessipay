@@ -5,7 +5,7 @@ import HeroReplay from './site/HeroReplay.jsx';
 import { Chain, Calculator, KindLegend } from './site/BusinessChain.jsx';
 import { BrandImg, CountUp, Reveal } from './site/motion.jsx';
 import {
-  Arrow, SectionHead, TwoVerdicts, JourneyMap, PayPalConfirms, OwnerOutputs, RealSites, MethodStrip, Ledger, SiteFooter,
+  Arrow, SectionHead, TwoVerdicts, JourneyMap, EffortBlock, PayPalConfirms, OwnerOutputs, RealSites, MethodStrip, Ledger, SiteFooter,
 } from './site/blocks.jsx';
 import { RUNS, ORDERS, PAY_FIX, EAA_DATE } from './site/facts.js';
 
@@ -153,6 +153,13 @@ export default function Landing({ meta }) {
       </section>
 
       {/* 8. PayPal confirms */}
+      <section className="s-light sec" aria-labelledby="effort-t">
+        <div className="wrap">
+          <SectionHead eyebrow="Faster, not only possible" id="effort-t" title="Not blocked, just slower. Measured."
+            lead="Some problems never stop a customer; they make every page longer. We send the same customer before and after the fix and count what it took." />
+          <EffortBlock />
+        </div>
+      </section>
       <section className="s-light sec" aria-labelledby="ppc-t">
         <div className="wrap">
           <SectionHead eyebrow="Proof of purchase, not proof of compliance" id="ppc-t" title="The test passes only when PayPal confirms the order." />

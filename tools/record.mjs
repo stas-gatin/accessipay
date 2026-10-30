@@ -22,7 +22,8 @@ export function anonymize(run, label, brands = []) {
   const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const fake = `${label.toLowerCase().replace(/\s+/g, '-')}.example`;
   const swap = (s) => brands.reduce(
-    (acc, b) => acc.replace(new RegExp(`\\b${esc(b)}\\b`, 'gi'), label),
+    // Anywhere in a word too, so hashtags and handles (#AcmeOnYou, @acmeusa) are covered.
+    (acc, b) => acc.replace(new RegExp(esc(b), 'gi'), label),
     s.replace(new RegExp(`(www\\.)?${esc(bare)}`, 'gi'), fake),
   );
   const walk = (v) => (typeof v === 'string' ? swap(v) : Array.isArray(v) ? v.map(walk)

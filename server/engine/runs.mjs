@@ -168,7 +168,8 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
   const recordedDir = path.join(dataDir, 'recorded');
   function get(id) {
     if (runs.has(id)) return runs.get(id);
-    for (const dir of [runsDir, recordedDir]) {
+    // The recorded copy is the published one (anonymized for real retailers), so it wins.
+    for (const dir of [recordedDir, runsDir]) {
       const file = path.join(dir, `${id}.json`);
       if (fs.existsSync(file)) return { ...JSON.parse(fs.readFileSync(file, 'utf8')), recorded: dir === recordedDir };
     }
