@@ -1,0 +1,17 @@
+/* Owner report view in the console (Report.jsx, ReadyCode.jsx). */
+.report-view .report-verdict { font-weight: 600; color: var(--ink); }
+.report-view .report-verdict.ok { color: var(--ok); }
+.report-view .report-verdict.bad { color: var(--bad); }
+.report-actions, .ready-downloads, .ready-list { list-style: none; padding: 0; margin: 16px 0; }
+.ready-list { display: grid; gap: 14px; }
+.ready-card h3 code { font-family: var(--mono); font-size: 15px; }
+.ready-n { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #b3261e; color: #fff; font-size: 14px; margin-right: 8px; }
+.ready-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.ready-pair figure { margin: 0; min-width: 0; }
+.ready-pair figcaption { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.ready-pair pre { margin: 0; font-family: var(--mono); font-size: 13px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line); color: var(--ink); }
+.ready-before { background: var(--bad-soft); border-color: var(--bad-line) !important; }
+.ready-after { background: var(--accent-soft); border-color: var(--accent-line) !important; }
+.report-view .ap-annot { border-color: var(--line); }
+.report-view .ap-legend, .report-view .ap-figure figcaption { color: var(--muted); }
+@media (max-width: 720px) { .ready-pair { grid-template-columns: 1fr; } }

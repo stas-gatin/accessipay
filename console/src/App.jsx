@@ -7,6 +7,7 @@ import RunsGrid from './RunsGrid.jsx';
 import Defects from './Defects.jsx';
 import Landing from './Landing.jsx';
 import Analytics from './Analytics.jsx';
+import Report from './Report.jsx';
 import './landing.css';
 
 function useHash() {
@@ -34,6 +35,7 @@ export default function App() {
   let page;
   if (!meta) page = <div className="page"><p className="empty">{error || 'Loading…'}</p></div>;
   else if (runMatch) page = <RunView id={runMatch[1]} meta={meta} />;
+  else if (/^\/report\/(run|case|site)\/[\w-]+$/.test(route)) page = <Report route={route} meta={meta} />;
   else if (route === '/runs') page = <RunsGrid meta={meta} />;
   else if (route === '/defects') page = <Defects meta={meta} />;
   else if (route === '/test') page = <NewTest meta={meta} />;
