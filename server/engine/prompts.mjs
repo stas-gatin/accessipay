@@ -14,6 +14,7 @@ export const DEFAULT_GOAL = [
 const ACTIONS = {
   next: 'next: press Tab, focus moves to the next element. args: {}',
   prev: 'prev: press Shift+Tab, focus moves to the previous element. args: {}',
+  jump: 'jump: use the screen reader elements list to move focus straight to a control by its role and exact name from the tree. Works only for controls that can take keyboard focus. args: {"role": "link", "name": "...", "nth": 0}',
   activate: 'activate: press Enter on the focused element. args: {}',
   press: 'press: press one key. args: {"key": one of Enter, Space, Escape, ArrowDown, ArrowUp, ArrowLeft, ArrowRight, Home, End, Backspace}',
   type: 'type: replace the text of the focused text field. args: {"text": "..."}',

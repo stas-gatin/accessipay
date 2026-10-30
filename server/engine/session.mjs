@@ -7,17 +7,20 @@ export const PERSONAS = {
   screenreader: {
     label: 'Screen reader user',
     summary: 'Cannot see the screen. Hears the accessibility tree and uses only the keyboard.',
-    actions: ['next', 'prev', 'activate', 'press', 'type', 'read', 'done', 'give_up'],
+    actions: ['next', 'prev', 'jump', 'activate', 'press', 'type', 'read', 'done', 'give_up'],
+    maxSteps: 70,
   },
   keyboard: {
     label: 'Keyboard-only user',
     summary: 'Sees the page but cannot use a mouse. Uses only the keyboard.',
     actions: ['next', 'prev', 'activate', 'press', 'type', 'read', 'done', 'give_up'],
+    maxSteps: 90,
   },
   agent: {
     label: 'AI shopping agent',
     summary: 'An AI agent that reads the accessibility tree and acts on elements by role and name.',
     actions: ['click', 'fill', 'select', 'check', 'press', 'read', 'done', 'give_up'],
+    maxSteps: 40,
   },
 };
 
@@ -135,6 +138,16 @@ export class Session {
           await page.keyboard.press(d.action === 'next' ? 'Tab' : 'Shift+Tab');
           await page.waitForTimeout(80);
           return `Focus moved to: ${this.persona === 'keyboard' ? await this.focusForSighted() : await this.focusForScreenReader()}`;
+        }
+        case 'jump': {
+          // A screen reader's elements list: go straight to a control by role and name.
+          // Only elements that can take keyboard focus can be reached this way.
+          const loc = page.getByRole(a.role, { name: a.name, exact: true }).nth(a.nth || 0);
+          if ((await loc.count()) === 0) return `There is no ${a.role} named "${a.name}" on the page.`;
+          const focusable = await loc.evaluate((el) => el.tabIndex >= 0 && !el.disabled && !el.closest('[inert],[aria-hidden="true"]'));
+          if (!focusable) return `The ${a.role} "${a.name}" is on the page but cannot take keyboard focus.`;
+          await loc.focus();
+          return `Focus moved to: ${await this.focusForScreenReader()}`;
         }
         case 'activate':
           await page.keyboard.press('Enter');

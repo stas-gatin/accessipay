@@ -32,7 +32,7 @@ export const DEFECTS = [
     page: 'cart',
     title: 'A promo popup traps keyboard focus and cannot be closed without a mouse',
     wcag: '2.1.2 No Keyboard Trap',
-    blocks: ['screenreader', 'keyboard', 'agent'],
+    blocks: ['keyboard', 'agent'],
     axeExpected: false,
     match: ['popup', 'modal', 'dialog', 'trap', 'close', 'escape', 'newsletter', 'subscribe'],
   },

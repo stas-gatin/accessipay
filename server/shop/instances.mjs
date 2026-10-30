@@ -2,16 +2,25 @@
 // A patch is { page, find, replace }: an exact text replacement on the HTML the browser gets.
 
 import crypto from 'node:crypto';
+import fs from 'node:fs';
+import path from 'node:path';
 import express from 'express';
 import { DEFECT_IDS } from './defects.mjs';
 import { PRODUCTS, SHIPPING, COUNTRIES, catalogPage, cartPage, checkoutPage, payPage, donePage } from './pages.mjs';
 
 const PAGES = { catalog: catalogPage, cart: cartPage, checkout: checkoutPage, pay: payPage, done: donePage };
 export const PAGE_PATHS = { catalog: '/', cart: '/cart', checkout: '/checkout', pay: '/pay', done: '/done' };
-const TTL_MS = 6 * 60 * 60 * 1000;
+const TTL_MS = 60 * 24 * 60 * 60 * 1000;
 
-export function createShop({ paypal }) {
+export function createShop({ paypal, dataDir }) {
   const instances = new Map();
+  const dir = dataDir ? path.join(dataDir, 'instances') : null;
+  if (dir) fs.mkdirSync(dir, { recursive: true });
+
+  // Instances (defects, fixer patches, current cart) survive a server restart.
+  function save(inst) {
+    if (dir) fs.writeFileSync(path.join(dir, `${inst.id}.json`), JSON.stringify(inst));
+  }
 
   function create({ defects = [], patches = [] } = {}) {
     const unknown = defects.filter((d) => !DEFECT_IDS.has(d));
@@ -19,10 +28,15 @@ export function createShop({ paypal }) {
     const id = crypto.randomBytes(5).toString('hex');
     const inst = { id, defects: [...defects], patches: [...patches], cart: [], coupon: '', shipping: null, order: null, created: Date.now() };
     instances.set(id, inst);
+    save(inst);
     return inst;
   }
 
   function get(id) {
+    if (!instances.has(id) && dir && /^[a-f0-9]+$/.test(id)) {
+      const file = path.join(dir, `${id}.json`);
+      if (fs.existsSync(file)) instances.set(id, JSON.parse(fs.readFileSync(file, 'utf8')));
+    }
     const inst = instances.get(id);
     if (inst && Date.now() - inst.created > TTL_MS) { instances.delete(id); return null; }
     return inst || null;
@@ -67,6 +81,11 @@ export function createShop({ paypal }) {
       res.set('cache-control', 'no-store').type('html').send(render(req.inst, page, req.base));
     });
   }
+
+  router.use((req, res, next) => {
+    if (req.method === 'POST') res.on('finish', () => save(req.inst));
+    next();
+  });
 
   router.post('/api/cart/add', (req, res) => {
     const p = PRODUCTS.find((x) => x.sku === req.body.sku);
@@ -128,5 +147,7 @@ export function createShop({ paypal }) {
     }
   });
 
-  return { create, get, render, renderUnpatched, totals, router, instances };
+  function forget(id) { instances.delete(id); if (dir) fs.rmSync(path.join(dir, `${id}.json`), { force: true }); }
+
+  return { create, get, save, forget, render, renderUnpatched, totals, router, instances };
 }

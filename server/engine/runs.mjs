@@ -8,6 +8,7 @@ import { PERSONAS } from './session.mjs';
 import { DEFAULT_GOAL } from './prompts.mjs';
 import { scriptedBrain } from './brains/scripted.mjs';
 import { externalBrain } from './brains/external.mjs';
+import { scanShop } from '../scan/axe.mjs';
 
 export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {} }) {
   const runs = new Map();
@@ -37,7 +38,7 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
     if (!PERSONAS[persona]) throw new Error(`Unknown persona "${persona}"`);
     const inst = opts.instanceId ? shop.get(opts.instanceId) : shop.create({ defects: opts.defects || [] });
     if (!inst) throw new Error('Shop instance not found');
-    if (opts.instanceId && opts.resetCart !== false) { inst.cart = []; inst.coupon = ''; inst.shipping = null; inst.order = null; }
+    if (opts.instanceId && opts.resetCart !== false) { inst.cart = []; inst.coupon = ''; inst.shipping = null; inst.order = null; shop.save(inst); }
 
     const id = new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + crypto.randomBytes(3).toString('hex');
     const brain = makeBrain(opts.brain || 'external', opts);
@@ -46,7 +47,7 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
       id, createdAt: new Date().toISOString(), label: opts.label || '',
       persona, brainKind: brain.kind, model: brain.model || null,
       instanceId: inst.id, defects: [...inst.defects], patches: inst.patches.map((p) => p.id || p.find.slice(0, 40)),
-      paypalMode: paypal.mode, goal: opts.goal || DEFAULT_GOAL, maxSteps: opts.maxSteps || 40,
+      paypalMode: paypal.mode, goal: opts.goal || DEFAULT_GOAL, maxSteps: opts.maxSteps || PERSONAS[persona].maxSteps || 40,
       status: 'running', outcome: null, findings: [], events: [], brain, abort,
     };
     runs.set(id, rec);
@@ -76,6 +77,13 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
           }
         }
       })
+      .then(async () => {
+        // The scanner's view of the very same shop (defects and patches), kept with the run.
+        try {
+          rec.scan = await scanShop({ browser, shop, origin, defects: inst.defects, patches: inst.patches });
+          publish(rec, { t: new Date().toISOString(), type: 'scan', totalViolations: rec.scan.totalViolations });
+        } catch (e) { rec.scan = { error: e.message }; }
+      })
       .catch((e) => {
         rec.outcome = { status: 'error', reason: e.message };
         publish(rec, { t: new Date().toISOString(), type: 'error', message: e.message });
@@ -90,19 +98,23 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
     return rec;
   }
 
+  const recordedDir = path.join(dataDir, 'recorded');
   function get(id) {
     if (runs.has(id)) return runs.get(id);
-    const file = path.join(runsDir, `${id}.json`);
-    if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, 'utf8'));
+    for (const dir of [runsDir, recordedDir]) {
+      const file = path.join(dir, `${id}.json`);
+      if (fs.existsSync(file)) return { ...JSON.parse(fs.readFileSync(file, 'utf8')), recorded: dir === recordedDir };
+    }
     return null;
   }
 
   function list() {
-    const fromDisk = fs.readdirSync(runsDir).filter((f) => f.endsWith('.json')).map((f) => f.slice(0, -5));
+    const json = (dir) => (fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith('.json')).map((f) => f.slice(0, -5)) : []);
+    const fromDisk = [...json(runsDir), ...json(recordedDir)];
     const ids = [...new Set([...runs.keys(), ...fromDisk])].sort().reverse();
     return ids.map((id) => {
       const r = get(id);
-      return r && { id: r.id, createdAt: r.createdAt, label: r.label, persona: r.persona, brainKind: r.brainKind, model: r.model, defects: r.defects, patches: r.patches, status: r.status, outcome: r.outcome, steps: r.steps, payment: r.payment, usage: r.usage, findings: r.findings };
+      return r && { id: r.id, createdAt: r.createdAt, label: r.label, persona: r.persona, brainKind: r.brainKind, model: r.model, defects: r.defects, patches: r.patches, status: r.status, outcome: r.outcome, steps: r.steps, payment: r.payment, usage: r.usage, findings: r.findings, scan: r.scan && { totalViolations: r.scan.totalViolations }, recorded: !!r.recorded, instanceId: r.instanceId };
     }).filter(Boolean);
   }
 

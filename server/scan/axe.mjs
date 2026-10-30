@@ -28,6 +28,7 @@ export async function scanShop({ browser, shop, origin, defects = [], patches = 
   } finally {
     await context.close();
     shop.instances.delete(inst.id);
+    shop.forget?.(inst.id);
   }
   const total = pages.reduce((s, p) => s + p.violations.reduce((t, v) => t + v.nodes, 0), 0);
   return { engine: 'axe-core', rules: 'default (WCAG A/AA and best practices)', pages, totalViolations: total };

@@ -3,6 +3,7 @@
 import express from 'express';
 import path from 'node:path';
 import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { createShop } from './shop/instances.mjs';
 import { DEFECTS } from './shop/defects.mjs';
 import { PERSONAS } from './engine/session.mjs';
@@ -14,7 +15,7 @@ import { scanShop } from './scan/axe.mjs';
 
 export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, env = process.env, extend }) {
   const paypal = createPayPal(env);
-  const shop = createShop({ paypal });
+  const shop = createShop({ paypal, dataDir });
   const runs = createRuns({ browser, shop, paypal, dataDir, origin, brains });
   const fixes = createFixes({ shop, runs, origin, fixers });
   const app = express();
@@ -22,6 +23,7 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
 
   app.use('/s/:iid', shop.router);
   app.use('/runs-data', express.static(path.join(dataDir, 'runs'), { maxAge: '1h' }));
+  app.use('/runs-data', express.static(path.join(dataDir, 'recorded'), { maxAge: '1h' }));
   app.use('/api', express.json({ limit: '1mb' }));
 
   app.get('/api/health', (req, res) => res.json({ ok: true, paypal: paypal.mode, brains: ['external', 'scripted', ...Object.keys(brains)] }));
@@ -85,6 +87,7 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
     const inst = shop.get(req.params.iid);
     if (!inst) return res.status(404).json({ error: 'not found' });
     inst.patches = [];
+    shop.save(inst);
     res.json({ ok: true });
   });
 
@@ -113,6 +116,19 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
     if (!r.ok) return res.status(400).json({ error: r.error || r.job?.error, job: r.job && (({ prompt, system, ...j }) => j)(r.job) });
     res.json((({ prompt, system, ...j }) => j)(r.job));
   });
+
+  app.get('/api/eval', (req, res) => {
+    const file = path.join(dataDir, 'eval', 'results.json');
+    if (!fs.existsSync(file)) return res.json(null);
+    res.type('json').send(fs.readFileSync(file, 'utf8'));
+  });
+
+  // The console (built with Vite) and its client-side routes.
+  const consoleDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'console', 'dist');
+  if (fs.existsSync(consoleDir)) {
+    app.use(express.static(consoleDir));
+    app.get(/^\/(?!api|s\/|runs-data).*/, (req, res) => res.sendFile(path.join(consoleDir, 'index.html')));
+  }
 
   extend?.(app, { shop, runs, paypal, browser, fixes });
   return { app, shop, runs, paypal, fixes };

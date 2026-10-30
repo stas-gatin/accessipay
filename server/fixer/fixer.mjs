@@ -76,6 +76,7 @@ export function applyPatches({ shop, inst, page, base, patches }) {
   }
   // Store as one patch per accepted edit, applied on top of what was already there.
   inst.patches.push(...accepted);
+  shop.save(inst);
   const after = shop.render(inst, page, base);
   const diff = createTwoFilesPatch(`${page}.html (before)`, `${page}.html (after)`, before, after, '', '', { context: 2 });
   return { accepted, rejected, diff, changed: before !== after };
