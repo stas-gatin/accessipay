@@ -42,7 +42,8 @@ export default function NewTest({ meta }) {
       <p className="eyebrow">Console</p>
       <h1>Run a test</h1>
       <p className="lead">Pick a shop, a customer and who decides each step. The run streams live; the scanner checks the same pages at the end.</p>
-      <p className="note" style={{ marginTop: -16, marginBottom: 24 }}>Payments: {meta.paypal === 'sandbox' ? 'PayPal sandbox' : 'mock mode, no PayPal call'}. Claude API: {meta.claude ? 'connected' : 'not connected, runs are driven by a Claude Code agent'}.</p>
+      <p className="note" style={{ marginTop: -16, marginBottom: 12 }}>Testing your own shop? <a href="#/own-site">Verify it and let the test through your bot protection</a>, and check whether AI assistants can shop there.</p>
+      <p className="note" style={{ marginTop: 0, marginBottom: 24 }}>Payments: {meta.paypal === 'sandbox' ? 'PayPal sandbox' : 'mock mode, no PayPal call'}. Claude API: {meta.claude ? 'connected' : 'not connected, runs are driven by a Claude Code agent'}.</p>
 
       <div className="grid-2">
         <section className="card" aria-labelledby="s1">

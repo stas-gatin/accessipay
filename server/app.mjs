@@ -15,11 +15,15 @@ import { scanShop } from './scan/axe.mjs';
 import { analytics } from './analytics.mjs';
 import { runMetrics } from './metrics.mjs';
 import { mountReports } from './report/routes.mjs';
+import { createOwnerSites, KEY_HEADER, keyGoesTo } from './owners.mjs';
+import { checkAgentAccess } from './agent-access.mjs';
+import { detectBotWall } from './engine/preflight.mjs';
 
 export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, env = process.env, extend }) {
   const paypal = createPayPal(env);
   const shop = createShop({ paypal, dataDir });
-  const runs = createRuns({ browser, shop, paypal, dataDir, origin, brains });
+  const owners = createOwnerSites({ dataDir });
+  const runs = createRuns({ browser, shop, paypal, dataDir, origin, brains, owners });
   const fixes = createFixes({ shop, runs, origin, fixers, dataDir });
   const app = express();
   app.disable('x-powered-by');
@@ -52,6 +56,52 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
     } catch (e) { res.status(400).json({ error: e.message }); }
   });
   app.get('/api/runs', (req, res) => res.json(runs.list()));
+
+  // Owners test their own site: verify the domain, then let AccessiPay's browser through their bot protection.
+  app.post('/api/owner-sites', (req, res) => {
+    try { res.json(owners.add(req.body?.url)); } catch (e) { res.status(400).json({ error: e.message }); }
+  });
+  app.get('/api/owner-sites/:id', (req, res) => {
+    const s = owners.get(req.params.id);
+    return s ? res.json(s) : res.status(404).json({ error: 'not found' });
+  });
+  app.post('/api/owner-sites/:id/verify', async (req, res) => {
+    try { res.json(await owners.verify(req.params.id)); } catch (e) { res.status(400).json({ error: e.message }); }
+  });
+  // One page load without the key and one with it: does the owner's rule let the browser in?
+  app.post('/api/owner-sites/:id/check', async (req, res) => {
+    const s = owners.raw(req.params.id);
+    if (!s) return res.status(404).json({ error: 'not found' });
+    if (!s.verified) return res.status(400).json({ error: 'Verify the site first' });
+    const load = async (withKey) => {
+      const context = await browser.newContext({ viewport: { width: 1280, height: 860 } });
+      const page = await context.newPage();
+      if (withKey) await context.route('**/*', (route) => {
+        let host = '';
+        try { host = new URL(route.request().url()).hostname; } catch {}
+        return keyGoesTo(s.host, host) ? route.continue({ headers: { ...route.request().headers(), [KEY_HEADER]: s.key } }) : route.continue();
+      });
+      try {
+        const r = await page.goto(s.url, { waitUntil: 'load', timeout: 30000 });
+        await page.waitForTimeout(2000);
+        const status = r?.status() ?? null;
+        const wall = status >= 400 ? `HTTP ${status}` : await detectBotWall(page);
+        return { status, wall, title: (await page.title()).slice(0, 80) };
+      } catch (e) {
+        return { status: null, wall: `the page did not load (${String(e.message || e).split('\n')[0].slice(0, 80)})`, title: '' };
+      } finally { await context.close(); }
+    };
+    const without = await load(false);
+    const withKey = await load(true);
+    const check = { at: new Date().toISOString(), withoutKey: without, withKey, ready: !withKey.wall };
+    owners.recordCheck(s.id, check);
+    res.json(check);
+  });
+
+  // Can AI assistants shop here? Reads the site's own rules and loads its home page once.
+  app.get('/api/agent-access', async (req, res) => {
+    try { res.json(await checkAgentAccess(req.query.url, { browser })); } catch (e) { res.status(400).json({ error: e.message }); }
+  });
   app.get('/api/runs/:id', (req, res) => {
     const r = runs.get(req.params.id);
     if (!r) return res.status(404).json({ error: 'not found' });

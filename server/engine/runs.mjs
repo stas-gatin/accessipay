@@ -51,7 +51,7 @@ function checkExternalUrl(raw) {
   return u;
 }
 
-export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {} }) {
+export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}, owners = null }) {
   const runs = new Map();
   const listeners = new Map();
   const runsDir = path.join(dataDir, 'runs');
@@ -78,6 +78,9 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
     const persona = opts.persona || 'screenreader';
     if (!PERSONAS[persona]) throw new Error(`Unknown persona "${persona}"`);
     const site = opts.url ? checkExternalUrl(opts.url) : null;
+    // A site its owner verified: their access key opens their bot protection for this run.
+    const owner = site && opts.ownerSiteId && owners ? owners.raw(opts.ownerSiteId) : null;
+    if (owner && (!owner.verified || owner.host !== site.hostname)) throw new Error('This site is not verified for this address yet');
     const inst = site ? null : opts.instanceId ? shop.get(opts.instanceId) : shop.create({ defects: opts.defects || [] });
     if (!site && !inst) throw new Error('Shop instance not found');
     if (inst && opts.instanceId && opts.resetCart !== false) { inst.cart = []; inst.coupon = ''; inst.shipping = null; inst.order = null; shop.save(inst); }
@@ -90,7 +93,7 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
       id, createdAt: new Date().toISOString(), label: opts.label || '',
       persona, brainKind: brain.kind, model: brain.model || null,
       instanceId: inst?.id || null, defects: inst ? [...inst.defects] : [], patches: inst ? inst.patches.map((p) => p.id || p.find.slice(0, 40)) : [],
-      site: site ? { url: site.href, host: site.hostname } : null,
+      site: site ? { url: site.href, host: site.hostname, ownerVerified: !!owner } : null,
       paypalMode: paypal.mode, goalId, goal: opts.goal || (site ? EXTERNAL_GOAL : GOALS[goalId].text || DEFAULT_GOAL), maxSteps: opts.maxSteps || PERSONAS[persona].maxSteps || 40,
       status: 'running', outcome: null, findings: [], events: [], brain, abort,
     };
@@ -98,7 +101,8 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
 
     const startUrl = site ? site.href : `${origin}/s/${inst.id}${opts.startPath || '/'}`;
     // Real sites: robots.txt first. A site that asks not to be visited is not visited.
-    (site ? checkRobots(site.href) : Promise.resolve(null)).then((robots) => {
+    // robots.txt speaks to crawlers; on a site its owner verified, the owner's consent covers the run.
+    (site && !owner ? checkRobots(site.href) : Promise.resolve(null)).then((robots) => {
       if (robots) rec.robots = robots;
       if (robots && !robots.ok) {
         publish(rec, { t: new Date().toISOString(), type: 'guard', blocked: robots.reason });
@@ -121,6 +125,7 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
       onEvent: (e) => publish(rec, e),
       shotsDir: path.join(runsDir, id),
       signal: abort.signal,
+      siteAccess: owner ? { host: owner.host, key: owner.key } : null,
     });
     })
       .then(async (r) => {

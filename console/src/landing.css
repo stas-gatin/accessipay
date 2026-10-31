@@ -853,3 +853,4 @@ main:focus { outline: none; }
 }
 .sweep-pl { display: none; font-style: normal; font-size: 12px; font-weight: 700; color: var(--mut); text-transform: uppercase; letter-spacing: .03em; }
 @media (max-width: 1000px) { .sweep-pl { display: block; margin-bottom: 2px; } }
+.sweep-own { margin: -16px 0 36px !important; font-size: 15.5px; color: var(--ink-2); }

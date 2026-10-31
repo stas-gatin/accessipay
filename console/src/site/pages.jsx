@@ -153,6 +153,8 @@ const PP_POINTS = [
   { t: 'Merchants ready for agentic commerce', b: 'AI agents read pages through the accessibility tree. The fixes that let screen reader users pay also let agents complete PayPal checkouts.' },
   { t: `The law, since ${EAA_DATE}`, b: 'The European Accessibility Act applies to online shops in the EU. Merchants have a reason to test their checkout now.' },
   { t: 'A check next to the integration guide', b: 'Run before go-live: see which customers could not pay. Success is a COMPLETED PayPal order, not a compliance score.' },
+  { t: 'A channel to merchants', b: 'An idea, not a partnership: a payment provider could offer this check to its merchants, for example in onboarding. The merchant opts in, verifies the site and lets the checker through its own bot protection, the same steps as on our “Test your own site” page.' },
+  { t: 'Open to AI assistants?', b: 'Many large shops turn automated browsers away. The same wall can stop an AI assistant that shops for a person. The agent access check shows a merchant where it stands.' },
 ];
 
 export function PayPalPage() {

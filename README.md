@@ -65,6 +65,20 @@ Most axe-core issues on these sites are colour contrast and landmark rules; the 
 
 These runs, the demo shop runs and their fixes are in `data/recorded/` and can be replayed in the console. The full evaluation (every defect, every persona, Claude API, holdout set) is `eval/run-eval.mjs`; its results appear under *Defects and results* once it has run.
 
+## Test your own site
+
+Bot protection turns automated browsers away, and AccessiPay never tries to get past it. On their own shop an owner can let it in (console: *Test your own site*):
+
+1. **Prove the site is yours**: publish `/.well-known/accessipay.txt` with a code, or add a DNS TXT record `accessipay-verification=<code>`.
+2. **Let the checker through**: AccessiPay's browser sends the header `x-accessipay-key: <your key>` on requests to your host and its subdomains, and to no other host. One allow rule in your bot protection (Cloudflare WAF custom rule with the Skip action, Akamai Bot Manager exception, or any firewall) lets those requests in; the protection stays on for everyone else. *Check access* loads your home page with and without the key to confirm.
+3. **Send the customers**: screen reader, keyboard-only and AI agent runs go to the payment step and stop. On a verified site the robots.txt rules meant for crawlers are not applied, because the owner asked for the test.
+
+## Can AI assistants shop here?
+
+A lighter check for any shop: it reads what the shop publishes for AI agents (robots.txt rules for ChatGPT-User, Claude-User, Perplexity-User, GPTBot, ClaudeBot and others; llms.txt; schema.org Product and Offer data) and loads the home page once in an ordinary automated browser. It never sends another company's user agent. Only a rule that names an agent counts as turning it away; a `User-agent: *` rule that keeps the checkout out of search results is reported separately.
+
+On the eight platform demos: all eight let an automated browser load the home page; none names an AI agent in robots.txt; three ask every crawler to skip the checkout; one publishes llms.txt; one has schema.org Product data on its home page. A full customer run still found a visual CAPTCHA at checkout on one of them, which this light check cannot see.
+
 ## What it does not claim
 
 - It is not a WCAG audit or certificate, and it does not replace testing with real people who use assistive technology.

@@ -254,3 +254,11 @@ input[type='checkbox'] { accent-color: var(--accent); width: 18px; height: 18px;
 @media (prefers-reduced-motion: reduce) { .an-seg, .an-bar, .an-site { transition: none; } }
 @media (max-width: 1060px) { .an-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .an-grid, .an-sites { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .an-row, .an-funnel li { grid-template-columns: 100px minmax(0, 1fr) 54px; } .an-matrix { grid-template-columns: 84px 1fr 1fr; } }
+
+/* Plain data table (own-site page) */
+table.data { width: 100%; border-collapse: collapse; font-size: 14px; }
+table.data th, table.data td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.data thead th { font-size: 12px; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); font-weight: 700; }
+table.data tbody tr:hover { background: var(--surface-2); }
+details { border-top: 1px solid var(--line); padding: 10px 0; }
+details summary { cursor: pointer; }

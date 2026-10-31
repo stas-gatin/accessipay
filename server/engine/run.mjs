@@ -11,6 +11,7 @@ import { performance } from 'node:perf_hooks';
 import { stageOfPage } from '../../shared/stages.js';
 import { detectBotWall } from './preflight.mjs';
 import { splitByFrame } from '../scan/axe.mjs';
+import { keyGoesTo, KEY_HEADER } from '../owners.mjs';
 
 // Hosts that take payment data. On real sites nothing but reading may be sent to them.
 const PAYMENT_HOSTS = /(^|\.)(stripe\.com|stripe\.network|paypal\.com|paypalobjects\.com|braintreegateway\.com|braintree-api\.com|adyen\.com|adyenpayments\.com|checkout\.com|shopifycs\.com|klarna\.com|affirm\.com|squareup\.com|authorize\.net)$/i;
@@ -28,7 +29,7 @@ function keysFor(d) {
 
 const hash = (s) => crypto.createHash('sha1').update(s).digest('hex').slice(0, 12);
 
-export async function runShopper({ browser, startUrl, persona, brain, goal, maxSteps = 40, oracle, onEvent, shotsDir, signal, external = false }) {
+export async function runShopper({ browser, startUrl, persona, brain, goal, maxSteps = 40, oracle, onEvent, shotsDir, signal, external = false, siteAccess = null }) {
   const emit = (e) => onEvent?.({ t: new Date().toISOString(), ...e });
   const context = await browser.newContext({ viewport: { width: 1280, height: 860 }, reducedMotion: 'reduce' });
   const page = await context.newPage();
@@ -42,6 +43,10 @@ export async function runShopper({ browser, startUrl, persona, brain, goal, maxS
       if (req.method() !== 'GET' && req.method() !== 'HEAD' && req.method() !== 'OPTIONS' && PAYMENT_HOSTS.test(host)) {
         emit({ type: 'guard', blocked: `${req.method()} ${host}` });
         return route.abort('blockedbyclient');
+      }
+      // An owner-verified site: its access key goes to its own host only, so its bot protection lets us in.
+      if (siteAccess && keyGoesTo(siteAccess.host, host)) {
+        return route.continue({ headers: { ...req.headers(), [KEY_HEADER]: siteAccess.key } });
       }
       return route.continue();
     });

@@ -182,6 +182,7 @@ export default function Landing({ meta }) {
           <SectionHead eyebrow="Outside our demo shop" id="real-t" title="We sent our customers to real shops."
             lead="Public demo stores of open-source commerce platforms, and large retailers. Shops are built from these templates, so a barrier in the template ships to every shop that copies it. Every customer stops at the payment step: no order, no card data." />
           <SweepMatrix />
+          <p className="sweep-own">Many shops turn automated browsers away, and AccessiPay never tries to get past that. <a className="lp-link" href="#/own-site">Test your own site: verify it, let the checker through, and see whether AI assistants can shop there <Arrow /></a></p>
           <h3 className="sweep-h">Three findings, checked by hand</h3>
           <RealSites />
           <p className="foot-note">axe-core counts are rule violations per page, summed. Most of them are colour contrast and landmark rules; what stopped or slowed the agent was mostly something else.</p>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { api } from './api.js';
 import { ThemeContext, initialTheme, applyTheme } from './theme.js';
 import NewTest from './NewTest.jsx';
+import OwnSite from './OwnSite.jsx';
 import RunView from './RunView.jsx';
 import RunsGrid from './RunsGrid.jsx';
 import Defects from './Defects.jsx';
@@ -65,6 +66,7 @@ export default function App() {
   else if (route === '/runs') page = <RunsGrid meta={meta} />;
   else if (route === '/defects') page = <Defects meta={meta} />;
   else if (route === '/test') page = <NewTest meta={meta} />;
+  else if (route === '/own-site') page = <OwnSite meta={meta} />;
   else if (route === '/analytics') page = <Analytics meta={meta} />;
   else page = <Landing meta={meta} />;
 
