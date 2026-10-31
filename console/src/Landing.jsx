@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { api } from './api.js';
-import { LogoMark } from './Logo.jsx';
 import HeroReplay from './site/HeroReplay.jsx';
 import { Chain, KindLegend } from './site/BusinessChain.jsx';
 import { BrandImg, CountUp, Reveal } from './site/motion.jsx';
@@ -100,17 +99,23 @@ export default function Landing({ meta }) {
                 <a className="lp-link" href="#agents">How agents shop <Arrow /></a>
               </div>
             </article>
-            <article className="who-card who-small">
-              <p className="who-k">Merchants</p>
-              <h3>Find the payments you lose before your customers do.</h3>
-              <p>Get the fix as code, not a list of rule IDs, and proof from a PayPal-confirmed order. The European Accessibility Act has applied to online shops in the EU since {EAA_DATE}.</p>
-              <a className="lp-link" href="#owner">What you get <Arrow /></a>
+            <article className="who-card who-merchants">
+              <BrandImg name="04-merchants.png" art="merchants" alt="A stack of shipping boxes beside a card terminal printing a receipt." ratio="16 / 9" />
+              <div className="who-body">
+                <p className="who-k">Merchants</p>
+                <h3>Find the payments you lose before your customers do.</h3>
+                <p>Get the fix as code, not a list of rule IDs, and proof from a PayPal-confirmed order. The European Accessibility Act has applied to online shops in the EU since {EAA_DATE}.</p>
+                <a className="lp-link" href="#owner">What you get <Arrow /></a>
+              </div>
             </article>
-            <article className="who-card who-small">
-              <p className="who-k">PayPal</p>
-              <h3>Every unblocked checkout is a payment that can reach PayPal.</h3>
-              <p>A check that can sit next to the integration guide: run it before go-live and see which customers could not pay.</p>
-              <a className="lp-link" href="#/paypal">For PayPal <Arrow /></a>
+            <article className="who-card who-paypal">
+              <BrandImg name="05-business-chain.png" art="chain" alt="Many thin lines of light converging into one green coin." ratio="16 / 9" />
+              <div className="who-body">
+                <p className="who-k">PayPal</p>
+                <h3>Every unblocked checkout is a payment that can reach PayPal.</h3>
+                <p>A check that can sit next to the integration guide: run it before go-live and see which customers could not pay.</p>
+                <a className="lp-link" href="#/paypal">For PayPal <Arrow /></a>
+              </div>
             </article>
           </Reveal>
         </div>
@@ -144,6 +149,7 @@ export default function Landing({ meta }) {
         <div className="wrap">
           <SectionHead eyebrow="The method" id="method-t" title="Nine stages, from the first visit to a fix you can ship."
             lead="We measure the path, not just the rules: whether a simulated customer can finish, where it gets stuck, and how that changes after the fix." />
+          <BrandImg name="06-method.png" art="method" alt="A relief map with a dotted green path climbing through waypoints to a summit." ratio="21 / 8" className="sec-banner" />
           <MethodStrip />
           <p className="more"><a className="lp-link" href="#/method">See every stage with its real artifact <Arrow /></a></p>
         </div>
@@ -180,6 +186,7 @@ export default function Landing({ meta }) {
         <div className="wrap">
           <SectionHead eyebrow="Outside our demo shop" id="real-t" title="Real shops, three customers each."
             lead="Every shop gets the same three customers. Nobody pays on a real shop, so the pass mark there is different: a customer passes when it reaches the payment step. No order, no card data. Large retailers are shown without their names." />
+          <BrandImg name="07-real-sites.png" art="sites" alt="Three small shop fronts side by side with navy, white and green awnings." ratio="21 / 8" className="sec-banner" />
           <RealShops />
           <p className="sweep-own">Many shops turn automated browsers away, and AccessiPay never tries to get past that. <a className="lp-link" href="#/own-site">Connect your own site and let the test in <Arrow /></a></p>
         </div>
@@ -215,7 +222,7 @@ export default function Landing({ meta }) {
       {/* 14. Final CTA */}
       <section className="s-navy final" aria-labelledby="final-t">
         <div className="wrap">
-          <LogoMark size={88} className="final-mark" />
+          <BrandImg name="08-cover.png" alt="" ratio="16 / 9" className="final-img" />
           <h2 id="final-t">See your checkout through your customers.</h2>
           <div className="cta-row center">
             <a className="btn-lp primary" href="#/test">Run a test</a>

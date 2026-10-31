@@ -1156,3 +1156,8 @@ main:focus { outline: none; }
 @media (max-width: 560px) { .hero-proof { grid-template-columns: minmax(0, 1fr); } .hero-proof li::after { display: none; } }
 .lp .hero-proof a { align-content: start; color: #c9d6e3; }
 .lp .hero-proof a span { color: #c9d6e3; font-weight: 400; }
+
+/* Founder brand images as wide section banners, and the cover above the final call to action. */
+.sec-banner { margin: 0 0 28px; border-radius: 20px; }
+.final-img { width: min(520px, 100%); margin: 0 auto 32px; border-radius: 20px; }
+@media (max-width: 720px) { .sec-banner { aspect-ratio: 16 / 9 !important; } }
