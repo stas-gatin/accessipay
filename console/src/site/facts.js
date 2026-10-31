@@ -16,7 +16,7 @@ export const RUNS = {
   saleor: '20261030-f7ff60',
 };
 
-// The owner report is being built by another engineer; until then, link to the run behind it.
+// The owner report for the keyboard case: fix list, ready code, annotated screenshot and PDF.
 export const REPORT_HREF = `#/report/case/${RUNS.keyboardBlocked}`;
 
 // Paid runs. PayPal order ids stay in the run records and the owner report, not in the site copy.
@@ -88,7 +88,7 @@ export const METHOD = [
   { n: 6, title: 'Send each customer type', short: 'Screen reader, keyboard-only, AI agent.', detail: 'Three simulated customers, each with its own perception and actions. The same task is run by each, so one page can pass for one customer and block another.', artifact: { kind: 'list', items: ['Screen reader customer', 'Keyboard-only customer', 'AI shopping agent'] }, run: RUNS.screenReader },
   { n: 7, title: 'Can they finish?', short: 'Pass only when PayPal confirms the order.', detail: 'A run passes only when the PayPal Orders v2 API reports the sandbox order as COMPLETED and the right item was bought. Saying “done” does not count.', artifact: { kind: 'receipt' }, run: RUNS.agentFixed },
   { n: 8, title: 'Effort before and after', short: 'Steps and inputs, not stopwatch time.', detail: 'We count steps and inputs, never run time, because most of a run’s clock time is the model thinking. Blocked to paid is “impossible to possible”, not “faster”.', artifact: { kind: 'stat', value: '22 → 19', label: 'AI agent: gave up after 22 steps; after the fix, paid in 19' }, run: RUNS.agentFixed },
-  { n: 9, title: 'Hand the owner the result', short: 'Fix list, ready code, screenshot, PDF.', detail: 'The owner gets the list of fixes ranked by who they block, the code ready to apply, a screenshot with the problem circled, and the same content as a PDF (in progress).', artifact: { kind: 'list', items: ['List of fixes', 'Ready code', 'Annotated screenshot', 'PDF report (in progress)'] }, run: RUNS.keyboardBlocked },
+  { n: 9, title: 'Hand the owner the result', short: 'Fix list, ready code, screenshot, PDF.', detail: 'The owner gets the list of fixes ranked by who they block, the code ready to apply, a screenshot with the problem circled, and the same content as an accessible PDF (tagged, with an outline).', artifact: { kind: 'list', items: ['List of fixes', 'Ready code', 'Annotated screenshot', 'PDF report'] }, run: RUNS.keyboardBlocked },
 ];
 
 // Open-source platform demos are named; large retailers are recorded only as "Retailer A" and so on.
