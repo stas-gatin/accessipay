@@ -48,10 +48,10 @@ On real sites the shopper goes as far as the payment step and stops: the engine 
 
 | Platform demo | Screen reader | Keyboard only | AI agent |
 |---|---|---|---|
-| Shopify Hydrogen | reached payment, 11 steps | reached payment, 29 steps | reached payment, 7 steps |
+| Shopify Hydrogen | reached payment, 10 steps | reached payment, 29 steps | reached payment, 7 steps |
 | Medusa | not counted: the demo answered HTTP 500 | not run (demo down) | reached "Place order", 28 steps (30 Oct) |
 | Saleor | stopped at payment: demo has no payment gateway | ran out of 90 steps on the address form | stopped at payment: no gateway |
-| Solidus | reached payment, 26 steps | reached payment, 67 steps | reached payment, 13 steps |
+| Solidus | reached payment, 27 steps | reached payment, 67 steps | reached payment, 13 steps |
 | Sylius | reached the payment method choice, 30 steps | ran out of 90 steps on the address form | reached the payment method choice, 25 steps |
 | Shopware Frontends | reached payment, 27 steps | reached payment, 59 steps | not testable: a bot check never finished |
 | Next.js Commerce | not testable: a visual puzzle CAPTCHA appeared at checkout | not testable: same CAPTCHA | not testable: same CAPTCHA |
