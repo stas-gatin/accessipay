@@ -69,7 +69,7 @@ export default function RunsTable({ rows, meta }) {
     { field: 'deadEnds', headerName: 'Failed', headerTooltip: 'Failed actions: the control was missing or could not be used', width: 80, type: 'numericColumn', valueFormatter: (p) => (blank(p) ? '' : p.value ?? '—') },
     { field: 'klm', headerName: 'Est. time for a person', headerTooltip: 'Estimated time for a person following the recorded path (keystroke-level model). Not measured time.', width: 128, wrapHeaderText: true, autoHeaderHeight: true, type: 'numericColumn', valueFormatter: (p) => (blank(p) ? '' : p.value == null ? '—' : fmtSeconds(p.value)) },
     { field: 'createdAt', headerName: 'Recorded', hide: true, sort: 'desc' },
-    { colId: 'replay', headerName: '', width: 100, sortable: false, resizable: false, cellRenderer: ReplayCell },
+    { colId: 'replay', headerName: 'Replay', width: 100, sortable: false, resizable: false, cellRenderer: ReplayCell },
   ], [groupBy]);
 
   const groups = [['persona', 'Customer'], ['outcome', 'Outcome'], ['none', 'Nothing']];

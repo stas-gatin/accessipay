@@ -819,7 +819,7 @@ main:focus { outline: none; }
   .effort.in .effort-bar span { width: var(--w); }
   .effort.in .effort-bar.after span { transition-delay: 250ms; }
 }
-@media (max-width: 900px) { .effort { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .effort { grid-template-columns: minmax(0, 1fr); } }
 
 /* ---------- Real-site sweep matrix ---------- */
 .sweep { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 24px; margin-bottom: 40px; align-items: start; }

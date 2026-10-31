@@ -6,7 +6,7 @@ import AxeBuilder from '@axe-core/playwright';
 const BASE = process.env.ACCESSIPAY_URL || 'http://127.0.0.1:4300';
 const runs = await (await fetch(`${BASE}/api/runs`)).json();
 const done = runs.find((r) => r.outcome?.status === 'purchased' && r.patches?.length) || runs[0];
-const screens = ['/#/', '/#/method', '/#/customers', '/#/paypal', '/#/honesty', '/#/test', '/#/own-site', '/#/analytics', '/#/runs', '/#/results', '/#/sites/demo.solidus.io', '/#/defects', `/#/runs/${done.id}`];
+const screens = ['/#/', '/#/method', '/#/customers', '/#/paypal', '/#/test', '/#/own-site', '/#/analytics', '/#/results', '/#/sites/Retailer%20AJ', '/#/runs/20261031-886cfa', '/#/report/case/20261030-cea700', `/#/runs/${done.id}`];
 const browser = await chromium.launch();
 for (const [w, h, theme] of [[1280, 800, 'light'], [1280, 800, 'dark'], [390, 844, 'light'], [390, 844, 'dark']]) {
   const ctx = await browser.newContext({ viewport: { width: w, height: h }, reducedMotion: 'reduce' });
