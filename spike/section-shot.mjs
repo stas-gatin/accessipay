@@ -2,7 +2,7 @@
 import { chromium } from 'playwright';
 const [route, sel, out, theme = 'light'] = process.argv.slice(2);
 const b = await chromium.launch();
-const p = await b.newPage({ viewport: { width: 1440, height: 900 }, colorScheme: theme });
+const p = await b.newPage({ viewport: { width: 1440, height: 900 }, colorScheme: theme, reducedMotion: 'reduce' });
 await p.addInitScript((t) => { try { localStorage.setItem('theme', t); } catch {} }, theme);
 await p.goto('http://127.0.0.1:4300/#' + route, { waitUntil: 'networkidle' });
 const el = p.locator(sel).first();

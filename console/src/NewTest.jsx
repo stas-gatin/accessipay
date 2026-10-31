@@ -32,7 +32,12 @@ export default function NewTest({ meta }) {
   async function start() {
     setBusy(true); setError('');
     try {
-      const r = await api('/api/runs', scenario === 'site' ? { persona, brain, url: siteUrl } : { persona, brain, defects, goalId: persona === 'agent' ? goalId : 'checkout' });
+      if (scenario === 'site' && persona === 'all') {
+        const t = await api('/api/site-tests', { url: siteUrl, brain });
+        location.hash = `#/sites/${encodeURIComponent(t.key)}`;
+        return;
+      }
+      const r = await api('/api/runs', scenario === 'site' ? { persona, brain, url: siteUrl } : { persona: persona === 'all' ? 'screenreader' : persona, brain, defects, goalId: persona === 'agent' ? goalId : 'checkout' });
       location.hash = `#/runs/${r.id}`;
     } catch (e) { setError(e.message); setBusy(false); }
   }
@@ -50,7 +55,7 @@ export default function NewTest({ meta }) {
           <h2 className="section-title" id="s1"><span className="step-no">1</span>Shop to test</h2>
           <div style={{ display: 'grid', gap: 8 }}>
             {scenarios.map((s) => (
-              <button key={s.id} type="button" className="choice" aria-pressed={scenario === s.id} onClick={() => setScenario(s.id)}>
+              <button key={s.id} type="button" className="choice" aria-pressed={scenario === s.id} onClick={() => { setScenario(s.id); if (s.id === 'site') setPersona('all'); else if (persona === 'all') setPersona('screenreader'); }}>
                 <strong>{s.title}</strong><span>{s.note}</span>
               </button>
             ))}
@@ -79,6 +84,11 @@ export default function NewTest({ meta }) {
           <section className="card" aria-labelledby="s2">
             <h2 className="section-title" id="s2"><span className="step-no">2</span>Who is shopping</h2>
             <div style={{ display: 'grid', gap: 8 }}>
+              {scenario === 'site' && (
+                <button type="button" className="choice" aria-pressed={persona === 'all'} onClick={() => setPersona('all')}>
+                  <strong>All three customers</strong><span>Screen reader, keyboard-only and AI agent on the same site, as one site analysis.</span>
+                </button>
+              )}
               {Object.entries(meta.personas).map(([id, p]) => (
                 <button key={id} type="button" className="choice" aria-pressed={persona === id} onClick={() => setPersona(id)}>
                   <strong>{p.label}</strong><span>{p.summary}</span>

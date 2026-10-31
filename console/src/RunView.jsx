@@ -273,7 +273,7 @@ export default function RunView({ id, meta }) {
 
   return (
     <div className="page rv-page">
-      <p className="note rv-crumbs"><a href="#/runs">All runs</a> · {shortDate(run.createdAt)} · {brain}{run.recorded ? ' · recorded run' : ''}{run.label ? ` · ${run.label}` : ''}</p>
+      <p className="note rv-crumbs"><a href="#/runs">All runs</a>{external && <> · <a href={`#/sites/${encodeURIComponent(run.site.host)}`}>Site analysis: {run.site.host}, all customers</a></>} · {shortDate(run.createdAt)} · {brain}{run.recorded ? ' · recorded run' : ''}{run.label ? ` · ${run.label}` : ''}</p>
 
       <header className="rv-head" ref={headRef}>
         <div className="rv-who">

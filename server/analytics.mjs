@@ -3,7 +3,7 @@ import { runMetrics, compareRuns } from './metrics.mjs';
 
 export const STAGES = ['Browse', 'Cart', 'Checkout', 'Payment', 'Paid'];
 
-const THEMES = [
+export const THEMES = [
   ['Popups and dialogs', /popup|dialog|modal|newsletter|overlay/i],
   ['Unnamed or mislabelled controls', /unnamed|no name|accessible name|not named|label|named only|"button"/i],
   ['Keyboard and focus', /focus|keyboard|tab |tab,|shift\+tab|trap|escape/i],

@@ -17,6 +17,7 @@ import { runMetrics } from './metrics.mjs';
 import { mountReports } from './report/routes.mjs';
 import { createOwnerSites, KEY_HEADER, keyGoesTo } from './owners.mjs';
 import { checkAgentAccess } from './agent-access.mjs';
+import { createSiteAnalysis } from './site-analysis.mjs';
 import { detectBotWall } from './engine/preflight.mjs';
 
 export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, env = process.env, extend }) {
@@ -24,6 +25,7 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
   const shop = createShop({ paypal, dataDir });
   const owners = createOwnerSites({ dataDir });
   const runs = createRuns({ browser, shop, paypal, dataDir, origin, brains, owners });
+  const sites = createSiteAnalysis({ runs, dataDir });
   const fixes = createFixes({ shop, runs, origin, fixers, dataDir });
   const app = express();
   app.disable('x-powered-by');
@@ -56,6 +58,22 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
     } catch (e) { res.status(400).json({ error: e.message }); }
   });
   app.get('/api/runs', (req, res) => res.json(runs.list()));
+
+  // One analysis per site, across every customer type.
+  app.get('/api/sites', (req, res) => res.json(sites.list()));
+  app.get('/api/sites/:key', (req, res) => {
+    const s = sites.get(req.params.key);
+    return s ? res.json(s) : res.status(404).json({ error: 'No runs on this site yet' });
+  });
+  // Test a site with all three customer types at once; the site report shows them together.
+  app.post('/api/site-tests', (req, res) => {
+    try {
+      const b = req.body || {};
+      const personas = (b.personas?.length ? b.personas : ['screenreader', 'keyboard', 'agent']).filter((p) => ['screenreader', 'keyboard', 'agent'].includes(p));
+      const started = personas.map((persona) => runs.start({ persona, url: b.url, brain: b.brain || 'external', ownerSiteId: b.ownerSiteId, label: 'site test' }));
+      res.json({ key: started[0].site.host, runs: started.map((r) => ({ id: r.id, persona: r.persona })) });
+    } catch (e) { res.status(400).json({ error: e.message }); }
+  });
 
   // Owners test their own site: verify the domain, then let AccessiPay's browser through their bot protection.
   app.post('/api/owner-sites', (req, res) => {
