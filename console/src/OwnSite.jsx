@@ -83,6 +83,9 @@ export default function OwnSite({ meta }) {
         prove the site is yours, add one rule to your bot protection, and send the customers. The protection stays on for everyone else.
       </p>
 
+      <AgentAccess initial={/^https?:\/\/[^/]+\./.test(url) ? url : site?.url} />
+
+      <p className="eyebrow">Full test with all three customers, in four steps</p>
       <div className="own-steps">
         <section className="card" aria-labelledby="o1">
           <h2 className="section-title" id="o1"><span className="step-no">1</span>Your shop address</h2>
@@ -177,7 +180,6 @@ export default function OwnSite({ meta }) {
       </div>
       {error && <p className="note" role="alert" style={{ color: 'var(--bad)', marginTop: 16 }}>{error}</p>}
 
-      <AgentAccess initial={/^https?:\/\/[^/]+\./.test(url) ? url : site?.url} />
     </div>
   );
 }
@@ -206,7 +208,7 @@ export function AgentAccess({ initial }) {
     setBusy(false);
   }
   return (
-    <section className="card" aria-labelledby="aa" style={{ marginTop: 24 }}>
+    <section className="card" aria-labelledby="aa" style={{ marginBottom: 24 }}>
       <p className="eyebrow">Works on any shop, no setup</p>
       <h2 className="section-title" id="aa">Can AI assistants shop here?</h2>
       <p className="note">Reads what the shop tells AI agents (its rules for bots in robots.txt, an llms.txt guide, product data that machines can read) and loads the home page once in an ordinary automated browser. It never pretends to be another company’s agent.</p>
