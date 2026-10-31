@@ -156,12 +156,14 @@ export class Session {
     }
     if (d.action === 'type' && CARD_FIELD.test(await this.focusedName())) return 'Not allowed on a real site: AccessiPay never types card data. Finish with done and your findings.';
     const account = 'Not allowed on a real site: AccessiPay never signs in, signs up or types passwords. Continue as a guest, or finish with your findings.';
-    if (['click', 'check'].includes(d.action) && ACCOUNT_ACTION.test(a.name || '')) return account;
+    // "Guest checkout, you can sign in later" is the way around an account, not into one.
+    const guest = (n) => /\bguest\b/i.test(n || '');
+    if (['click', 'check'].includes(d.action) && ACCOUNT_ACTION.test(a.name || '') && !guest(a.name)) return account;
     if (d.action === 'fill' && /password/i.test(a.name || '')) return account;
     if (d.action === 'type' || d.action === 'activate') {
       const isPassword = await (await this.focusFrame()).evaluate(() => (() => { let e = document.activeElement; while (e && e.shadowRoot && e.shadowRoot.activeElement) e = e.shadowRoot.activeElement; return e; })()?.type === 'password').catch(() => false);
       if (isPassword) return account;
-      if (d.action === 'activate' && ACCOUNT_ACTION.test(await this.focusedName())) return account;
+      if (d.action === 'activate') { const n = await this.focusedName(); if (ACCOUNT_ACTION.test(n) && !guest(n)) return account; }
     }
     return null;
   }

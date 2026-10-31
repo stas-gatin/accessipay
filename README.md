@@ -46,19 +46,19 @@ On real sites the shopper goes as far as the payment step and stops: the engine 
 
 **Every shop gets all three customers, in one visit.** A screen reader user, a keyboard-only user and an AI shopping agent shop at the same time, and their runs are kept together as one analysis of the shop (console: *Results*). A shop is never tested by one customer alone, and each large retailer gets at most one such visit a day. Large retailers are published only as *Retailer A*, *Retailer B* and so on: their names, addresses, brand words, screenshots, page text and page addresses are removed from the recorded runs, and capitalised words that are not ordinary English (coined product names such as a jewelry line) are replaced with "[name]" (`server/anonymize.mjs`). The API applies the same mask to runs that are still in progress.
 
-Results on 31 October 2026 (console: *Results*; `node tools/sweep.mjs status`):
+Results of two sweeps on 31 October 2026 (console: *Results*; `node tools/sweep.mjs status`):
 
 | | Shops | Customer runs that reached the payment step |
 |---|---|---|
-| Tested by all three customers | 21 | 47 of 55 counted runs |
-| Screen reader customer | | 20 of 20 |
-| AI shopping agent | | 15 of 17 |
-| Keyboard-only customer | | 12 of 21 |
-| Turned an automated browser away (HTTP 403/429, a bot check, a maintenance page) | 10 | not tested |
+| Tested by all three customers | 41 | 86 of 113 counted runs |
+| Screen reader customer | | 37 of 38 |
+| AI shopping agent | | 30 of 34 |
+| Keyboard-only customer | | 19 of 41 |
+| Turned an automated browser away (HTTP 403/429, a bot check, a maintenance page, every Add to cart refused) | 14 | not tested |
 
-All three customers reached payment on 9 shops. Three runs are shown as *not counted*: our engine could not press a control that was on screen (Playwright's click waited and timed out), which is a fault on our side, not the shop's; those customers shop there again on another day. The engine now presses such a control directly, the way a person clicking that spot would.
+All three customers reached payment on 15 shops. Four runs are shown as *not counted* because the fault was ours, not the shop's (a click on a visible control that timed out, a decision that did not arrive in time, a safety rule that took a guest-checkout button for a sign-in); the engine has been fixed for each. Every run that did not reach payment was looked at by hand before it was published: four that had in fact reached the payment step (the methods were buttons, not radio buttons, which the payment check now also counts) were relabelled, and runs stopped by bot protection or by a shop refusing our fictional `example.com` email are listed as not testable, not as accessibility failures.
 
-The keyboard-only customer is the one most often stopped: product pages and listings with dozens of tab stops before Add to cart (image galleries, filter lists, repeated headers without a skip link), cart drawers that open without moving focus into them, and a carousel that keeps focus. The AI agent was stopped by a cart drawer whose items and Checkout button were missing from the accessibility tree, and by size options it could not select. The problems met most often, across 326 reports: unnamed or mislabelled controls (20 of 21 shops), keyboard focus lost or far away (20), no feedback after an action such as Add to cart (19), and pop-ups and dialogs, cookie banners included, that take over the page (18).
+The keyboard-only customer is the one most often stopped: dozens of tab stops before Add to cart (image galleries, filter lists, long menus without a skip link), cart drawers that open without moving focus into them, an address autocomplete that cannot be used without a mouse. The AI agent was stopped by a cart drawer whose items and Checkout button were missing from the accessibility tree, by size options it could not select and by the same address autocomplete. Across 623 reports on 41 shops, the problems met most often are unnamed or mislabelled controls (40 shops), keyboard focus lost or far away (38), pop-ups and dialogs, cookie banners included, that take over the page (36), and no feedback after an action such as Add to cart (34).
 
 Before publishing, every finding is also checked without AI (below), and the records are checked for names with `node tools/leak-check.mjs`.
 
@@ -70,7 +70,7 @@ These runs, the demo shop runs and their fixes are in `data/recorded/` and can b
 
 The customers' findings are written by AI, so every finding is checked again without AI against the record of its run (`server/verify.mjs`, `node tools/verify-findings.mjs`): the page as the customer perceived it at that step (accessibility tree, or visible text and focus for the keyboard customer), where keyboard focus actually went, the status messages on the page after an action, and axe-core on the same page in the same state. A claim about a named control that the record shows with a name is marked as not confirmed.
 
-On the real shops so far: 343 findings; 180 are of a kind that can be checked automatically (controls without a name, identical names, vague names, lost focus, no announcement after an action, empty pages while loading, no skip link, pre-ticked marketing boxes, raw template text); 149 of them (83%) are confirmed by the record (143 by the page record, 6 by axe-core alone) and 31 are not. The other 163 (for example "the price in the cart is higher than on the product card") need a person to judge from the replay. Each finding shows its result in the run view and in the shop's analysis. For a shop whose name is withheld, the check runs before its page text is removed from the record.
+On the real shops so far: 686 findings; 365 are of a kind that can be checked automatically (controls without a name, identical names, vague names, lost focus, no announcement after an action, empty pages while loading, no skip link, pre-ticked marketing boxes, raw template text); 301 of them (82%) are confirmed by the record (285 by the page record, 16 by axe-core alone) and 64 are not. The other 321 (for example "the price in the cart is higher than on the product card") need a person to judge from the replay. Each finding shows its result in the run view and in the shop's analysis. For a shop whose name is withheld, the check runs before its page text is removed from the record.
 
 ## Test your own site
 
