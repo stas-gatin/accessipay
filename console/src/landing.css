@@ -1035,14 +1035,14 @@ main:focus { outline: none; }
 .hc-out .dot-word.bad { color: #ff8a7f; }
 .hc-arr { color: #9fb0c6; }
 .hc-out a { margin-left: auto; }
-.hero-proof { padding: 26px 26px 22px; }
+.pp-proof { padding: 26px 26px 22px; }
 .hp-k { margin: 0 0 4px !important; font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #9fb0c6; }
 .hp-t { margin: 0 0 16px !important; font-family: var(--head); font-size: 28px; font-weight: 700; letter-spacing: -.02em; color: #ffffff; }
-.hero-proof dl { margin: 0; display: grid; gap: 0; }
-.hero-proof dl div { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid rgba(255, 255, 255, .12); font-size: 15.5px; }
-.hero-proof dt { color: #9fb0c6; }
-.hero-proof dd { margin: 0; font-weight: 600; color: #ffffff; text-align: right; }
-.hero-proof .lp-link { display: inline-block; margin-top: 14px; }
+.pp-proof dl { margin: 0; display: grid; gap: 0; }
+.pp-proof dl div { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid rgba(255, 255, 255, .12); font-size: 15.5px; }
+.pp-proof dt { color: #9fb0c6; }
+.pp-proof dd { margin: 0; font-weight: 600; color: #ffffff; text-align: right; }
+.pp-proof .lp-link { display: inline-block; margin-top: 14px; }
 
 /* Method: stage index with a fixed, tabular number column. */
 .method { grid-template-columns: 284px minmax(0, 1fr); }

@@ -149,7 +149,7 @@ function CustomerCards() {
 
 function ProofCard() {
   return (
-    <div className="phero-panel hero-proof">
+    <div className="phero-panel pp-proof">
       <p className="hp-k">PayPal Orders v2 · sandbox</p>
       <p className="hp-t">PayPal says COMPLETED</p>
       <dl>
