@@ -1,0 +1,2662 @@
+{
+  "id": "20261030-c53edf",
+  "createdAt": "2026-10-30T21:48:22.475Z",
+  "label": "platform sweep",
+  "persona": "keyboard",
+  "brainKind": "external",
+  "model": null,
+  "instanceId": null,
+  "defects": [],
+  "patches": [],
+  "site": {
+    "url": "https://vercel.store/",
+    "host": "vercel.store"
+  },
+  "paypalMode": "sandbox",
+  "goalId": "checkout",
+  "goal": "This is a real online shop. Add any one in-stock product to the cart and go through checkout as far as the payment step, then stop. Never pay, never place or submit an order, never create an account or sign in, never type card details. If the shop asks for contact or shipping details before payment, use: full name Alex Morgan, email alex.morgan@example.com, street address 100 Example Avenue, city New York, state New York, ZIP 10001, country United States (or the closest option the shop offers), phone (212) 555-0142. Decline cookie banners, newsletters and promotions. When you see the payment form or a button that would pay or place the order, finish with done and your findings. If you cannot get that far, give up with honest findings.",
+  "maxSteps": 90,
+  "status": "finished",
+  "outcome": {
+    "status": "not-testable",
+    "reason": "A bot check from newassets.hcaptcha.com is on the page. AccessiPay does not get past bot protection, so this site was not tested."
+  },
+  "findings": [],
+  "events": [
+    {
+      "t": "2026-10-30T21:48:25.224Z",
+      "type": "start",
+      "persona": "keyboard",
+      "startUrl": "https://vercel.store/"
+    },
+    {
+      "t": "2026-10-30T21:48:25.792Z",
+      "type": "scan-page",
+      "url": "https://vercel.store/",
+      "violations": 9,
+      "rules": [
+        "label-content-name-mismatch"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:48:25.808Z",
+      "type": "observe",
+      "step": 1,
+      "path": "/",
+      "url": "https://vercel.store/",
+      "title": "Objects of Craft, by Vercel",
+      "text": "Page title: Objects of Craft, by Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nVercel\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-001.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:48:25.808Z",
+      "type": "thinking",
+      "step": 1
+    },
+    {
+      "t": "2026-10-30T21:49:41.612Z",
+      "type": "decide",
+      "step": 1,
+      "action": "next",
+      "args": {},
+      "thought": "Start by tabbing to see what is focusable.",
+      "thinkMs": 75804
+    },
+    {
+      "t": "2026-10-30T21:49:44.707Z",
+      "type": "act",
+      "step": 1,
+      "result": "Focus moved to: link \"Skip to content\"",
+      "actMs": 94,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:49:44.737Z",
+      "type": "observe",
+      "step": 2,
+      "path": "/",
+      "url": "https://vercel.store/",
+      "title": "Objects of Craft, by Vercel",
+      "text": "Page title: Objects of Craft, by Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nVercel\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\n\nKeyboard focus: link \"Skip to content\"",
+      "image": "step-002.jpg",
+      "focus": {
+        "x": 16,
+        "y": 16,
+        "width": 140,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:49:44.737Z",
+      "type": "thinking",
+      "step": 2
+    },
+    {
+      "t": "2026-10-30T21:49:47.011Z",
+      "type": "decide",
+      "step": 2,
+      "action": "next",
+      "args": {},
+      "thought": "Continue tabbing.",
+      "thinkMs": 2274
+    },
+    {
+      "t": "2026-10-30T21:49:50.110Z",
+      "type": "act",
+      "step": 2,
+      "result": "Focus moved to: button [shows an icon] showing \"About\"",
+      "actMs": 99,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:49:50.153Z",
+      "type": "observe",
+      "step": 3,
+      "path": "/",
+      "url": "https://vercel.store/",
+      "title": "Objects of Craft, by Vercel",
+      "text": "Page title: Objects of Craft, by Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nVercel\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nABOUT\n\nKeyboard focus: button [shows an icon] showing \"About\"",
+      "image": "step-003.jpg",
+      "focus": {
+        "x": 20,
+        "y": 14,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:49:50.153Z",
+      "type": "thinking",
+      "step": 3
+    },
+    {
+      "t": "2026-10-30T21:49:52.368Z",
+      "type": "decide",
+      "step": 3,
+      "action": "next",
+      "args": {},
+      "thought": "Continue tabbing.",
+      "thinkMs": 2215
+    },
+    {
+      "t": "2026-10-30T21:49:55.454Z",
+      "type": "act",
+      "step": 3,
+      "result": "Focus moved to: link [shows an icon] showing \"Vercel\"",
+      "actMs": 86,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:49:55.517Z",
+      "type": "observe",
+      "step": 4,
+      "path": "/",
+      "url": "https://vercel.store/",
+      "title": "Objects of Craft, by Vercel",
+      "text": "Page title: Objects of Craft, by Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nVercel\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nABOUT\n\nKeyboard focus: link [shows an icon] showing \"Vercel\"",
+      "image": "step-004.jpg",
+      "focus": {
+        "x": 622,
+        "y": 14,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:49:55.517Z",
+      "type": "thinking",
+      "step": 4
+    },
+    {
+      "t": "2026-10-30T21:49:58.462Z",
+      "type": "decide",
+      "step": 4,
+      "action": "next",
+      "args": {},
+      "thought": "Continue tabbing.",
+      "thinkMs": 2945
+    },
+    {
+      "t": "2026-10-30T21:50:01.553Z",
+      "type": "act",
+      "step": 4,
+      "result": "Focus moved to: button \"Open store assistant\" [shows an icon]",
+      "actMs": 89,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:01.567Z",
+      "type": "observe",
+      "step": 5,
+      "path": "/",
+      "url": "https://vercel.store/",
+      "title": "Objects of Craft, by Vercel",
+      "text": "Page title: Objects of Craft, by Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nVercel\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nOPEN STORE ASSISTANT\n\nKeyboard focus: button \"Open store assistant\" [shows an icon]",
+      "image": "step-005.jpg",
+      "focus": {
+        "x": 1184,
+        "y": 14,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:01.567Z",
+      "type": "thinking",
+      "step": 5
+    },
+    {
+      "t": "2026-10-30T21:50:03.626Z",
+      "type": "decide",
+      "step": 5,
+      "action": "next",
+      "args": {},
+      "thought": "Continue tabbing.",
+      "thinkMs": 2059
+    },
+    {
+      "t": "2026-10-30T21:50:06.714Z",
+      "type": "act",
+      "step": 5,
+      "result": "Focus moved to: button [shows an icon] showing \"Cart (0)\"",
+      "actMs": 87,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:06.734Z",
+      "type": "observe",
+      "step": 6,
+      "path": "/",
+      "url": "https://vercel.store/",
+      "title": "Objects of Craft, by Vercel",
+      "text": "Page title: Objects of Craft, by Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nVercel\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nOPEN STORE ASSISTANT\nCART\n\nKeyboard focus: button [shows an icon] showing \"Cart (0)\"",
+      "image": "step-006.jpg",
+      "focus": {
+        "x": 1224,
+        "y": 14,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:06.734Z",
+      "type": "thinking",
+      "step": 6
+    },
+    {
+      "t": "2026-10-30T21:50:09.087Z",
+      "type": "decide",
+      "step": 6,
+      "action": "next",
+      "args": {},
+      "thought": "Continue tabbing to find products.",
+      "thinkMs": 2354
+    },
+    {
+      "t": "2026-10-30T21:50:12.242Z",
+      "type": "act",
+      "step": 6,
+      "result": "Focus moved to: link \"Sold Out SOLD OUT\" showing \"VRC Quilted Racing Jacket\"",
+      "actMs": 105,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:12.287Z",
+      "type": "observe",
+      "step": 7,
+      "path": "/",
+      "url": "https://vercel.store/",
+      "title": "Objects of Craft, by Vercel",
+      "text": "Page title: Objects of Craft, by Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nVercel\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nCART\n\nKeyboard focus: link \"Sold Out SOLD OUT\" showing \"VRC Quilted Racing Jacket\"",
+      "image": "step-007.jpg",
+      "focus": {
+        "x": 40,
+        "y": 144,
+        "width": 270,
+        "height": 216
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:12.287Z",
+      "type": "thinking",
+      "step": 7
+    },
+    {
+      "t": "2026-10-30T21:50:14.968Z",
+      "type": "decide",
+      "step": 7,
+      "action": "next",
+      "args": {},
+      "thought": "Look for a product not sold out.",
+      "thinkMs": 2680
+    },
+    {
+      "t": "2026-10-30T21:50:18.063Z",
+      "type": "act",
+      "step": 7,
+      "result": "Focus moved to: link \"Sold Out SOLD OUT\" showing \"VRC Unlined Racing Jacket\"",
+      "actMs": 93,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:18.084Z",
+      "type": "observe",
+      "step": 8,
+      "path": "/",
+      "url": "https://vercel.store/",
+      "title": "Objects of Craft, by Vercel",
+      "text": "Page title: Objects of Craft, by Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nVercel\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\n\nKeyboard focus: link \"Sold Out SOLD OUT\" showing \"VRC Unlined Racing Jacket\"",
+      "image": "step-008.jpg",
+      "focus": {
+        "x": 350,
+        "y": 144,
+        "width": 270,
+        "height": 216
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:18.084Z",
+      "type": "thinking",
+      "step": 8
+    },
+    {
+      "t": "2026-10-30T21:50:20.167Z",
+      "type": "decide",
+      "step": 8,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing.",
+      "thinkMs": 2083
+    },
+    {
+      "t": "2026-10-30T21:50:23.258Z",
+      "type": "act",
+      "step": 8,
+      "result": "Focus moved to: link showing \"VRC Pit Crew Jumpsuit\"",
+      "actMs": 87,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:23.283Z",
+      "type": "observe",
+      "step": 9,
+      "path": "/",
+      "url": "https://vercel.store/",
+      "title": "Objects of Craft, by Vercel",
+      "text": "Page title: Objects of Craft, by Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nVercel\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\nSold Out\nSOLD OUT\n\nKeyboard focus: link showing \"VRC Pit Crew Jumpsuit\"",
+      "image": "step-009.jpg",
+      "focus": {
+        "x": 660,
+        "y": 144,
+        "width": 270,
+        "height": 432
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:23.283Z",
+      "type": "thinking",
+      "step": 9
+    },
+    {
+      "t": "2026-10-30T21:50:25.779Z",
+      "type": "decide",
+      "step": 9,
+      "action": "activate",
+      "args": {},
+      "thought": "This link is not labelled sold out, open it.",
+      "thinkMs": 2496
+    },
+    {
+      "t": "2026-10-30T21:50:25.781Z",
+      "type": "target",
+      "step": 9,
+      "box": {
+        "x": 660,
+        "y": 144,
+        "width": 270,
+        "height": 432
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "a",
+      "outer": "<a aria-label=\"VRC Pit Crew Jumpsuit\" class=\"relative block cursor-pointer after:pointer-events-none after:absolute after:inset-0 after:z-10 after:border after:border-foreground after:opacity-0 after:content-[''] focus-visible:outline-none focus-visible:after:opacity-100\" href=\"/products/pit-crew-jumpsuit\"><div data-slot=\"product-card-image\" data-framed=\"\" data-tall=\"true\" class=\"relative flex aspect-square items-center justify-center overflow-hidden data-framed:aspect-5/4 data-framed:overflow-visible data-tall:aspect-5/8 data-[sold-out=fade]:[&amp;_[data-product-grid-image]]:opacity-25\"><span"
+    },
+    {
+      "t": "2026-10-30T21:50:29.288Z",
+      "type": "act",
+      "step": 9,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 506,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:29.550Z",
+      "type": "scan-page",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit",
+      "violations": 0,
+      "rules": [],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:50:29.563Z",
+      "type": "observe",
+      "step": 10,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-010.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:29.563Z",
+      "type": "thinking",
+      "step": 10
+    },
+    {
+      "t": "2026-10-30T21:50:31.859Z",
+      "type": "decide",
+      "step": 10,
+      "action": "next",
+      "args": {},
+      "thought": "Tab to find the size options.",
+      "thinkMs": 2296
+    },
+    {
+      "t": "2026-10-30T21:50:34.948Z",
+      "type": "act",
+      "step": 10,
+      "result": "Focus moved to: nothing focused (top of page)",
+      "actMs": 88,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:34.964Z",
+      "type": "observe",
+      "step": 11,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-011.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:34.964Z",
+      "type": "thinking",
+      "step": 11
+    },
+    {
+      "t": "2026-10-30T21:50:37.474Z",
+      "type": "decide",
+      "step": 11,
+      "action": "next",
+      "args": {},
+      "thought": "Tab again.",
+      "thinkMs": 2510
+    },
+    {
+      "t": "2026-10-30T21:50:40.712Z",
+      "type": "act",
+      "step": 11,
+      "result": "Focus moved to: link \"Skip to content\"",
+      "actMs": 179,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:40.852Z",
+      "type": "observe",
+      "step": 12,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: link \"Skip to content\"",
+      "image": "step-012.jpg",
+      "focus": {
+        "x": 16,
+        "y": 16,
+        "width": 140,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:40.852Z",
+      "type": "thinking",
+      "step": 12
+    },
+    {
+      "t": "2026-10-30T21:50:43.769Z",
+      "type": "decide",
+      "step": 12,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing toward the product options.",
+      "thinkMs": 2917
+    },
+    {
+      "t": "2026-10-30T21:50:46.971Z",
+      "type": "act",
+      "step": 12,
+      "result": "Focus moved to: button [shows an icon] showing \"Back\"",
+      "actMs": 198,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:47.038Z",
+      "type": "observe",
+      "step": 13,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\nBACK\n\nKeyboard focus: button [shows an icon] showing \"Back\"",
+      "image": "step-013.jpg",
+      "focus": {
+        "x": 20,
+        "y": 14,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:47.038Z",
+      "type": "thinking",
+      "step": 13
+    },
+    {
+      "t": "2026-10-30T21:50:51.606Z",
+      "type": "decide",
+      "step": 13,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing.",
+      "thinkMs": 4568
+    },
+    {
+      "t": "2026-10-30T21:50:54.700Z",
+      "type": "act",
+      "step": 13,
+      "result": "Focus moved to: link [shows an icon] showing \"Vercel\"",
+      "actMs": 93,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:54.762Z",
+      "type": "observe",
+      "step": 14,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\nBACK\n\nKeyboard focus: link [shows an icon] showing \"Vercel\"",
+      "image": "step-014.jpg",
+      "focus": {
+        "x": 622,
+        "y": 14,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:54.762Z",
+      "type": "thinking",
+      "step": 14
+    },
+    {
+      "t": "2026-10-30T21:50:57.693Z",
+      "type": "decide",
+      "step": 14,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing.",
+      "thinkMs": 2931
+    },
+    {
+      "t": "2026-10-30T21:51:00.781Z",
+      "type": "act",
+      "step": 14,
+      "result": "Focus moved to: button \"Open store assistant\" [shows an icon]",
+      "actMs": 88,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:00.797Z",
+      "type": "observe",
+      "step": 15,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\nOPEN STORE ASSISTANT\n\nKeyboard focus: button \"Open store assistant\" [shows an icon]",
+      "image": "step-015.jpg",
+      "focus": {
+        "x": 1184,
+        "y": 14,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:00.797Z",
+      "type": "thinking",
+      "step": 15
+    },
+    {
+      "t": "2026-10-30T21:51:03.441Z",
+      "type": "decide",
+      "step": 15,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing.",
+      "thinkMs": 2643
+    },
+    {
+      "t": "2026-10-30T21:51:06.541Z",
+      "type": "act",
+      "step": 15,
+      "result": "Focus moved to: button [shows an icon] showing \"Cart (0)\"",
+      "actMs": 99,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:06.584Z",
+      "type": "observe",
+      "step": 16,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\nOPEN STORE ASSISTANT\nCART\n\nKeyboard focus: button [shows an icon] showing \"Cart (0)\"",
+      "image": "step-016.jpg",
+      "focus": {
+        "x": 1224,
+        "y": 14,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:06.584Z",
+      "type": "thinking",
+      "step": 16
+    },
+    {
+      "t": "2026-10-30T21:51:09.400Z",
+      "type": "decide",
+      "step": 16,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing.",
+      "thinkMs": 2816
+    },
+    {
+      "t": "2026-10-30T21:51:12.490Z",
+      "type": "act",
+      "step": 16,
+      "result": "Focus moved to: div showing \"VRC Pit Crew Jumpsuit\"",
+      "actMs": 89,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:12.561Z",
+      "type": "observe",
+      "step": 17,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\nCART\n\nKeyboard focus: div showing \"VRC Pit Crew Jumpsuit\"",
+      "image": "step-017.jpg",
+      "focus": {
+        "x": 0,
+        "y": 64,
+        "width": 896,
+        "height": 796
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:12.561Z",
+      "type": "thinking",
+      "step": 17
+    },
+    {
+      "t": "2026-10-30T21:51:15.321Z",
+      "type": "decide",
+      "step": 17,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing.",
+      "thinkMs": 2760
+    },
+    {
+      "t": "2026-10-30T21:51:18.435Z",
+      "type": "act",
+      "step": 17,
+      "result": "Focus moved to: button [shows an icon] showing \"Next image\"",
+      "actMs": 108,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:18.467Z",
+      "type": "observe",
+      "step": 18,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button [shows an icon] showing \"Next image\"",
+      "image": "step-018.jpg",
+      "focus": {
+        "x": 840,
+        "y": 444,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:18.467Z",
+      "type": "thinking",
+      "step": 18
+    },
+    {
+      "t": "2026-10-30T21:51:20.838Z",
+      "type": "decide",
+      "step": 18,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing.",
+      "thinkMs": 2371
+    },
+    {
+      "t": "2026-10-30T21:51:23.972Z",
+      "type": "act",
+      "step": 18,
+      "result": "Focus moved to: button showing \"Go to image 1\"",
+      "actMs": 133,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:24.034Z",
+      "type": "observe",
+      "step": 19,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button showing \"Go to image 1\"",
+      "image": "step-019.jpg",
+      "focus": {
+        "x": 30,
+        "y": 804,
+        "width": 16,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:24.034Z",
+      "type": "thinking",
+      "step": 19
+    },
+    {
+      "t": "2026-10-30T21:51:27.255Z",
+      "type": "decide",
+      "step": 19,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing.",
+      "thinkMs": 3221
+    },
+    {
+      "t": "2026-10-30T21:51:30.344Z",
+      "type": "act",
+      "step": 19,
+      "result": "Focus moved to: button showing \"Go to image 2\"",
+      "actMs": 87,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:30.400Z",
+      "type": "observe",
+      "step": 20,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button showing \"Go to image 2\"",
+      "image": "step-020.jpg",
+      "focus": {
+        "x": 46,
+        "y": 804,
+        "width": 16,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:30.400Z",
+      "type": "thinking",
+      "step": 20
+    },
+    {
+      "t": "2026-10-30T21:51:33.542Z",
+      "type": "decide",
+      "step": 20,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing.",
+      "thinkMs": 3141
+    },
+    {
+      "t": "2026-10-30T21:51:36.633Z",
+      "type": "act",
+      "step": 20,
+      "result": "Focus moved to: button showing \"Go to image 3\"",
+      "actMs": 90,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:36.682Z",
+      "type": "observe",
+      "step": 21,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button showing \"Go to image 3\"",
+      "image": "step-021.jpg",
+      "focus": {
+        "x": 62,
+        "y": 804,
+        "width": 16,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:36.682Z",
+      "type": "thinking",
+      "step": 21
+    },
+    {
+      "t": "2026-10-30T21:51:39.334Z",
+      "type": "decide",
+      "step": 21,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing.",
+      "thinkMs": 2653
+    },
+    {
+      "t": "2026-10-30T21:51:42.424Z",
+      "type": "act",
+      "step": 21,
+      "result": "Focus moved to: button \"SEE IT ON ME\" [shows an icon]",
+      "actMs": 88,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:42.449Z",
+      "type": "observe",
+      "step": 22,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button \"SEE IT ON ME\" [shows an icon]",
+      "image": "step-022.jpg",
+      "focus": {
+        "x": 718,
+        "y": 804,
+        "width": 158,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:42.449Z",
+      "type": "thinking",
+      "step": 22
+    },
+    {
+      "t": "2026-10-30T21:51:44.915Z",
+      "type": "decide",
+      "step": 22,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing to the sizes.",
+      "thinkMs": 2466
+    },
+    {
+      "t": "2026-10-30T21:51:48.006Z",
+      "type": "act",
+      "step": 22,
+      "result": "Focus moved to: button \"L\"",
+      "actMs": 90,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:48.058Z",
+      "type": "observe",
+      "step": 23,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button \"L\"",
+      "image": "step-023.jpg",
+      "focus": {
+        "x": 1058,
+        "y": 214,
+        "width": 61,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:48.058Z",
+      "type": "thinking",
+      "step": 23
+    },
+    {
+      "t": "2026-10-30T21:51:50.980Z",
+      "type": "decide",
+      "step": 23,
+      "action": "activate",
+      "args": {},
+      "thought": "Choose size L.",
+      "thinkMs": 2922
+    },
+    {
+      "t": "2026-10-30T21:51:50.985Z",
+      "type": "target",
+      "step": 23,
+      "box": {
+        "x": 1058,
+        "y": 214,
+        "width": 61,
+        "height": 36
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button aria-pressed=\"true\" class=\"type-label grid h-icon-button cursor-pointer place-items-center border border-border bg-background px-3 text-center whitespace-nowrap transition-colors duration-200 ease-standard text-muted-foreground hover:text-foreground aria-pressed:text-foreground\" type=\"button\">L</button>"
+    },
+    {
+      "t": "2026-10-30T21:51:54.498Z",
+      "type": "act",
+      "step": 23,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 512,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:55.235Z",
+      "type": "scan-page",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "violations": 0,
+      "rules": [],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:51:55.272Z",
+      "type": "observe",
+      "step": 24,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button \"L\"",
+      "image": "step-024.jpg",
+      "focus": {
+        "x": 1058,
+        "y": 214,
+        "width": 61,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:55.272Z",
+      "type": "thinking",
+      "step": 24
+    },
+    {
+      "t": "2026-10-30T21:51:57.904Z",
+      "type": "decide",
+      "step": 24,
+      "action": "next",
+      "args": {},
+      "thought": "Move on to the add to cart button.",
+      "thinkMs": 2632
+    },
+    {
+      "t": "2026-10-30T21:52:01.001Z",
+      "type": "act",
+      "step": 24,
+      "result": "Focus moved to: button \"Buy with\" [shows an icon]",
+      "actMs": 90,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:01.033Z",
+      "type": "observe",
+      "step": 25,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button \"Buy with\" [shows an icon]",
+      "image": "step-025.jpg",
+      "focus": {
+        "x": 916,
+        "y": 282,
+        "width": 167,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:52:01.033Z",
+      "type": "thinking",
+      "step": 25
+    },
+    {
+      "t": "2026-10-30T21:52:05.122Z",
+      "type": "decide",
+      "step": 25,
+      "action": "next",
+      "args": {},
+      "thought": "Skip the unclear Buy with button, go to Add to cart.",
+      "thinkMs": 4089
+    },
+    {
+      "t": "2026-10-30T21:52:08.287Z",
+      "type": "act",
+      "step": 25,
+      "result": "Focus moved to: button \"ADD TO CART\"",
+      "actMs": 135,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:08.320Z",
+      "type": "observe",
+      "step": 26,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button \"ADD TO CART\"",
+      "image": "step-026.jpg",
+      "focus": {
+        "x": 1093,
+        "y": 282,
+        "width": 167,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:52:08.320Z",
+      "type": "thinking",
+      "step": 26
+    },
+    {
+      "t": "2026-10-30T21:52:11.993Z",
+      "type": "decide",
+      "step": 26,
+      "action": "activate",
+      "args": {},
+      "thought": "Add to cart.",
+      "thinkMs": 3672
+    },
+    {
+      "t": "2026-10-30T21:52:12.035Z",
+      "type": "target",
+      "step": 26,
+      "box": {
+        "x": 1093,
+        "y": 282,
+        "width": 167,
+        "height": 36
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"button\" data-slot=\"button\" class=\"type-label group/button inline-flex shrink-0 cursor-pointer items-center gap-1.5 border-transparent bg-clip-padding whitespace-nowrap transition-[color,background-color,border-color,opacity,scale,transform] duration-150 ease-standard outline-none select-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-4 focus-visible:outline-current disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100 aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/20 motion-reduce:scale-"
+    },
+    {
+      "t": "2026-10-30T21:52:15.557Z",
+      "type": "act",
+      "step": 26,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 521,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:15.580Z",
+      "type": "observe",
+      "step": 27,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-027.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:52:15.580Z",
+      "type": "thinking",
+      "step": 27
+    },
+    {
+      "t": "2026-10-30T21:52:18.360Z",
+      "type": "decide",
+      "step": 27,
+      "action": "next",
+      "args": {},
+      "thought": "Focus was lost; tab to find the cart button.",
+      "thinkMs": 2781
+    },
+    {
+      "t": "2026-10-30T21:52:21.449Z",
+      "type": "act",
+      "step": 27,
+      "result": "Focus moved to: button [shows an icon] showing \"Remove item\"",
+      "actMs": 86,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:21.477Z",
+      "type": "observe",
+      "step": 28,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button [shows an icon] showing \"Remove item\"",
+      "image": "step-028.jpg",
+      "focus": {
+        "x": 1093,
+        "y": 282,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:52:21.477Z",
+      "type": "thinking",
+      "step": 28
+    },
+    {
+      "t": "2026-10-30T21:52:24.413Z",
+      "type": "decide",
+      "step": 28,
+      "action": "next",
+      "args": {},
+      "thought": "Cart seems open; keep tabbing past Remove to find checkout.",
+      "thinkMs": 2936
+    },
+    {
+      "t": "2026-10-30T21:52:27.498Z",
+      "type": "act",
+      "step": 28,
+      "result": "Focus moved to: button [shows an icon] showing \"Increase quantity\"",
+      "actMs": 84,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:27.525Z",
+      "type": "observe",
+      "step": 29,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button [shows an icon] showing \"Increase quantity\"",
+      "image": "step-029.jpg",
+      "focus": {
+        "x": 1224,
+        "y": 282,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:52:27.525Z",
+      "type": "thinking",
+      "step": 29
+    },
+    {
+      "t": "2026-10-30T21:52:30.023Z",
+      "type": "decide",
+      "step": 29,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing.",
+      "thinkMs": 2498
+    },
+    {
+      "t": "2026-10-30T21:52:33.110Z",
+      "type": "act",
+      "step": 29,
+      "result": "Focus moved to: button \"Tell me more\" [shows an icon]",
+      "actMs": 86,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:33.127Z",
+      "type": "observe",
+      "step": 30,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button \"Tell me more\" [shows an icon]",
+      "image": "step-030.jpg",
+      "focus": {
+        "x": 916,
+        "y": 720,
+        "width": 101,
+        "height": 24
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:52:33.127Z",
+      "type": "thinking",
+      "step": 30
+    },
+    {
+      "t": "2026-10-30T21:52:35.647Z",
+      "type": "decide",
+      "step": 30,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing to find checkout.",
+      "thinkMs": 2520
+    },
+    {
+      "t": "2026-10-30T21:52:38.736Z",
+      "type": "act",
+      "step": 30,
+      "result": "Focus moved to: nothing focused (top of page)",
+      "actMs": 88,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:38.759Z",
+      "type": "observe",
+      "step": 31,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-031.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:52:38.759Z",
+      "type": "thinking",
+      "step": 31
+    },
+    {
+      "t": "2026-10-30T21:52:42.548Z",
+      "type": "decide",
+      "step": 31,
+      "action": "prev",
+      "args": {},
+      "thought": "Try going backwards from the top to reach end of page where checkout might be.",
+      "thinkMs": 3789
+    },
+    {
+      "t": "2026-10-30T21:52:45.636Z",
+      "type": "act",
+      "step": 31,
+      "result": "Focus moved to: button \"Tell me more\" [shows an icon]",
+      "actMs": 85,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:45.660Z",
+      "type": "observe",
+      "step": 32,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button \"Tell me more\" [shows an icon]",
+      "image": "step-032.jpg",
+      "focus": {
+        "x": 916,
+        "y": 720,
+        "width": 101,
+        "height": 24
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:52:45.660Z",
+      "type": "thinking",
+      "step": 32
+    },
+    {
+      "t": "2026-10-30T21:52:49.888Z",
+      "type": "decide",
+      "step": 32,
+      "action": "prev",
+      "args": {},
+      "thought": "Go back one more to see what precedes.",
+      "thinkMs": 4228
+    },
+    {
+      "t": "2026-10-30T21:52:53.005Z",
+      "type": "act",
+      "step": 32,
+      "result": "Focus moved to: button [shows an icon] showing \"Increase quantity\"",
+      "actMs": 110,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:53.286Z",
+      "type": "observe",
+      "step": 33,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button [shows an icon] showing \"Increase quantity\"",
+      "image": "step-033.jpg",
+      "focus": {
+        "x": 1224,
+        "y": 282,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:52:53.286Z",
+      "type": "thinking",
+      "step": 33
+    },
+    {
+      "t": "2026-10-30T21:52:59.214Z",
+      "type": "decide",
+      "step": 33,
+      "action": "prev",
+      "args": {},
+      "thought": "Go back further.",
+      "thinkMs": 5928
+    },
+    {
+      "t": "2026-10-30T21:53:02.562Z",
+      "type": "act",
+      "step": 33,
+      "result": "Focus moved to: button [shows an icon] showing \"Remove item\"",
+      "actMs": 339,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:53:03.083Z",
+      "type": "observe",
+      "step": 34,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button [shows an icon] showing \"Remove item\"",
+      "image": "step-034.jpg",
+      "focus": {
+        "x": 1093,
+        "y": 282,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:53:03.086Z",
+      "type": "thinking",
+      "step": 34
+    },
+    {
+      "t": "2026-10-30T21:53:07.355Z",
+      "type": "decide",
+      "step": 34,
+      "action": "prev",
+      "args": {},
+      "thought": "Go back further.",
+      "thinkMs": 4269
+    },
+    {
+      "t": "2026-10-30T21:53:10.444Z",
+      "type": "act",
+      "step": 34,
+      "result": "Focus moved to: button \"Buy with\" [shows an icon]",
+      "actMs": 88,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:53:10.492Z",
+      "type": "observe",
+      "step": 35,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button \"Buy with\" [shows an icon]",
+      "image": "step-035.jpg",
+      "focus": {
+        "x": 916,
+        "y": 282,
+        "width": 167,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:53:10.492Z",
+      "type": "thinking",
+      "step": 35
+    },
+    {
+      "t": "2026-10-30T21:53:14.663Z",
+      "type": "decide",
+      "step": 35,
+      "action": "prev",
+      "args": {},
+      "thought": "Walk back to the header Cart button.",
+      "thinkMs": 4171
+    },
+    {
+      "t": "2026-10-30T21:53:17.751Z",
+      "type": "act",
+      "step": 35,
+      "result": "Focus moved to: button \"L\"",
+      "actMs": 86,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:53:17.782Z",
+      "type": "observe",
+      "step": 36,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button \"L\"",
+      "image": "step-036.jpg",
+      "focus": {
+        "x": 1058,
+        "y": 214,
+        "width": 61,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:53:17.782Z",
+      "type": "thinking",
+      "step": 36
+    },
+    {
+      "t": "2026-10-30T21:53:22.114Z",
+      "type": "decide",
+      "step": 36,
+      "action": "prev",
+      "args": {},
+      "thought": "Continue back.",
+      "thinkMs": 4332
+    },
+    {
+      "t": "2026-10-30T21:53:25.290Z",
+      "type": "act",
+      "step": 36,
+      "result": "Focus moved to: button \"SEE IT ON ME\" [shows an icon]",
+      "actMs": 161,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:53:25.351Z",
+      "type": "observe",
+      "step": 37,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button \"SEE IT ON ME\" [shows an icon]",
+      "image": "step-037.jpg",
+      "focus": {
+        "x": 718,
+        "y": 804,
+        "width": 158,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:53:25.351Z",
+      "type": "thinking",
+      "step": 37
+    },
+    {
+      "t": "2026-10-30T21:53:25.852Z",
+      "type": "decide",
+      "step": 37,
+      "action": "prev",
+      "args": {},
+      "thought": "Continue back.",
+      "thinkMs": 501
+    },
+    {
+      "t": "2026-10-30T21:53:28.943Z",
+      "type": "act",
+      "step": 37,
+      "result": "Focus moved to: button showing \"Go to image 3\"",
+      "actMs": 90,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:53:28.979Z",
+      "type": "observe",
+      "step": 38,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button showing \"Go to image 3\"",
+      "image": "step-038.jpg",
+      "focus": {
+        "x": 62,
+        "y": 804,
+        "width": 16,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:53:28.979Z",
+      "type": "thinking",
+      "step": 38
+    },
+    {
+      "t": "2026-10-30T21:53:32.239Z",
+      "type": "decide",
+      "step": 38,
+      "action": "prev",
+      "args": {},
+      "thought": "Continue back.",
+      "thinkMs": 3260
+    },
+    {
+      "t": "2026-10-30T21:53:35.347Z",
+      "type": "act",
+      "step": 38,
+      "result": "Focus moved to: button showing \"Go to image 2\"",
+      "actMs": 106,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:53:35.415Z",
+      "type": "observe",
+      "step": 39,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button showing \"Go to image 2\"",
+      "image": "step-039.jpg",
+      "focus": {
+        "x": 46,
+        "y": 804,
+        "width": 16,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:53:35.415Z",
+      "type": "thinking",
+      "step": 39
+    },
+    {
+      "t": "2026-10-30T21:53:38.128Z",
+      "type": "decide",
+      "step": 39,
+      "action": "prev",
+      "args": {},
+      "thought": "Continue back.",
+      "thinkMs": 2713
+    },
+    {
+      "t": "2026-10-30T21:53:41.217Z",
+      "type": "act",
+      "step": 39,
+      "result": "Focus moved to: button showing \"Go to image 1\"",
+      "actMs": 86,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:53:41.247Z",
+      "type": "observe",
+      "step": 40,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button showing \"Go to image 1\"",
+      "image": "step-040.jpg",
+      "focus": {
+        "x": 30,
+        "y": 804,
+        "width": 16,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:53:41.247Z",
+      "type": "thinking",
+      "step": 40
+    },
+    {
+      "t": "2026-10-30T21:53:44.090Z",
+      "type": "decide",
+      "step": 40,
+      "action": "prev",
+      "args": {},
+      "thought": "Continue back.",
+      "thinkMs": 2843
+    },
+    {
+      "t": "2026-10-30T21:53:47.185Z",
+      "type": "act",
+      "step": 40,
+      "result": "Focus moved to: button [shows an icon] showing \"Next image\"",
+      "actMs": 87,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:53:47.251Z",
+      "type": "observe",
+      "step": 41,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: button [shows an icon] showing \"Next image\"",
+      "image": "step-041.jpg",
+      "focus": {
+        "x": 840,
+        "y": 444,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:53:47.251Z",
+      "type": "thinking",
+      "step": 41
+    },
+    {
+      "t": "2026-10-30T21:53:50.158Z",
+      "type": "decide",
+      "step": 41,
+      "action": "prev",
+      "args": {},
+      "thought": "Continue back.",
+      "thinkMs": 2907
+    },
+    {
+      "t": "2026-10-30T21:53:53.476Z",
+      "type": "act",
+      "step": 41,
+      "result": "Focus moved to: div showing \"VRC Pit Crew Jumpsuit\"",
+      "actMs": 304,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:53:53.690Z",
+      "type": "observe",
+      "step": 42,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\n\nKeyboard focus: div showing \"VRC Pit Crew Jumpsuit\"",
+      "image": "step-042.jpg",
+      "focus": {
+        "x": 0,
+        "y": 64,
+        "width": 896,
+        "height": 796
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:53:53.690Z",
+      "type": "thinking",
+      "step": 42
+    },
+    {
+      "t": "2026-10-30T21:53:57.573Z",
+      "type": "decide",
+      "step": 42,
+      "action": "prev",
+      "args": {},
+      "thought": "Continue back to header cart.",
+      "thinkMs": 3883
+    },
+    {
+      "t": "2026-10-30T21:54:00.675Z",
+      "type": "act",
+      "step": 42,
+      "result": "Focus moved to: button \"1 1\" [shows an icon] showing \"Cart (1)\"",
+      "actMs": 100,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:54:00.727Z",
+      "type": "observe",
+      "step": 43,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nOpen store assistant\n1\n1\nView image 1 of 3\nSEE IT ON ME\nVRC PIT CREW JUMPSUIT\n\nBLACK\n\n$200.00\n\nSELECT SIZE\n\nS\nM\nL\nXL\n2XL\nBuy with\nADD TO CART\n1 in cart\nADD TO CART\n1 IN CART\n1\n \nI\nN\n \nC\nA\nR\nT\nDESCRIPTION\n\nA core piece in the Vercel Racing Club apparel system. Built from the visual language of pit crew uniforms, with heavyweight denim, contrast piping, and custom VRC and product graphics throughout. Oversized back detailing and graphics across the sleeves and legs carry the Racing Club concept from top to bottom.\n\nDETAILS\n100% cotton\nFull-length zip-front construction with long sleeves\nUtility chest, side, and back pockets with belt loops at the waist\nTell me more\nCART\n\nKeyboard focus: button \"1 1\" [shows an icon] showing \"Cart (1)\"",
+      "image": "step-043.jpg",
+      "focus": {
+        "x": 1224,
+        "y": 14,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:54:00.727Z",
+      "type": "thinking",
+      "step": 43
+    },
+    {
+      "t": "2026-10-30T21:54:03.451Z",
+      "type": "decide",
+      "step": 43,
+      "action": "activate",
+      "args": {},
+      "thought": "Open the cart.",
+      "thinkMs": 2724
+    },
+    {
+      "t": "2026-10-30T21:54:03.456Z",
+      "type": "target",
+      "step": 43,
+      "box": {
+        "x": 1224,
+        "y": 14,
+        "width": 36,
+        "height": 36
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button aria-expanded=\"false\" aria-label=\"Cart (1)\" class=\"icon-button relative text-foreground transition-colors duration-150 hover:bg-foreground/5 aria-expanded:bg-foreground/10\" type=\"button\" id=\"base-ui-_R_fultb_\" data-base-ui-tooltip-trigger=\"\" data-slot=\"tooltip-trigger\" data-popup-open=\"\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-shopping-cart size-4\" aria-hidden=\"true\"><path d=\"m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14"
+    },
+    {
+      "t": "2026-10-30T21:54:06.992Z",
+      "type": "act",
+      "step": 43,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 533,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:54:07.026Z",
+      "type": "observe",
+      "step": 44,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nView image 1 of 3\nSEE IT ON ME\n1 in cart\nCART\n1\n1\n\nReview your cart items and proceed to checkout\n\nVRC PIT CREW JUMPSUIT\n\nL / BLACK\n\n$200.00\n$\n2\n0\n0\n.\n0\n0\nDISCOUNT CODE\n\nESTIMATED TOTAL\n$200.00\n$\n2\n0\n0\n.\n0\n0\n\nTaxes and shipping calculated at checkout.\n\nCONTINUE SHOPPING\nGO TO CHECKOUT\nREDIRECTING...\nClose\n\nKeyboard focus: link",
+      "image": "step-044.jpg",
+      "focus": {
+        "x": 916,
+        "y": 84,
+        "width": 72,
+        "height": 72
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:54:07.026Z",
+      "type": "thinking",
+      "step": 44
+    },
+    {
+      "t": "2026-10-30T21:54:11.857Z",
+      "type": "decide",
+      "step": 44,
+      "action": "next",
+      "args": {},
+      "thought": "Focus is on an unnamed link; tab on to find Go to checkout.",
+      "thinkMs": 4831
+    },
+    {
+      "t": "2026-10-30T21:54:15.000Z",
+      "type": "act",
+      "step": 44,
+      "result": "Focus moved to: link \"VRC PIT CREW JUMPSUIT\"",
+      "actMs": 142,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:54:15.075Z",
+      "type": "observe",
+      "step": 45,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nView image 1 of 3\nSEE IT ON ME\n1 in cart\nCART\n1\n1\n\nReview your cart items and proceed to checkout\n\nVRC PIT CREW JUMPSUIT\n\nL / BLACK\n\n$200.00\n$\n2\n0\n0\n.\n0\n0\nDISCOUNT CODE\n\nESTIMATED TOTAL\n$200.00\n$\n2\n0\n0\n.\n0\n0\n\nTaxes and shipping calculated at checkout.\n\nCONTINUE SHOPPING\nGO TO CHECKOUT\nREDIRECTING...\nClose\n\nKeyboard focus: link \"VRC PIT CREW JUMPSUIT\"",
+      "image": "step-045.jpg",
+      "focus": {
+        "x": 998,
+        "y": 86,
+        "width": 148,
+        "height": 20
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:54:15.075Z",
+      "type": "thinking",
+      "step": 45
+    },
+    {
+      "t": "2026-10-30T21:54:17.850Z",
+      "type": "decide",
+      "step": 45,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing.",
+      "thinkMs": 2775
+    },
+    {
+      "t": "2026-10-30T21:54:20.979Z",
+      "type": "act",
+      "step": 45,
+      "result": "Focus moved to: button [shows an icon] showing \"Remove item\"",
+      "actMs": 127,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:54:21.063Z",
+      "type": "observe",
+      "step": 46,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nView image 1 of 3\nSEE IT ON ME\n1 in cart\nCART\n1\n1\n\nReview your cart items and proceed to checkout\n\nVRC PIT CREW JUMPSUIT\n\nL / BLACK\n\n$200.00\n$\n2\n0\n0\n.\n0\n0\nDISCOUNT CODE\n\nESTIMATED TOTAL\n$200.00\n$\n2\n0\n0\n.\n0\n0\n\nTaxes and shipping calculated at checkout.\n\nCONTINUE SHOPPING\nGO TO CHECKOUT\nREDIRECTING...\nClose\n\nKeyboard focus: button [shows an icon] showing \"Remove item\"",
+      "image": "step-046.jpg",
+      "focus": {
+        "x": 1156,
+        "y": 84,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:54:21.063Z",
+      "type": "thinking",
+      "step": 46
+    },
+    {
+      "t": "2026-10-30T21:54:24.026Z",
+      "type": "decide",
+      "step": 46,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing.",
+      "thinkMs": 2963
+    },
+    {
+      "t": "2026-10-30T21:54:27.207Z",
+      "type": "act",
+      "step": 46,
+      "result": "Focus moved to: text field showing \"Item quantity\" value \"1\"",
+      "actMs": 180,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:54:27.648Z",
+      "type": "observe",
+      "step": 47,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nView image 1 of 3\nSEE IT ON ME\n1 in cart\nCART\n1\n1\n\nReview your cart items and proceed to checkout\n\nVRC PIT CREW JUMPSUIT\n\nL / BLACK\n\n$200.00\n$\n2\n0\n0\n.\n0\n0\nDISCOUNT CODE\n\nESTIMATED TOTAL\n$200.00\n$\n2\n0\n0\n.\n0\n0\n\nTaxes and shipping calculated at checkout.\n\nCONTINUE SHOPPING\nGO TO CHECKOUT\nREDIRECTING...\nClose\n\nKeyboard focus: text field showing \"Item quantity\" value \"1\"",
+      "image": "step-047.jpg",
+      "focus": {
+        "x": 1192,
+        "y": 84,
+        "width": 32,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:54:27.648Z",
+      "type": "thinking",
+      "step": 47
+    },
+    {
+      "t": "2026-10-30T21:54:31.630Z",
+      "type": "decide",
+      "step": 47,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing.",
+      "thinkMs": 3981
+    },
+    {
+      "t": "2026-10-30T21:54:34.741Z",
+      "type": "act",
+      "step": 47,
+      "result": "Focus moved to: button [shows an icon] showing \"Increase quantity\"",
+      "actMs": 111,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:54:34.777Z",
+      "type": "observe",
+      "step": 48,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nView image 1 of 3\nSEE IT ON ME\n1 in cart\nCART\n1\n1\n\nReview your cart items and proceed to checkout\n\nVRC PIT CREW JUMPSUIT\n\nL / BLACK\n\n$200.00\n$\n2\n0\n0\n.\n0\n0\nDISCOUNT CODE\n\nESTIMATED TOTAL\n$200.00\n$\n2\n0\n0\n.\n0\n0\n\nTaxes and shipping calculated at checkout.\n\nCONTINUE SHOPPING\nGO TO CHECKOUT\nREDIRECTING...\nClose\n\nKeyboard focus: button [shows an icon] showing \"Increase quantity\"",
+      "image": "step-048.jpg",
+      "focus": {
+        "x": 1224,
+        "y": 84,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:54:34.777Z",
+      "type": "thinking",
+      "step": 48
+    },
+    {
+      "t": "2026-10-30T21:54:38.180Z",
+      "type": "decide",
+      "step": 48,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing.",
+      "thinkMs": 3403
+    },
+    {
+      "t": "2026-10-30T21:54:41.346Z",
+      "type": "act",
+      "step": 48,
+      "result": "Focus moved to: button \"DISCOUNT CODE\" [shows an icon]",
+      "actMs": 155,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:54:41.559Z",
+      "type": "observe",
+      "step": 49,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nView image 1 of 3\nSEE IT ON ME\n1 in cart\nCART\n1\n1\n\nReview your cart items and proceed to checkout\n\nVRC PIT CREW JUMPSUIT\n\nL / BLACK\n\n$200.00\n$\n2\n0\n0\n.\n0\n0\nDISCOUNT CODE\n\nESTIMATED TOTAL\n$200.00\n$\n2\n0\n0\n.\n0\n0\n\nTaxes and shipping calculated at checkout.\n\nCONTINUE SHOPPING\nGO TO CHECKOUT\nREDIRECTING...\nClose\n\nKeyboard focus: button \"DISCOUNT CODE\" [shows an icon]",
+      "image": "step-049.jpg",
+      "focus": {
+        "x": 916,
+        "y": 682,
+        "width": 130,
+        "height": 44
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:54:41.559Z",
+      "type": "thinking",
+      "step": 49
+    },
+    {
+      "t": "2026-10-30T21:54:44.390Z",
+      "type": "decide",
+      "step": 49,
+      "action": "next",
+      "args": {},
+      "thought": "Skip discount; keep tabbing.",
+      "thinkMs": 2831
+    },
+    {
+      "t": "2026-10-30T21:54:47.478Z",
+      "type": "act",
+      "step": 49,
+      "result": "Focus moved to: button \"CONTINUE SHOPPING GO TO CHECKOUT REDIRECTING...\" [shows an icon]",
+      "actMs": 86,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:54:47.509Z",
+      "type": "observe",
+      "step": 50,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nView image 1 of 3\nSEE IT ON ME\n1 in cart\nCART\n1\n1\n\nReview your cart items and proceed to checkout\n\nVRC PIT CREW JUMPSUIT\n\nL / BLACK\n\n$200.00\n$\n2\n0\n0\n.\n0\n0\nDISCOUNT CODE\n\nESTIMATED TOTAL\n$200.00\n$\n2\n0\n0\n.\n0\n0\n\nTaxes and shipping calculated at checkout.\n\nCONTINUE SHOPPING\nGO TO CHECKOUT\nREDIRECTING...\nClose\n\nKeyboard focus: button \"CONTINUE SHOPPING GO TO CHECKOUT REDIRECTING...\" [shows an icon]",
+      "image": "step-050.jpg",
+      "focus": {
+        "x": 916,
+        "y": 796,
+        "width": 344,
+        "height": 44
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:54:47.509Z",
+      "type": "thinking",
+      "step": 50
+    },
+    {
+      "t": "2026-10-30T21:54:51.058Z",
+      "type": "decide",
+      "step": 50,
+      "action": "next",
+      "args": {},
+      "thought": "Check whether Go to checkout is a separate control.",
+      "thinkMs": 3548
+    },
+    {
+      "t": "2026-10-30T21:54:54.152Z",
+      "type": "act",
+      "step": 50,
+      "result": "Focus moved to: button \"Close\" [shows an icon]",
+      "actMs": 92,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:54:54.193Z",
+      "type": "observe",
+      "step": 51,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nView image 1 of 3\nSEE IT ON ME\n1 in cart\nCART\n1\n1\n\nReview your cart items and proceed to checkout\n\nVRC PIT CREW JUMPSUIT\n\nL / BLACK\n\n$200.00\n$\n2\n0\n0\n.\n0\n0\nDISCOUNT CODE\n\nESTIMATED TOTAL\n$200.00\n$\n2\n0\n0\n.\n0\n0\n\nTaxes and shipping calculated at checkout.\n\nCONTINUE SHOPPING\nGO TO CHECKOUT\nREDIRECTING...\nClose\n\nKeyboard focus: button \"Close\" [shows an icon]",
+      "image": "step-051.jpg",
+      "focus": {
+        "x": 1230,
+        "y": 14,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:54:54.193Z",
+      "type": "thinking",
+      "step": 51
+    },
+    {
+      "t": "2026-10-30T21:54:57.903Z",
+      "type": "decide",
+      "step": 51,
+      "action": "prev",
+      "args": {},
+      "thought": "Go back to the combined checkout button.",
+      "thinkMs": 3710
+    },
+    {
+      "t": "2026-10-30T21:55:01.052Z",
+      "type": "act",
+      "step": 51,
+      "result": "Focus moved to: button \"CONTINUE SHOPPING GO TO CHECKOUT REDIRECTING...\" [shows an icon]",
+      "actMs": 147,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:55:01.294Z",
+      "type": "observe",
+      "step": 52,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nView image 1 of 3\nSEE IT ON ME\n1 in cart\nCART\n1\n1\n\nReview your cart items and proceed to checkout\n\nVRC PIT CREW JUMPSUIT\n\nL / BLACK\n\n$200.00\n$\n2\n0\n0\n.\n0\n0\nDISCOUNT CODE\n\nESTIMATED TOTAL\n$200.00\n$\n2\n0\n0\n.\n0\n0\n\nTaxes and shipping calculated at checkout.\n\nCONTINUE SHOPPING\nGO TO CHECKOUT\nREDIRECTING...\nClose\n\nKeyboard focus: button \"CONTINUE SHOPPING GO TO CHECKOUT REDIRECTING...\" [shows an icon]",
+      "image": "step-052.jpg",
+      "focus": {
+        "x": 916,
+        "y": 796,
+        "width": 344,
+        "height": 44
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:55:01.294Z",
+      "type": "thinking",
+      "step": 52
+    },
+    {
+      "t": "2026-10-30T21:55:05.192Z",
+      "type": "decide",
+      "step": 52,
+      "action": "activate",
+      "args": {},
+      "thought": "Activate the only button, hoping it goes to checkout.",
+      "thinkMs": 3898
+    },
+    {
+      "t": "2026-10-30T21:55:05.198Z",
+      "type": "target",
+      "step": 52,
+      "box": {
+        "x": 916,
+        "y": 796,
+        "width": 344,
+        "height": 44
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"button\" data-slot=\"button\" class=\"type-label group/button inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-none border border-transparent bg-clip-padding whitespace-nowrap transition-[color,background-color,border-color,opacity,scale,transform] duration-150 ease-standard outline-none select-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-4 focus-visible:outline-current active:not-aria-[haspopup]:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100 aria-invalid:border-destructiv"
+    },
+    {
+      "t": "2026-10-30T21:55:08.712Z",
+      "type": "act",
+      "step": 52,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 512,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:55:08.736Z",
+      "type": "observe",
+      "step": 53,
+      "path": "/products/pit-crew-jumpsuit",
+      "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+      "title": "VRC Pit Crew Jumpsuit | Vercel",
+      "text": "Page title: VRC Pit Crew Jumpsuit | Vercel\n\nWhat is visible on screen:\nSkip to content\nView image 1 of 3\nSEE IT ON ME\n1 in cart\nCART\n1\n1\n\nReview your cart items and proceed to checkout\n\nVRC PIT CREW JUMPSUIT\n\nL / BLACK\n\n$200.00\n$\n2\n0\n0\n.\n0\n0\nDISCOUNT CODE\n\nESTIMATED TOTAL\n$200.00\n$\n2\n0\n0\n.\n0\n0\n\nTaxes and shipping calculated at checkout.\n\nCONTINUE SHOPPING\nGO TO CHECKOUT\nREDIRECTING...\nClose\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-053.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:55:08.736Z",
+      "type": "thinking",
+      "step": 53
+    },
+    {
+      "t": "2026-10-30T21:55:11.222Z",
+      "type": "decide",
+      "step": 53,
+      "action": "read",
+      "args": {},
+      "thought": "Check whether the page is redirecting to checkout.",
+      "thinkMs": 2486
+    },
+    {
+      "t": "2026-10-30T21:55:14.224Z",
+      "type": "act",
+      "step": 53,
+      "result": "You read the page again.",
+      "actMs": 0,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:55:15.450Z",
+      "type": "scan-page",
+      "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information?_r=AQABwABbgDsKCJStvYeqxpsZj3nBKt9LdTG4fW2PdcpOeBfIdPoW&_s=81a7fd42-958a-41b5-a81c-848d9cd523e5&_y=b28d94e3-a4ca-414d-9959-bc5499113aa1&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "violations": 0,
+      "rules": [],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:55:15.471Z",
+      "type": "observe",
+      "step": 54,
+      "path": "/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information",
+      "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information?_r=AQABwABbgDsKCJStvYeqxpsZj3nBKt9LdTG4fW2PdcpOeBfIdPoW&_s=81a7fd42-958a-41b5-a81c-848d9cd523e5&_y=b28d94e3-a4ca-414d-9959-bc5499113aa1&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "title": "Information - Vercel Shop - Checkout",
+      "text": "Page title: Information - Vercel Shop - Checkout\n\nWhat is visible on screen:\nSkip to content\nVercel Shop\nNavigate to Online Store\nInformation\nShipping\nPayment\nInformation\nExpress checkout\n\nOR\n\nContact\nEmail\nUsed for your order confirmation and cart reminders\nEmail me with news and offers\nShipping address\nCountry/Region\nAfghanistan\nÅland Islands\nAlbania\nAlgeria\nAndorra\nAngola\nArgentina\nArmenia\nAscension Island\nAustralia\nAustria\nAzerbaijan\nBahrain\nBangladesh\nBelarus\nBelgium\nBenin\nBhutan\nBolivia\nBosnia & Herzegovina\nBotswana\nBrazil\nBritish Indian Ocean Territory\nBrunei\nBulgaria\nBurkina Faso\nBurundi\nCambodia\nCameroon\nCanada\nCape Verde\nCentral African Republic\nChad\nChile\nChina\nChristmas Island\nCocos (Keeling) Islands\nColombia\nComoros\nCongo - Brazzaville\nCongo - Kinshasa\nCook Islands\nCroatia\nCyprus\nCzechia\nCôte d’Ivoire\nDenmark\nDjibouti\nEcuador\nEgypt\nEquatorial Guinea\nEritrea\nEstonia\nEswatini\nEthiopia\nFalkland Islands\nFaroe Islands\nFiji\nFinland\nFrance\nFrench Guiana\nFrench Polynesia\nFrench Southern Territories\nGabon\nGambia\nGeorgia\nGermany\nGhana\nGibraltar\nGreece\nGuernsey\nGuinea\nGuinea-Bissau\nGuyana\nHong Kong SAR\nHungary\nIceland\nIndia\nIndonesia\nIraq\nIreland\nIsle of Man\nIsrael\nItaly\nJapan\nJersey\nJordan\nKazakhstan\nKenya\nKiribati\nKosovo\nKuwait\nKyrgyzstan\nLaos\nLatvia\nLebanon\nLesotho\nLiberia\nLibya\nLiechtenstein\nLithuania\nLuxembourg\nMacao SAR\nMadagascar\nMalawi\nMalaysia\nMaldives\nMali\nMalta\nMauritania\nMauritius\nMayotte\nMoldova\nMonaco\nMongolia\nMontenegro\nMorocco\nMozambique\nMyanmar (Burma)\nNamibia\nNauru\nNepal\nNetherlands\nNew Caledonia\nNew Zealand\nNiger\nNigeria\nNiue\nNorfolk Island\nNorth Macedonia\nNorway\nOman\nPakistan\nPalestinian Territories\nPapua New Guinea\nParaguay\nPeru\nPhilippines\nPitcairn Islands\nPoland\nPortugal\nQatar\nRéunion\nRomania\nRussia\nRwanda\nSamoa\nSan Marino\nSão Tomé & Príncipe\nSaudi Arabia\nSenegal\nSerbia\nSeychelles\nSierra Leone\nSingapore\nSlovakia\nSlovenia\nSolomon Islands\nSomalia\nSouth Africa\nSouth Georgia & South Sandwich Islands\nSouth Korea\nSouth Sudan\nSpain\nSri Lanka\nSt. Helena\nSudan\nSuriname\nSvalbard & Jan Mayen\nSweden\nSwitzerland\nTaiwan\nTajikistan\nTanzania\nThailand\nTimor-Leste\nTogo\nTokelau\nTonga\nTristan da Cunha\nTunisia\nTürkiye\nTurkmenistan\nTuvalu\nU.S. Outlying Islands\nUganda\nUkraine\nUnited Arab Emirates\nUnited Kingdom\nUnited States\nUruguay\nUzbekistan\nVanuatu\nVatican City\nVenezuela\nVietnam\nWallis & Futuna\nWestern Sahara\nYemen\nZambia\nZimbabwe\nFirst name\nLast name\nCompany (optional)\nAddress\nApartment, suite, etc. (optional)\nCity\nState\n \nAlabama\nAlaska\nAmerican Samoa\nArizona\nArkansas\nCalifornia\nColorado\nConnecticut\nDelaware\nMicronesia\nFlorida\nGeorgia\nGuam\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMarshall Islands\nMaryland\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nNorthern Mariana Islands\nOhio\nOklahoma\nOregon\nPalau\nPennsylvania\nPuerto Rico\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWashington DC\nWest Virginia\nWisconsin\nWyoming\nU.S. Virgin Islands\nArmed Forces Americas\nArmed Forces Europe\nArmed Forces Pacific\nZIP code\nPhone\nIn case we need to contact you about your order\nContinue to shipping\nContinue to shipping\nProcessing…\nAll rights reserved Vercel Shop\nOrder summary\nShopping cart\nProduct image\nDescription\nQuantity\nPrice\nQuantity\n1\n\nVRC Pit Crew Jumpsuit\n\nL / Black\n\n1\n$200.00\nScroll for more items\nDiscount\nDiscount code\nApply\nSubmit\nCost summary\nItem\nValue\nSubtotal\n$200.00\nShipping\nCalculated at next step\nTotal\nUSD\n$200.00\n\nProcessing…\n\nOpens external website in a new window.\nOpens in a new window.\nOpens external website.\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-054.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:55:15.471Z",
+      "type": "thinking",
+      "step": 54
+    },
+    {
+      "t": "2026-10-30T21:55:18.094Z",
+      "type": "decide",
+      "step": 54,
+      "action": "next",
+      "args": {},
+      "thought": "Tab into the form.",
+      "thinkMs": 2623
+    },
+    {
+      "t": "2026-10-30T21:55:21.185Z",
+      "type": "act",
+      "step": 54,
+      "result": "Focus moved to: link \"Skip to content\"",
+      "actMs": 89,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:55:21.220Z",
+      "type": "observe",
+      "step": 55,
+      "path": "/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information",
+      "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information?_r=AQABwABbgDsKCJStvYeqxpsZj3nBKt9LdTG4fW2PdcpOeBfIdPoW&_s=81a7fd42-958a-41b5-a81c-848d9cd523e5&_y=b28d94e3-a4ca-414d-9959-bc5499113aa1&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "title": "Information - Vercel Shop - Checkout",
+      "text": "Page title: Information - Vercel Shop - Checkout\n\nWhat is visible on screen:\nSkip to content\nVercel Shop\nNavigate to Online Store\nInformation\nShipping\nPayment\nInformation\nExpress checkout\n\nOR\n\nContact\nEmail\nUsed for your order confirmation and cart reminders\nEmail me with news and offers\nShipping address\nCountry/Region\nAfghanistan\nÅland Islands\nAlbania\nAlgeria\nAndorra\nAngola\nArgentina\nArmenia\nAscension Island\nAustralia\nAustria\nAzerbaijan\nBahrain\nBangladesh\nBelarus\nBelgium\nBenin\nBhutan\nBolivia\nBosnia & Herzegovina\nBotswana\nBrazil\nBritish Indian Ocean Territory\nBrunei\nBulgaria\nBurkina Faso\nBurundi\nCambodia\nCameroon\nCanada\nCape Verde\nCentral African Republic\nChad\nChile\nChina\nChristmas Island\nCocos (Keeling) Islands\nColombia\nComoros\nCongo - Brazzaville\nCongo - Kinshasa\nCook Islands\nCroatia\nCyprus\nCzechia\nCôte d’Ivoire\nDenmark\nDjibouti\nEcuador\nEgypt\nEquatorial Guinea\nEritrea\nEstonia\nEswatini\nEthiopia\nFalkland Islands\nFaroe Islands\nFiji\nFinland\nFrance\nFrench Guiana\nFrench Polynesia\nFrench Southern Territories\nGabon\nGambia\nGeorgia\nGermany\nGhana\nGibraltar\nGreece\nGuernsey\nGuinea\nGuinea-Bissau\nGuyana\nHong Kong SAR\nHungary\nIceland\nIndia\nIndonesia\nIraq\nIreland\nIsle of Man\nIsrael\nItaly\nJapan\nJersey\nJordan\nKazakhstan\nKenya\nKiribati\nKosovo\nKuwait\nKyrgyzstan\nLaos\nLatvia\nLebanon\nLesotho\nLiberia\nLibya\nLiechtenstein\nLithuania\nLuxembourg\nMacao SAR\nMadagascar\nMalawi\nMalaysia\nMaldives\nMali\nMalta\nMauritania\nMauritius\nMayotte\nMoldova\nMonaco\nMongolia\nMontenegro\nMorocco\nMozambique\nMyanmar (Burma)\nNamibia\nNauru\nNepal\nNetherlands\nNew Caledonia\nNew Zealand\nNiger\nNigeria\nNiue\nNorfolk Island\nNorth Macedonia\nNorway\nOman\nPakistan\nPalestinian Territories\nPapua New Guinea\nParaguay\nPeru\nPhilippines\nPitcairn Islands\nPoland\nPortugal\nQatar\nRéunion\nRomania\nRussia\nRwanda\nSamoa\nSan Marino\nSão Tomé & Príncipe\nSaudi Arabia\nSenegal\nSerbia\nSeychelles\nSierra Leone\nSingapore\nSlovakia\nSlovenia\nSolomon Islands\nSomalia\nSouth Africa\nSouth Georgia & South Sandwich Islands\nSouth Korea\nSouth Sudan\nSpain\nSri Lanka\nSt. Helena\nSudan\nSuriname\nSvalbard & Jan Mayen\nSweden\nSwitzerland\nTaiwan\nTajikistan\nTanzania\nThailand\nTimor-Leste\nTogo\nTokelau\nTonga\nTristan da Cunha\nTunisia\nTürkiye\nTurkmenistan\nTuvalu\nU.S. Outlying Islands\nUganda\nUkraine\nUnited Arab Emirates\nUnited Kingdom\nUnited States\nUruguay\nUzbekistan\nVanuatu\nVatican City\nVenezuela\nVietnam\nWallis & Futuna\nWestern Sahara\nYemen\nZambia\nZimbabwe\nFirst name\nLast name\nCompany (optional)\nAddress\nApartment, suite, etc. (optional)\nCity\nState\n \nAlabama\nAlaska\nAmerican Samoa\nArizona\nArkansas\nCalifornia\nColorado\nConnecticut\nDelaware\nMicronesia\nFlorida\nGeorgia\nGuam\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMarshall Islands\nMaryland\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nNorthern Mariana Islands\nOhio\nOklahoma\nOregon\nPalau\nPennsylvania\nPuerto Rico\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWashington DC\nWest Virginia\nWisconsin\nWyoming\nU.S. Virgin Islands\nArmed Forces Americas\nArmed Forces Europe\nArmed Forces Pacific\nZIP code\nPhone\nIn case we need to contact you about your order\nContinue to shipping\nContinue to shipping\nProcessing…\nAll rights reserved Vercel Shop\nOrder summary\nShopping cart\nProduct image\nDescription\nQuantity\nPrice\nQuantity\n1\n\nVRC Pit Crew Jumpsuit\n\nL / Black\n\n1\n$200.00\nScroll for more items\nDiscount\nDiscount code\nApply\nSubmit\nCost summary\nItem\nValue\nSubtotal\n$200.00\nShipping\nCalculated at next step\nTotal\nUSD\n$200.00\n\nProcessing…\n\nOpens external website in a new window.\nOpens in a new window.\nOpens external website.\n\nKeyboard focus: link \"Skip to content\"",
+      "image": "step-055.jpg",
+      "focus": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 39
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:55:21.220Z",
+      "type": "thinking",
+      "step": 55
+    },
+    {
+      "t": "2026-10-30T21:55:24.283Z",
+      "type": "decide",
+      "step": 55,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing toward the email field.",
+      "thinkMs": 3064
+    },
+    {
+      "t": "2026-10-30T21:55:27.373Z",
+      "type": "act",
+      "step": 55,
+      "result": "Focus moved to: link \"Vercel Shop Navigate to Online Store\"",
+      "actMs": 87,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:55:27.402Z",
+      "type": "observe",
+      "step": 56,
+      "path": "/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information",
+      "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information?_r=AQABwABbgDsKCJStvYeqxpsZj3nBKt9LdTG4fW2PdcpOeBfIdPoW&_s=81a7fd42-958a-41b5-a81c-848d9cd523e5&_y=b28d94e3-a4ca-414d-9959-bc5499113aa1&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "title": "Information - Vercel Shop - Checkout",
+      "text": "Page title: Information - Vercel Shop - Checkout\n\nWhat is visible on screen:\nSkip to content\nVercel Shop\nNavigate to Online Store\nInformation\nShipping\nPayment\nInformation\nExpress checkout\n\nOR\n\nContact\nEmail\nUsed for your order confirmation and cart reminders\nEmail me with news and offers\nShipping address\nCountry/Region\nAfghanistan\nÅland Islands\nAlbania\nAlgeria\nAndorra\nAngola\nArgentina\nArmenia\nAscension Island\nAustralia\nAustria\nAzerbaijan\nBahrain\nBangladesh\nBelarus\nBelgium\nBenin\nBhutan\nBolivia\nBosnia & Herzegovina\nBotswana\nBrazil\nBritish Indian Ocean Territory\nBrunei\nBulgaria\nBurkina Faso\nBurundi\nCambodia\nCameroon\nCanada\nCape Verde\nCentral African Republic\nChad\nChile\nChina\nChristmas Island\nCocos (Keeling) Islands\nColombia\nComoros\nCongo - Brazzaville\nCongo - Kinshasa\nCook Islands\nCroatia\nCyprus\nCzechia\nCôte d’Ivoire\nDenmark\nDjibouti\nEcuador\nEgypt\nEquatorial Guinea\nEritrea\nEstonia\nEswatini\nEthiopia\nFalkland Islands\nFaroe Islands\nFiji\nFinland\nFrance\nFrench Guiana\nFrench Polynesia\nFrench Southern Territories\nGabon\nGambia\nGeorgia\nGermany\nGhana\nGibraltar\nGreece\nGuernsey\nGuinea\nGuinea-Bissau\nGuyana\nHong Kong SAR\nHungary\nIceland\nIndia\nIndonesia\nIraq\nIreland\nIsle of Man\nIsrael\nItaly\nJapan\nJersey\nJordan\nKazakhstan\nKenya\nKiribati\nKosovo\nKuwait\nKyrgyzstan\nLaos\nLatvia\nLebanon\nLesotho\nLiberia\nLibya\nLiechtenstein\nLithuania\nLuxembourg\nMacao SAR\nMadagascar\nMalawi\nMalaysia\nMaldives\nMali\nMalta\nMauritania\nMauritius\nMayotte\nMoldova\nMonaco\nMongolia\nMontenegro\nMorocco\nMozambique\nMyanmar (Burma)\nNamibia\nNauru\nNepal\nNetherlands\nNew Caledonia\nNew Zealand\nNiger\nNigeria\nNiue\nNorfolk Island\nNorth Macedonia\nNorway\nOman\nPakistan\nPalestinian Territories\nPapua New Guinea\nParaguay\nPeru\nPhilippines\nPitcairn Islands\nPoland\nPortugal\nQatar\nRéunion\nRomania\nRussia\nRwanda\nSamoa\nSan Marino\nSão Tomé & Príncipe\nSaudi Arabia\nSenegal\nSerbia\nSeychelles\nSierra Leone\nSingapore\nSlovakia\nSlovenia\nSolomon Islands\nSomalia\nSouth Africa\nSouth Georgia & South Sandwich Islands\nSouth Korea\nSouth Sudan\nSpain\nSri Lanka\nSt. Helena\nSudan\nSuriname\nSvalbard & Jan Mayen\nSweden\nSwitzerland\nTaiwan\nTajikistan\nTanzania\nThailand\nTimor-Leste\nTogo\nTokelau\nTonga\nTristan da Cunha\nTunisia\nTürkiye\nTurkmenistan\nTuvalu\nU.S. Outlying Islands\nUganda\nUkraine\nUnited Arab Emirates\nUnited Kingdom\nUnited States\nUruguay\nUzbekistan\nVanuatu\nVatican City\nVenezuela\nVietnam\nWallis & Futuna\nWestern Sahara\nYemen\nZambia\nZimbabwe\nFirst name\nLast name\nCompany (optional)\nAddress\nApartment, suite, etc. (optional)\nCity\nState\n \nAlabama\nAlaska\nAmerican Samoa\nArizona\nArkansas\nCalifornia\nColorado\nConnecticut\nDelaware\nMicronesia\nFlorida\nGeorgia\nGuam\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMarshall Islands\nMaryland\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nNorthern Mariana Islands\nOhio\nOklahoma\nOregon\nPalau\nPennsylvania\nPuerto Rico\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWashington DC\nWest Virginia\nWisconsin\nWyoming\nU.S. Virgin Islands\nArmed Forces Americas\nArmed Forces Europe\nArmed Forces Pacific\nZIP code\nPhone\nIn case we need to contact you about your order\nContinue to shipping\nContinue to shipping\nProcessing…\nAll rights reserved Vercel Shop\nOrder summary\nShopping cart\nProduct image\nDescription\nQuantity\nPrice\nQuantity\n1\n\nVRC Pit Crew Jumpsuit\n\nL / Black\n\n1\n$200.00\nScroll for more items\nDiscount\nDiscount code\nApply\nSubmit\nCost summary\nItem\nValue\nSubtotal\n$200.00\nShipping\nCalculated at next step\nTotal\nUSD\n$200.00\n\nProcessing…\n\nOpens external website in a new window.\nOpens in a new window.\nOpens external website.\n\nKeyboard focus: link \"Vercel Shop Navigate to Online Store\"",
+      "image": "step-056.jpg",
+      "focus": {
+        "x": 150,
+        "y": 40,
+        "width": 118,
+        "height": 24
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:55:27.402Z",
+      "type": "thinking",
+      "step": 56
+    },
+    {
+      "t": "2026-10-30T21:55:30.471Z",
+      "type": "decide",
+      "step": 56,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing toward the form.",
+      "thinkMs": 3069
+    },
+    {
+      "t": "2026-10-30T21:55:33.558Z",
+      "type": "act",
+      "step": 56,
+      "result": "Focus moved to: link [shows an icon]",
+      "actMs": 86,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:55:33.585Z",
+      "type": "observe",
+      "step": 57,
+      "path": "/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information",
+      "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information?_r=AQABwABbgDsKCJStvYeqxpsZj3nBKt9LdTG4fW2PdcpOeBfIdPoW&_s=81a7fd42-958a-41b5-a81c-848d9cd523e5&_y=b28d94e3-a4ca-414d-9959-bc5499113aa1&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "title": "Information - Vercel Shop - Checkout",
+      "text": "Page title: Information - Vercel Shop - Checkout\n\nWhat is visible on screen:\nSkip to content\nVercel Shop\nNavigate to Online Store\nInformation\nShipping\nPayment\nInformation\nExpress checkout\n\nOR\n\nContact\nEmail\nUsed for your order confirmation and cart reminders\nEmail me with news and offers\nShipping address\nCountry/Region\nAfghanistan\nÅland Islands\nAlbania\nAlgeria\nAndorra\nAngola\nArgentina\nArmenia\nAscension Island\nAustralia\nAustria\nAzerbaijan\nBahrain\nBangladesh\nBelarus\nBelgium\nBenin\nBhutan\nBolivia\nBosnia & Herzegovina\nBotswana\nBrazil\nBritish Indian Ocean Territory\nBrunei\nBulgaria\nBurkina Faso\nBurundi\nCambodia\nCameroon\nCanada\nCape Verde\nCentral African Republic\nChad\nChile\nChina\nChristmas Island\nCocos (Keeling) Islands\nColombia\nComoros\nCongo - Brazzaville\nCongo - Kinshasa\nCook Islands\nCroatia\nCyprus\nCzechia\nCôte d’Ivoire\nDenmark\nDjibouti\nEcuador\nEgypt\nEquatorial Guinea\nEritrea\nEstonia\nEswatini\nEthiopia\nFalkland Islands\nFaroe Islands\nFiji\nFinland\nFrance\nFrench Guiana\nFrench Polynesia\nFrench Southern Territories\nGabon\nGambia\nGeorgia\nGermany\nGhana\nGibraltar\nGreece\nGuernsey\nGuinea\nGuinea-Bissau\nGuyana\nHong Kong SAR\nHungary\nIceland\nIndia\nIndonesia\nIraq\nIreland\nIsle of Man\nIsrael\nItaly\nJapan\nJersey\nJordan\nKazakhstan\nKenya\nKiribati\nKosovo\nKuwait\nKyrgyzstan\nLaos\nLatvia\nLebanon\nLesotho\nLiberia\nLibya\nLiechtenstein\nLithuania\nLuxembourg\nMacao SAR\nMadagascar\nMalawi\nMalaysia\nMaldives\nMali\nMalta\nMauritania\nMauritius\nMayotte\nMoldova\nMonaco\nMongolia\nMontenegro\nMorocco\nMozambique\nMyanmar (Burma)\nNamibia\nNauru\nNepal\nNetherlands\nNew Caledonia\nNew Zealand\nNiger\nNigeria\nNiue\nNorfolk Island\nNorth Macedonia\nNorway\nOman\nPakistan\nPalestinian Territories\nPapua New Guinea\nParaguay\nPeru\nPhilippines\nPitcairn Islands\nPoland\nPortugal\nQatar\nRéunion\nRomania\nRussia\nRwanda\nSamoa\nSan Marino\nSão Tomé & Príncipe\nSaudi Arabia\nSenegal\nSerbia\nSeychelles\nSierra Leone\nSingapore\nSlovakia\nSlovenia\nSolomon Islands\nSomalia\nSouth Africa\nSouth Georgia & South Sandwich Islands\nSouth Korea\nSouth Sudan\nSpain\nSri Lanka\nSt. Helena\nSudan\nSuriname\nSvalbard & Jan Mayen\nSweden\nSwitzerland\nTaiwan\nTajikistan\nTanzania\nThailand\nTimor-Leste\nTogo\nTokelau\nTonga\nTristan da Cunha\nTunisia\nTürkiye\nTurkmenistan\nTuvalu\nU.S. Outlying Islands\nUganda\nUkraine\nUnited Arab Emirates\nUnited Kingdom\nUnited States\nUruguay\nUzbekistan\nVanuatu\nVatican City\nVenezuela\nVietnam\nWallis & Futuna\nWestern Sahara\nYemen\nZambia\nZimbabwe\nFirst name\nLast name\nCompany (optional)\nAddress\nApartment, suite, etc. (optional)\nCity\nState\n \nAlabama\nAlaska\nAmerican Samoa\nArizona\nArkansas\nCalifornia\nColorado\nConnecticut\nDelaware\nMicronesia\nFlorida\nGeorgia\nGuam\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMarshall Islands\nMaryland\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nNorthern Mariana Islands\nOhio\nOklahoma\nOregon\nPalau\nPennsylvania\nPuerto Rico\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWashington DC\nWest Virginia\nWisconsin\nWyoming\nU.S. Virgin Islands\nArmed Forces Americas\nArmed Forces Europe\nArmed Forces Pacific\nZIP code\nPhone\nIn case we need to contact you about your order\nContinue to shipping\nContinue to shipping\nProcessing…\nAll rights reserved Vercel Shop\nOrder summary\nShopping cart\nProduct image\nDescription\nQuantity\nPrice\nQuantity\n1\n\nVRC Pit Crew Jumpsuit\n\nL / Black\n\n1\n$200.00\nScroll for more items\nDiscount\nDiscount code\nApply\nSubmit\nCost summary\nItem\nValue\nSubtotal\n$200.00\nShipping\nCalculated at next step\nTotal\nUSD\n$200.00\n\nProcessing…\n\nOpens external website in a new window.\nOpens in a new window.\nOpens external website.\n\nKeyboard focus: link [shows an icon]",
+      "image": "step-057.jpg",
+      "focus": {
+        "x": 150,
+        "y": 157,
+        "width": 245,
+        "height": 48
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:55:33.585Z",
+      "type": "thinking",
+      "step": 57
+    },
+    {
+      "t": "2026-10-30T21:55:36.380Z",
+      "type": "decide",
+      "step": 57,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing toward the form.",
+      "thinkMs": 2795
+    },
+    {
+      "t": "2026-10-30T21:55:39.470Z",
+      "type": "act",
+      "step": 57,
+      "result": "Focus moved to: button [shows an icon] showing \"Google Pay\" (inside an embedded payment field)",
+      "actMs": 88,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:55:39.500Z",
+      "type": "observe",
+      "step": 58,
+      "path": "/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information",
+      "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information?_r=AQABwABbgDsKCJStvYeqxpsZj3nBKt9LdTG4fW2PdcpOeBfIdPoW&_s=81a7fd42-958a-41b5-a81c-848d9cd523e5&_y=b28d94e3-a4ca-414d-9959-bc5499113aa1&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "title": "Information - Vercel Shop - Checkout",
+      "text": "Page title: Information - Vercel Shop - Checkout\n\nWhat is visible on screen:\nSkip to content\nVercel Shop\nNavigate to Online Store\nInformation\nShipping\nPayment\nInformation\nExpress checkout\n\nOR\n\nContact\nEmail\nUsed for your order confirmation and cart reminders\nEmail me with news and offers\nShipping address\nCountry/Region\nAfghanistan\nÅland Islands\nAlbania\nAlgeria\nAndorra\nAngola\nArgentina\nArmenia\nAscension Island\nAustralia\nAustria\nAzerbaijan\nBahrain\nBangladesh\nBelarus\nBelgium\nBenin\nBhutan\nBolivia\nBosnia & Herzegovina\nBotswana\nBrazil\nBritish Indian Ocean Territory\nBrunei\nBulgaria\nBurkina Faso\nBurundi\nCambodia\nCameroon\nCanada\nCape Verde\nCentral African Republic\nChad\nChile\nChina\nChristmas Island\nCocos (Keeling) Islands\nColombia\nComoros\nCongo - Brazzaville\nCongo - Kinshasa\nCook Islands\nCroatia\nCyprus\nCzechia\nCôte d’Ivoire\nDenmark\nDjibouti\nEcuador\nEgypt\nEquatorial Guinea\nEritrea\nEstonia\nEswatini\nEthiopia\nFalkland Islands\nFaroe Islands\nFiji\nFinland\nFrance\nFrench Guiana\nFrench Polynesia\nFrench Southern Territories\nGabon\nGambia\nGeorgia\nGermany\nGhana\nGibraltar\nGreece\nGuernsey\nGuinea\nGuinea-Bissau\nGuyana\nHong Kong SAR\nHungary\nIceland\nIndia\nIndonesia\nIraq\nIreland\nIsle of Man\nIsrael\nItaly\nJapan\nJersey\nJordan\nKazakhstan\nKenya\nKiribati\nKosovo\nKuwait\nKyrgyzstan\nLaos\nLatvia\nLebanon\nLesotho\nLiberia\nLibya\nLiechtenstein\nLithuania\nLuxembourg\nMacao SAR\nMadagascar\nMalawi\nMalaysia\nMaldives\nMali\nMalta\nMauritania\nMauritius\nMayotte\nMoldova\nMonaco\nMongolia\nMontenegro\nMorocco\nMozambique\nMyanmar (Burma)\nNamibia\nNauru\nNepal\nNetherlands\nNew Caledonia\nNew Zealand\nNiger\nNigeria\nNiue\nNorfolk Island\nNorth Macedonia\nNorway\nOman\nPakistan\nPalestinian Territories\nPapua New Guinea\nParaguay\nPeru\nPhilippines\nPitcairn Islands\nPoland\nPortugal\nQatar\nRéunion\nRomania\nRussia\nRwanda\nSamoa\nSan Marino\nSão Tomé & Príncipe\nSaudi Arabia\nSenegal\nSerbia\nSeychelles\nSierra Leone\nSingapore\nSlovakia\nSlovenia\nSolomon Islands\nSomalia\nSouth Africa\nSouth Georgia & South Sandwich Islands\nSouth Korea\nSouth Sudan\nSpain\nSri Lanka\nSt. Helena\nSudan\nSuriname\nSvalbard & Jan Mayen\nSweden\nSwitzerland\nTaiwan\nTajikistan\nTanzania\nThailand\nTimor-Leste\nTogo\nTokelau\nTonga\nTristan da Cunha\nTunisia\nTürkiye\nTurkmenistan\nTuvalu\nU.S. Outlying Islands\nUganda\nUkraine\nUnited Arab Emirates\nUnited Kingdom\nUnited States\nUruguay\nUzbekistan\nVanuatu\nVatican City\nVenezuela\nVietnam\nWallis & Futuna\nWestern Sahara\nYemen\nZambia\nZimbabwe\nFirst name\nLast name\nCompany (optional)\nAddress\nApartment, suite, etc. (optional)\nCity\nState\n \nAlabama\nAlaska\nAmerican Samoa\nArizona\nArkansas\nCalifornia\nColorado\nConnecticut\nDelaware\nMicronesia\nFlorida\nGeorgia\nGuam\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMarshall Islands\nMaryland\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nNorthern Mariana Islands\nOhio\nOklahoma\nOregon\nPalau\nPennsylvania\nPuerto Rico\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWashington DC\nWest Virginia\nWisconsin\nWyoming\nU.S. Virgin Islands\nArmed Forces Americas\nArmed Forces Europe\nArmed Forces Pacific\nZIP code\nPhone\nIn case we need to contact you about your order\nContinue to shipping\nContinue to shipping\nProcessing…\nAll rights reserved Vercel Shop\nOrder summary\nShopping cart\nProduct image\nDescription\nQuantity\nPrice\nQuantity\n1\n\nVRC Pit Crew Jumpsuit\n\nL / Black\n\n1\n$200.00\nScroll for more items\nDiscount\nDiscount code\nApply\nSubmit\nCost summary\nItem\nValue\nSubtotal\n$200.00\nShipping\nCalculated at next step\nTotal\nUSD\n$200.00\n\nProcessing…\n\nOpens external website in a new window.\nOpens in a new window.\nOpens external website.\n\nKeyboard focus: button [shows an icon] showing \"Google Pay\" (inside an embedded payment field)",
+      "image": "step-058.jpg",
+      "focus": {
+        "x": 405,
+        "y": 157,
+        "width": 245,
+        "height": 48
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:55:39.500Z",
+      "type": "thinking",
+      "step": 58
+    },
+    {
+      "t": "2026-10-30T21:55:42.314Z",
+      "type": "decide",
+      "step": 58,
+      "action": "next",
+      "args": {},
+      "thought": "Skip express checkout buttons, keep tabbing.",
+      "thinkMs": 2814
+    },
+    {
+      "t": "2026-10-30T21:55:45.402Z",
+      "type": "act",
+      "step": 58,
+      "result": "Focus moved to: email next to the text \"Email\"",
+      "actMs": 87,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:55:45.434Z",
+      "type": "observe",
+      "step": 59,
+      "path": "/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information",
+      "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information?_r=AQABwABbgDsKCJStvYeqxpsZj3nBKt9LdTG4fW2PdcpOeBfIdPoW&_s=81a7fd42-958a-41b5-a81c-848d9cd523e5&_y=b28d94e3-a4ca-414d-9959-bc5499113aa1&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "title": "Information - Vercel Shop - Checkout",
+      "text": "Page title: Information - Vercel Shop - Checkout\n\nWhat is visible on screen:\nSkip to content\nVercel Shop\nNavigate to Online Store\nInformation\nShipping\nPayment\nInformation\nExpress checkout\n\nOR\n\nContact\nEmail\nUsed for your order confirmation and cart reminders\nEmail me with news and offers\nShipping address\nCountry/Region\nAfghanistan\nÅland Islands\nAlbania\nAlgeria\nAndorra\nAngola\nArgentina\nArmenia\nAscension Island\nAustralia\nAustria\nAzerbaijan\nBahrain\nBangladesh\nBelarus\nBelgium\nBenin\nBhutan\nBolivia\nBosnia & Herzegovina\nBotswana\nBrazil\nBritish Indian Ocean Territory\nBrunei\nBulgaria\nBurkina Faso\nBurundi\nCambodia\nCameroon\nCanada\nCape Verde\nCentral African Republic\nChad\nChile\nChina\nChristmas Island\nCocos (Keeling) Islands\nColombia\nComoros\nCongo - Brazzaville\nCongo - Kinshasa\nCook Islands\nCroatia\nCyprus\nCzechia\nCôte d’Ivoire\nDenmark\nDjibouti\nEcuador\nEgypt\nEquatorial Guinea\nEritrea\nEstonia\nEswatini\nEthiopia\nFalkland Islands\nFaroe Islands\nFiji\nFinland\nFrance\nFrench Guiana\nFrench Polynesia\nFrench Southern Territories\nGabon\nGambia\nGeorgia\nGermany\nGhana\nGibraltar\nGreece\nGuernsey\nGuinea\nGuinea-Bissau\nGuyana\nHong Kong SAR\nHungary\nIceland\nIndia\nIndonesia\nIraq\nIreland\nIsle of Man\nIsrael\nItaly\nJapan\nJersey\nJordan\nKazakhstan\nKenya\nKiribati\nKosovo\nKuwait\nKyrgyzstan\nLaos\nLatvia\nLebanon\nLesotho\nLiberia\nLibya\nLiechtenstein\nLithuania\nLuxembourg\nMacao SAR\nMadagascar\nMalawi\nMalaysia\nMaldives\nMali\nMalta\nMauritania\nMauritius\nMayotte\nMoldova\nMonaco\nMongolia\nMontenegro\nMorocco\nMozambique\nMyanmar (Burma)\nNamibia\nNauru\nNepal\nNetherlands\nNew Caledonia\nNew Zealand\nNiger\nNigeria\nNiue\nNorfolk Island\nNorth Macedonia\nNorway\nOman\nPakistan\nPalestinian Territories\nPapua New Guinea\nParaguay\nPeru\nPhilippines\nPitcairn Islands\nPoland\nPortugal\nQatar\nRéunion\nRomania\nRussia\nRwanda\nSamoa\nSan Marino\nSão Tomé & Príncipe\nSaudi Arabia\nSenegal\nSerbia\nSeychelles\nSierra Leone\nSingapore\nSlovakia\nSlovenia\nSolomon Islands\nSomalia\nSouth Africa\nSouth Georgia & South Sandwich Islands\nSouth Korea\nSouth Sudan\nSpain\nSri Lanka\nSt. Helena\nSudan\nSuriname\nSvalbard & Jan Mayen\nSweden\nSwitzerland\nTaiwan\nTajikistan\nTanzania\nThailand\nTimor-Leste\nTogo\nTokelau\nTonga\nTristan da Cunha\nTunisia\nTürkiye\nTurkmenistan\nTuvalu\nU.S. Outlying Islands\nUganda\nUkraine\nUnited Arab Emirates\nUnited Kingdom\nUnited States\nUruguay\nUzbekistan\nVanuatu\nVatican City\nVenezuela\nVietnam\nWallis & Futuna\nWestern Sahara\nYemen\nZambia\nZimbabwe\nFirst name\nLast name\nCompany (optional)\nAddress\nApartment, suite, etc. (optional)\nCity\nState\n \nAlabama\nAlaska\nAmerican Samoa\nArizona\nArkansas\nCalifornia\nColorado\nConnecticut\nDelaware\nMicronesia\nFlorida\nGeorgia\nGuam\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMarshall Islands\nMaryland\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nNorthern Mariana Islands\nOhio\nOklahoma\nOregon\nPalau\nPennsylvania\nPuerto Rico\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWashington DC\nWest Virginia\nWisconsin\nWyoming\nU.S. Virgin Islands\nArmed Forces Americas\nArmed Forces Europe\nArmed Forces Pacific\nZIP code\nPhone\nIn case we need to contact you about your order\nContinue to shipping\nContinue to shipping\nProcessing…\nAll rights reserved Vercel Shop\nOrder summary\nShopping cart\nProduct image\nDescription\nQuantity\nPrice\nQuantity\n1\n\nVRC Pit Crew Jumpsuit\n\nL / Black\n\n1\n$200.00\nScroll for more items\nDiscount\nDiscount code\nApply\nSubmit\nCost summary\nItem\nValue\nSubtotal\n$200.00\nShipping\nCalculated at next step\nTotal\nUSD\n$200.00\n\nProcessing…\n\nOpens external website in a new window.\nOpens in a new window.\nOpens external website.\n\nKeyboard focus: email next to the text \"Email\"",
+      "image": "step-059.jpg",
+      "focus": {
+        "x": 151,
+        "y": 303,
+        "width": 470,
+        "height": 47
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:55:45.434Z",
+      "type": "thinking",
+      "step": 59
+    },
+    {
+      "t": "2026-10-30T21:55:49.465Z",
+      "type": "decide",
+      "step": 59,
+      "action": "type",
+      "args": {
+        "text": "alex.morgan@example.com"
+      },
+      "thought": "Enter the email.",
+      "thinkMs": 4031
+    },
+    {
+      "t": "2026-10-30T21:55:49.468Z",
+      "type": "target",
+      "step": 59,
+      "box": {
+        "x": 151,
+        "y": 303,
+        "width": 470,
+        "height": 47
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input id=\"email\" name=\"email\" placeholder=\"Email\" required=\"\" type=\"email\" aria-required=\"true\" aria-labelledby=\"email-label\" value=\"\" autocomplete=\"shipping email\" dir=\"ltr\" class=\"_7ozb2uq _7ozb2up _1fragemws _1fragemzf _1fragem11y _1fragem12u _1fragem12b _7ozb2u10 _7ozb2uz _1fragem12j _7ozb2ux _7ozb2uv _1fragem12e _1fragem12t _7ozb2u16 _7ozb2u3 _7ozb2u1c _7ozb2u1u _7ozb2ur\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:55:52.668Z",
+      "type": "act",
+      "step": 59,
+      "result": "Typed \"alex.morgan@example.com\".",
+      "actMs": 199,
+      "keys": 24,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:55:52.701Z",
+      "type": "observe",
+      "step": 60,
+      "path": "/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information",
+      "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information?_r=AQABwABbgDsKCJStvYeqxpsZj3nBKt9LdTG4fW2PdcpOeBfIdPoW&_s=81a7fd42-958a-41b5-a81c-848d9cd523e5&_y=b28d94e3-a4ca-414d-9959-bc5499113aa1&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "title": "Information - Vercel Shop - Checkout",
+      "text": "Page title: Information - Vercel Shop - Checkout\n\nWhat is visible on screen:\nSkip to content\nVercel Shop\nNavigate to Online Store\nInformation\nShipping\nPayment\nInformation\nExpress checkout\n\nOR\n\nContact\nEmail\nUsed for your order confirmation and cart reminders\nEmail me with news and offers\nShipping address\nCountry/Region\nAfghanistan\nÅland Islands\nAlbania\nAlgeria\nAndorra\nAngola\nArgentina\nArmenia\nAscension Island\nAustralia\nAustria\nAzerbaijan\nBahrain\nBangladesh\nBelarus\nBelgium\nBenin\nBhutan\nBolivia\nBosnia & Herzegovina\nBotswana\nBrazil\nBritish Indian Ocean Territory\nBrunei\nBulgaria\nBurkina Faso\nBurundi\nCambodia\nCameroon\nCanada\nCape Verde\nCentral African Republic\nChad\nChile\nChina\nChristmas Island\nCocos (Keeling) Islands\nColombia\nComoros\nCongo - Brazzaville\nCongo - Kinshasa\nCook Islands\nCroatia\nCyprus\nCzechia\nCôte d’Ivoire\nDenmark\nDjibouti\nEcuador\nEgypt\nEquatorial Guinea\nEritrea\nEstonia\nEswatini\nEthiopia\nFalkland Islands\nFaroe Islands\nFiji\nFinland\nFrance\nFrench Guiana\nFrench Polynesia\nFrench Southern Territories\nGabon\nGambia\nGeorgia\nGermany\nGhana\nGibraltar\nGreece\nGuernsey\nGuinea\nGuinea-Bissau\nGuyana\nHong Kong SAR\nHungary\nIceland\nIndia\nIndonesia\nIraq\nIreland\nIsle of Man\nIsrael\nItaly\nJapan\nJersey\nJordan\nKazakhstan\nKenya\nKiribati\nKosovo\nKuwait\nKyrgyzstan\nLaos\nLatvia\nLebanon\nLesotho\nLiberia\nLibya\nLiechtenstein\nLithuania\nLuxembourg\nMacao SAR\nMadagascar\nMalawi\nMalaysia\nMaldives\nMali\nMalta\nMauritania\nMauritius\nMayotte\nMoldova\nMonaco\nMongolia\nMontenegro\nMorocco\nMozambique\nMyanmar (Burma)\nNamibia\nNauru\nNepal\nNetherlands\nNew Caledonia\nNew Zealand\nNiger\nNigeria\nNiue\nNorfolk Island\nNorth Macedonia\nNorway\nOman\nPakistan\nPalestinian Territories\nPapua New Guinea\nParaguay\nPeru\nPhilippines\nPitcairn Islands\nPoland\nPortugal\nQatar\nRéunion\nRomania\nRussia\nRwanda\nSamoa\nSan Marino\nSão Tomé & Príncipe\nSaudi Arabia\nSenegal\nSerbia\nSeychelles\nSierra Leone\nSingapore\nSlovakia\nSlovenia\nSolomon Islands\nSomalia\nSouth Africa\nSouth Georgia & South Sandwich Islands\nSouth Korea\nSouth Sudan\nSpain\nSri Lanka\nSt. Helena\nSudan\nSuriname\nSvalbard & Jan Mayen\nSweden\nSwitzerland\nTaiwan\nTajikistan\nTanzania\nThailand\nTimor-Leste\nTogo\nTokelau\nTonga\nTristan da Cunha\nTunisia\nTürkiye\nTurkmenistan\nTuvalu\nU.S. Outlying Islands\nUganda\nUkraine\nUnited Arab Emirates\nUnited Kingdom\nUnited States\nUruguay\nUzbekistan\nVanuatu\nVatican City\nVenezuela\nVietnam\nWallis & Futuna\nWestern Sahara\nYemen\nZambia\nZimbabwe\nFirst name\nLast name\nCompany (optional)\nAddress\nApartment, suite, etc. (optional)\nCity\nState\n \nAlabama\nAlaska\nAmerican Samoa\nArizona\nArkansas\nCalifornia\nColorado\nConnecticut\nDelaware\nMicronesia\nFlorida\nGeorgia\nGuam\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMarshall Islands\nMaryland\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nNorthern Mariana Islands\nOhio\nOklahoma\nOregon\nPalau\nPennsylvania\nPuerto Rico\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWashington DC\nWest Virginia\nWisconsin\nWyoming\nU.S. Virgin Islands\nArmed Forces Americas\nArmed Forces Europe\nArmed Forces Pacific\nZIP code\nPhone\nIn case we need to contact you about your order\nContinue to shipping\nContinue to shipping\nProcessing…\nAll rights reserved Vercel Shop\nOrder summary\nShopping cart\nProduct image\nDescription\nQuantity\nPrice\nQuantity\n1\n\nVRC Pit Crew Jumpsuit\n\nL / Black\n\n1\n$200.00\nScroll for more items\nDiscount\nDiscount code\nApply\nSubmit\nCost summary\nItem\nValue\nSubtotal\n$200.00\nShipping\nCalculated at next step\nTotal\nUSD\n$200.00\n\nProcessing…\n\nOpens external website in a new window.\nOpens in a new window.\nOpens external website.\n\nKeyboard focus: email next to the text \"Email\" value \"alex.morgan@example.com\"",
+      "image": "step-060.jpg",
+      "focus": {
+        "x": 151,
+        "y": 303,
+        "width": 470,
+        "height": 47
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:55:52.701Z",
+      "type": "thinking",
+      "step": 60
+    },
+    {
+      "t": "2026-10-30T21:55:56.097Z",
+      "type": "decide",
+      "step": 60,
+      "action": "next",
+      "args": {},
+      "thought": "Next field; the newsletter checkbox should stay unchecked.",
+      "thinkMs": 3396
+    },
+    {
+      "t": "2026-10-30T21:55:59.182Z",
+      "type": "act",
+      "step": 60,
+      "result": "Focus moved to: div",
+      "actMs": 85,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:55:59.198Z",
+      "type": "guard",
+      "blocked": "A bot check from newassets.hcaptcha.com is on the page."
+    },
+    {
+      "t": "2026-10-30T21:55:59.219Z",
+      "type": "end",
+      "outcome": {
+        "status": "not-testable",
+        "reason": "A bot check from newassets.hcaptcha.com is on the page. AccessiPay does not get past bot protection, so this site was not tested."
+      },
+      "findings": [],
+      "steps": 60,
+      "path": "/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information",
+      "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information?_r=AQABwABbgDsKCJStvYeqxpsZj3nBKt9LdTG4fW2PdcpOeBfIdPoW&_s=81a7fd42-958a-41b5-a81c-848d9cd523e5&_y=b28d94e3-a4ca-414d-9959-bc5499113aa1&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "title": "Information - Vercel Shop - Checkout",
+      "text": "Page title: Information - Vercel Shop - Checkout\n\nWhat is visible on screen:\nSkip to content\nVercel Shop\nNavigate to Online Store\nInformation\nShipping\nPayment\nInformation\nExpress checkout\n\nOR\n\nContact\nEmail\nUsed for your order confirmation and cart reminders\nEmail me with news and offers\nShipping address\nCountry/Region\nAfghanistan\nÅland Islands\nAlbania\nAlgeria\nAndorra\nAngola\nArgentina\nArmenia\nAscension Island\nAustralia\nAustria\nAzerbaijan\nBahrain\nBangladesh\nBelarus\nBelgium\nBenin\nBhutan\nBolivia\nBosnia & Herzegovina\nBotswana\nBrazil\nBritish Indian Ocean Territory\nBrunei\nBulgaria\nBurkina Faso\nBurundi\nCambodia\nCameroon\nCanada\nCape Verde\nCentral African Republic\nChad\nChile\nChina\nChristmas Island\nCocos (Keeling) Islands\nColombia\nComoros\nCongo - Brazzaville\nCongo - Kinshasa\nCook Islands\nCroatia\nCyprus\nCzechia\nCôte d’Ivoire\nDenmark\nDjibouti\nEcuador\nEgypt\nEquatorial Guinea\nEritrea\nEstonia\nEswatini\nEthiopia\nFalkland Islands\nFaroe Islands\nFiji\nFinland\nFrance\nFrench Guiana\nFrench Polynesia\nFrench Southern Territories\nGabon\nGambia\nGeorgia\nGermany\nGhana\nGibraltar\nGreece\nGuernsey\nGuinea\nGuinea-Bissau\nGuyana\nHong Kong SAR\nHungary\nIceland\nIndia\nIndonesia\nIraq\nIreland\nIsle of Man\nIsrael\nItaly\nJapan\nJersey\nJordan\nKazakhstan\nKenya\nKiribati\nKosovo\nKuwait\nKyrgyzstan\nLaos\nLatvia\nLebanon\nLesotho\nLiberia\nLibya\nLiechtenstein\nLithuania\nLuxembourg\nMacao SAR\nMadagascar\nMalawi\nMalaysia\nMaldives\nMali\nMalta\nMauritania\nMauritius\nMayotte\nMoldova\nMonaco\nMongolia\nMontenegro\nMorocco\nMozambique\nMyanmar (Burma)\nNamibia\nNauru\nNepal\nNetherlands\nNew Caledonia\nNew Zealand\nNiger\nNigeria\nNiue\nNorfolk Island\nNorth Macedonia\nNorway\nOman\nPakistan\nPalestinian Territories\nPapua New Guinea\nParaguay\nPeru\nPhilippines\nPitcairn Islands\nPoland\nPortugal\nQatar\nRéunion\nRomania\nRussia\nRwanda\nSamoa\nSan Marino\nSão Tomé & Príncipe\nSaudi Arabia\nSenegal\nSerbia\nSeychelles\nSierra Leone\nSingapore\nSlovakia\nSlovenia\nSolomon Islands\nSomalia\nSouth Africa\nSouth Georgia & South Sandwich Islands\nSouth Korea\nSouth Sudan\nSpain\nSri Lanka\nSt. Helena\nSudan\nSuriname\nSvalbard & Jan Mayen\nSweden\nSwitzerland\nTaiwan\nTajikistan\nTanzania\nThailand\nTimor-Leste\nTogo\nTokelau\nTonga\nTristan da Cunha\nTunisia\nTürkiye\nTurkmenistan\nTuvalu\nU.S. Outlying Islands\nUganda\nUkraine\nUnited Arab Emirates\nUnited Kingdom\nUnited States\nUruguay\nUzbekistan\nVanuatu\nVatican City\nVenezuela\nVietnam\nWallis & Futuna\nWestern Sahara\nYemen\nZambia\nZimbabwe\nFirst name\nLast name\nCompany (optional)\nAddress\nApartment, suite, etc. (optional)\nCity\nState\n \nAlabama\nAlaska\nAmerican Samoa\nArizona\nArkansas\nCalifornia\nColorado\nConnecticut\nDelaware\nMicronesia\nFlorida\nGeorgia\nGuam\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMarshall Islands\nMaryland\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nNorthern Mariana Islands\nOhio\nOklahoma\nOregon\nPalau\nPennsylvania\nPuerto Rico\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWashington DC\nWest Virginia\nWisconsin\nWyoming\nU.S. Virgin Islands\nArmed Forces Americas\nArmed Forces Europe\nArmed Forces Pacific\nZIP code\nPhone\nIn case we need to contact you about your order\nContinue to shipping\nContinue to shipping\nProcessing…\nAll rights reserved Vercel Shop\nOrder summary\nShopping cart\nProduct image\nDescription\nQuantity\nPrice\nQuantity\n1\n\nVRC Pit Crew Jumpsuit\n\nL / Black\n\n1\n$200.00\nScroll for more items\nDiscount\nDiscount code\nApply\nSubmit\nCost summary\nItem\nValue\nSubtotal\n$200.00\nShipping\nCalculated at next step\nTotal\nUSD\n$200.00\n\nProcessing…\n\nOpens external website in a new window.\nOpens in a new window.\nOpens external website.\n\nKeyboard focus: div",
+      "image": "step-999.jpg"
+    },
+    {
+      "t": "2026-10-30T21:55:59.226Z",
+      "type": "finished",
+      "outcome": {
+        "status": "not-testable",
+        "reason": "A bot check from newassets.hcaptcha.com is on the page. AccessiPay does not get past bot protection, so this site was not tested."
+      }
+    }
+  ],
+  "robots": {
+    "ok": true,
+    "robotsUrl": "https://vercel.store/robots.txt",
+    "crawlerSkips": [
+      "/cart"
+    ]
+  },
+  "steps": 60,
+  "scan": {
+    "totalViolations": 9,
+    "pages": [
+      {
+        "url": "https://vercel.store/",
+        "violations": 9,
+        "rules": [
+          "label-content-name-mismatch"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://vercel.store/products/pit-crew-jumpsuit",
+        "violations": 0,
+        "rules": [],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://vercel.store/products/pit-crew-jumpsuit?size=L&color=Black",
+        "violations": 0,
+        "rules": [],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFNkPDChq9nvEA2bYJe/en-us/information?_r=AQABwABbgDsKCJStvYeqxpsZj3nBKt9LdTG4fW2PdcpOeBfIdPoW&_s=81a7fd42-958a-41b5-a81c-848d9cd523e5&_y=b28d94e3-a4ca-414d-9959-bc5499113aa1&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+        "violations": 0,
+        "rules": [],
+        "embedded": 0,
+        "embeddedRules": []
+      }
+    ],
+    "inRun": true
+  }
+}

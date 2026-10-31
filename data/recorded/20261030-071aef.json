@@ -1,0 +1,793 @@
+{
+  "id": "20261030-071aef",
+  "createdAt": "2026-10-30T21:48:22.618Z",
+  "label": "platform sweep",
+  "persona": "screenreader",
+  "brainKind": "external",
+  "model": null,
+  "instanceId": null,
+  "defects": [],
+  "patches": [],
+  "site": {
+    "url": "https://vercel.store/",
+    "host": "vercel.store"
+  },
+  "paypalMode": "sandbox",
+  "goalId": "checkout",
+  "goal": "This is a real online shop. Add any one in-stock product to the cart and go through checkout as far as the payment step, then stop. Never pay, never place or submit an order, never create an account or sign in, never type card details. If the shop asks for contact or shipping details before payment, use: full name Alex Morgan, email alex.morgan@example.com, street address 100 Example Avenue, city New York, state New York, ZIP 10001, country United States (or the closest option the shop offers), phone (212) 555-0142. Decline cookie banners, newsletters and promotions. When you see the payment form or a button that would pay or place the order, finish with done and your findings. If you cannot get that far, give up with honest findings.",
+  "maxSteps": 70,
+  "status": "finished",
+  "outcome": {
+    "status": "not-testable",
+    "reason": "A bot check from newassets.hcaptcha.com is on the page. AccessiPay does not get past bot protection, so this site was not tested."
+  },
+  "findings": [],
+  "events": [
+    {
+      "t": "2026-10-30T21:48:25.075Z",
+      "type": "start",
+      "persona": "screenreader",
+      "startUrl": "https://vercel.store/"
+    },
+    {
+      "t": "2026-10-30T21:48:25.838Z",
+      "type": "scan-page",
+      "url": "https://vercel.store/",
+      "violations": 9,
+      "rules": [
+        "label-content-name-mismatch"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:48:25.849Z",
+      "type": "observe",
+      "step": 1,
+      "path": "/",
+      "url": "https://vercel.store/",
+      "title": "Objects of Craft, by Vercel",
+      "text": "Page title: Objects of Craft, by Vercel\n\nPage as an accessibility tree:\n- link \"Skip to content\"\n- navigation:\n  - button \"About\"\n  - link \"Vercel\"\n  - button \"Open store assistant\"\n  - button \"Cart (0)\"\n- main:\n  - heading \"Vercel\" [level=1]\n  - article:\n    - link \"VRC Quilted Racing Jacket\":\n      - img \"VRC Quilted Racing Jacket\"\n      - text: Sold Out\n  - article:\n    - link \"VRC Unlined Racing Jacket\":\n      - img \"VRC Unlined Racing Jacket\"\n      - text: Sold Out\n  - article:\n    - link \"VRC Pit Crew Jumpsuit\":\n      - img \"VRC Pit Crew Jumpsuit\"\n  - article:\n    - link \"Utility Jumpsuit\":\n      - img \"Utility Jumpsuit\"\n      - text: Sold Out\n  - article:\n    - link \"Black Canvas Chore Coat\":\n      - img \"Black Canvas Chore Coat\"\n      - text: Sold Out\n  - article:\n    - link \"White Canvas Chore Coat\":\n      - img \"White Canvas Chore Coat\"\n      - text: Sold Out\n  - article:\n    - link \"Origin Tee — Burst\":\n      - img \"Origin Tee — Burst\"\n  - article:\n    - link \"Origin Tee — Fluid\":\n      - img \"Origin Tee — Fluid\"\n  - article:\n    - link \"Origin Cap — Black\":\n      - img \"Origin Cap — Black\"\n      - text: Sold Out\n  - article:\n    - link \"VRC Grain Print\":\n      - img \"VRC Grain Print\"\n      - text: Sold Out\n  - article:\n    - link \"Geist Racing Club Print\":\n      - img \"Geist Racing Club Print\"\n      - text: Sold Out\n  - article:\n    - link \"Origin Print\":\n      - img \"Origin Print\"\n      - text: Sold Out\n- alert\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-001.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:48:25.849Z",
+      "type": "thinking",
+      "step": 1
+    },
+    {
+      "t": "2026-10-30T21:49:41.745Z",
+      "type": "decide",
+      "step": 1,
+      "action": "jump",
+      "args": {
+        "role": "link",
+        "name": "Origin Tee — Burst",
+        "nth": 0
+      },
+      "thought": "Pick an in-stock product, the Origin Tee Burst, which has no Sold Out label.",
+      "thinkMs": 75896
+    },
+    {
+      "t": "2026-10-30T21:49:41.763Z",
+      "type": "target",
+      "step": 1,
+      "box": {
+        "x": 40,
+        "y": 576,
+        "width": 270,
+        "height": 216
+      },
+      "role": "link",
+      "name": "Origin Tee — Burst",
+      "scrolled": false,
+      "tag": "a",
+      "outer": "<a aria-label=\"Origin Tee — Burst\" class=\"relative block cursor-pointer after:pointer-events-none after:absolute after:inset-0 after:z-10 after:border after:border-foreground after:opacity-0 after:content-[''] focus-visible:outline-none focus-visible:after:opacity-100\" href=\"/products/t-shirt\"><div data-slot=\"product-card-image\" data-framed=\"\" class=\"relative flex aspect-square items-center justify-center overflow-hidden data-framed:aspect-5/4 data-framed:overflow-visible data-tall:aspect-5/8 data-[sold-out=fade]:[&amp;_[data-product-grid-image]]:opacity-25\"><span class=\"relative block\" data-s"
+    },
+    {
+      "t": "2026-10-30T21:49:44.787Z",
+      "type": "act",
+      "step": 1,
+      "result": "Focus moved to: link \"Origin Tee — Burst\":\n  - img \"Origin Tee — Burst\"",
+      "actMs": 22,
+      "keys": 2,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:49:44.828Z",
+      "type": "observe",
+      "step": 2,
+      "path": "/",
+      "url": "https://vercel.store/",
+      "title": "Objects of Craft, by Vercel",
+      "text": "Page title: Objects of Craft, by Vercel\n\nPage as an accessibility tree:\n- link \"Skip to content\"\n- navigation:\n  - button \"About\"\n  - link \"Vercel\"\n  - button \"Open store assistant\"\n  - button \"Cart (0)\"\n- main:\n  - heading \"Vercel\" [level=1]\n  - article:\n    - link \"VRC Quilted Racing Jacket\":\n      - img \"VRC Quilted Racing Jacket\"\n      - text: Sold Out\n  - article:\n    - link \"VRC Unlined Racing Jacket\":\n      - img \"VRC Unlined Racing Jacket\"\n      - text: Sold Out\n  - article:\n    - link \"VRC Pit Crew Jumpsuit\":\n      - img \"VRC Pit Crew Jumpsuit\"\n  - article:\n    - link \"Utility Jumpsuit\":\n      - img \"Utility Jumpsuit\"\n      - text: Sold Out\n  - article:\n    - link \"Black Canvas Chore Coat\":\n      - img \"Black Canvas Chore Coat\"\n      - text: Sold Out\n  - article:\n    - link \"White Canvas Chore Coat\":\n      - img \"White Canvas Chore Coat\"\n      - text: Sold Out\n  - article:\n    - link \"Origin Tee — Burst\":\n      - img \"Origin Tee — Burst\"\n  - article:\n    - link \"Origin Tee — Fluid\":\n      - img \"Origin Tee — Fluid\"\n  - article:\n    - link \"Origin Cap — Black\":\n      - img \"Origin Cap — Black\"\n      - text: Sold Out\n  - article:\n    - link \"VRC Grain Print\":\n      - img \"VRC Grain Print\"\n      - text: Sold Out\n  - article:\n    - link \"Geist Racing Club Print\":\n      - img \"Geist Racing Club Print\"\n      - text: Sold Out\n  - article:\n    - link \"Origin Print\":\n      - img \"Origin Print\"\n      - text: Sold Out\n- alert\n\nKeyboard focus: link \"Origin Tee — Burst\":\n  - img \"Origin Tee — Burst\"",
+      "image": "step-002.jpg",
+      "focus": {
+        "x": 40,
+        "y": 576,
+        "width": 270,
+        "height": 216
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:49:44.828Z",
+      "type": "thinking",
+      "step": 2
+    },
+    {
+      "t": "2026-10-30T21:49:46.989Z",
+      "type": "decide",
+      "step": 2,
+      "action": "activate",
+      "args": {},
+      "thought": "Open the product page.",
+      "thinkMs": 2162
+    },
+    {
+      "t": "2026-10-30T21:49:46.991Z",
+      "type": "target",
+      "step": 2,
+      "box": {
+        "x": 40,
+        "y": 576,
+        "width": 270,
+        "height": 216
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "a",
+      "outer": "<a aria-label=\"Origin Tee — Burst\" class=\"relative block cursor-pointer after:pointer-events-none after:absolute after:inset-0 after:z-10 after:border after:border-foreground after:opacity-0 after:content-[''] focus-visible:outline-none focus-visible:after:opacity-100\" href=\"/products/t-shirt\"><div data-slot=\"product-card-image\" data-framed=\"\" class=\"relative flex aspect-square items-center justify-center overflow-hidden data-framed:aspect-5/4 data-framed:overflow-visible data-tall:aspect-5/8 data-[sold-out=fade]:[&amp;_[data-product-grid-image]]:opacity-25\"><span class=\"relative block\" data-s"
+    },
+    {
+      "t": "2026-10-30T21:49:50.513Z",
+      "type": "act",
+      "step": 2,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 521,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:49:50.830Z",
+      "type": "scan-page",
+      "url": "https://vercel.store/products/t-shirt",
+      "violations": 0,
+      "rules": [],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:49:50.841Z",
+      "type": "observe",
+      "step": 3,
+      "path": "/products/t-shirt",
+      "url": "https://vercel.store/products/t-shirt",
+      "title": "Origin Tee — Burst | Vercel",
+      "text": "Page title: Origin Tee — Burst | Vercel\n\nPage as an accessibility tree:\n- link \"Skip to content\"\n- navigation:\n  - button \"About\"\n  - button \"Back\"\n  - link \"Vercel\"\n  - button \"Open store assistant\"\n  - button \"Cart (0)\"\n- main:\n  - region \"Origin Tee — Burst\":\n    - img \"Origin Tee — Burst image 1\"\n  - button \"Previous image\" [disabled]\n  - button \"Next image\"\n  - button \"Go to image 1\"\n  - button \"Go to image 2\"\n  - text: View image 1 of 2\n  - button \"See it on me\"\n  - heading \"Origin Tee — Burst\" [level=1]\n  - paragraph: Black\n  - text: $40.00\n  - paragraph: Select Size\n  - button \"XS\" [disabled]\n  - button \"S\" [pressed]\n  - button \"M\"\n  - button \"L\"\n  - button \"XL\"\n  - button \"2XL\"\n  - button \"Buy with\"\n  - button \"Add to Cart\"\n  - heading \"Description\" [level=2]\n  - paragraph: A graphic study of the origin of Vercel's name. Versatile Acceleration appears as a minimal front mark and a burst of motion across the back.\n  - heading \"Details\" [level=2]\n  - list:\n    - listitem: 100% organic cotton, 240 gsm\n    - listitem: Made in Portugal\n    - listitem: Unisex regular fit\n  - button \"Tell me more\"\n- alert: Origin Tee — Burst | Vercel\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-003.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:49:50.841Z",
+      "type": "thinking",
+      "step": 3
+    },
+    {
+      "t": "2026-10-30T21:49:53.375Z",
+      "type": "decide",
+      "step": 3,
+      "action": "jump",
+      "args": {
+        "role": "button",
+        "name": "Add to Cart",
+        "nth": 0
+      },
+      "thought": "Size S already selected; jump to Add to Cart.",
+      "thinkMs": 2534
+    },
+    {
+      "t": "2026-10-30T21:49:53.388Z",
+      "type": "target",
+      "step": 3,
+      "box": {
+        "x": 1093,
+        "y": 282,
+        "width": 167,
+        "height": 36
+      },
+      "role": "button",
+      "name": "Add to Cart",
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"button\" data-slot=\"button\" class=\"type-label group/button inline-flex shrink-0 cursor-pointer items-center gap-1.5 border-transparent bg-clip-padding whitespace-nowrap transition-[color,background-color,border-color,opacity,scale,transform] duration-150 ease-standard outline-none select-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-4 focus-visible:outline-current disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100 aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/20 motion-reduce:scale-"
+    },
+    {
+      "t": "2026-10-30T21:49:56.400Z",
+      "type": "act",
+      "step": 3,
+      "result": "Focus moved to: button \"Add to Cart\"",
+      "actMs": 10,
+      "keys": 2,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:49:56.424Z",
+      "type": "observe",
+      "step": 4,
+      "path": "/products/t-shirt",
+      "url": "https://vercel.store/products/t-shirt",
+      "title": "Origin Tee — Burst | Vercel",
+      "text": "Page title: Origin Tee — Burst | Vercel\n\nPage as an accessibility tree:\n- link \"Skip to content\"\n- navigation:\n  - button \"About\"\n  - button \"Back\"\n  - link \"Vercel\"\n  - button \"Open store assistant\"\n  - button \"Cart (0)\"\n- main:\n  - region \"Origin Tee — Burst\":\n    - img \"Origin Tee — Burst image 1\"\n  - button \"Previous image\" [disabled]\n  - button \"Next image\"\n  - button \"Go to image 1\"\n  - button \"Go to image 2\"\n  - text: View image 1 of 2\n  - button \"See it on me\"\n  - heading \"Origin Tee — Burst\" [level=1]\n  - paragraph: Black\n  - text: $40.00\n  - paragraph: Select Size\n  - button \"XS\" [disabled]\n  - button \"S\" [pressed]\n  - button \"M\"\n  - button \"L\"\n  - button \"XL\"\n  - button \"2XL\"\n  - button \"Buy with\"\n  - button \"Add to Cart\"\n  - heading \"Description\" [level=2]\n  - paragraph: A graphic study of the origin of Vercel's name. Versatile Acceleration appears as a minimal front mark and a burst of motion across the back.\n  - heading \"Details\" [level=2]\n  - list:\n    - listitem: 100% organic cotton, 240 gsm\n    - listitem: Made in Portugal\n    - listitem: Unisex regular fit\n  - button \"Tell me more\"\n- alert: Origin Tee — Burst | Vercel\n\nKeyboard focus: button \"Add to Cart\"",
+      "image": "step-004.jpg",
+      "focus": {
+        "x": 1093,
+        "y": 282,
+        "width": 167,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:49:56.424Z",
+      "type": "thinking",
+      "step": 4
+    },
+    {
+      "t": "2026-10-30T21:49:58.611Z",
+      "type": "decide",
+      "step": 4,
+      "action": "activate",
+      "args": {},
+      "thought": "Press Enter to add to cart.",
+      "thinkMs": 2187
+    },
+    {
+      "t": "2026-10-30T21:49:58.613Z",
+      "type": "target",
+      "step": 4,
+      "box": {
+        "x": 1093,
+        "y": 282,
+        "width": 167,
+        "height": 36
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"button\" data-slot=\"button\" class=\"type-label group/button inline-flex shrink-0 cursor-pointer items-center gap-1.5 border-transparent bg-clip-padding whitespace-nowrap transition-[color,background-color,border-color,opacity,scale,transform] duration-150 ease-standard outline-none select-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-4 focus-visible:outline-current disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100 aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/20 motion-reduce:scale-"
+    },
+    {
+      "t": "2026-10-30T21:50:02.125Z",
+      "type": "act",
+      "step": 4,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 510,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:02.158Z",
+      "type": "observe",
+      "step": 5,
+      "path": "/products/t-shirt",
+      "url": "https://vercel.store/products/t-shirt",
+      "title": "Origin Tee — Burst | Vercel",
+      "text": "Page title: Origin Tee — Burst | Vercel\n\nPage as an accessibility tree:\n- link \"Skip to content\"\n- navigation:\n  - button \"About\"\n  - button \"Back\"\n  - link \"Vercel\"\n  - button \"Open store assistant\"\n  - button \"Cart (1)\"\n- main:\n  - region \"Origin Tee — Burst\":\n    - img \"Origin Tee — Burst image 1\"\n  - button \"Previous image\" [disabled]\n  - button \"Next image\"\n  - button \"Go to image 1\"\n  - button \"Go to image 2\"\n  - text: View image 1 of 2\n  - button \"See it on me\"\n  - heading \"Origin Tee — Burst\" [level=1]\n  - paragraph: Black\n  - text: $40.00\n  - paragraph: Select Size\n  - button \"XS\" [disabled]\n  - button \"S\" [pressed]\n  - button \"M\"\n  - button \"L\"\n  - button \"XL\"\n  - button \"2XL\"\n  - button \"Buy with\"\n  - button \"Add to Cart\"\n  - button \"Remove item\"\n  - status: 1 in cart\n  - button \"Increase quantity\"\n  - heading \"Description\" [level=2]\n  - paragraph: A graphic study of the origin of Vercel's name. Versatile Acceleration appears as a minimal front mark and a burst of motion across the back.\n  - heading \"Details\" [level=2]\n  - list:\n    - listitem: 100% organic cotton, 240 gsm\n    - listitem: Made in Portugal\n    - listitem: Unisex regular fit\n  - button \"Tell me more\"\n- alert: Origin Tee — Burst | Vercel\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-005.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:02.158Z",
+      "type": "thinking",
+      "step": 5
+    },
+    {
+      "t": "2026-10-30T21:50:04.495Z",
+      "type": "decide",
+      "step": 5,
+      "action": "jump",
+      "args": {
+        "role": "button",
+        "name": "Cart (1)",
+        "nth": 0
+      },
+      "thought": "Open the cart.",
+      "thinkMs": 2337
+    },
+    {
+      "t": "2026-10-30T21:50:04.522Z",
+      "type": "target",
+      "step": 5,
+      "box": {
+        "x": 1224,
+        "y": 14,
+        "width": 36,
+        "height": 36
+      },
+      "role": "button",
+      "name": "Cart (1)",
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button aria-expanded=\"false\" aria-label=\"Cart (1)\" class=\"icon-button relative text-foreground transition-colors duration-150 hover:bg-foreground/5 aria-expanded:bg-foreground/10\" type=\"button\" id=\"base-ui-_R_fultb_\" data-base-ui-tooltip-trigger=\"\" data-slot=\"tooltip-trigger\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-shopping-cart size-4\" aria-hidden=\"true\"><path d=\"m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83"
+    },
+    {
+      "t": "2026-10-30T21:50:07.548Z",
+      "type": "act",
+      "step": 5,
+      "result": "Focus moved to: button \"Cart (1)\"",
+      "actMs": 24,
+      "keys": 2,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:07.575Z",
+      "type": "observe",
+      "step": 6,
+      "path": "/products/t-shirt",
+      "url": "https://vercel.store/products/t-shirt",
+      "title": "Origin Tee — Burst | Vercel",
+      "text": "Page title: Origin Tee — Burst | Vercel\n\nPage as an accessibility tree:\n- link \"Skip to content\"\n- navigation:\n  - button \"About\"\n  - button \"Back\"\n  - link \"Vercel\"\n  - button \"Open store assistant\"\n  - button \"Cart (1)\"\n- main:\n  - region \"Origin Tee — Burst\":\n    - img \"Origin Tee — Burst image 1\"\n  - button \"Previous image\" [disabled]\n  - button \"Next image\"\n  - button \"Go to image 1\"\n  - button \"Go to image 2\"\n  - text: View image 1 of 2\n  - button \"See it on me\"\n  - heading \"Origin Tee — Burst\" [level=1]\n  - paragraph: Black\n  - text: $40.00\n  - paragraph: Select Size\n  - button \"XS\" [disabled]\n  - button \"S\" [pressed]\n  - button \"M\"\n  - button \"L\"\n  - button \"XL\"\n  - button \"2XL\"\n  - button \"Buy with\"\n  - button \"Add to Cart\"\n  - button \"Remove item\"\n  - status: 1 in cart\n  - button \"Increase quantity\"\n  - heading \"Description\" [level=2]\n  - paragraph: A graphic study of the origin of Vercel's name. Versatile Acceleration appears as a minimal front mark and a burst of motion across the back.\n  - heading \"Details\" [level=2]\n  - list:\n    - listitem: 100% organic cotton, 240 gsm\n    - listitem: Made in Portugal\n    - listitem: Unisex regular fit\n  - button \"Tell me more\"\n- alert: Origin Tee — Burst | Vercel\n- text: Cart\n\nKeyboard focus: button \"Cart (1)\"",
+      "image": "step-006.jpg",
+      "focus": {
+        "x": 1224,
+        "y": 14,
+        "width": 36,
+        "height": 36
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:07.575Z",
+      "type": "thinking",
+      "step": 6
+    },
+    {
+      "t": "2026-10-30T21:50:09.728Z",
+      "type": "decide",
+      "step": 6,
+      "action": "activate",
+      "args": {},
+      "thought": "Press Enter to open the cart.",
+      "thinkMs": 2153
+    },
+    {
+      "t": "2026-10-30T21:50:09.730Z",
+      "type": "target",
+      "step": 6,
+      "box": {
+        "x": 1224,
+        "y": 14,
+        "width": 36,
+        "height": 36
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button aria-expanded=\"false\" aria-label=\"Cart (1)\" class=\"icon-button relative text-foreground transition-colors duration-150 hover:bg-foreground/5 aria-expanded:bg-foreground/10\" type=\"button\" id=\"base-ui-_R_fultb_\" data-base-ui-tooltip-trigger=\"\" data-slot=\"tooltip-trigger\" data-popup-open=\"\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-shopping-cart size-4\" aria-hidden=\"true\"><path d=\"m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14"
+    },
+    {
+      "t": "2026-10-30T21:50:13.250Z",
+      "type": "act",
+      "step": 6,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 519,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:13.296Z",
+      "type": "observe",
+      "step": 7,
+      "path": "/products/t-shirt",
+      "url": "https://vercel.store/products/t-shirt",
+      "title": "Origin Tee — Burst | Vercel",
+      "text": "Page title: Origin Tee — Burst | Vercel\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog \"Cart\":\n  - heading \"Cart\" [level=2]\n  - text: \"1\"\n  - paragraph: Review your cart items and proceed to checkout\n  - list \"Cart items\":\n    - listitem \"Origin Tee — Burst - $40.00\":\n      - link\n      - link \"Origin Tee — Burst\":\n        - heading \"Origin Tee — Burst\" [level=3]\n      - paragraph: Black / S\n      - text: $40.00\n      - group \"Item quantity\":\n        - button \"Remove item\"\n        - textbox \"Item quantity\": \"1\"\n        - button \"Increase quantity\"\n  - textbox \"Discount code\":\n    - /placeholder: \"\"\n  - button \"Discount code\"\n  - button \"Remove discount:\"\n  - alert\n  - group \"Estimated total\":\n    - text: Estimated total $40.00\n    - paragraph: Taxes and shipping calculated at checkout.\n  - contentinfo:\n    - button \"Go to Checkout\"\n  - button \"Close\"\n\nThe page:\n- link \"Skip to content\"\n- navigation:\n  - button \"About\"\n  - button \"Back\"\n  - link \"Vercel\"\n- main:\n  - region \"Origin Tee — Burst\":\n    - img \"Origin Tee — Burst image 1\"\n  - button \"Previous image\" [disabled]\n  - button \"Next image\"\n  - button \"Go to image 1\"\n  - button \"Go to image 2\"\n  - text: View image 1 of 2\n  - button \"See it on me\"\n- alert: Origin Tee — Burst | Vercel\n\nKeyboard focus: link",
+      "image": "step-007.jpg",
+      "focus": {
+        "x": 916,
+        "y": 84,
+        "width": 72,
+        "height": 72
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:13.296Z",
+      "type": "thinking",
+      "step": 7
+    },
+    {
+      "t": "2026-10-30T21:50:16.004Z",
+      "type": "decide",
+      "step": 7,
+      "action": "jump",
+      "args": {
+        "role": "button",
+        "name": "Go to Checkout",
+        "nth": 0
+      },
+      "thought": "Go to checkout.",
+      "thinkMs": 2708
+    },
+    {
+      "t": "2026-10-30T21:50:16.026Z",
+      "type": "target",
+      "step": 7,
+      "box": {
+        "x": 916,
+        "y": 796,
+        "width": 344,
+        "height": 44
+      },
+      "role": "button",
+      "name": "Go to Checkout",
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"button\" data-slot=\"button\" class=\"type-label group/button inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-none border border-transparent bg-clip-padding whitespace-nowrap transition-[color,background-color,border-color,opacity,scale,transform] duration-150 ease-standard outline-none select-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-4 focus-visible:outline-current active:not-aria-[haspopup]:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100 aria-invalid:border-destructiv"
+    },
+    {
+      "t": "2026-10-30T21:50:19.046Z",
+      "type": "act",
+      "step": 7,
+      "result": "Focus moved to: button \"Go to Checkout\"",
+      "actMs": 20,
+      "keys": 2,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:19.074Z",
+      "type": "observe",
+      "step": 8,
+      "path": "/products/t-shirt",
+      "url": "https://vercel.store/products/t-shirt",
+      "title": "Origin Tee — Burst | Vercel",
+      "text": "Page title: Origin Tee — Burst | Vercel\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog \"Cart\":\n  - heading \"Cart\" [level=2]\n  - text: \"1\"\n  - paragraph: Review your cart items and proceed to checkout\n  - list \"Cart items\":\n    - listitem \"Origin Tee — Burst - $40.00\":\n      - link\n      - link \"Origin Tee — Burst\":\n        - heading \"Origin Tee — Burst\" [level=3]\n      - paragraph: Black / S\n      - text: $40.00\n      - group \"Item quantity\":\n        - button \"Remove item\"\n        - textbox \"Item quantity\": \"1\"\n        - button \"Increase quantity\"\n  - textbox \"Discount code\":\n    - /placeholder: \"\"\n  - button \"Discount code\"\n  - button \"Remove discount:\"\n  - alert\n  - group \"Estimated total\":\n    - text: Estimated total $40.00\n    - paragraph: Taxes and shipping calculated at checkout.\n  - contentinfo:\n    - button \"Go to Checkout\"\n  - button \"Close\"\n\nThe page:\n- link \"Skip to content\"\n- navigation:\n  - button \"About\"\n  - button \"Back\"\n  - link \"Vercel\"\n- main:\n  - region \"Origin Tee — Burst\":\n    - img \"Origin Tee — Burst image 1\"\n  - button \"Previous image\" [disabled]\n  - button \"Next image\"\n  - button \"Go to image 1\"\n  - button \"Go to image 2\"\n  - text: View image 1 of 2\n  - button \"See it on me\"\n- alert: Origin Tee — Burst | Vercel\n\nKeyboard focus: button \"Go to Checkout\"",
+      "image": "step-008.jpg",
+      "focus": {
+        "x": 916,
+        "y": 796,
+        "width": 344,
+        "height": 44
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:19.074Z",
+      "type": "thinking",
+      "step": 8
+    },
+    {
+      "t": "2026-10-30T21:50:21.205Z",
+      "type": "decide",
+      "step": 8,
+      "action": "activate",
+      "args": {},
+      "thought": "Activate checkout.",
+      "thinkMs": 2131
+    },
+    {
+      "t": "2026-10-30T21:50:21.208Z",
+      "type": "target",
+      "step": 8,
+      "box": {
+        "x": 916,
+        "y": 796,
+        "width": 344,
+        "height": 44
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"button\" data-slot=\"button\" class=\"type-label group/button inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-none border border-transparent bg-clip-padding whitespace-nowrap transition-[color,background-color,border-color,opacity,scale,transform] duration-150 ease-standard outline-none select-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-4 focus-visible:outline-current active:not-aria-[haspopup]:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100 aria-invalid:border-destructiv"
+    },
+    {
+      "t": "2026-10-30T21:50:24.725Z",
+      "type": "act",
+      "step": 8,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 516,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:24.758Z",
+      "type": "observe",
+      "step": 9,
+      "path": "/products/t-shirt",
+      "url": "https://vercel.store/products/t-shirt",
+      "title": "Origin Tee — Burst | Vercel",
+      "text": "Page title: Origin Tee — Burst | Vercel\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog \"Cart\":\n  - heading \"Cart\" [level=2]\n  - text: \"1\"\n  - paragraph: Review your cart items and proceed to checkout\n  - list \"Cart items\":\n    - listitem \"Origin Tee — Burst - $40.00\":\n      - link\n      - link \"Origin Tee — Burst\":\n        - heading \"Origin Tee — Burst\" [level=3]\n      - paragraph: Black / S\n      - text: $40.00\n      - group \"Item quantity\":\n        - button \"Remove item\"\n        - textbox \"Item quantity\": \"1\"\n        - button \"Increase quantity\"\n  - textbox \"Discount code\":\n    - /placeholder: \"\"\n  - button \"Discount code\"\n  - button \"Remove discount:\"\n  - alert\n  - group \"Estimated total\":\n    - text: Estimated total $40.00\n    - paragraph: Taxes and shipping calculated at checkout.\n  - contentinfo:\n    - button \"Redirecting...\" [disabled]\n  - button \"Close\"\n\nThe page:\n- link \"Skip to content\"\n- navigation:\n  - button \"About\"\n  - button \"Back\"\n  - link \"Vercel\"\n- main:\n  - region \"Origin Tee — Burst\":\n    - img \"Origin Tee — Burst image 1\"\n  - button \"Previous image\" [disabled]\n  - button \"Next image\"\n  - button \"Go to image 1\"\n  - button \"Go to image 2\"\n  - text: View image 1 of 2\n  - button \"See it on me\"\n- alert: Origin Tee — Burst | Vercel\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-009.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:24.758Z",
+      "type": "thinking",
+      "step": 9
+    },
+    {
+      "t": "2026-10-30T21:50:26.964Z",
+      "type": "decide",
+      "step": 9,
+      "action": "read",
+      "args": {},
+      "thought": "Wait for the redirect by reading again.",
+      "thinkMs": 2206
+    },
+    {
+      "t": "2026-10-30T21:50:29.969Z",
+      "type": "act",
+      "step": 9,
+      "result": "You read the page again.",
+      "actMs": 0,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:30.966Z",
+      "type": "scan-page",
+      "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFJMJmmMTqrKUNlcGYd/en-us/information?_r=AQABFq6QQe92lSgGCu5riWJyBNpKa5g1gQQxxUQIK06dTHiKBuqX&_s=a43f2a10-4a42-4d20-bfc6-487acb3ac36d&_y=f9daee02-8c86-4044-9aa0-5fca15c6c4ae&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "violations": 0,
+      "rules": [],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:50:30.992Z",
+      "type": "observe",
+      "step": 10,
+      "path": "/checkouts/cn/hWNIaCFJMJmmMTqrKUNlcGYd/en-us/information",
+      "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFJMJmmMTqrKUNlcGYd/en-us/information?_r=AQABFq6QQe92lSgGCu5riWJyBNpKa5g1gQQxxUQIK06dTHiKBuqX&_s=a43f2a10-4a42-4d20-bfc6-487acb3ac36d&_y=f9daee02-8c86-4044-9aa0-5fca15c6c4ae&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "title": "Information - Vercel Shop - Checkout",
+      "text": "Page title: Information - Vercel Shop - Checkout\n\nPage as an accessibility tree:\n- status\n- link \"Skip to content\"\n- banner:\n  - link \"Vercel Shop Navigate to Online Store\"\n- navigation \"Breadcrumb\":\n  - list:\n    - listitem:\n      - strong: Information\n    - listitem: Shipping\n    - listitem: Payment\n- main:\n  - heading \"Information\" [level=1]\n  - region \"Express checkout\":\n    - heading \"Express checkout\" [level=2]\n    - list:\n      - listitem:\n        - link \"Shop\":\n          - img \"Shop\"\n      - listitem:\n        - iframe:\n          - button \"Apple Pay\"\n      - listitem:\n        - iframe:\n          - button \"Google Pay\"\n  - paragraph: OR\n  - separator\n  - region \"Contact\":\n    - heading \"Contact\" [level=2]\n    - text: Email\n    - textbox \"Email\"\n    - img \"More information about how your contact info is used\"\n    - checkbox \"Email me with news and offers\"\n    - text: Email me with news and offers\n  - group \"Shipping address\":\n    - heading \"Shipping address\" [level=2]\n    - text: Country/Region\n    - combobox \"Country/Region\":\n      - option \"Afghanistan\"\n      - option \"Åland Islands\"\n      - option \"Albania\"\n      - option \"Algeria\"\n      - option \"United States\" [selected]\n      - (201 options in total; choose one by its name)\n    - text: First name\n    - textbox \"First name\"\n    - text: Last name\n    - textbox \"Last name\"\n    - text: Company (optional)\n    - textbox \"Company (optional)\"\n    - text: Address\n    - combobox \"Address\"\n    - text: Apartment, suite, etc. (optional)\n    - textbox \"Apartment, suite, etc. (optional)\"\n    - text: City\n    - textbox \"City\"\n    - text: State\n    - combobox \"State\":\n      - option \"Alabama\"\n      - option \"Alaska\"\n      - option \"American Samoa\"\n      - option \"Arizona\"\n      - (62 options in total; choose one by its name)\n    - text: ZIP code\n    - textbox \"ZIP code\"\n    - text: Phone\n    - textbox \"Phone\"\n    - img \"More information about Phone\"\n  - button \"Continue to shipping\"\n- contentinfo:\n  - text: All rights reserved Vercel Shop\n  - list\n- complementary:\n  - heading \"Order summary\" [level=2]\n  - region \"Shopping cart\":\n    - heading \"Shopping cart\" [level=3]\n    - table \"Shopping cart\":\n      - rowgroup:\n        - row \"Product image Description Quantity Price\":\n          - columnheader \"Product image\"\n          - columnheader \"Description\"\n          - columnheader \"Quantity\"\n          - columnheader \"Price\"\n      - rowgroup:\n        - row \"Quantity 1 Origin Tee — Burst Black / S 1 $40.00\":\n          - cell \"Quantity 1\"\n          - cell \"Origin Tee — Burst Black / S\":\n            - paragraph: Origin Tee — Burst\n            - paragraph: Black / S\n          - cell \"1\"\n          - cell \"$40.00\"\n  - heading \"Discount\" [level=3]\n  - text: Discount code\n  - textbox \"Discount code\"\n  - button \"Apply Discount Code\" [disabled]: Apply\n  - heading \"Cost summary\" [level=3]\n  - table \"Cost summary\":\n    - rowgroup:\n      - row \"Item Value\":\n        - columnheader \"Item\"\n        - columnheader \"Value\"\n    - rowgroup:\n      - row \"Subtotal $40.00\":\n        - rowheader \"Subtotal\"\n        - cell \"$40.00\"\n      - row \"Shipping Calculated at next step\":\n        - rowheader \"Shipping\"\n        - cell \"Calculated at next step\"\n      - row \"Total USD $40.00\":\n        - rowheader \"Total\":\n          - strong: Total\n        - cell \"USD $40.00\":\n          - text: USD\n          - strong: $40.00\n- status\n- alert\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-010.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:30.992Z",
+      "type": "thinking",
+      "step": 10
+    },
+    {
+      "t": "2026-10-30T21:50:33.809Z",
+      "type": "decide",
+      "step": 10,
+      "action": "jump",
+      "args": {
+        "role": "textbox",
+        "name": "Email",
+        "nth": 0
+      },
+      "thought": "Focus the email field.",
+      "thinkMs": 2817
+    },
+    {
+      "t": "2026-10-30T21:50:33.819Z",
+      "type": "target",
+      "step": 10,
+      "box": {
+        "x": 151,
+        "y": 303,
+        "width": 470,
+        "height": 47
+      },
+      "role": "textbox",
+      "name": "Email",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input id=\"email\" name=\"email\" placeholder=\"Email\" required=\"\" type=\"email\" aria-required=\"true\" aria-labelledby=\"email-label\" value=\"\" autocomplete=\"shipping email\" dir=\"ltr\" class=\"_7ozb2uq _7ozb2up _1fragemws _1fragemzf _1fragem11y _1fragem12u _1fragem12b _7ozb2u10 _7ozb2uz _1fragem12j _7ozb2ux _7ozb2uv _1fragem12e _1fragem12t _7ozb2u16 _7ozb2u3 _7ozb2u1c _7ozb2u1u _7ozb2ur\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:50:36.892Z",
+      "type": "act",
+      "step": 10,
+      "result": "Focus moved to: textbox \"Email\"",
+      "actMs": 70,
+      "keys": 2,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:37.085Z",
+      "type": "observe",
+      "step": 11,
+      "path": "/checkouts/cn/hWNIaCFJMJmmMTqrKUNlcGYd/en-us/information",
+      "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFJMJmmMTqrKUNlcGYd/en-us/information?_r=AQABFq6QQe92lSgGCu5riWJyBNpKa5g1gQQxxUQIK06dTHiKBuqX&_s=a43f2a10-4a42-4d20-bfc6-487acb3ac36d&_y=f9daee02-8c86-4044-9aa0-5fca15c6c4ae&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "title": "Information - Vercel Shop - Checkout",
+      "text": "Page title: Information - Vercel Shop - Checkout\n\nPage as an accessibility tree:\n- status\n- link \"Skip to content\"\n- banner:\n  - link \"Vercel Shop Navigate to Online Store\"\n- navigation \"Breadcrumb\":\n  - list:\n    - listitem:\n      - strong: Information\n    - listitem: Shipping\n    - listitem: Payment\n- main:\n  - heading \"Information\" [level=1]\n  - region \"Express checkout\":\n    - heading \"Express checkout\" [level=2]\n    - list:\n      - listitem:\n        - link \"Shop\":\n          - img \"Shop\"\n      - listitem:\n        - iframe:\n          - button \"Apple Pay\"\n      - listitem:\n        - iframe:\n          - button \"Google Pay\"\n  - paragraph: OR\n  - separator\n  - region \"Contact\":\n    - heading \"Contact\" [level=2]\n    - text: Email\n    - textbox \"Email\"\n    - img \"More information about how your contact info is used\"\n    - checkbox \"Email me with news and offers\"\n    - text: Email me with news and offers\n  - group \"Shipping address\":\n    - heading \"Shipping address\" [level=2]\n    - text: Country/Region\n    - combobox \"Country/Region\":\n      - option \"Afghanistan\"\n      - option \"Åland Islands\"\n      - option \"Albania\"\n      - option \"Algeria\"\n      - option \"United States\" [selected]\n      - (201 options in total; choose one by its name)\n    - text: First name\n    - textbox \"First name\"\n    - text: Last name\n    - textbox \"Last name\"\n    - text: Company (optional)\n    - textbox \"Company (optional)\"\n    - text: Address\n    - combobox \"Address\"\n    - text: Apartment, suite, etc. (optional)\n    - textbox \"Apartment, suite, etc. (optional)\"\n    - text: City\n    - textbox \"City\"\n    - text: State\n    - combobox \"State\":\n      - option \"Alabama\"\n      - option \"Alaska\"\n      - option \"American Samoa\"\n      - option \"Arizona\"\n      - (62 options in total; choose one by its name)\n    - text: ZIP code\n    - textbox \"ZIP code\"\n    - text: Phone\n    - textbox \"Phone\"\n    - img \"More information about Phone\"\n  - button \"Continue to shipping\"\n- contentinfo:\n  - text: All rights reserved Vercel Shop\n  - list\n- complementary:\n  - heading \"Order summary\" [level=2]\n  - region \"Shopping cart\":\n    - heading \"Shopping cart\" [level=3]\n    - table \"Shopping cart\":\n      - rowgroup:\n        - row \"Product image Description Quantity Price\":\n          - columnheader \"Product image\"\n          - columnheader \"Description\"\n          - columnheader \"Quantity\"\n          - columnheader \"Price\"\n      - rowgroup:\n        - row \"Quantity 1 Origin Tee — Burst Black / S 1 $40.00\":\n          - cell \"Quantity 1\"\n          - cell \"Origin Tee — Burst Black / S\":\n            - paragraph: Origin Tee — Burst\n            - paragraph: Black / S\n          - cell \"1\"\n          - cell \"$40.00\"\n  - heading \"Discount\" [level=3]\n  - text: Discount code\n  - textbox \"Discount code\"\n  - button \"Apply Discount Code\" [disabled]: Apply\n  - heading \"Cost summary\" [level=3]\n  - table \"Cost summary\":\n    - rowgroup:\n      - row \"Item Value\":\n        - columnheader \"Item\"\n        - columnheader \"Value\"\n    - rowgroup:\n      - row \"Subtotal $40.00\":\n        - rowheader \"Subtotal\"\n        - cell \"$40.00\"\n      - row \"Shipping Calculated at next step\":\n        - rowheader \"Shipping\"\n        - cell \"Calculated at next step\"\n      - row \"Total USD $40.00\":\n        - rowheader \"Total\":\n          - strong: Total\n        - cell \"USD $40.00\":\n          - text: USD\n          - strong: $40.00\n- status\n- alert\n\nKeyboard focus: textbox \"Email\"",
+      "image": "step-011.jpg",
+      "focus": {
+        "x": 151,
+        "y": 303,
+        "width": 470,
+        "height": 47
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:37.085Z",
+      "type": "thinking",
+      "step": 11
+    },
+    {
+      "t": "2026-10-30T21:50:40.750Z",
+      "type": "decide",
+      "step": 11,
+      "action": "type",
+      "args": {
+        "text": "alex.morgan@example.com"
+      },
+      "thought": "Type email.",
+      "thinkMs": 3665
+    },
+    {
+      "t": "2026-10-30T21:50:40.765Z",
+      "type": "target",
+      "step": 11,
+      "box": {
+        "x": 151,
+        "y": 303,
+        "width": 470,
+        "height": 47
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input id=\"email\" name=\"email\" placeholder=\"Email\" required=\"\" type=\"email\" aria-required=\"true\" aria-labelledby=\"email-label\" value=\"\" autocomplete=\"shipping email\" dir=\"ltr\" class=\"_7ozb2uq _7ozb2up _1fragemws _1fragemzf _1fragem11y _1fragem12u _1fragem12b _7ozb2u10 _7ozb2uz _1fragem12j _7ozb2ux _7ozb2uv _1fragem12e _1fragem12t _7ozb2u16 _7ozb2u3 _7ozb2u1c _7ozb2u1u _7ozb2ur\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:50:44.343Z",
+      "type": "act",
+      "step": 11,
+      "result": "Typed \"alex.morgan@example.com\".",
+      "actMs": 512,
+      "keys": 24,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:44.674Z",
+      "type": "observe",
+      "step": 12,
+      "path": "/checkouts/cn/hWNIaCFJMJmmMTqrKUNlcGYd/en-us/information",
+      "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFJMJmmMTqrKUNlcGYd/en-us/information?_r=AQABFq6QQe92lSgGCu5riWJyBNpKa5g1gQQxxUQIK06dTHiKBuqX&_s=a43f2a10-4a42-4d20-bfc6-487acb3ac36d&_y=f9daee02-8c86-4044-9aa0-5fca15c6c4ae&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "title": "Information - Vercel Shop - Checkout",
+      "text": "Page title: Information - Vercel Shop - Checkout\n\nPage as an accessibility tree:\n- status\n- link \"Skip to content\"\n- banner:\n  - link \"Vercel Shop Navigate to Online Store\"\n- navigation \"Breadcrumb\":\n  - list:\n    - listitem:\n      - strong: Information\n    - listitem: Shipping\n    - listitem: Payment\n- main:\n  - heading \"Information\" [level=1]\n  - region \"Express checkout\":\n    - heading \"Express checkout\" [level=2]\n    - list:\n      - listitem:\n        - link \"Shop\":\n          - img \"Shop\"\n      - listitem:\n        - iframe:\n          - button \"Apple Pay\"\n      - listitem:\n        - iframe:\n          - button \"Google Pay\"\n  - paragraph: OR\n  - separator\n  - region \"Contact\":\n    - heading \"Contact\" [level=2]\n    - text: Email\n    - textbox \"Email\": alex.morgan@example.com\n    - img \"More information about how your contact info is used\"\n    - checkbox \"Email me with news and offers\"\n    - text: Email me with news and offers\n  - group \"Shipping address\":\n    - heading \"Shipping address\" [level=2]\n    - text: Country/Region\n    - combobox \"Country/Region\":\n      - option \"Afghanistan\"\n      - option \"Åland Islands\"\n      - option \"Albania\"\n      - option \"Algeria\"\n      - option \"United States\" [selected]\n      - (201 options in total; choose one by its name)\n    - text: First name\n    - textbox \"First name\"\n    - text: Last name\n    - textbox \"Last name\"\n    - text: Company (optional)\n    - textbox \"Company (optional)\"\n    - text: Address\n    - combobox \"Address\"\n    - text: Apartment, suite, etc. (optional)\n    - textbox \"Apartment, suite, etc. (optional)\"\n    - text: City\n    - textbox \"City\"\n    - text: State\n    - combobox \"State\":\n      - option \"Alabama\"\n      - option \"Alaska\"\n      - option \"American Samoa\"\n      - option \"Arizona\"\n      - (62 options in total; choose one by its name)\n    - text: ZIP code\n    - textbox \"ZIP code\"\n    - text: Phone\n    - textbox \"Phone\"\n    - img \"More information about Phone\"\n  - button \"Continue to shipping\"\n- contentinfo:\n  - text: All rights reserved Vercel Shop\n  - list\n- complementary:\n  - heading \"Order summary\" [level=2]\n  - region \"Shopping cart\":\n    - heading \"Shopping cart\" [level=3]\n    - table \"Shopping cart\":\n      - rowgroup:\n        - row \"Product image Description Quantity Price\":\n          - columnheader \"Product image\"\n          - columnheader \"Description\"\n          - columnheader \"Quantity\"\n          - columnheader \"Price\"\n      - rowgroup:\n        - row \"Quantity 1 Origin Tee — Burst Black / S 1 $40.00\":\n          - cell \"Quantity 1\"\n          - cell \"Origin Tee — Burst Black / S\":\n            - paragraph: Origin Tee — Burst\n            - paragraph: Black / S\n          - cell \"1\"\n          - cell \"$40.00\"\n  - heading \"Discount\" [level=3]\n  - text: Discount code\n  - textbox \"Discount code\"\n  - button \"Apply Discount Code\" [disabled]: Apply\n  - heading \"Cost summary\" [level=3]\n  - table \"Cost summary\":\n    - rowgroup:\n      - row \"Item Value\":\n        - columnheader \"Item\"\n        - columnheader \"Value\"\n    - rowgroup:\n      - row \"Subtotal $40.00\":\n        - rowheader \"Subtotal\"\n        - cell \"$40.00\"\n      - row \"Shipping Calculated at next step\":\n        - rowheader \"Shipping\"\n        - cell \"Calculated at next step\"\n      - row \"Total USD $40.00\":\n        - rowheader \"Total\":\n          - strong: Total\n        - cell \"USD $40.00\":\n          - text: USD\n          - strong: $40.00\n- status\n- alert\n\nKeyboard focus: textbox \"Email\": alex.morgan@example.com",
+      "image": "step-012.jpg",
+      "focus": {
+        "x": 151,
+        "y": 303,
+        "width": 470,
+        "height": 47
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:44.674Z",
+      "type": "thinking",
+      "step": 12
+    },
+    {
+      "t": "2026-10-30T21:50:47.976Z",
+      "type": "decide",
+      "step": 12,
+      "action": "jump",
+      "args": {
+        "role": "textbox",
+        "name": "First name",
+        "nth": 0
+      },
+      "thought": "Focus first name.",
+      "thinkMs": 3302
+    },
+    {
+      "t": "2026-10-30T21:50:48.042Z",
+      "type": "target",
+      "step": 12,
+      "box": {
+        "x": 151,
+        "y": 510,
+        "width": 243,
+        "height": 47
+      },
+      "role": "textbox",
+      "name": "First name",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input id=\"TextFieldPS2x_32_2u_33_36_31_2p_38_2x_33_32-24\" name=\"firstName\" placeholder=\"First name\" required=\"\" type=\"text\" aria-required=\"true\" aria-labelledby=\"TextFieldPS2x_32_2u_33_36_31_2p_38_2x_33_32-24-label\" value=\"\" autocomplete=\"shipping given-name\" class=\"_7ozb2uq _7ozb2up _1fragemws _1fragemzf _1fragem11y _1fragem12u _1fragem12b _7ozb2u10 _7ozb2uz _1fragem12j _7ozb2ux _7ozb2uv _1fragem12e _1fragem12t _7ozb2u16 _7ozb2u1b _7ozb2u1u _7ozb2ur\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:50:51.126Z",
+      "type": "act",
+      "step": 12,
+      "result": "Focus moved to: textbox \"First name\"",
+      "actMs": 82,
+      "keys": 2,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:51.173Z",
+      "type": "guard",
+      "blocked": "A bot check from newassets.hcaptcha.com is on the page."
+    },
+    {
+      "t": "2026-10-30T21:50:51.374Z",
+      "type": "end",
+      "outcome": {
+        "status": "not-testable",
+        "reason": "A bot check from newassets.hcaptcha.com is on the page. AccessiPay does not get past bot protection, so this site was not tested."
+      },
+      "findings": [],
+      "steps": 12,
+      "path": "/checkouts/cn/hWNIaCFJMJmmMTqrKUNlcGYd/en-us/information",
+      "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFJMJmmMTqrKUNlcGYd/en-us/information?_r=AQABFq6QQe92lSgGCu5riWJyBNpKa5g1gQQxxUQIK06dTHiKBuqX&_s=a43f2a10-4a42-4d20-bfc6-487acb3ac36d&_y=f9daee02-8c86-4044-9aa0-5fca15c6c4ae&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "title": "Information - Vercel Shop - Checkout",
+      "text": "Page title: Information - Vercel Shop - Checkout\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog \"Sign in with Shop\":\n  - img \"Shop\"\n  - button \"Close\":\n    - img\n  - iframe:\n    - heading \"Solve this challenge to continue\" [level=2]\n    - paragraph\n    - paragraph: alex.morgan @ example.com alex.morgan@example.com\n    - iframe\n\nThe page:\n- status\n- link \"Skip to content\"\n- banner:\n  - link \"Vercel Shop Navigate to Online Store\"\n- navigation \"Breadcrumb\":\n  - list:\n    - listitem:\n      - strong: Information\n    - listitem: Shipping\n    - listitem: Payment\n- main:\n  - heading \"Information\" [level=1]\n  - region \"Express checkout\":\n    - heading \"Express checkout\" [level=2]\n    - list:\n      - listitem:\n        - link \"Shop\":\n          - img \"Shop\"\n      - listitem:\n        - iframe:\n          - button \"Apple Pay\"\n      - listitem:\n        - iframe:\n          - button \"Google Pay\"\n  - paragraph: OR\n  - separator\n  - region \"Contact\":\n    - heading \"Contact\" [level=2]\n    - text: Email\n    - textbox \"Email\": alex.morgan@example.com\n    - img \"More information about how your contact info is used\"\n    - checkbox \"Email me with news and offers\"\n    - text: Email me with news and offers\n  - group \"Shipping address\":\n    - heading \"Shipping address\" [level=2]\n    - text: Country/Region\n    - combobox \"Country/Region\":\n      - option \"Afghanistan\"\n      - option \"Åland Islands\"\n      - option \"Albania\"\n      - option \"Algeria\"\n      - option \"United States\" [selected]\n      - (201 options in total; choose one by its name)\n    - text: First name\n    - textbox \"First name\"\n    - text: Last name\n    - textbox \"Last name\"\n    - text: Company (optional)\n    - textbox \"Company (optional)\"\n    - text: Address\n    - combobox \"Address\"\n    - text: Apartment, suite, etc. (optional)\n    - textbox \"Apartment, suite, etc. (optional)\"\n    - text: City\n    - textbox \"City\"\n    - text: State\n    - combobox \"State\":\n      - option \"Alabama\"\n      - option \"Alaska\"\n      - option \"American Samoa\"\n      - option \"Arizona\"\n      - (62 options in total; choose one by its name)\n    - text: ZIP code\n    - textbox \"ZIP code\"\n    - text: Phone\n    - textbox \"Phone\"\n    - img \"More information about Phone\"\n  - button \"Continue to shipping\"\n- contentinfo:\n  - text: All rights reserved Vercel Shop\n  - list\n- complementary:\n  - heading \"Order summary\" [level=2]\n  - region \"Shopping cart\":\n    - heading \"Shopping cart\" [level=3]\n    - table \"Shopping cart\":\n      - rowgroup:\n        - row \"Product image Description Quantity Price\":\n          - columnheader \"Product image\"\n          - columnheader \"Description\"\n          - columnheader \"Quantity\"\n          - columnheader \"Price\"\n      - rowgroup:\n        - row \"Quantity 1 Origin Tee — Burst Black / S 1 $40.00\":\n          - cell \"Quantity 1\"\n          - cell \"Origin Tee — Burst Black / S\":\n            - paragraph: Origin Tee — Burst\n            - paragraph: Black / S\n          - cell \"1\"\n          - cell \"$40.00\"\n  - heading \"Discount\" [level=3]\n  - text: Discount code\n  - textbox \"Discount code\"\n  - button \"Apply Discount Code\" [disabled]: Apply\n  - heading \"Cost summary\" [level=3]\n  - table \"Cost summary\":\n    - rowgroup:\n      - row \"Item Value\":\n        - columnheader \"Item\"\n        - columnheader \"Value\"\n    - rowgroup:\n      - row \"Subtotal $40.00\":\n        - rowheader \"Subtotal\"\n        - cell \"$40.00\"\n      - row \"Shipping Calculated at next step\":\n        - rowheader \"Shipping\"\n        - cell \"Calculated at next step\"\n      - row \"Total USD $40.00\":\n        - rowheader \"Total\":\n          - strong: Total\n        - cell \"USD $40.00\":\n          - text: USD\n          - strong: $40.00\n- status\n- alert\n\nKeyboard focus: textbox \"First name\"",
+      "image": "step-999.jpg"
+    },
+    {
+      "t": "2026-10-30T21:50:51.402Z",
+      "type": "finished",
+      "outcome": {
+        "status": "not-testable",
+        "reason": "A bot check from newassets.hcaptcha.com is on the page. AccessiPay does not get past bot protection, so this site was not tested."
+      }
+    }
+  ],
+  "robots": {
+    "ok": true,
+    "robotsUrl": "https://vercel.store/robots.txt",
+    "crawlerSkips": [
+      "/cart"
+    ]
+  },
+  "steps": 12,
+  "scan": {
+    "totalViolations": 9,
+    "pages": [
+      {
+        "url": "https://vercel.store/",
+        "violations": 9,
+        "rules": [
+          "label-content-name-mismatch"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://vercel.store/products/t-shirt",
+        "violations": 0,
+        "rules": [],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://shop-vercel.myshopify.com/checkouts/cn/hWNIaCFJMJmmMTqrKUNlcGYd/en-us/information?_r=AQABFq6QQe92lSgGCu5riWJyBNpKa5g1gQQxxUQIK06dTHiKBuqX&_s=a43f2a10-4a42-4d20-bfc6-487acb3ac36d&_y=f9daee02-8c86-4044-9aa0-5fca15c6c4ae&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+        "violations": 0,
+        "rules": [],
+        "embedded": 0,
+        "embeddedRules": []
+      }
+    ],
+    "inRun": true
+  }
+}

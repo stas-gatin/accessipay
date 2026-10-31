@@ -1,0 +1,1798 @@
+{
+  "id": "20261030-96563a",
+  "createdAt": "2026-10-30T21:48:22.546Z",
+  "label": "platform sweep",
+  "persona": "agent",
+  "brainKind": "external",
+  "model": null,
+  "instanceId": null,
+  "defects": [],
+  "patches": [],
+  "site": {
+    "url": "https://v2.demo.sylius.com/",
+    "host": "v2.demo.sylius.com"
+  },
+  "paypalMode": "sandbox",
+  "goalId": "checkout",
+  "goal": "This is a real online shop. Add any one in-stock product to the cart and go through checkout as far as the payment step, then stop. Never pay, never place or submit an order, never create an account or sign in, never type card details. If the shop asks for contact or shipping details before payment, use: full name Alex Morgan, email alex.morgan@example.com, street address 100 Example Avenue, city New York, state New York, ZIP 10001, country United States (or the closest option the shop offers), phone (212) 555-0142. Decline cookie banners, newsletters and promotions. When you see the payment form or a button that would pay or place the order, finish with done and your findings. If you cannot get that far, give up with honest findings.",
+  "maxSteps": 40,
+  "status": "finished",
+  "outcome": {
+    "status": "reached-payment",
+    "reason": "Reached the payment step. Stopped there: nothing was paid."
+  },
+  "findings": [
+    {
+      "page": "Address | Fashion Web Store",
+      "problem": "After filling a field, previously entered values in other fields (First name, Street address, City) were repeatedly emptied, and the page gave no message about it. I had to re-enter them many times.",
+      "step": 7,
+      "element": {
+        "role": "textbox",
+        "name": "First name*"
+      }
+    },
+    {
+      "page": "Address | Fashion Web Store",
+      "problem": "Choosing a country reloaded the form silently and cleared First name and Street address, and a new Province textbox appeared with no announcement.",
+      "step": 10,
+      "element": {
+        "role": "combobox",
+        "name": "Country*"
+      }
+    },
+    {
+      "page": "Address | Fashion Web Store",
+      "problem": "The phone number lost its first characters after typing (it read 2) 555-0142 instead of (212) 555-0142), so I had to re-enter it.",
+      "step": 14,
+      "element": {
+        "role": "textbox",
+        "name": "Phone number"
+      }
+    },
+    {
+      "page": "Address | Fashion Web Store",
+      "problem": "The City field kept coming back empty. The error Please enter city. appeared only as plain text near the field, not tied to the textbox, and the textbox was not marked as invalid.",
+      "step": 23,
+      "element": {
+        "role": "textbox",
+        "name": "City*"
+      }
+    },
+    {
+      "page": "Address | Fashion Web Store",
+      "problem": "The Email field was listed as a required textbox but I could not tell from the Province label whether it was required. The country list is shortened (13 options) and the first option is just Select.",
+      "step": 4,
+      "element": {
+        "role": "combobox",
+        "name": "Country*"
+      }
+    },
+    {
+      "page": "Fashion Web Store",
+      "problem": "The cart page tree contains a duplicate mini-cart section with a second Close button and a second Checkout link, and a Loading text node, making it unclear which Checkout is the right one.",
+      "step": 3,
+      "element": {
+        "role": "button",
+        "name": "Checkout"
+      }
+    }
+  ],
+  "events": [
+    {
+      "t": "2026-10-30T21:48:24.351Z",
+      "type": "start",
+      "persona": "agent",
+      "startUrl": "https://v2.demo.sylius.com/"
+    },
+    {
+      "t": "2026-10-30T21:48:25.645Z",
+      "type": "scan-page",
+      "url": "https://v2.demo.sylius.com/en_US/",
+      "violations": 16,
+      "rules": [
+        "aria-required-parent",
+        "color-contrast",
+        "label-content-name-mismatch",
+        "landmark-one-main",
+        "page-has-heading-one",
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:48:25.690Z",
+      "type": "observe",
+      "step": 1,
+      "path": "/en_US/",
+      "url": "https://v2.demo.sylius.com/en_US/",
+      "title": "Fashion Web Store",
+      "text": "Page title: Fashion Web Store\n\nPage as an accessibility tree:\n- link \"Sign up to our newsletter and grab -20% off\"\n- link \"sylius logo\":\n  - img\n- navigation \"Account navigation (desktop)\":\n  - link \"Login\"\n  - menuitem \"Register\"\n- button \"cart button\": €0.00\n- button \"Login\"\n- navigation \"Taxon navigation (desktop)\":\n  - button \"T-shirts\"\n  - button \"Caps\"\n  - link \"Dresses\"\n  - button \"Jeans\"\n- img \"Home\"\n- text: Public access\n- paragraph: This is Sylius out of the box\n- text: Welcome to the Sylius Community Edition Demo\n- img\n- paragraph: \"A standard install from Sylius/Sylius-Standard: only official Sylius plugins, no custom theme. What you see is exactly what you get when you install Sylius yourself.\"\n- button \"What can you test here?\"\n- text: Login credentials are available on the login forms.\n- link \"Open admin panel\"\n- link \"Login as a customer\"\n- region \"Latest deals\":\n  - heading \"Latest deals\" [level=2]\n  - link \"Product Radiant Reflection Cap Image Radiant Reflection Cap\":\n    - img \"Product Radiant Reflection Cap Image\"\n    - text: Radiant Reflection Cap\n  - text: €62.94\n  - link \"Product Radiant Sunshine Jeans Image Radiant Sunshine Jeans\":\n    - img \"Product Radiant Sunshine Jeans Image\"\n    - text: Radiant Sunshine Jeans\n  - text: Spring sale Qui nihil quae quis voluptatem rem.\n  - deletion: €21.47\n  - text: €18.47\n  - link \"Product Solar Echo T-Shirt Image Solar Echo T-Shirt\":\n    - img \"Product Solar Echo T-Shirt Image\"\n    - text: Solar Echo T-Shirt\n  - text: €3.27\n  - link \"Product Floral Garden Party Image Floral Garden Party\":\n    - img \"Product Floral Garden Party Image\"\n    - text: Floral Garden Party\n  - text: €75.60\n- heading \"New collection\" [level=2]\n- img \"New collection\"\n- img \"New collection\"\n- img \"New collection\"\n- region \"Latest products\":\n  - heading \"Latest products\" [level=2]\n  - link \"Product Radiant Reflection Cap Image Radiant Reflection Cap\":\n    - img \"Product Radiant Reflection Cap Image\"\n    - text: Radiant Reflection Cap\n  - text: €62.94\n  - link \"Product Radiant Sunshine Jeans Image Radiant Sunshine Jeans\":\n    - img \"Product Radiant Sunshine Jeans Image\"\n    - text: Radiant Sunshine Jeans\n  - text: Spring sale Qui nihil quae quis voluptatem rem.\n  - deletion: €21.47\n  - text: €18.47\n  - link \"Product Solar Echo T-Shirt Image Solar Echo T-Shirt\":\n    - img \"Product Solar Echo T-Shirt Image\"\n    - text: Solar Echo T-Shirt\n  - text: €3.27\n  - link \"Product Floral Garden Party Image Floral Garden Party\":\n    - img \"Product Floral Garden Party Image\"\n    - text: Floral Garden Party\n  - text: €75.60\n  - link \"Product Comet Pulse T-Shirt Image Comet Pulse T-Shirt\":\n    - img \"Product Comet Pulse T-Shirt Image\"\n    - text: Comet Pulse T-Shirt\n  - text: €7.25\n  - link \"Product Palm Paradise Jeans Image Palm Paradise Jeans\":\n    - img \"Product Palm Paradise Jeans Image\"\n    - text: Palm Paradise Jeans\n  - text: Spring sale Qui nihil quae quis voluptatem rem.\n  - deletion: €14.30\n  - text: €11.30\n  - link \"Product Galactic Pulse T-Shirt Image Galactic Pulse T-Shirt\":\n    - img \"Product Galactic Pulse T-Shirt Image\"\n    - text: Galactic Pulse T-Shirt\n  - text: €5.21\n  - link \"Product Seaside Tranquility Jeans Image Seaside Tranquility Jeans\":\n    - img \"Product Seaside Tranquility Jeans Image\"\n    - text: Seaside Tranquility Jeans\n  - text: Spring sale Qui nihil quae quis voluptatem rem.\n  - deletion: €44.78\n  - text: €41.78\n- contentinfo:\n  - navigation \"Footer informational links\":\n    - link \"About\"\n    - link \"Terms and Conditions\"\n    - link \"Privacy Policy\"\n    - link \"Contact us\"\n  - navigation \"Footer help links\":\n    - link \"FAQ\"\n    - link \"Delivery & Shipping\"\n    - link \"Returns Policy\"\n  - text: \"Payment methods:\"\n  - link \"PayPal\":\n    - img \"PayPal\"\n  - link \"Adyen\":\n    - img \"Adyen\"\n  - link \"Mollie\":\n    - img \"Mollie\"\n  - link \"instagram logo\"\n  - link \"facebook logo\"\n  - link \"x logo\"\n  - link \"Sylius logo\":\n    - img\n  - text: © Your Store, Powered by\n  - link \"Sylius\"\n- img\n- strong: \"Admin panel:\"\n- link \"https://v2.demo.sylius.com/admin\"\n- strong: \"Sylius API:\"\n- link \"https://v2.demo.sylius.com/api/v2\"\n- link \"Get a live demo of Sylius Plus\"",
+      "image": "step-001.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:48:25.690Z",
+      "type": "thinking",
+      "step": 1
+    },
+    {
+      "t": "2026-10-30T21:49:42.098Z",
+      "type": "decide",
+      "step": 1,
+      "action": "click",
+      "args": {
+        "role": "link",
+        "name": "Product Solar Echo T-Shirt Image Solar Echo T-Shirt"
+      },
+      "thought": "Open a product to add to cart, starting with a cheap T-shirt.",
+      "thinkMs": 76408
+    },
+    {
+      "t": "2026-10-30T21:49:42.162Z",
+      "type": "target",
+      "step": 1,
+      "box": {
+        "x": 847,
+        "y": 175,
+        "width": 351,
+        "height": 511
+      },
+      "role": "link",
+      "name": "Product Solar Echo T-Shirt Image Solar Echo T-Shirt",
+      "scrolled": true,
+      "tag": "a",
+      "outer": "<a class=\"link-reset\" href=\"/en_US/products/solar-echo-t-shirt\">\n    \n<div class=\"mb-4\">\n    <div class=\"overflow-auto bg-light rounded-3\" style=\"aspect-ratio: 3/4; \">\n            \n<img class=\"img-fluid w-100 h-100 object-fit-cover\" product=\"Solar Echo T-Shirt\" src=\"https://v2.demo.sylius.com/media/cache/sylius_shop_product_thumbnail/1d/d4/b0506c8f1c016488037e80d9dd73.webp\" alt=\"Product Solar Echo T-Shirt Image\">\n\n    </div>\n</div>\n\n\n<div class=\"h6 text-break\">\n    Solar Echo T-Shirt\n</div>\n</a>",
+      "image": "step-001-t.jpg"
+    },
+    {
+      "t": "2026-10-30T21:49:46.089Z",
+      "type": "guard",
+      "blocked": "POST api-m.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:49:46.090Z",
+      "type": "guard",
+      "blocked": "POST www.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:49:46.099Z",
+      "type": "guard",
+      "blocked": "POST api-m.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:49:46.100Z",
+      "type": "guard",
+      "blocked": "POST www.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:49:46.239Z",
+      "type": "act",
+      "step": 1,
+      "result": "Clicked link \"Product Solar Echo T-Shirt Image Solar Echo T-Shirt\".",
+      "actMs": 1076,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:49:46.609Z",
+      "type": "scan-page",
+      "url": "https://v2.demo.sylius.com/en_US/products/solar-echo-t-shirt",
+      "violations": 17,
+      "rules": [
+        "aria-required-parent",
+        "label-content-name-mismatch",
+        "landmark-one-main",
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:49:46.635Z",
+      "type": "observe",
+      "step": 2,
+      "path": "/en_US/products/solar-echo-t-shirt",
+      "url": "https://v2.demo.sylius.com/en_US/products/solar-echo-t-shirt",
+      "title": "Solar Echo T-Shirt | Fashion Web Store",
+      "text": "Page title: Solar Echo T-Shirt | Fashion Web Store\n\nPage as an accessibility tree:\n- link \"Sign up to our newsletter and grab -20% off\"\n- link \"sylius logo\":\n  - img\n- navigation \"Account navigation (desktop)\":\n  - link \"Login\"\n  - menuitem \"Register\"\n- button \"cart button\": €0.00\n- button \"Login\"\n- navigation \"Taxon navigation (desktop)\":\n  - button \"T-shirts\"\n  - button \"Caps\"\n  - link \"Dresses\"\n  - button \"Jeans\"\n- list \"breadcrumbs\":\n  - listitem:\n    - link \"Home\"\n  - listitem: / Category\n  - listitem:\n    - text: /\n    - link \"T-shirts\"\n  - listitem:\n    - text: /\n    - link \"Men\"\n  - listitem: / Solar Echo T-Shirt\n- heading \"Solar Echo T-Shirt\" [level=1]\n- text: 0 reviews\n- link \"Add your review\"\n- text: €3.27 T-shirt size*\n- combobox \"T-shirt size*\":\n  - option \"S\" [selected]\n  - option \"M\"\n  - option \"L\"\n  - option \"XL\"\n  - option \"XXL\"\n- text: Quantity*\n- spinbutton \"Quantity*\": \"1\"\n- button \"Add to cart\"\n- text: Veniam iusto laudantium voluptas similique aut ducimus facere. Repellendus et nihil voluptas possimus dolor dolorem. Consectetur minima illo sit officiis et praesentium. Assumenda quae iste dolores voluptatem quisquam est saepe. Corporis illum animi et earum. Solar_Echo_T_Shirt\n- link \"Solar Echo T-Shirt\":\n  - img \"Solar Echo T-Shirt\"\n- link \"Solar Echo T-Shirt\":\n  - img \"Solar Echo T-Shirt\"\n- link \"Solar Echo T-Shirt\":\n  - img \"Solar Echo T-Shirt\"\n- link \"Solar Echo T-Shirt\":\n  - img \"Solar Echo T-Shirt\"\n- heading \"Details\" [level=2]:\n  - button \"Details\" [expanded]\n- text: Laborum autem et doloribus dignissimos incidunt consectetur. Ea dolor omnis harum et. Error iusto exercitationem laudantium. Fuga tempore et suscipit ab iusto qui id. Natus quas consequuntur quia. Velit id aut ex aut tempore est beatae velit. Dicta omnis dolores repudiandae rerum sunt est. Voluptatem tenetur assumenda reprehenderit error tenetur. Quibusdam eveniet tempora dolores sunt ut et maxime. Debitis placeat repellat doloremque suscipit ipsam qui qui suscipit. Sapiente quia qui ipsam quidem.\n- heading \"Attributes\" [level=2]:\n  - button \"Attributes\"\n- heading \"Reviews (0)\" [level=2]:\n  - button \"Reviews (0)\"\n- region \"Latest products\":\n  - heading \"Latest products\" [level=2]\n  - link \"Product Radiant Reflection Cap Image Radiant Reflection Cap\":\n    - img \"Product Radiant Reflection Cap Image\"\n    - text: Radiant Reflection Cap\n  - text: €62.94\n  - link \"Product Radiant Sunshine Jeans Image Radiant Sunshine Jeans\":\n    - img \"Product Radiant Sunshine Jeans Image\"\n    - text: Radiant Sunshine Jeans\n  - text: Spring sale Qui nihil quae quis voluptatem rem.\n  - deletion: €21.47\n  - text: €18.47\n  - link \"Product Solar Echo T-Shirt Image Solar Echo T-Shirt\":\n    - img \"Product Solar Echo T-Shirt Image\"\n    - text: Solar Echo T-Shirt\n  - text: €3.27\n  - link \"Product Floral Garden Party Image Floral Garden Party\":\n    - img \"Product Floral Garden Party Image\"\n    - text: Floral Garden Party\n  - text: €75.60\n- contentinfo:\n  - navigation \"Footer informational links\":\n    - link \"About\"\n    - link \"Terms and Conditions\"\n    - link \"Privacy Policy\"\n    - link \"Contact us\"\n  - navigation \"Footer help links\":\n    - link \"FAQ\"\n    - link \"Delivery & Shipping\"\n    - link \"Returns Policy\"\n  - text: \"Payment methods:\"\n  - link \"PayPal\":\n    - img \"PayPal\"\n  - link \"Adyen\":\n    - img \"Adyen\"\n  - link \"Mollie\":\n    - img \"Mollie\"\n  - link \"instagram logo\"\n  - link \"facebook logo\"\n  - link \"x logo\"\n  - link \"Sylius logo\":\n    - img\n  - text: © Your Store, Powered by\n  - link \"Sylius\"\n- img\n- strong: \"Admin panel:\"\n- link \"https://v2.demo.sylius.com/admin\"\n- strong: \"Sylius API:\"\n- link \"https://v2.demo.sylius.com/api/v2\"\n- link \"Get a live demo of Sylius Plus\"",
+      "image": "step-002.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:49:46.635Z",
+      "type": "thinking",
+      "step": 2
+    },
+    {
+      "t": "2026-10-30T21:49:49.076Z",
+      "type": "guard",
+      "blocked": "POST www.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:49:49.102Z",
+      "type": "guard",
+      "blocked": "POST www.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:49:49.359Z",
+      "type": "decide",
+      "step": 2,
+      "action": "click",
+      "args": {
+        "role": "button",
+        "name": "Add to cart"
+      },
+      "thought": "Add the T-shirt in default size S to the cart.",
+      "thinkMs": 2724
+    },
+    {
+      "t": "2026-10-30T21:49:49.375Z",
+      "type": "target",
+      "step": 2,
+      "box": {
+        "x": 858,
+        "y": 659,
+        "width": 155,
+        "height": 42
+      },
+      "role": "button",
+      "name": "Add to cart",
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"submit\" class=\"btn btn-primary\" id=\"add-to-cart-button\">\n                            Add to cart\n            </button>"
+    },
+    {
+      "t": "2026-10-30T21:49:52.900Z",
+      "type": "act",
+      "step": 2,
+      "result": "Clicked button \"Add to cart\".",
+      "actMs": 524,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:49:53.481Z",
+      "type": "guard",
+      "blocked": "POST api-m.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:49:53.486Z",
+      "type": "guard",
+      "blocked": "POST www.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:49:53.488Z",
+      "type": "guard",
+      "blocked": "POST api-m.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:49:53.490Z",
+      "type": "guard",
+      "blocked": "POST www.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:49:53.563Z",
+      "type": "scan-page",
+      "url": "https://v2.demo.sylius.com/en_US/cart/",
+      "violations": 27,
+      "rules": [
+        "aria-prohibited-attr",
+        "aria-required-parent",
+        "button-name",
+        "color-contrast",
+        "empty-table-header",
+        "heading-order",
+        "label-content-name-mismatch",
+        "label",
+        "landmark-one-main",
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:49:53.608Z",
+      "type": "observe",
+      "step": 3,
+      "path": "/en_US/cart/",
+      "url": "https://v2.demo.sylius.com/en_US/cart/",
+      "title": "Your shopping cart | Fashion Web Store",
+      "text": "Page title: Your shopping cart | Fashion Web Store\n\nPage as an accessibility tree:\n- link \"Sign up to our newsletter and grab -20% off\"\n- link \"sylius logo\":\n  - img\n- navigation \"Account navigation (mobile)\":\n  - link \"Account button\"\n- navigation \"Account navigation (desktop)\":\n  - link \"Login\"\n  - menuitem \"Register\"\n- text: Loading\n- button \"cart button\": €3.27, 1 item 1\n- button \"Login\"\n- link \"Sylius Sylius\":\n  - img \"Sylius\"\n  - text: Sylius\n- link \"Sylius Plus Sylius Plus\":\n  - img \"Sylius Plus\"\n  - text: Sylius Plus\n- link \"Addons Addons\":\n  - img \"Addons\"\n  - text: Addons\n- link \"Academy Academy\":\n  - img \"Academy\"\n  - text: Academy\n- link \"Docs Docs\":\n  - img \"Docs\"\n  - text: Docs\n- link \"Demo Demo\":\n  - img \"Demo\"\n  - text: Demo\n- link \"Support Support\":\n  - img \"Support\"\n  - text: Support\n- link \"Contact us Contact us\":\n  - img \"Contact us\"\n  - text: Contact us\n- button \"Toggle navigation\"\n- navigation \"Taxon navigation (desktop)\":\n  - heading \"Taxons\" [level=1]\n  - button \"Close\"\n  - button \"T-shirts\"\n  - link \"Men\"\n  - link \"Women\"\n  - button \"Caps\"\n  - link \"Simple\"\n  - link \"With pompons\"\n  - link \"Dresses\"\n  - button \"Jeans\"\n  - link \"Men\"\n  - link \"Women\"\n- alert: Success Item has been added to cart\n- heading \"Your shopping cart\" [level=1]\n- text: Edit your items, apply coupon or proceed to the checkout Loading\n- table:\n  - rowgroup:\n    - row \"Item Subscription Unit price Qty Total\":\n      - columnheader\n      - columnheader \"Item\"\n      - columnheader \"Subscription\"\n      - columnheader \"Unit price\"\n      - columnheader \"Qty\"\n      - columnheader \"Total\"\n  - rowgroup:\n    - 'row \"Product Solar Echo T-Shirt Image Solar Echo T-Shirt Solar_Echo_T_Shirt-variant-0 T-shirt size: S €3.27 1 €3.27\"':\n      - cell:\n        - button:\n          - img\n      - 'cell \"Product Solar Echo T-Shirt Image Solar Echo T-Shirt Solar_Echo_T_Shirt-variant-0 T-shirt size: S\"':\n        - img \"Product Solar Echo T-Shirt Image\"\n        - link \"Solar Echo T-Shirt\"\n        - text: \"Solar_Echo_T_Shirt-variant-0 T-shirt size: S\"\n      - cell\n      - cell \"€3.27\"\n      - cell \"1\":\n        - spinbutton: \"1\"\n      - cell \"€3.27\"\n- textbox \"Enter your code...\"\n- button \"Apply coupon\"\n- button \"Clear cart\"\n- text: Loading\n- heading \"Summary\" [level=3]\n- text: \"Items total: €3.27 Estimated shipping cost: €6.63 Taxes total: €0.00 Order total: €9.90\"\n- button \"Checkout\"\n- region \"You may also like\":\n  - heading \"You may also like\" [level=2]\n  - link \"Product Radiant Reflection Cap Image Radiant Reflection Cap\":\n    - img \"Product Radiant Reflection Cap Image\"\n    - text: Radiant Reflection Cap\n  - text: €62.94\n  - link \"Product Radiant Sunshine Jeans Image Radiant Sunshine Jeans\":\n    - img \"Product Radiant Sunshine Jeans Image\"\n    - text: Radiant Sunshine Jeans\n  - text: Spring sale Qui nihil quae quis voluptatem rem.\n  - deletion: €21.47\n  - text: €18.47\n  - link \"Product Solar Echo T-Shirt Image Solar Echo T-Shirt\":\n    - img \"Product Solar Echo T-Shirt Image\"\n    - text: Solar Echo T-Shirt\n  - text: €3.27\n  - link \"Product Floral Garden Party Image Floral Garden Party\":\n    - img \"Product Floral Garden Party Image\"\n    - text: Floral Garden Party\n  - text: €75.60\n- contentinfo:\n  - navigation \"Footer informational links\":\n    - link \"About\"\n    - link \"Terms and Conditions\"\n    - link \"Privacy Policy\"\n    - link \"Contact us\"\n  - navigation \"Footer help links\":\n    - link \"FAQ\"\n    - link \"Delivery & Shipping\"\n    - link \"Returns Policy\"\n  - text: \"Payment methods:\"\n  - link \"PayPal\":\n    - img \"PayPal\"\n  - link \"Adyen\":\n    - img \"Adyen\"\n  - link \"Mollie\":\n    - img \"Mollie\"\n  - link \"instagram logo\"\n  - link \"facebook logo\"\n  - link \"x logo\"\n  - link \"Sylius logo\":\n    - img\n  - text: © Your Store, Powered by\n  - link \"Sylius\"\n- img\n- img\n- strong: \"Admin panel:\"\n- link \"https://v2.demo.sylius.com/admin\"\n- strong: \"Sylius API:\"\n- link \"https://v2.demo.sylius.com/api/v2\"\n- link \"Get a live demo of Sylius Plus\"\n- heading \"Cart\" [level=1]\n- button \"Close\"\n- table:\n  - rowgroup:\n    - 'row \"Product Solar Echo T-Shirt Image Solar Echo T-Shirt Solar_Echo_T_Shirt-variant-0 T-shirt size: S 1 €3.27\"':\n      - 'cell \"Product Solar Echo T-Shirt Image Solar Echo T-Shirt Solar_Echo_T_Shirt-variant-0 T-shirt size: S\"':\n        - img \"Product Solar Echo T-Shirt Image\"\n        - link \"Solar Echo T-Shirt\"\n        - text: \"Solar_Echo_T_Shirt-variant-0 T-shirt size: S\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- text: \"Subtotal: €3.27\"\n- link \"View and edit cart\"\n- link \"Checkout\"",
+      "image": "step-003.jpg",
+      "focus": null,
+      "stage": 1
+    },
+    {
+      "t": "2026-10-30T21:49:53.608Z",
+      "type": "thinking",
+      "step": 3
+    },
+    {
+      "t": "2026-10-30T21:49:56.480Z",
+      "type": "guard",
+      "blocked": "POST www.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:49:56.482Z",
+      "type": "guard",
+      "blocked": "POST www.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:49:57.171Z",
+      "type": "decide",
+      "step": 3,
+      "action": "click",
+      "args": {
+        "role": "button",
+        "name": "Checkout"
+      },
+      "thought": "Proceed to checkout from the cart summary.",
+      "thinkMs": 3563
+    },
+    {
+      "t": "2026-10-30T21:49:57.186Z",
+      "type": "target",
+      "step": 3,
+      "box": {
+        "x": 878,
+        "y": 807,
+        "width": 320,
+        "height": 42
+      },
+      "role": "button",
+      "name": "Checkout",
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"submit\" class=\"btn btn-primary\">\n        Checkout\n    </button>"
+    },
+    {
+      "t": "2026-10-30T21:50:01.623Z",
+      "type": "act",
+      "step": 3,
+      "result": "Clicked button \"Checkout\".",
+      "actMs": 1436,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:01.865Z",
+      "type": "scan-page",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "violations": 14,
+      "rules": [
+        "color-contrast",
+        "landmark-one-main",
+        "link-name",
+        "page-has-heading-one",
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:50:01.880Z",
+      "type": "observe",
+      "step": 4,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\"\n- text: Billing address First name*\n- textbox \"First name*\"\n- text: Last name*\n- textbox \"Last name*\"\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\"\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\" [selected]\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - (13 options in total; choose one by its name)\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\"\n- text: Phone number\n- textbox \"Phone number\"\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-004.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:01.880Z",
+      "type": "thinking",
+      "step": 4
+    },
+    {
+      "t": "2026-10-30T21:50:05.200Z",
+      "type": "decide",
+      "step": 4,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Email*",
+        "text": "alex.morgan@example.com"
+      },
+      "thought": "Fill email first.",
+      "thinkMs": 3320
+    },
+    {
+      "t": "2026-10-30T21:50:05.216Z",
+      "type": "target",
+      "step": 4,
+      "box": {
+        "x": 82,
+        "y": 290,
+        "width": 561,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "Email*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"email\" id=\"sylius_shop_checkout_address_customer_email\" name=\"sylius_shop_checkout_address[customer][email]\" required=\"required\" data-sylius--shop-bundle--api-login-target=\"email\" class=\"form-control\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:50:08.560Z",
+      "type": "act",
+      "step": 4,
+      "result": "Filled textbox \"Email*\" with \"alex.morgan@example.com\".",
+      "actMs": 344,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:08.578Z",
+      "type": "observe",
+      "step": 5,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\"\n- text: Last name*\n- textbox \"Last name*\"\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\"\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\" [selected]\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - (13 options in total; choose one by its name)\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\"\n- text: Phone number\n- textbox \"Phone number\"\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-005.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:08.578Z",
+      "type": "thinking",
+      "step": 5
+    },
+    {
+      "t": "2026-10-30T21:50:08.698Z",
+      "type": "decide",
+      "step": 5,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "First name*",
+        "text": "Alex"
+      },
+      "thought": "Fill first name.",
+      "thinkMs": 120
+    },
+    {
+      "t": "2026-10-30T21:50:08.704Z",
+      "type": "target",
+      "step": 5,
+      "box": {
+        "x": 82,
+        "y": 433,
+        "width": 269,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "First name*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_firstName\" name=\"sylius_shop_checkout_address[billingAddress][firstName]\" required=\"required\" class=\"form-control\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:50:12.054Z",
+      "type": "act",
+      "step": 5,
+      "result": "Filled textbox \"First name*\" with \"Alex\".",
+      "actMs": 303,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:12.155Z",
+      "type": "observe",
+      "step": 6,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\": Alex\n- text: Last name*\n- textbox \"Last name*\"\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\"\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\" [selected]\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - (13 options in total; choose one by its name)\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\"\n- text: Phone number\n- textbox \"Phone number\"\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-006.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:12.155Z",
+      "type": "thinking",
+      "step": 6
+    },
+    {
+      "t": "2026-10-30T21:50:15.937Z",
+      "type": "decide",
+      "step": 6,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Last name*",
+        "text": "Morgan"
+      },
+      "thought": "Fill last name.",
+      "thinkMs": 3782
+    },
+    {
+      "t": "2026-10-30T21:50:15.957Z",
+      "type": "target",
+      "step": 6,
+      "box": {
+        "x": 375,
+        "y": 433,
+        "width": 269,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "Last name*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_lastName\" name=\"sylius_shop_checkout_address[billingAddress][lastName]\" required=\"required\" class=\"form-control\">"
+    },
+    {
+      "t": "2026-10-30T21:50:19.118Z",
+      "type": "act",
+      "step": 6,
+      "result": "Filled textbox \"Last name*\" with \"Morgan\".",
+      "actMs": 160,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:19.145Z",
+      "type": "observe",
+      "step": 7,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\"\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\"\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\" [selected]\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - (13 options in total; choose one by its name)\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\"\n- text: Phone number\n- textbox \"Phone number\"\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-007.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:19.145Z",
+      "type": "thinking",
+      "step": 7
+    },
+    {
+      "t": "2026-10-30T21:50:22.441Z",
+      "type": "decide",
+      "step": 7,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "First name*",
+        "text": "Alex"
+      },
+      "thought": "First name appears empty again, so fill it again.",
+      "thinkMs": 3296
+    },
+    {
+      "t": "2026-10-30T21:50:22.460Z",
+      "type": "target",
+      "step": 7,
+      "box": {
+        "x": 82,
+        "y": 433,
+        "width": 269,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "First name*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_firstName\" name=\"sylius_shop_checkout_address[billingAddress][firstName]\" required=\"required\" class=\"form-control\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:50:25.529Z",
+      "type": "act",
+      "step": 7,
+      "result": "Filled textbox \"First name*\" with \"Alex\".",
+      "actMs": 69,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:25.544Z",
+      "type": "observe",
+      "step": 8,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\": Alex\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\"\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\" [selected]\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - (13 options in total; choose one by its name)\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\"\n- text: Phone number\n- textbox \"Phone number\"\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-008.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:25.544Z",
+      "type": "thinking",
+      "step": 8
+    },
+    {
+      "t": "2026-10-30T21:50:28.150Z",
+      "type": "decide",
+      "step": 8,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Street address*",
+        "text": "100 Example Avenue"
+      },
+      "thought": "Fill street address.",
+      "thinkMs": 2606
+    },
+    {
+      "t": "2026-10-30T21:50:28.158Z",
+      "type": "target",
+      "step": 8,
+      "box": {
+        "x": 82,
+        "y": 613,
+        "width": 561,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "Street address*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_street\" name=\"sylius_shop_checkout_address[billingAddress][street]\" required=\"required\" class=\"form-control\">"
+    },
+    {
+      "t": "2026-10-30T21:50:31.433Z",
+      "type": "act",
+      "step": 8,
+      "result": "Filled textbox \"Street address*\" with \"100 Example Avenue\".",
+      "actMs": 274,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:31.461Z",
+      "type": "observe",
+      "step": 9,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\"\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\": 100 Example Avenue\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\" [selected]\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - (13 options in total; choose one by its name)\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\"\n- text: Phone number\n- textbox \"Phone number\"\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-009.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:31.461Z",
+      "type": "thinking",
+      "step": 9
+    },
+    {
+      "t": "2026-10-30T21:50:34.576Z",
+      "type": "decide",
+      "step": 9,
+      "action": "select",
+      "args": {
+        "name": "Country*",
+        "option": "United States"
+      },
+      "thought": "Choose country.",
+      "thinkMs": 3115
+    },
+    {
+      "t": "2026-10-30T21:50:34.582Z",
+      "type": "target",
+      "step": 9,
+      "box": {
+        "x": 82,
+        "y": 703,
+        "width": 561,
+        "height": 42
+      },
+      "role": "combobox",
+      "name": "Country*",
+      "scrolled": false,
+      "tag": "select",
+      "outer": "<select id=\"sylius_shop_checkout_address_billingAddress_countryCode\" name=\"sylius_shop_checkout_address[billingAddress][countryCode]\" required=\"required\" class=\"form-select\"><option value=\"\" selected=\"selected\">Select</option><option value=\"AU\">Australia</option><option value=\"CA\">Canada</option><option value=\"CN\">China</option><option value=\"FR\">France</option><option value=\"DE\">Germany</option><option value=\"MX\">Mexico</option><option value=\"NZ\">New Zealand</option><option value=\"PL\">Poland</option><option value=\"PT\">Portugal</option><option value=\"ES\">Spain</option><option value=\"GB\">United"
+    },
+    {
+      "t": "2026-10-30T21:50:38.142Z",
+      "type": "act",
+      "step": 9,
+      "result": "Selected \"United States\" in \"Country*\".",
+      "actMs": 558,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:38.272Z",
+      "type": "observe",
+      "step": 10,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\"\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\"\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\"\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - option \"United States\" [selected]\n  - (13 options in total; choose one by its name)\n- text: Province\n- textbox \"Province\"\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\"\n- text: Phone number\n- textbox \"Phone number\"\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-010.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:38.272Z",
+      "type": "thinking",
+      "step": 10
+    },
+    {
+      "t": "2026-10-30T21:50:42.710Z",
+      "type": "decide",
+      "step": 10,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Province",
+        "text": "New York"
+      },
+      "thought": "Fill province now that the field appeared.",
+      "thinkMs": 4439
+    },
+    {
+      "t": "2026-10-30T21:50:42.775Z",
+      "type": "target",
+      "step": 10,
+      "box": {
+        "x": 82,
+        "y": 793,
+        "width": 561,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "Province",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_provinceName\" name=\"sylius_shop_checkout_address[billingAddress][provinceName]\" class=\"form-control\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:50:46.149Z",
+      "type": "act",
+      "step": 10,
+      "result": "Filled textbox \"Province\" with \"New York\".",
+      "actMs": 371,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:46.240Z",
+      "type": "observe",
+      "step": 11,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\"\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\"\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\"\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - option \"United States\" [selected]\n  - (13 options in total; choose one by its name)\n- text: Province\n- textbox \"Province\": New York\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\"\n- text: Phone number\n- textbox \"Phone number\"\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-011.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:46.240Z",
+      "type": "thinking",
+      "step": 11
+    },
+    {
+      "t": "2026-10-30T21:50:50.124Z",
+      "type": "decide",
+      "step": 11,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "City*",
+        "text": "New York"
+      },
+      "thought": "Fill city.",
+      "thinkMs": 3884
+    },
+    {
+      "t": "2026-10-30T21:50:50.316Z",
+      "type": "target",
+      "step": 11,
+      "box": {
+        "x": 82,
+        "y": 452,
+        "width": 561,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "City*",
+      "scrolled": true,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_city\" name=\"sylius_shop_checkout_address[billingAddress][city]\" required=\"required\" class=\"form-control\" style=\"\">",
+      "image": "step-011-t.jpg"
+    },
+    {
+      "t": "2026-10-30T21:50:53.551Z",
+      "type": "act",
+      "step": 11,
+      "result": "Filled textbox \"City*\" with \"New York\".",
+      "actMs": 233,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:53.634Z",
+      "type": "observe",
+      "step": 12,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\"\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\"\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\"\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - option \"United States\" [selected]\n  - (13 options in total; choose one by its name)\n- text: Province\n- textbox \"Province\": New York\n- text: City*\n- textbox \"City*\": New York\n- text: Postcode*\n- textbox \"Postcode*\"\n- text: Phone number\n- textbox \"Phone number\"\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-012.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:53.634Z",
+      "type": "thinking",
+      "step": 12
+    },
+    {
+      "t": "2026-10-30T21:50:56.725Z",
+      "type": "decide",
+      "step": 12,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Postcode*",
+        "text": "10001"
+      },
+      "thought": "Fill postcode.",
+      "thinkMs": 3091
+    },
+    {
+      "t": "2026-10-30T21:50:56.803Z",
+      "type": "target",
+      "step": 12,
+      "box": {
+        "x": 82,
+        "y": 542,
+        "width": 561,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "Postcode*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_postcode\" name=\"sylius_shop_checkout_address[billingAddress][postcode]\" required=\"required\" class=\"form-control\">"
+    },
+    {
+      "t": "2026-10-30T21:50:59.912Z",
+      "type": "act",
+      "step": 12,
+      "result": "Filled textbox \"Postcode*\" with \"10001\".",
+      "actMs": 106,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:59.944Z",
+      "type": "observe",
+      "step": 13,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\"\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\"\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\"\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - option \"United States\" [selected]\n  - (13 options in total; choose one by its name)\n- text: Province\n- textbox \"Province\": New York\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\": \"10001\"\n- text: Phone number\n- textbox \"Phone number\"\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-013.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:59.944Z",
+      "type": "thinking",
+      "step": 13
+    },
+    {
+      "t": "2026-10-30T21:51:04.918Z",
+      "type": "decide",
+      "step": 13,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Phone number",
+        "text": "(212) 555-0142"
+      },
+      "thought": "Fill phone number.",
+      "thinkMs": 4974
+    },
+    {
+      "t": "2026-10-30T21:51:04.950Z",
+      "type": "target",
+      "step": 13,
+      "box": {
+        "x": 82,
+        "y": 632,
+        "width": 561,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "Phone number",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_phoneNumber\" name=\"sylius_shop_checkout_address[billingAddress][phoneNumber]\" class=\"form-control\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:51:08.892Z",
+      "type": "act",
+      "step": 13,
+      "result": "Filled textbox \"Phone number\" with \"(212) 555-0142\".",
+      "actMs": 941,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:09.166Z",
+      "type": "observe",
+      "step": 14,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\"\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\"\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\"\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - option \"United States\" [selected]\n  - (13 options in total; choose one by its name)\n- text: Province\n- textbox \"Province\": New York\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\": \"10001\"\n- text: Phone number\n- textbox \"Phone number\": 2) 555-0142\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-014.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:51:09.166Z",
+      "type": "thinking",
+      "step": 14
+    },
+    {
+      "t": "2026-10-30T21:51:13.811Z",
+      "type": "decide",
+      "step": 14,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "First name*",
+        "text": "Alex"
+      },
+      "thought": "Fields keep losing values; refill first name.",
+      "thinkMs": 4645
+    },
+    {
+      "t": "2026-10-30T21:51:13.837Z",
+      "type": "target",
+      "step": 14,
+      "box": {
+        "x": 82,
+        "y": 2,
+        "width": 269,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "First name*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_firstName\" name=\"sylius_shop_checkout_address[billingAddress][firstName]\" required=\"required\" class=\"form-control\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:51:16.966Z",
+      "type": "act",
+      "step": 14,
+      "result": "Filled textbox \"First name*\" with \"Alex\".",
+      "actMs": 123,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:17.017Z",
+      "type": "observe",
+      "step": 15,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\": Alex\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\"\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\"\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - option \"United States\" [selected]\n  - (13 options in total; choose one by its name)\n- text: Province\n- textbox \"Province\": New York\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\": \"10001\"\n- text: Phone number\n- textbox \"Phone number\": 2) 555-0142\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-015.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:51:17.017Z",
+      "type": "thinking",
+      "step": 15
+    },
+    {
+      "t": "2026-10-30T21:51:20.123Z",
+      "type": "decide",
+      "step": 15,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Street address*",
+        "text": "100 Example Avenue"
+      },
+      "thought": "Refill street address.",
+      "thinkMs": 3105
+    },
+    {
+      "t": "2026-10-30T21:51:20.160Z",
+      "type": "target",
+      "step": 15,
+      "box": {
+        "x": 82,
+        "y": 182,
+        "width": 561,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "Street address*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_street\" name=\"sylius_shop_checkout_address[billingAddress][street]\" required=\"required\" class=\"form-control\">"
+    },
+    {
+      "t": "2026-10-30T21:51:23.450Z",
+      "type": "act",
+      "step": 15,
+      "result": "Filled textbox \"Street address*\" with \"100 Example Avenue\".",
+      "actMs": 284,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:23.477Z",
+      "type": "observe",
+      "step": 16,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\"\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\": 100 Example Avenue\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\"\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - option \"United States\" [selected]\n  - (13 options in total; choose one by its name)\n- text: Province\n- textbox \"Province\": New York\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\": \"10001\"\n- text: Phone number\n- textbox \"Phone number\": 2) 555-0142\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-016.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:51:23.477Z",
+      "type": "thinking",
+      "step": 16
+    },
+    {
+      "t": "2026-10-30T21:51:28.706Z",
+      "type": "decide",
+      "step": 16,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "City*",
+        "text": "New York"
+      },
+      "thought": "Refill city.",
+      "thinkMs": 5228
+    },
+    {
+      "t": "2026-10-30T21:51:28.731Z",
+      "type": "target",
+      "step": 16,
+      "box": {
+        "x": 82,
+        "y": 452,
+        "width": 561,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "City*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_city\" name=\"sylius_shop_checkout_address[billingAddress][city]\" required=\"required\" class=\"form-control\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:51:31.920Z",
+      "type": "act",
+      "step": 16,
+      "result": "Filled textbox \"City*\" with \"New York\".",
+      "actMs": 187,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:32.067Z",
+      "type": "observe",
+      "step": 17,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\"\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\": 100 Example Avenue\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\"\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - option \"United States\" [selected]\n  - (13 options in total; choose one by its name)\n- text: Province\n- textbox \"Province\": New York\n- text: City*\n- textbox \"City*\": New York\n- text: Postcode*\n- textbox \"Postcode*\": \"10001\"\n- text: Phone number\n- textbox \"Phone number\": 2) 555-0142\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-017.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:51:32.067Z",
+      "type": "thinking",
+      "step": 17
+    },
+    {
+      "t": "2026-10-30T21:51:35.848Z",
+      "type": "decide",
+      "step": 17,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Phone number",
+        "text": "(212) 555-0142"
+      },
+      "thought": "Re-enter phone number since it lost its first characters.",
+      "thinkMs": 3780
+    },
+    {
+      "t": "2026-10-30T21:51:35.893Z",
+      "type": "target",
+      "step": 17,
+      "box": {
+        "x": 82,
+        "y": 632,
+        "width": 561,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "Phone number",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_phoneNumber\" name=\"sylius_shop_checkout_address[billingAddress][phoneNumber]\" class=\"form-control\" value=\"2) 555-0142\">"
+    },
+    {
+      "t": "2026-10-30T21:51:39.214Z",
+      "type": "act",
+      "step": 17,
+      "result": "Filled textbox \"Phone number\" with \"(212) 555-0142\".",
+      "actMs": 318,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:39.248Z",
+      "type": "observe",
+      "step": 18,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\"\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\": 100 Example Avenue\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\"\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - option \"United States\" [selected]\n  - (13 options in total; choose one by its name)\n- text: Province\n- textbox \"Province\": New York\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\": \"10001\"\n- text: Phone number\n- textbox \"Phone number\": (212) 555-0142\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-018.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:51:39.248Z",
+      "type": "thinking",
+      "step": 18
+    },
+    {
+      "t": "2026-10-30T21:51:43.463Z",
+      "type": "decide",
+      "step": 18,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "City*",
+        "text": "New York"
+      },
+      "thought": "Refill city again.",
+      "thinkMs": 4215
+    },
+    {
+      "t": "2026-10-30T21:51:43.491Z",
+      "type": "target",
+      "step": 18,
+      "box": {
+        "x": 82,
+        "y": 452,
+        "width": 561,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "City*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_city\" name=\"sylius_shop_checkout_address[billingAddress][city]\" required=\"required\" class=\"form-control\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:51:46.627Z",
+      "type": "act",
+      "step": 18,
+      "result": "Filled textbox \"City*\" with \"New York\".",
+      "actMs": 135,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:46.677Z",
+      "type": "observe",
+      "step": 19,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\"\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\": 100 Example Avenue\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\"\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - option \"United States\" [selected]\n  - (13 options in total; choose one by its name)\n- text: Province\n- textbox \"Province\": New York\n- text: City*\n- textbox \"City*\": New York\n- text: Postcode*\n- textbox \"Postcode*\": \"10001\"\n- text: Phone number\n- textbox \"Phone number\": (212) 555-0142\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-019.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:51:46.677Z",
+      "type": "thinking",
+      "step": 19
+    },
+    {
+      "t": "2026-10-30T21:51:49.865Z",
+      "type": "decide",
+      "step": 19,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "First name*",
+        "text": "Alex"
+      },
+      "thought": "Fill first name last so nothing clears it.",
+      "thinkMs": 3188
+    },
+    {
+      "t": "2026-10-30T21:51:49.912Z",
+      "type": "target",
+      "step": 19,
+      "box": {
+        "x": 82,
+        "y": 2,
+        "width": 269,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "First name*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_firstName\" name=\"sylius_shop_checkout_address[billingAddress][firstName]\" required=\"required\" class=\"form-control\">"
+    },
+    {
+      "t": "2026-10-30T21:51:53.002Z",
+      "type": "act",
+      "step": 19,
+      "result": "Filled textbox \"First name*\" with \"Alex\".",
+      "actMs": 86,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:53.029Z",
+      "type": "observe",
+      "step": 20,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\": Alex\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\": 100 Example Avenue\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\"\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - option \"United States\" [selected]\n  - (13 options in total; choose one by its name)\n- text: Province\n- textbox \"Province\": New York\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\": \"10001\"\n- text: Phone number\n- textbox \"Phone number\": (212) 555-0142\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-020.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:51:53.029Z",
+      "type": "thinking",
+      "step": 20
+    },
+    {
+      "t": "2026-10-30T21:51:57.495Z",
+      "type": "decide",
+      "step": 20,
+      "action": "read",
+      "args": {},
+      "thought": "Re-read page to see if values settle after a re-render.",
+      "thinkMs": 4466
+    },
+    {
+      "t": "2026-10-30T21:52:00.497Z",
+      "type": "act",
+      "step": 20,
+      "result": "You read the page again.",
+      "actMs": 0,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:00.535Z",
+      "type": "observe",
+      "step": 21,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\": Alex\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\": 100 Example Avenue\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\"\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - option \"United States\" [selected]\n  - (13 options in total; choose one by its name)\n- text: Province\n- textbox \"Province\": New York\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\": \"10001\"\n- text: Phone number\n- textbox \"Phone number\": (212) 555-0142\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-021.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:52:00.535Z",
+      "type": "thinking",
+      "step": 21
+    },
+    {
+      "t": "2026-10-30T21:52:05.858Z",
+      "type": "decide",
+      "step": 21,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "City*",
+        "text": "New York"
+      },
+      "thought": "Fill city again and see whether first name survives.",
+      "thinkMs": 5323
+    },
+    {
+      "t": "2026-10-30T21:52:05.885Z",
+      "type": "target",
+      "step": 21,
+      "box": {
+        "x": 82,
+        "y": 452,
+        "width": 561,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "City*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_city\" name=\"sylius_shop_checkout_address[billingAddress][city]\" required=\"required\" class=\"form-control\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:52:09.303Z",
+      "type": "act",
+      "step": 21,
+      "result": "Filled textbox \"City*\" with \"New York\".",
+      "actMs": 414,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:09.401Z",
+      "type": "observe",
+      "step": 22,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- link \"Sign in\":\n  - img\n  - text: Sign in\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\": Alex\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\": 100 Example Avenue\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\"\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - option \"United States\" [selected]\n  - (13 options in total; choose one by its name)\n- text: Province\n- textbox \"Province\": New York\n- text: City*\n- textbox \"City*\"\n- text: Postcode*\n- textbox \"Postcode*\": \"10001\"\n- text: Phone number\n- textbox \"Phone number\": (212) 555-0142\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-022.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:52:09.401Z",
+      "type": "thinking",
+      "step": 22
+    },
+    {
+      "t": "2026-10-30T21:52:13.894Z",
+      "type": "decide",
+      "step": 22,
+      "action": "click",
+      "args": {
+        "role": "button",
+        "name": "Next"
+      },
+      "thought": "Try Next to see whether the form accepts the values.",
+      "thinkMs": 4492
+    },
+    {
+      "t": "2026-10-30T21:52:13.905Z",
+      "type": "target",
+      "step": 22,
+      "box": {
+        "x": 530,
+        "y": 770,
+        "width": 113,
+        "height": 42
+      },
+      "role": "button",
+      "name": "Next",
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"submit\" class=\"btn btn-primary btn-icon\">\n            Next <svg viewBox=\"0 0 24 24\" class=\"icon icon-sm\" fill=\"currentColor\" height=\"1em\" width=\"1em\" aria-hidden=\"true\"><path fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"m9 6l6 6l-6 6\"></path></svg>\n        </button>"
+    },
+    {
+      "t": "2026-10-30T21:52:17.854Z",
+      "type": "act",
+      "step": 22,
+      "result": "Clicked button \"Next\".",
+      "actMs": 948,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:17.915Z",
+      "type": "observe",
+      "step": 23,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- text: Checking out as\n- link \"alex.morgan@example.com.\"\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\": Alex\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\": 100 Example Avenue\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\"\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - option \"United States\" [selected]\n  - (13 options in total; choose one by its name)\n- text: Province\n- textbox \"Province\": New York\n- text: City*\n- textbox \"City*\"\n- text: Please enter city. Postcode*\n- textbox \"Postcode*\": \"10001\"\n- text: Phone number\n- textbox \"Phone number\": (212) 555-0142\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-023.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:52:17.915Z",
+      "type": "thinking",
+      "step": 23
+    },
+    {
+      "t": "2026-10-30T21:52:22.277Z",
+      "type": "decide",
+      "step": 23,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "City*",
+        "text": "New York"
+      },
+      "thought": "Fill the missing city.",
+      "thinkMs": 4362
+    },
+    {
+      "t": "2026-10-30T21:52:22.327Z",
+      "type": "target",
+      "step": 23,
+      "box": {
+        "x": 82,
+        "y": 427,
+        "width": 561,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "City*",
+      "scrolled": true,
+      "tag": "input",
+      "outer": "<input type=\"text\" id=\"sylius_shop_checkout_address_billingAddress_city\" name=\"sylius_shop_checkout_address[billingAddress][city]\" required=\"required\" class=\"form-control is-invalid\" style=\"\">",
+      "image": "step-023-t.jpg"
+    },
+    {
+      "t": "2026-10-30T21:52:25.471Z",
+      "type": "act",
+      "step": 23,
+      "result": "Filled textbox \"City*\" with \"New York\".",
+      "actMs": 142,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:25.493Z",
+      "type": "observe",
+      "step": 24,
+      "path": "/en_US/checkout/address",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+      "title": "Address | Fashion Web Store",
+      "text": "Page title: Address | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- text: Checking out as\n- link \"alex.morgan@example.com.\"\n- link \"Address\"\n- text: › Shipping › Payment › Complete Address Email*\n- textbox \"Email*\": alex.morgan@example.com\n- text: Billing address First name*\n- textbox \"First name*\": Alex\n- text: Last name*\n- textbox \"Last name*\": Morgan\n- text: Company\n- textbox \"Company\"\n- text: Street address*\n- textbox \"Street address*\": 100 Example Avenue\n- text: Country*\n- combobox \"Country*\":\n  - option \"Select\"\n  - option \"Australia\"\n  - option \"Canada\"\n  - option \"China\"\n  - option \"United States\" [selected]\n  - (13 options in total; choose one by its name)\n- text: Province\n- textbox \"Province\": New York\n- text: City*\n- textbox \"City*\": New York\n- text: Please enter city. Postcode*\n- textbox \"Postcode*\": \"10001\"\n- text: Phone number\n- textbox \"Phone number\": (212) 555-0142\n- checkbox \"Use different address for shipping?\"\n- text: Use different address for shipping?\n- link \"Back to store\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €6.63\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€6.63\"\n    - 'row \"Taxes total: €0.00\"':\n      - cell \"Taxes total:\"\n      - cell \"€0.00\"\n    - 'row \"Order total: €9.90\"':\n      - cell \"Order total:\"\n      - cell \"€9.90\"",
+      "image": "step-024.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:52:25.493Z",
+      "type": "thinking",
+      "step": 24
+    },
+    {
+      "t": "2026-10-30T21:52:29.001Z",
+      "type": "decide",
+      "step": 24,
+      "action": "click",
+      "args": {
+        "role": "button",
+        "name": "Next"
+      },
+      "thought": "All fields show values, click Next.",
+      "thinkMs": 3508
+    },
+    {
+      "t": "2026-10-30T21:52:29.008Z",
+      "type": "target",
+      "step": 24,
+      "box": {
+        "x": 530,
+        "y": 770,
+        "width": 113,
+        "height": 42
+      },
+      "role": "button",
+      "name": "Next",
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"submit\" class=\"btn btn-primary btn-icon\">\n            Next <svg viewBox=\"0 0 24 24\" class=\"icon icon-sm\" fill=\"currentColor\" height=\"1em\" width=\"1em\" aria-hidden=\"true\"><path fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"m9 6l6 6l-6 6\"></path></svg>\n        </button>"
+    },
+    {
+      "t": "2026-10-30T21:52:33.232Z",
+      "type": "act",
+      "step": 24,
+      "result": "Clicked button \"Next\".",
+      "actMs": 1224,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:33.521Z",
+      "type": "scan-page",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/select-shipping",
+      "violations": 12,
+      "rules": [
+        "color-contrast",
+        "landmark-one-main",
+        "link-name",
+        "page-has-heading-one",
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:52:33.530Z",
+      "type": "observe",
+      "step": 25,
+      "path": "/en_US/checkout/select-shipping",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/select-shipping",
+      "title": "Shipping | Fashion Web Store",
+      "text": "Page title: Shipping | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- text: Checking out as\n- link \"alex.morgan@example.com.\"\n- link \"Address\"\n- text: ›\n- link \"Shipping\"\n- text: › Payment › Complete\n- 'heading \"Shipment #1\" [level=5]'\n- radio \"DHL Express Est voluptas aut occaecati voluptas id inventore architecto quae. €1.38\" [checked]\n- text: DHL Express Est voluptas aut occaecati voluptas id inventore architecto quae. €1.38\n- link \"Change address\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €1.38\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€1.38\"\n    - 'row \"Taxes total: (Included in price) €0.21\"':\n      - 'cell \"Taxes total: (Included in price)\"'\n      - cell \"€0.21\"\n    - 'row \"Order total: €4.65\"':\n      - cell \"Order total:\"\n      - cell \"€4.65\"",
+      "image": "step-025.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:52:33.530Z",
+      "type": "thinking",
+      "step": 25
+    },
+    {
+      "t": "2026-10-30T21:52:39.290Z",
+      "type": "decide",
+      "step": 25,
+      "action": "click",
+      "args": {
+        "role": "button",
+        "name": "Next"
+      },
+      "thought": "Shipping method is preselected; continue.",
+      "thinkMs": 5760
+    },
+    {
+      "t": "2026-10-30T21:52:39.303Z",
+      "type": "target",
+      "step": 25,
+      "box": {
+        "x": 530,
+        "y": 407,
+        "width": 113,
+        "height": 42
+      },
+      "role": "button",
+      "name": "Next",
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"submit\" class=\"btn btn-primary btn-icon\">\n            Next <svg viewBox=\"0 0 24 24\" class=\"icon icon-sm\" fill=\"currentColor\" height=\"1em\" width=\"1em\" aria-hidden=\"true\"><path fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"m9 6l6 6l-6 6\"></path></svg>\n        </button>"
+    },
+    {
+      "t": "2026-10-30T21:52:43.361Z",
+      "type": "guard",
+      "blocked": "POST api-m.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:52:43.364Z",
+      "type": "guard",
+      "blocked": "POST www.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:52:43.373Z",
+      "type": "guard",
+      "blocked": "POST api-m.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:52:43.374Z",
+      "type": "guard",
+      "blocked": "POST www.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:52:43.598Z",
+      "type": "act",
+      "step": 25,
+      "result": "Clicked button \"Next\".",
+      "actMs": 1294,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:46.347Z",
+      "type": "guard",
+      "blocked": "POST www.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:52:46.375Z",
+      "type": "guard",
+      "blocked": "POST www.sandbox.paypal.com"
+    },
+    {
+      "t": "2026-10-30T21:52:50.458Z",
+      "type": "decide",
+      "step": 26,
+      "action": "done",
+      "args": {},
+      "thought": "Payment step reached; stopping without paying.",
+      "final": true
+    },
+    {
+      "t": "2026-10-30T21:52:50.507Z",
+      "type": "end",
+      "outcome": {
+        "status": "reached-payment",
+        "reason": "Reached the payment step. Stopped there: nothing was paid."
+      },
+      "findings": [
+        {
+          "page": "Address | Fashion Web Store",
+          "problem": "After filling a field, previously entered values in other fields (First name, Street address, City) were repeatedly emptied, and the page gave no message about it. I had to re-enter them many times.",
+          "step": 7,
+          "element": {
+            "role": "textbox",
+            "name": "First name*"
+          }
+        },
+        {
+          "page": "Address | Fashion Web Store",
+          "problem": "Choosing a country reloaded the form silently and cleared First name and Street address, and a new Province textbox appeared with no announcement.",
+          "step": 10,
+          "element": {
+            "role": "combobox",
+            "name": "Country*"
+          }
+        },
+        {
+          "page": "Address | Fashion Web Store",
+          "problem": "The phone number lost its first characters after typing (it read 2) 555-0142 instead of (212) 555-0142), so I had to re-enter it.",
+          "step": 14,
+          "element": {
+            "role": "textbox",
+            "name": "Phone number"
+          }
+        },
+        {
+          "page": "Address | Fashion Web Store",
+          "problem": "The City field kept coming back empty. The error Please enter city. appeared only as plain text near the field, not tied to the textbox, and the textbox was not marked as invalid.",
+          "step": 23,
+          "element": {
+            "role": "textbox",
+            "name": "City*"
+          }
+        },
+        {
+          "page": "Address | Fashion Web Store",
+          "problem": "The Email field was listed as a required textbox but I could not tell from the Province label whether it was required. The country list is shortened (13 options) and the first option is just Select.",
+          "step": 4,
+          "element": {
+            "role": "combobox",
+            "name": "Country*"
+          }
+        },
+        {
+          "page": "Fashion Web Store",
+          "problem": "The cart page tree contains a duplicate mini-cart section with a second Close button and a second Checkout link, and a Loading text node, making it unclear which Checkout is the right one.",
+          "step": 3,
+          "element": {
+            "role": "button",
+            "name": "Checkout"
+          }
+        }
+      ],
+      "steps": 25,
+      "path": "/en_US/checkout/select-payment",
+      "url": "https://v2.demo.sylius.com/en_US/checkout/select-payment",
+      "title": "Payment | Fashion Web Store",
+      "text": "Page title: Payment | Fashion Web Store\n\nPage as an accessibility tree:\n- link:\n  - img\n- text: Checking out as\n- link \"alex.morgan@example.com.\"\n- link \"Address\"\n- text: ›\n- link \"Shipping\"\n- text: ›\n- link \"Payment\"\n- text: › Complete\n- 'heading \"Payment #1\" [level=5]'\n- radio \"PayPal Pay with PayPal\" [checked]\n- text: PayPal Pay with PayPal\n- radio \"Cash on delivery Ratione quod fugit nostrum accusantium autem et est.\"\n- text: Cash on delivery Ratione quod fugit nostrum accusantium autem et est.\n- radio \"Bank transfer Aliquid enim eum qui pariatur.\"\n- text: Bank transfer Aliquid enim eum qui pariatur.\n- link \"Change shipping method\"\n- button \"Next\"\n- text: Summary\n- table:\n  - rowgroup:\n    - row \"Solar Echo T-Shirt 1 €3.27\":\n      - cell \"Solar Echo T-Shirt\"\n      - cell \"1\"\n      - cell \"€3.27\"\n- table:\n  - rowgroup:\n    - 'row \"Items total: €3.27\"':\n      - cell \"Items total:\"\n      - cell \"€3.27\"\n    - 'row \"Discount: €0.00\"':\n      - cell \"Discount:\"\n      - cell \"€0.00\"\n    - 'row \"Estimated shipping cost: €1.38\"':\n      - cell \"Estimated shipping cost:\"\n      - cell \"€1.38\"\n    - 'row \"Taxes total: (Included in price) €0.21\"':\n      - 'cell \"Taxes total: (Included in price)\"'\n      - cell \"€0.21\"\n    - 'row \"Order total: €4.65\"':\n      - cell \"Order total:\"\n      - cell \"€4.65\"",
+      "image": "step-999.jpg"
+    },
+    {
+      "t": "2026-10-30T21:52:50.519Z",
+      "type": "finished",
+      "outcome": {
+        "status": "reached-payment",
+        "reason": "Reached the payment step. Stopped there: nothing was paid."
+      }
+    }
+  ],
+  "robots": {
+    "ok": true,
+    "robotsUrl": "https://v2.demo.sylius.com/robots.txt",
+    "crawlerSkips": []
+  },
+  "steps": 25,
+  "scan": {
+    "totalViolations": 86,
+    "pages": [
+      {
+        "url": "https://v2.demo.sylius.com/en_US/",
+        "violations": 16,
+        "rules": [
+          "aria-required-parent",
+          "color-contrast",
+          "label-content-name-mismatch",
+          "landmark-one-main",
+          "page-has-heading-one",
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://v2.demo.sylius.com/en_US/products/solar-echo-t-shirt",
+        "violations": 17,
+        "rules": [
+          "aria-required-parent",
+          "label-content-name-mismatch",
+          "landmark-one-main",
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://v2.demo.sylius.com/en_US/cart/",
+        "violations": 27,
+        "rules": [
+          "aria-prohibited-attr",
+          "aria-required-parent",
+          "button-name",
+          "color-contrast",
+          "empty-table-header",
+          "heading-order",
+          "label-content-name-mismatch",
+          "label",
+          "landmark-one-main",
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://v2.demo.sylius.com/en_US/checkout/address",
+        "violations": 14,
+        "rules": [
+          "color-contrast",
+          "landmark-one-main",
+          "link-name",
+          "page-has-heading-one",
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://v2.demo.sylius.com/en_US/checkout/select-shipping",
+        "violations": 12,
+        "rules": [
+          "color-contrast",
+          "landmark-one-main",
+          "link-name",
+          "page-has-heading-one",
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      }
+    ],
+    "inRun": true
+  }
+}

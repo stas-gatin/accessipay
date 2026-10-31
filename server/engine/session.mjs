@@ -44,11 +44,11 @@ export const collapseOptions = (s) => {
     let j = i;
     while (j < lines.length && /^\s*- option /.test(lines[j])) j += 1;
     const run = lines.slice(i, j);
-    if (run.length <= 12) out.push(...run);
+    if (run.length <= 60) out.push(...run);
     else {
       const indent = run[0].match(/^\s*/)[0];
       const selected = run.filter((l) => /\[selected\]/.test(l));
-      out.push(...run.slice(0, 4), ...selected.filter((l) => !run.slice(0, 4).includes(l)), `${indent}- (${run.length} options in total; choose one by its name)`);
+      out.push(...run.slice(0, 4), ...selected.filter((l) => !run.slice(0, 4).includes(l)), `${indent}- (${run.length} options in total, not all listed here; choose one by its name, as typing its first letters would)`);
     }
     i = j;
   }
@@ -404,10 +404,19 @@ export class Session {
             await field.pressSequentially(String(a.text ?? ''), { delay: 12 });
           }
           return `Filled ${a.role || 'textbox'} "${a.name}" with "${a.text}".`;
-        case 'select':
-          await (await this.byRole('combobox', a.name, a.nth || 0)).selectOption({ label: a.option }, { timeout: 2500 });
+        case 'select': {
+          // A person types the first letters or scrolls the list; an exact name is not needed when exactly one option fits.
+          const box = await this.byRole('combobox', a.name, a.nth || 0);
+          const options = await box.evaluate((el) => (el.options ? [...el.options].map((o) => o.label || o.text) : [])).catch(() => []);
+          const want = String(a.option ?? '').trim().toLowerCase();
+          const exact = options.find((o) => o.trim().toLowerCase() === want);
+          const starts = options.filter((o) => o.trim().toLowerCase().startsWith(want));
+          const contains = options.filter((o) => o.trim().toLowerCase().includes(want));
+          const label = exact || (starts.length === 1 ? starts[0] : contains.length === 1 ? contains[0] : a.option);
+          await box.selectOption({ label }, { timeout: 2500 });
           await this.settle();
-          return `Selected "${a.option}" in "${a.name}".`;
+          return `Selected "${label}" in "${a.name}".`;
+        }
         case 'check': {
           const r = await this.pointer(await this.byRole(a.role || 'checkbox', a.name, a.nth || 0), 'check');
           return r || `Checked ${a.role || 'checkbox'} "${a.name}".`;

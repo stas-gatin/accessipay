@@ -1,0 +1,1253 @@
+{
+  "id": "20261030-331c12",
+  "createdAt": "2026-10-30T21:48:22.551Z",
+  "label": "platform sweep",
+  "persona": "agent",
+  "brainKind": "external",
+  "model": null,
+  "instanceId": null,
+  "defects": [],
+  "patches": [],
+  "site": {
+    "url": "https://magento2-demo.magebit.com/",
+    "host": "magento2-demo.magebit.com"
+  },
+  "paypalMode": "sandbox",
+  "goalId": "checkout",
+  "goal": "This is a real online shop. Add any one in-stock product to the cart and go through checkout as far as the payment step, then stop. Never pay, never place or submit an order, never create an account or sign in, never type card details. If the shop asks for contact or shipping details before payment, use: full name Alex Morgan, email alex.morgan@example.com, street address 100 Example Avenue, city New York, state New York, ZIP 10001, country United States (or the closest option the shop offers), phone (212) 555-0142. Decline cookie banners, newsletters and promotions. When you see the payment form or a button that would pay or place the order, finish with done and your findings. If you cannot get that far, give up with honest findings.",
+  "maxSteps": 40,
+  "status": "finished",
+  "outcome": {
+    "status": "reached-payment",
+    "reason": "Reached the payment step. Stopped there: nothing was paid."
+  },
+  "findings": [
+    {
+      "page": "Magento 2 Commerce (Enterprise) Demo - Magebit",
+      "problem": "On the home page the Add to Cart buttons in the Hot Sellers grid could not be clicked because the product grid list was covering them; I had to open the product page instead.",
+      "step": 1,
+      "element": {
+        "role": "button",
+        "name": "Add to Cart"
+      }
+    },
+    {
+      "page": "Fusion Backpack",
+      "problem": "Right after the product page opened, the Add to Cart button was shown as disabled and the page lacked its tabs and gallery; I had to read again before the button became usable, with no message about loading.",
+      "step": 3,
+      "element": {
+        "role": "button",
+        "name": "Add to Cart"
+      }
+    },
+    {
+      "page": "Checkout",
+      "problem": "The checkout page first showed only a Loading image with no form; I had to read again to see the form, and the loading state was announced only as an unlabelled image.",
+      "step": 7,
+      "element": {
+        "role": "img",
+        "name": "Loading..."
+      }
+    },
+    {
+      "page": "Checkout",
+      "problem": "The Email Address field has a Tooltip button with no meaningful name (just the word Tooltip), and the same for the phone number Tooltip, so the purpose of these buttons is unclear. Also many fields show labels as plain text beside the textbox with the asterisk in the name.",
+      "step": 8,
+      "element": {
+        "role": "button",
+        "name": "Tooltip"
+      }
+    },
+    {
+      "page": "Checkout",
+      "problem": "After choosing the state, city, or ZIP, the shipping method radios became disabled and a Loading image appeared without any announcement, so I could not tell when I could pick a shipping method.",
+      "step": 13,
+      "element": {
+        "role": "radio",
+        "name": "Fixed Flat Rate"
+      }
+    },
+    {
+      "page": "Checkout",
+      "problem": "After clicking Next the page showed only a Loading image and the old shipping form for a step; the move to the payment step was not announced and I had to read again to find the payment form.",
+      "step": 18,
+      "element": {
+        "role": "button",
+        "name": "Next"
+      }
+    }
+  ],
+  "events": [
+    {
+      "t": "2026-10-30T21:48:24.128Z",
+      "type": "start",
+      "persona": "agent",
+      "startUrl": "https://magento2-demo.magebit.com/"
+    },
+    {
+      "t": "2026-10-30T21:48:25.668Z",
+      "type": "scan-page",
+      "url": "https://magento2-demo.magebit.com/",
+      "violations": 15,
+      "rules": [
+        "aria-required-children",
+        "aria-required-parent",
+        "listitem",
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:48:25.738Z",
+      "type": "observe",
+      "step": 1,
+      "path": "/",
+      "url": "https://magento2-demo.magebit.com/",
+      "title": "Magento 2 Commerce (Enterprise) Demo - Magebit",
+      "text": "Page title: Magento 2 Commerce (Enterprise) Demo - Magebit\n\nPage as an accessibility tree:\n- banner:\n  - link \"Skip to Content\"\n  - list:\n    - listitem: Default welcome msg!\n    - listitem:\n      - link \"Sign In\"\n      - text: or\n    - listitem:\n      - link \"Create an Account\"\n  - link \"store logo\"\n  - link \" My Cart\"\n  - text:  Search\n  - combobox \" Search\"\n  - button \"Search\" [disabled]:  Search\n  - list:\n    - listitem\n- tablist:\n  - tabpanel:\n    - navigation:\n      - menu:\n        - listitem:\n          - menuitem \"What's New\"\n        - listitem:\n          - menuitem \" Women\"\n        - listitem:\n          - menuitem \" Men\"\n        - listitem:\n          - menuitem \" Gear\"\n        - listitem:\n          - menuitem \" Training\"\n        - listitem:\n          - menuitem \"Sale\"\n- main:\n  - heading \"Home Page\" [level=1]\n  - alert\n  - link \"New Luma Yoga Collection Get fit and look fab in new seasonal styles Shop New Yoga\":\n    - text: New Luma Yoga Collection\n    - strong: Get fit and look fab in new seasonal styles\n    - text: Shop New Yoga\n  - link \"20% OFF Luma pants when you shop today* Shop Pants \":\n    - strong: 20% OFF\n    - text: Luma pants when you shop today* Shop Pants \n  - link \"Even more ways to mix and match Buy 3 Luma tees get a 4th free Shop Tees \":\n    - strong: Even more ways to mix and match\n    - text: Buy 3 Luma tees get a 4th free Shop Tees \n  - link \"Take it from Erin Luma founder Erin Renny shares her favorites! Shop Erin Recommends \":\n    - strong: Take it from Erin\n    - text: Luma founder Erin Renny shares her favorites! Shop Erin Recommends \n  - link \"Science meets performance Wicking to raingear, Luma covers you Shop Performance \":\n    - strong: Science meets performance\n    - text: Wicking to raingear, Luma covers you Shop Performance \n  - link \"Twice around, twice as nice Find conscientious, comfy clothing in our eco-friendly collection Shop Eco-Friendly \":\n    - strong: Twice around, twice as nice\n    - text: Find conscientious, comfy clothing in our eco-friendly collection Shop Eco-Friendly \n  - heading \"Hot Sellers\" [level=2]\n  - paragraph: \"Here is what`s trending on Luma right now\"\n  - list:\n    - listitem:\n      - link \"Radiant Tee\":\n        - img \"Radiant Tee\"\n      - strong:\n        - link \"Radiant Tee\"\n      - text: \"Rating:   60%\"\n      - link \"3 Reviews\"\n      - text: €22.00\n      - listbox \"Size\":\n        - option \"XS\"\n        - option \"S\"\n        - option \"M\"\n        - option \"L\"\n        - option \"XL\"\n      - listbox \"Color\":\n        - option \"Blue\"\n        - option \"Orange\"\n        - option \"Purple\"\n      - button \"Add to Cart\"\n      - link \" Add to Wish List\"\n      - link \" Add to Compare\"\n    - listitem:\n      - link \"Breathe-Easy Tank\":\n        - img \"Breathe-Easy Tank\"\n      - strong:\n        - link \"Breathe-Easy Tank\"\n      - text: \"Rating:   70%\"\n      - link \"2 Reviews\"\n      - text: €34.00\n      - listbox \"Size\":\n        - option \"XS\"\n        - option \"S\"\n        - option \"M\"\n        - option \"L\"\n        - option \"XL\"\n      - listbox \"Color\":\n        - option \"Purple\"\n        - option \"White\"\n        - option \"Yellow\"\n      - button \"Add to Cart\"\n      - link \" Add to Wish List\"\n      - link \" Add to Compare\"\n    - listitem:\n      - link \"Argus All-Weather Tank\":\n        - img \"Argus All-Weather Tank\"\n      - strong:\n        - link \"Argus All-Weather Tank\"\n      - text: €22.00\n      - listbox \"Size\":\n        - option \"XS\"\n        - option \"S\"\n        - option \"M\"\n        - option \"L\"\n        - option \"XL\"\n      - listbox \"Color\":\n        - option \"Gray\"\n      - button \"Add to Cart\"\n      - link \" Add to Wish List\"\n      - link \" Add to Compare\"\n    - listitem:\n      - link \"Hero Hoodie\":\n        - img \"Hero Hoodie\"\n      - strong:\n        - link \"Hero Hoodie\"\n      - text: €54.00\n      - listbox \"Size\":\n        - option \"XS\"\n        - option \"S\"\n        - option \"M\"\n        - option \"L\"\n        - option \"XL\"\n      - listbox \"Color\":\n        - option \"Black\"\n        - option \"Gray\"\n        - option \"Green\"\n      - button \"Add to Cart\"\n      - link \" Add to Wish List\"\n      - link \" Add to Compare\"\n    - listitem:\n      - link \"Fusion Backpack\":\n        - img \"Fusion Backpack\"\n      - strong:\n        - link \"Fusion Backpack\"\n      - text: \"Rating:   67%\"\n      - link \"3 Reviews\"\n      - text: €59.00\n      - button \"Add to Cart\"\n      - link \" Add to Wish List\"\n      - link \" Add to Compare\"\n    - listitem:\n      - link \"Push It Messenger Bag\":\n        - img \"Push It Messenger Bag\"\n      - strong:\n        - link \"Push It Messenger Bag\"\n      - text: \"Rating:   67%\"\n      - link \"3 Reviews\"\n      - text: €45.00\n      - button \"Add to Cart\"\n      - link \" Add to Wish List\"\n      - link \" Add to Compare\"\n- contentinfo:\n  - text: \" Sign Up for Our Newsletter:\"\n  - textbox \"Sign Up for Our Newsletter:\":\n    - /placeholder: Enter your email address\n  - button \"Subscribe\"\n  - list:\n    - listitem:\n      - link \"About us\"\n    - listitem:\n      - link \"Customer Service\"\n  - list:\n    - listitem:\n      - link \"Privacy and Cookie Policy\"\n    - listitem:\n      - link \"Search Terms\"\n    - listitem:\n      - link \"Advanced Search\"\n    - listitem:\n      - link \"Orders and Returns\"\n    - listitem:\n      - link \"Contact Us\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-001.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:48:25.738Z",
+      "type": "thinking",
+      "step": 1
+    },
+    {
+      "t": "2026-10-30T21:49:42.219Z",
+      "type": "decide",
+      "step": 1,
+      "action": "click",
+      "args": {
+        "role": "button",
+        "name": "Add to Cart",
+        "nth": 4
+      },
+      "thought": "Fusion Backpack has no size/color options, so add it to the cart (5th Add to Cart button).",
+      "thinkMs": 76481
+    },
+    {
+      "t": "2026-10-30T21:49:42.273Z",
+      "type": "target",
+      "step": 1,
+      "box": {
+        "x": -1,
+        "y": 576,
+        "width": 103,
+        "height": 35
+      },
+      "role": "button",
+      "name": "Add to Cart",
+      "scrolled": true,
+      "tag": "button",
+      "outer": "<button type=\"submit\" title=\"Add to Cart\" class=\"action tocart primary\">\n                                                                <span>Add to Cart</span>\n                                                            </button>",
+      "image": "step-001-t.jpg"
+    },
+    {
+      "t": "2026-10-30T21:49:47.787Z",
+      "type": "act",
+      "step": 1,
+      "result": "That did not work: something else on the page is covering it (a <ol> \"product-items widget-product-grid\" is on top). Close or dismiss what is on top first.",
+      "actMs": 2508,
+      "keys": 0,
+      "ok": false,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:49:47.821Z",
+      "type": "observe",
+      "step": 2,
+      "path": "/",
+      "url": "https://magento2-demo.magebit.com/",
+      "title": "Magento 2 Commerce (Enterprise) Demo - Magebit",
+      "text": "Page title: Magento 2 Commerce (Enterprise) Demo - Magebit\n\nPage as an accessibility tree:\n- banner:\n  - link \"Skip to Content\"\n  - list:\n    - listitem: Default welcome msg!\n    - listitem:\n      - link \"Sign In\"\n      - text: or\n    - listitem:\n      - link \"Create an Account\"\n  - link \"store logo\"\n  - link \" My Cart\"\n  - text:  Search\n  - combobox \" Search\"\n  - button \"Search\" [disabled]:  Search\n  - list:\n    - listitem\n- tablist:\n  - tabpanel:\n    - navigation:\n      - menu:\n        - listitem:\n          - menuitem \"What's New\"\n        - listitem:\n          - menuitem \" Women\"\n        - listitem:\n          - menuitem \" Men\"\n        - listitem:\n          - menuitem \" Gear\"\n        - listitem:\n          - menuitem \" Training\"\n        - listitem:\n          - menuitem \"Sale\"\n- main:\n  - heading \"Home Page\" [level=1]\n  - alert\n  - link \"New Luma Yoga Collection Get fit and look fab in new seasonal styles Shop New Yoga\":\n    - text: New Luma Yoga Collection\n    - strong: Get fit and look fab in new seasonal styles\n    - text: Shop New Yoga\n  - link \"20% OFF Luma pants when you shop today* Shop Pants \":\n    - strong: 20% OFF\n    - text: Luma pants when you shop today* Shop Pants \n  - link \"Even more ways to mix and match Buy 3 Luma tees get a 4th free Shop Tees \":\n    - strong: Even more ways to mix and match\n    - text: Buy 3 Luma tees get a 4th free Shop Tees \n  - link \"Take it from Erin Luma founder Erin Renny shares her favorites! Shop Erin Recommends \":\n    - strong: Take it from Erin\n    - text: Luma founder Erin Renny shares her favorites! Shop Erin Recommends \n  - link \"Science meets performance Wicking to raingear, Luma covers you Shop Performance \":\n    - strong: Science meets performance\n    - text: Wicking to raingear, Luma covers you Shop Performance \n  - link \"Twice around, twice as nice Find conscientious, comfy clothing in our eco-friendly collection Shop Eco-Friendly \":\n    - strong: Twice around, twice as nice\n    - text: Find conscientious, comfy clothing in our eco-friendly collection Shop Eco-Friendly \n  - heading \"Hot Sellers\" [level=2]\n  - paragraph: \"Here is what`s trending on Luma right now\"\n  - list:\n    - listitem:\n      - link \"Radiant Tee\":\n        - img \"Radiant Tee\"\n      - strong:\n        - link \"Radiant Tee\"\n      - text: \"Rating:   60%\"\n      - link \"3 Reviews\"\n      - text: €22.00\n      - listbox \"Size\":\n        - option \"XS\"\n        - option \"S\"\n        - option \"M\"\n        - option \"L\"\n        - option \"XL\"\n      - listbox \"Color\":\n        - option \"Blue\"\n        - option \"Orange\"\n        - option \"Purple\"\n      - button \"Add to Cart\"\n      - link \" Add to Wish List\"\n      - link \" Add to Compare\"\n    - listitem:\n      - link \"Breathe-Easy Tank\":\n        - img \"Breathe-Easy Tank\"\n      - strong:\n        - link \"Breathe-Easy Tank\"\n      - text: \"Rating:   70%\"\n      - link \"2 Reviews\"\n      - text: €34.00\n      - listbox \"Size\":\n        - option \"XS\"\n        - option \"S\"\n        - option \"M\"\n        - option \"L\"\n        - option \"XL\"\n      - listbox \"Color\":\n        - option \"Purple\"\n        - option \"White\"\n        - option \"Yellow\"\n      - button \"Add to Cart\"\n      - link \" Add to Wish List\"\n      - link \" Add to Compare\"\n    - listitem:\n      - link \"Argus All-Weather Tank\":\n        - img \"Argus All-Weather Tank\"\n      - strong:\n        - link \"Argus All-Weather Tank\"\n      - text: €22.00\n      - listbox \"Size\":\n        - option \"XS\"\n        - option \"S\"\n        - option \"M\"\n        - option \"L\"\n        - option \"XL\"\n      - listbox \"Color\":\n        - option \"Gray\"\n      - button \"Add to Cart\"\n      - link \" Add to Wish List\"\n      - link \" Add to Compare\"\n    - listitem:\n      - link \"Hero Hoodie\":\n        - img \"Hero Hoodie\"\n      - strong:\n        - link \"Hero Hoodie\"\n      - text: €54.00\n      - listbox \"Size\":\n        - option \"XS\"\n        - option \"S\"\n        - option \"M\"\n        - option \"L\"\n        - option \"XL\"\n      - listbox \"Color\":\n        - option \"Black\"\n        - option \"Gray\"\n        - option \"Green\"\n      - button \"Add to Cart\"\n      - link \" Add to Wish List\"\n      - link \" Add to Compare\"\n    - listitem:\n      - link \"Fusion Backpack\":\n        - img \"Fusion Backpack\"\n      - strong:\n        - link \"Fusion Backpack\"\n      - text: \"Rating:   67%\"\n      - link \"3 Reviews\"\n      - text: €59.00\n      - button \"Add to Cart\"\n      - link \" Add to Wish List\"\n      - link \" Add to Compare\"\n    - listitem:\n      - link \"Push It Messenger Bag\":\n        - img \"Push It Messenger Bag\"\n      - strong:\n        - link \"Push It Messenger Bag\"\n      - text: \"Rating:   67%\"\n      - link \"3 Reviews\"\n      - text: €45.00\n      - button \"Add to Cart\"\n      - link \" Add to Wish List\"\n      - link \" Add to Compare\"\n- contentinfo:\n  - text: \" Sign Up for Our Newsletter:\"\n  - textbox \"Sign Up for Our Newsletter:\":\n    - /placeholder: Enter your email address\n  - button \"Subscribe\"\n  - list:\n    - listitem:\n      - link \"About us\"\n    - listitem:\n      - link \"Customer Service\"\n  - list:\n    - listitem:\n      - link \"Privacy and Cookie Policy\"\n    - listitem:\n      - link \"Search Terms\"\n    - listitem:\n      - link \"Advanced Search\"\n    - listitem:\n      - link \"Orders and Returns\"\n    - listitem:\n      - link \"Contact Us\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-002.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:49:47.822Z",
+      "type": "thinking",
+      "step": 2
+    },
+    {
+      "t": "2026-10-30T21:49:51.778Z",
+      "type": "decide",
+      "step": 2,
+      "action": "click",
+      "args": {
+        "role": "link",
+        "name": "Fusion Backpack",
+        "nth": 1
+      },
+      "thought": "The Add to Cart button is covered, so open the product page via its link instead.",
+      "thinkMs": 3957
+    },
+    {
+      "t": "2026-10-30T21:49:51.790Z",
+      "type": "target",
+      "step": 2,
+      "box": {
+        "x": 20,
+        "y": 473,
+        "width": 108,
+        "height": 19
+      },
+      "role": "link",
+      "name": "Fusion Backpack",
+      "scrolled": false,
+      "tag": "a",
+      "outer": "<a title=\"Fusion Backpack\" href=\"https://magento2-demo.magebit.com/fusion-backpack.html\" class=\"product-item-link\">\n                                        Fusion Backpack                                    </a>"
+    },
+    {
+      "t": "2026-10-30T21:49:55.466Z",
+      "type": "act",
+      "step": 2,
+      "result": "Clicked link \"Fusion Backpack\".",
+      "actMs": 675,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:49:55.845Z",
+      "type": "scan-page",
+      "url": "https://magento2-demo.magebit.com/fusion-backpack.html",
+      "violations": 19,
+      "rules": [
+        "aria-required-children",
+        "aria-required-parent",
+        "listitem",
+        "nested-interactive",
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:49:55.865Z",
+      "type": "observe",
+      "step": 3,
+      "path": "/fusion-backpack.html",
+      "url": "https://magento2-demo.magebit.com/fusion-backpack.html",
+      "title": "Fusion Backpack",
+      "text": "Page title: Fusion Backpack\n\nPage as an accessibility tree:\n- banner:\n  - link \"Skip to Content\"\n  - list:\n    - listitem\n    - listitem:\n      - link \"Sign In\"\n      - text: or\n    - listitem:\n      - link \"Create an Account\"\n  - link \"store logo\"\n  - link \" My Cart\"\n  - text:  Search\n  - combobox \" Search\"\n  - button \"Search\" [disabled]:  Search\n  - list:\n    - listitem\n- navigation:\n  - menu:\n    - listitem:\n      - menuitem \"What's New\"\n    - listitem:\n      - menuitem \" Women\"\n    - listitem:\n      - menuitem \" Men\"\n    - listitem:\n      - menuitem \" Gear\"\n    - listitem:\n      - menuitem \" Training\"\n    - listitem:\n      - menuitem \"Sale\"\n- main:\n  - alert\n  - alert\n  - link \"Skip to the end of the images gallery\"\n  - img \"main product photo\"\n  - link \"Skip to the beginning of the images gallery\"\n  - heading \"Fusion Backpack\" [level=1]\n  - text: \"Rating:   67 % of 100\"\n  - link \"3 Reviews\"\n  - link \"Add Your Review\"\n  - text: €59.00 In stock\n  - strong: \"SKU#:\"\n  - text: 24-MB02 Qty\n  - spinbutton \"Qty\": \"1\"\n  - button \"Add to Cart\" [disabled]\n  - link \" Add to Wish List\"\n  - link \" Add to Compare\"\n  - link \"Details\"\n  - paragraph: With the Fusion Backpack strapped on, every trek is an adventure - even a bus ride to work. That's partly because two large zippered compartments store everything you need, while a front zippered pocket and side mesh pouches are perfect for stashing those little extras, in case you change your mind and take the day off.\n  - list:\n    - listitem: Durable nylon construction.\n    - listitem: 2 main zippered compartments.\n    - listitem: 1 exterior zippered pocket.\n    - listitem: Mesh side pouches.\n    - listitem: Padded, adjustable straps.\n    - listitem: Top carry handle.\n    - listitem: \"Dimensions: 18\\\" x 10\\\" x 6\\\".\"\n  - link \"More Information\"\n  - link \"Reviews (3)\"\n  - heading \"We found other products you might like!\" [level=2]\n  - list\n- contentinfo:\n  - text: \" Sign Up for Our Newsletter:\"\n  - textbox \"Sign Up for Our Newsletter:\":\n    - /placeholder: Enter your email address\n  - button \"Subscribe\"\n  - list:\n    - listitem:\n      - link \"About us\"\n    - listitem:\n      - link \"Customer Service\"\n  - list:\n    - listitem:\n      - link \"Privacy and Cookie Policy\"\n    - listitem:\n      - link \"Search Terms\"\n    - listitem:\n      - link \"Advanced Search\"\n    - listitem:\n      - link \"Orders and Returns\"\n    - listitem:\n      - link \"Contact Us\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-003.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:49:55.865Z",
+      "type": "thinking",
+      "step": 3
+    },
+    {
+      "t": "2026-10-30T21:49:58.926Z",
+      "type": "decide",
+      "step": 3,
+      "action": "read",
+      "args": {},
+      "thought": "Add to Cart is shown disabled, maybe the page is still loading; read again.",
+      "thinkMs": 3062
+    },
+    {
+      "t": "2026-10-30T21:50:01.928Z",
+      "type": "act",
+      "step": 3,
+      "result": "You read the page again.",
+      "actMs": 0,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:01.982Z",
+      "type": "observe",
+      "step": 4,
+      "path": "/fusion-backpack.html",
+      "url": "https://magento2-demo.magebit.com/fusion-backpack.html",
+      "title": "Fusion Backpack",
+      "text": "Page title: Fusion Backpack\n\nPage as an accessibility tree:\n- banner:\n  - link \"Skip to Content\"\n  - list:\n    - listitem: Default welcome msg!\n    - listitem:\n      - link \"Sign In\"\n      - text: or\n    - listitem:\n      - link \"Create an Account\"\n  - link \"store logo\"\n  - link \" My Cart\"\n  - text:  Search\n  - combobox \" Search\"\n  - button \"Search\" [disabled]:  Search\n  - list:\n    - listitem\n- tablist:\n  - tabpanel:\n    - navigation:\n      - menu:\n        - listitem:\n          - menuitem \"What's New\"\n        - listitem:\n          - menuitem \" Women\"\n        - listitem:\n          - menuitem \" Men\"\n        - listitem:\n          - menuitem \" Gear\"\n        - listitem:\n          - menuitem \" Training\"\n        - listitem:\n          - menuitem \"Sale\"\n- list:\n  - listitem:\n    - link \"Home\"\n    - text: \n  - listitem:\n    - strong: Fusion Backpack\n- main:\n  - alert\n  - link \"Skip to the end of the images gallery\"\n  - button \"Previous\"\n  - img \"Image\"\n  - button \"Next\"\n  - button \"Previous\"\n  - button \"Image\":\n    - img \"Image\"\n  - button \"Image\":\n    - img \"Image\"\n  - button \"Next\"\n  - link \"Skip to the beginning of the images gallery\"\n  - heading \"Fusion Backpack\" [level=1]\n  - text: \"Rating:   67 % of 100\"\n  - link \"3 Reviews\"\n  - link \"Add Your Review\"\n  - text: €59.00 In stock\n  - strong: \"SKU#:\"\n  - text: 24-MB02 Qty\n  - spinbutton \"Qty\": \"1\"\n  - button \"Add to Cart\"\n  - link \" Add to Wish List\"\n  - link \" Add to Compare\"\n  - tablist:\n    - tab \"Details\" [expanded]:\n      - link \"Details\"\n    - tabpanel \"Details\":\n      - paragraph: With the Fusion Backpack strapped on, every trek is an adventure - even a bus ride to work. That's partly because two large zippered compartments store everything you need, while a front zippered pocket and side mesh pouches are perfect for stashing those little extras, in case you change your mind and take the day off.\n      - list:\n        - listitem: Durable nylon construction.\n        - listitem: 2 main zippered compartments.\n        - listitem: 1 exterior zippered pocket.\n        - listitem: Mesh side pouches.\n        - listitem: Padded, adjustable straps.\n        - listitem: Top carry handle.\n        - listitem: \"Dimensions: 18\\\" x 10\\\" x 6\\\".\"\n    - tab \"More Information\":\n      - link \"More Information\"\n    - tab \"Reviews (3)\":\n      - link \"Reviews (3)\"\n  - heading \"We found other products you might like!\" [level=2]\n  - list:\n    - listitem:\n      - link \"Impulse Duffle\":\n        - img \"Impulse Duffle\"\n      - strong:\n        - link \"Impulse Duffle\"\n      - text: €74.00\n- contentinfo:\n  - text: \" Sign Up for Our Newsletter:\"\n  - textbox \"Sign Up for Our Newsletter:\":\n    - /placeholder: Enter your email address\n  - button \"Subscribe\"\n  - list:\n    - listitem:\n      - link \"About us\"\n    - listitem:\n      - link \"Customer Service\"\n  - list:\n    - listitem:\n      - link \"Privacy and Cookie Policy\"\n    - listitem:\n      - link \"Search Terms\"\n    - listitem:\n      - link \"Advanced Search\"\n    - listitem:\n      - link \"Orders and Returns\"\n    - listitem:\n      - link \"Contact Us\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-004.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:01.982Z",
+      "type": "thinking",
+      "step": 4
+    },
+    {
+      "t": "2026-10-30T21:50:04.651Z",
+      "type": "decide",
+      "step": 4,
+      "action": "click",
+      "args": {
+        "role": "button",
+        "name": "Add to Cart"
+      },
+      "thought": "Button is now enabled; add to cart.",
+      "thinkMs": 2669
+    },
+    {
+      "t": "2026-10-30T21:50:04.667Z",
+      "type": "target",
+      "step": 4,
+      "box": {
+        "x": 764,
+        "y": 514,
+        "width": 243,
+        "height": 52
+      },
+      "role": "button",
+      "name": "Add to Cart",
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"submit\" title=\"Add to Cart\" class=\"action primary tocart\" id=\"product-addtocart-button\">\n                <span>Add to Cart</span>\n            </button>"
+    },
+    {
+      "t": "2026-10-30T21:50:08.184Z",
+      "type": "act",
+      "step": 4,
+      "result": "Clicked button \"Add to Cart\".",
+      "actMs": 517,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:08.215Z",
+      "type": "observe",
+      "step": 5,
+      "path": "/fusion-backpack.html",
+      "url": "https://magento2-demo.magebit.com/fusion-backpack.html",
+      "title": "Fusion Backpack",
+      "text": "Page title: Fusion Backpack\n\nPage as an accessibility tree:\n- banner:\n  - link \"Skip to Content\"\n  - list:\n    - listitem: Default welcome msg!\n    - listitem:\n      - link \"Sign In\"\n      - text: or\n    - listitem:\n      - link \"Create an Account\"\n  - link \"store logo\"\n  - link \" My Cart 1 1 items\"\n  - text:  Search\n  - combobox \" Search\"\n  - button \"Search\" [disabled]:  Search\n  - list:\n    - listitem\n- tablist:\n  - tabpanel:\n    - navigation:\n      - menu:\n        - listitem:\n          - menuitem \"What's New\"\n        - listitem:\n          - menuitem \" Women\"\n        - listitem:\n          - menuitem \" Men\"\n        - listitem:\n          - menuitem \" Gear\"\n        - listitem:\n          - menuitem \" Training\"\n        - listitem:\n          - menuitem \"Sale\"\n- list:\n  - listitem:\n    - link \"Home\"\n    - text: \n  - listitem:\n    - strong: Fusion Backpack\n- main:\n  - alert:\n    - text:  You added Fusion Backpack to your\n    - link \"shopping cart\"\n    - text: .\n  - link \"Skip to the end of the images gallery\"\n  - button \"Previous\"\n  - img \"Image\"\n  - button \"Next\"\n  - button \"Previous\"\n  - button \"Image\":\n    - img \"Image\"\n  - button \"Image\":\n    - img \"Image\"\n  - button \"Next\"\n  - link \"Skip to the beginning of the images gallery\"\n  - heading \"Fusion Backpack\" [level=1]\n  - text: \"Rating:   67 % of 100\"\n  - link \"3 Reviews\"\n  - link \"Add Your Review\"\n  - text: €59.00 In stock\n  - strong: \"SKU#:\"\n  - text: 24-MB02 Qty\n  - spinbutton \"Qty\": \"1\"\n  - button \"Added\"\n  - link \" Add to Wish List\"\n  - link \" Add to Compare\"\n  - tablist:\n    - tab \"Details\" [expanded]:\n      - link \"Details\"\n    - tabpanel \"Details\":\n      - paragraph: With the Fusion Backpack strapped on, every trek is an adventure - even a bus ride to work. That's partly because two large zippered compartments store everything you need, while a front zippered pocket and side mesh pouches are perfect for stashing those little extras, in case you change your mind and take the day off.\n      - list:\n        - listitem: Durable nylon construction.\n        - listitem: 2 main zippered compartments.\n        - listitem: 1 exterior zippered pocket.\n        - listitem: Mesh side pouches.\n        - listitem: Padded, adjustable straps.\n        - listitem: Top carry handle.\n        - listitem: \"Dimensions: 18\\\" x 10\\\" x 6\\\".\"\n    - tab \"More Information\":\n      - link \"More Information\"\n    - tab \"Reviews (3)\":\n      - link \"Reviews (3)\"\n  - heading \"We found other products you might like!\" [level=2]\n  - list:\n    - listitem:\n      - link \"Impulse Duffle\":\n        - img \"Impulse Duffle\"\n      - strong:\n        - link \"Impulse Duffle\"\n      - text: €74.00\n- contentinfo:\n  - text: \" Sign Up for Our Newsletter:\"\n  - textbox \"Sign Up for Our Newsletter:\":\n    - /placeholder: Enter your email address\n  - button \"Subscribe\"\n  - list:\n    - listitem:\n      - link \"About us\"\n    - listitem:\n      - link \"Customer Service\"\n  - list:\n    - listitem:\n      - link \"Privacy and Cookie Policy\"\n    - listitem:\n      - link \"Search Terms\"\n    - listitem:\n      - link \"Advanced Search\"\n    - listitem:\n      - link \"Orders and Returns\"\n    - listitem:\n      - link \"Contact Us\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-005.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:08.216Z",
+      "type": "thinking",
+      "step": 5
+    },
+    {
+      "t": "2026-10-30T21:50:11.934Z",
+      "type": "decide",
+      "step": 5,
+      "action": "click",
+      "args": {
+        "role": "link",
+        "name": "shopping cart"
+      },
+      "thought": "Go to the shopping cart via the link in the confirmation message.",
+      "thinkMs": 3718
+    },
+    {
+      "t": "2026-10-30T21:50:11.973Z",
+      "type": "target",
+      "step": 5,
+      "box": {
+        "x": 283,
+        "y": 260,
+        "width": 83,
+        "height": 18
+      },
+      "role": "link",
+      "name": "shopping cart",
+      "scrolled": false,
+      "tag": "a",
+      "outer": "<a href=\"https://magento2-demo.magebit.com/checkout/cart/\">shopping cart</a>"
+    },
+    {
+      "t": "2026-10-30T21:50:16.656Z",
+      "type": "act",
+      "step": 5,
+      "result": "Clicked link \"shopping cart\".",
+      "actMs": 1681,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:17.343Z",
+      "type": "scan-page",
+      "url": "https://magento2-demo.magebit.com/checkout/cart/",
+      "violations": 15,
+      "rules": [
+        "aria-required-children",
+        "aria-required-parent",
+        "listitem",
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:50:17.365Z",
+      "type": "observe",
+      "step": 6,
+      "path": "/checkout/cart/",
+      "url": "https://magento2-demo.magebit.com/checkout/cart/",
+      "title": "Shopping Cart",
+      "text": "Page title: Shopping Cart\n\nPage as an accessibility tree:\n- banner:\n  - link \"Skip to Content\"\n  - list:\n    - listitem\n    - listitem:\n      - link \"Sign In\"\n      - text: or\n    - listitem:\n      - link \"Create an Account\"\n  - link \"store logo\"\n  - link \" My Cart\"\n  - text:  Search\n  - combobox \" Search\"\n  - button \"Search\" [disabled]:  Search\n  - list:\n    - listitem\n- navigation:\n  - menu:\n    - listitem:\n      - menuitem \"What's New\"\n    - listitem:\n      - menuitem \" Women\"\n    - listitem:\n      - menuitem \" Men\"\n    - listitem:\n      - menuitem \" Gear\"\n    - listitem:\n      - menuitem \" Training\"\n    - listitem:\n      - menuitem \"Sale\"\n- main:\n  - heading \"Shopping Cart\" [level=1]\n  - alert\n  - alert\n  - strong: Summary\n  - heading \"Estimate Shipping and Tax\" [level=2]\n  - text: \n  - list:\n    - listitem:\n      - button \"Proceed to Checkout\"\n    - listitem:\n      - link \"Check Out with Multiple Addresses\"\n  - table \"Shopping Cart Items\":\n    - caption: Shopping Cart Items\n    - rowgroup:\n      - row \"Item Price Qty Subtotal\":\n        - columnheader \"Item\"\n        - columnheader \"Price\"\n        - columnheader \"Qty\"\n        - columnheader \"Subtotal\"\n    - rowgroup:\n      - row \"Fusion Backpack Fusion Backpack €59.00 Qty 1 €59.00\":\n        - cell \"Fusion Backpack Fusion Backpack\":\n          - link \"Fusion Backpack\":\n            - img \"Fusion Backpack\"\n          - strong:\n            - link \"Fusion Backpack\"\n        - cell \"€59.00\"\n        - cell \"Qty 1\":\n          - text: Qty\n          - spinbutton \"Qty\": \"1\"\n        - cell \"€59.00\"\n      - row \" Edit  Remove item\":\n        - cell \" Edit  Remove item\":\n          - link \" Edit\"\n          - link \" Remove item\"\n  - button \"Update Shopping Cart\"\n  - heading \"Apply Discount Code\" [level=2]\n  - text: \n  - heading \"More Choices:\" [level=2]\n  - list:\n    - listitem:\n      - link \"Pursuit Lumaflex&trade; Tone Band\":\n        - img \"Pursuit Lumaflex&trade; Tone Band\"\n      - strong:\n        - link \"Pursuit Lumaflex™ Tone Band\"\n      - text: \"€16.00 Rating:   60%\"\n      - link \"2 Reviews\"\n      - button \"Add to Cart\"\n      - button \"Add to Wish List\":  Add to Wish List\n      - button \"Add to Compare\":  Add to Compare\n    - listitem:\n      - link \"Harmony Lumaflex&trade; Strength Band Kit\":\n        - img \"Harmony Lumaflex&trade; Strength Band Kit\"\n      - strong:\n        - link \"Harmony Lumaflex™ Strength Band Kit\"\n      - text: \"€22.00 Rating:   60%\"\n      - link \"3 Reviews\"\n      - button \"Add to Cart\"\n      - button \"Add to Wish List\":  Add to Wish List\n      - button \"Add to Compare\":  Add to Compare\n    - listitem:\n      - link \"Zing Jump Rope\":\n        - img \"Zing Jump Rope\"\n      - strong:\n        - link \"Zing Jump Rope\"\n      - text: \"€12.00 Rating:   93%\"\n      - link \"3 Reviews\"\n      - button \"Add to Cart\"\n      - button \"Add to Wish List\":  Add to Wish List\n      - button \"Add to Compare\":  Add to Compare\n    - listitem:\n      - link \"Go-Get'r Pushup Grips\":\n        - img \"Go-Get'r Pushup Grips\"\n      - strong:\n        - link \"Go-Get'r Pushup Grips\"\n      - text: \"€19.00 Rating:   87%\"\n      - link \"3 Reviews\"\n      - button \"Add to Cart\"\n      - button \"Add to Wish List\":  Add to Wish List\n      - button \"Add to Compare\":  Add to Compare\n- contentinfo:\n  - text: \" Sign Up for Our Newsletter:\"\n  - textbox \"Sign Up for Our Newsletter:\":\n    - /placeholder: Enter your email address\n  - button \"Subscribe\"\n  - list:\n    - listitem:\n      - link \"About us\"\n    - listitem:\n      - link \"Customer Service\"\n  - list:\n    - listitem:\n      - link \"Privacy and Cookie Policy\"\n    - listitem:\n      - link \"Search Terms\"\n    - listitem:\n      - link \"Advanced Search\"\n    - listitem:\n      - link \"Orders and Returns\"\n    - listitem:\n      - link \"Contact Us\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-006.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:17.365Z",
+      "type": "thinking",
+      "step": 6
+    },
+    {
+      "t": "2026-10-30T21:50:20.375Z",
+      "type": "decide",
+      "step": 6,
+      "action": "click",
+      "args": {
+        "role": "button",
+        "name": "Proceed to Checkout"
+      },
+      "thought": "Proceed to checkout.",
+      "thinkMs": 3010
+    },
+    {
+      "t": "2026-10-30T21:50:20.394Z",
+      "type": "target",
+      "step": 6,
+      "box": {
+        "x": 973,
+        "y": 516,
+        "width": 273,
+        "height": 52
+      },
+      "role": "button",
+      "name": "Proceed to Checkout",
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"button\" data-role=\"proceed-to-checkout\" title=\"Proceed to Checkout\" class=\"action primary checkout\">\n        <span>Proceed to Checkout</span>\n    </button>"
+    },
+    {
+      "t": "2026-10-30T21:50:24.129Z",
+      "type": "act",
+      "step": 6,
+      "result": "Clicked button \"Proceed to Checkout\".",
+      "actMs": 734,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:24.374Z",
+      "type": "scan-page",
+      "url": "https://magento2-demo.magebit.com/checkout/",
+      "violations": 1,
+      "rules": [
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:50:24.415Z",
+      "type": "observe",
+      "step": 7,
+      "path": "/checkout/",
+      "url": "https://magento2-demo.magebit.com/checkout/",
+      "title": "Checkout",
+      "text": "Page title: Checkout\n\nPage as an accessibility tree:\n- banner:\n  - link \"store logo\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - img \"Loading...\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-007.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:24.415Z",
+      "type": "thinking",
+      "step": 7
+    },
+    {
+      "t": "2026-10-30T21:50:27.055Z",
+      "type": "decide",
+      "step": 7,
+      "action": "read",
+      "args": {},
+      "thought": "Checkout is still loading; read again.",
+      "thinkMs": 2639
+    },
+    {
+      "t": "2026-10-30T21:50:30.056Z",
+      "type": "act",
+      "step": 7,
+      "result": "You read the page again.",
+      "actMs": 0,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:30.722Z",
+      "type": "scan-page",
+      "url": "https://magento2-demo.magebit.com/checkout/#shipping",
+      "violations": 4,
+      "rules": [
+        "aria-allowed-role",
+        "aria-dialog-name",
+        "list",
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:50:30.767Z",
+      "type": "observe",
+      "step": 8,
+      "path": "/checkout/",
+      "url": "https://magento2-demo.magebit.com/checkout/#shipping",
+      "title": "Checkout",
+      "text": "Page title: Checkout\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog:\n  - text: Order Summary\n  - tablist:\n    - tab \"1 Item in Cart \":\n      - heading \"1 Item in Cart\" [level=1]\n      - text: \n\nThe page:\n- banner:\n  - link \"store logo\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - button \"Sign In\"\n  - list:\n    - listitem: Shipping \n    - listitem: Review & Payments\n  - list:\n    - listitem:\n      - text: Shipping Address\n      - group:\n        - text: Email Address*\n        - textbox \"Email Address*\"\n        - text: Tooltip\n        - button \"Tooltip\": \n        - text: You can create an account after checkout.\n      - text: First Name*\n      - textbox \"First Name*\"\n      - text: Last Name*\n      - textbox \"Last Name*\"\n      - text: Company\n      - textbox \"Company\"\n      - group \"Street Address *\":\n        - text: \"Street Address * Street Address: Line 1\"\n        - 'textbox \"Street Address: Line 1\"'\n        - text: \"Street Address: Line 2\"\n        - 'textbox \"Street Address: Line 2\"'\n      - text: Country*\n      - combobox \"Country*\":\n        - option\n        - option \"Afghanistan\"\n        - option \"Albania\"\n        - option \"Algeria\"\n        - option \"American Samoa\"\n        - option \"United States\" [selected]\n        - (248 options in total; choose one by its name)\n      - text: State/Province*\n      - combobox \"State/Province*\":\n        - option \"Please select a region, state or province.\" [selected]\n        - option \"Alabama\"\n        - option \"Alaska\"\n        - option \"American Samoa\"\n        - (66 options in total; choose one by its name)\n      - text: City*\n      - textbox \"City*\"\n      - text: Zip/Postal Code*\n      - textbox \"Zip/Postal Code*\"\n      - text: Phone Number*\n      - textbox \"Phone Number*\"\n      - text: Tooltip\n      - button \"Tooltip\": \n    - text: Shipping Methods\n    - tabpanel:\n      - table:\n        - rowgroup:\n          - row\n        - rowgroup:\n          - row \"Fixed Flat Rate €5.00\":\n            - cell \"Fixed Flat Rate\":\n              - radio \"Fixed Flat Rate\"\n            - cell \"€5.00\"\n            - cell \"Fixed\"\n            - cell \"Flat Rate\"\n          - row \"Table Rate Best Way €10.00\":\n            - cell \"Table Rate Best Way\":\n              - radio \"Table Rate Best Way\"\n            - cell \"€10.00\"\n            - cell \"Table Rate\"\n            - cell \"Best Way\"\n      - button \"Next\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-008.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:30.767Z",
+      "type": "thinking",
+      "step": 8
+    },
+    {
+      "t": "2026-10-30T21:50:34.488Z",
+      "type": "decide",
+      "step": 8,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Email Address*",
+        "text": "alex.morgan@example.com"
+      },
+      "thought": "Fill in the email address.",
+      "thinkMs": 3722
+    },
+    {
+      "t": "2026-10-30T21:50:34.506Z",
+      "type": "target",
+      "step": 8,
+      "box": {
+        "x": 20,
+        "y": 291,
+        "width": 464,
+        "height": 32
+      },
+      "role": "textbox",
+      "name": "Email Address*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input class=\"input-text\" type=\"email\" data-bind=\"\n                            textInput: email,\n                            hasFocus: emailFocused,\n                            afterRender: emailHasChanged,\n                            mageInit: {'mage/trim-input':{}}\" name=\"username\" data-validate=\"{required:true, 'validate-email':true}\" id=\"customer-email\" aria-required=\"true\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:50:38.267Z",
+      "type": "act",
+      "step": 8,
+      "result": "Filled textbox \"Email Address*\" with \"alex.morgan@example.com\".",
+      "actMs": 759,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:38.395Z",
+      "type": "observe",
+      "step": 9,
+      "path": "/checkout/",
+      "url": "https://magento2-demo.magebit.com/checkout/#shipping",
+      "title": "Checkout",
+      "text": "Page title: Checkout\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog:\n  - text: Order Summary\n  - tablist:\n    - tab \"1 Item in Cart \":\n      - heading \"1 Item in Cart\" [level=1]\n      - text: \n\nThe page:\n- banner:\n  - link \"store logo\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - button \"Sign In\"\n  - list:\n    - listitem: Shipping \n    - listitem: Review & Payments\n  - list:\n    - listitem:\n      - text: Shipping Address\n      - group:\n        - text: Email Address*\n        - textbox \"Email Address*\": alex.morgan@example.com\n        - text: Tooltip\n        - button \"Tooltip\": \n        - text: You can create an account after checkout.\n      - text: First Name*\n      - textbox \"First Name*\"\n      - text: Last Name*\n      - textbox \"Last Name*\"\n      - text: Company\n      - textbox \"Company\"\n      - group \"Street Address *\":\n        - text: \"Street Address * Street Address: Line 1\"\n        - 'textbox \"Street Address: Line 1\"'\n        - text: \"Street Address: Line 2\"\n        - 'textbox \"Street Address: Line 2\"'\n      - text: Country*\n      - combobox \"Country*\":\n        - option\n        - option \"Afghanistan\"\n        - option \"Albania\"\n        - option \"Algeria\"\n        - option \"American Samoa\"\n        - option \"United States\" [selected]\n        - (248 options in total; choose one by its name)\n      - text: State/Province*\n      - combobox \"State/Province*\":\n        - option \"Please select a region, state or province.\" [selected]\n        - option \"Alabama\"\n        - option \"Alaska\"\n        - option \"American Samoa\"\n        - (66 options in total; choose one by its name)\n      - text: City*\n      - textbox \"City*\"\n      - text: Zip/Postal Code*\n      - textbox \"Zip/Postal Code*\"\n      - text: Phone Number*\n      - textbox \"Phone Number*\"\n      - text: Tooltip\n      - button \"Tooltip\": \n    - text: Shipping Methods\n    - tabpanel:\n      - table:\n        - rowgroup:\n          - row\n        - rowgroup:\n          - row \"Fixed Flat Rate €5.00\":\n            - cell \"Fixed Flat Rate\":\n              - radio \"Fixed Flat Rate\"\n            - cell \"€5.00\"\n            - cell \"Fixed\"\n            - cell \"Flat Rate\"\n          - row \"Table Rate Best Way €10.00\":\n            - cell \"Table Rate Best Way\":\n              - radio \"Table Rate Best Way\"\n            - cell \"€10.00\"\n            - cell \"Table Rate\"\n            - cell \"Best Way\"\n      - button \"Next\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-009.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:38.395Z",
+      "type": "thinking",
+      "step": 9
+    },
+    {
+      "t": "2026-10-30T21:50:42.159Z",
+      "type": "decide",
+      "step": 9,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "First Name*",
+        "text": "Alex"
+      },
+      "thought": "Fill first name.",
+      "thinkMs": 3764
+    },
+    {
+      "t": "2026-10-30T21:50:42.208Z",
+      "type": "target",
+      "step": 9,
+      "box": {
+        "x": 20,
+        "y": 475,
+        "width": 500,
+        "height": 32
+      },
+      "role": "textbox",
+      "name": "First Name*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input class=\"input-text\" type=\"text\" data-bind=\"\n    value: value,\n    valueUpdate: 'keyup',\n    hasFocus: focused,\n    attr: {\n        name: inputName,\n        placeholder: placeholder,\n        'aria-describedby': getDescriptionId(),\n        'aria-required': required,\n        'aria-invalid': error() ? true : 'false',\n        id: uid,\n        disabled: disabled\n    }\" name=\"firstname\" aria-required=\"true\" aria-invalid=\"false\" id=\"J8FGLYA\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:50:45.380Z",
+      "type": "act",
+      "step": 9,
+      "result": "Filled textbox \"First Name*\" with \"Alex\".",
+      "actMs": 165,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:45.718Z",
+      "type": "observe",
+      "step": 10,
+      "path": "/checkout/",
+      "url": "https://magento2-demo.magebit.com/checkout/#shipping",
+      "title": "Checkout",
+      "text": "Page title: Checkout\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog:\n  - text: Order Summary\n  - tablist:\n    - tab \"1 Item in Cart \":\n      - heading \"1 Item in Cart\" [level=1]\n      - text: \n\nThe page:\n- banner:\n  - link \"store logo\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - button \"Sign In\"\n  - list:\n    - listitem: Shipping \n    - listitem: Review & Payments\n  - list:\n    - listitem:\n      - text: Shipping Address\n      - group:\n        - text: Email Address*\n        - textbox \"Email Address*\": alex.morgan@example.com\n        - text: Tooltip\n        - button \"Tooltip\": \n        - text: You can create an account after checkout.\n      - text: First Name*\n      - textbox \"First Name*\": Alex\n      - text: Last Name*\n      - textbox \"Last Name*\"\n      - text: Company\n      - textbox \"Company\"\n      - group \"Street Address *\":\n        - text: \"Street Address * Street Address: Line 1\"\n        - 'textbox \"Street Address: Line 1\"'\n        - text: \"Street Address: Line 2\"\n        - 'textbox \"Street Address: Line 2\"'\n      - text: Country*\n      - combobox \"Country*\":\n        - option\n        - option \"Afghanistan\"\n        - option \"Albania\"\n        - option \"Algeria\"\n        - option \"American Samoa\"\n        - option \"United States\" [selected]\n        - (248 options in total; choose one by its name)\n      - text: State/Province*\n      - combobox \"State/Province*\":\n        - option \"Please select a region, state or province.\" [selected]\n        - option \"Alabama\"\n        - option \"Alaska\"\n        - option \"American Samoa\"\n        - (66 options in total; choose one by its name)\n      - text: City*\n      - textbox \"City*\"\n      - text: Zip/Postal Code*\n      - textbox \"Zip/Postal Code*\"\n      - text: Phone Number*\n      - textbox \"Phone Number*\"\n      - text: Tooltip\n      - button \"Tooltip\": \n    - text: Shipping Methods\n    - tabpanel:\n      - table:\n        - rowgroup:\n          - row\n        - rowgroup:\n          - row \"Fixed Flat Rate €5.00\":\n            - cell \"Fixed Flat Rate\":\n              - radio \"Fixed Flat Rate\"\n            - cell \"€5.00\"\n            - cell \"Fixed\"\n            - cell \"Flat Rate\"\n          - row \"Table Rate Best Way €10.00\":\n            - cell \"Table Rate Best Way\":\n              - radio \"Table Rate Best Way\"\n            - cell \"€10.00\"\n            - cell \"Table Rate\"\n            - cell \"Best Way\"\n      - button \"Next\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-010.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:45.718Z",
+      "type": "thinking",
+      "step": 10
+    },
+    {
+      "t": "2026-10-30T21:50:50.560Z",
+      "type": "decide",
+      "step": 10,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Last Name*",
+        "text": "Morgan"
+      },
+      "thought": "Fill last name.",
+      "thinkMs": 4843
+    },
+    {
+      "t": "2026-10-30T21:50:50.590Z",
+      "type": "target",
+      "step": 10,
+      "box": {
+        "x": 20,
+        "y": 555,
+        "width": 500,
+        "height": 32
+      },
+      "role": "textbox",
+      "name": "Last Name*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input class=\"input-text\" type=\"text\" data-bind=\"\n    value: value,\n    valueUpdate: 'keyup',\n    hasFocus: focused,\n    attr: {\n        name: inputName,\n        placeholder: placeholder,\n        'aria-describedby': getDescriptionId(),\n        'aria-required': required,\n        'aria-invalid': error() ? true : 'false',\n        id: uid,\n        disabled: disabled\n    }\" name=\"lastname\" aria-required=\"true\" aria-invalid=\"false\" id=\"HHV4B6G\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:50:53.812Z",
+      "type": "act",
+      "step": 10,
+      "result": "Filled textbox \"Last Name*\" with \"Morgan\".",
+      "actMs": 221,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:53.960Z",
+      "type": "observe",
+      "step": 11,
+      "path": "/checkout/",
+      "url": "https://magento2-demo.magebit.com/checkout/#shipping",
+      "title": "Checkout",
+      "text": "Page title: Checkout\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog:\n  - text: Order Summary\n  - tablist:\n    - tab \"1 Item in Cart \":\n      - heading \"1 Item in Cart\" [level=1]\n      - text: \n\nThe page:\n- banner:\n  - link \"store logo\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - button \"Sign In\"\n  - list:\n    - listitem: Shipping \n    - listitem: Review & Payments\n  - list:\n    - listitem:\n      - text: Shipping Address\n      - group:\n        - text: Email Address*\n        - textbox \"Email Address*\": alex.morgan@example.com\n        - text: Tooltip\n        - button \"Tooltip\": \n        - text: You can create an account after checkout.\n      - text: First Name*\n      - textbox \"First Name*\": Alex\n      - text: Last Name*\n      - textbox \"Last Name*\": Morgan\n      - text: Company\n      - textbox \"Company\"\n      - group \"Street Address *\":\n        - text: \"Street Address * Street Address: Line 1\"\n        - 'textbox \"Street Address: Line 1\"'\n        - text: \"Street Address: Line 2\"\n        - 'textbox \"Street Address: Line 2\"'\n      - text: Country*\n      - combobox \"Country*\":\n        - option\n        - option \"Afghanistan\"\n        - option \"Albania\"\n        - option \"Algeria\"\n        - option \"American Samoa\"\n        - option \"United States\" [selected]\n        - (248 options in total; choose one by its name)\n      - text: State/Province*\n      - combobox \"State/Province*\":\n        - option \"Please select a region, state or province.\" [selected]\n        - option \"Alabama\"\n        - option \"Alaska\"\n        - option \"American Samoa\"\n        - (66 options in total; choose one by its name)\n      - text: City*\n      - textbox \"City*\"\n      - text: Zip/Postal Code*\n      - textbox \"Zip/Postal Code*\"\n      - text: Phone Number*\n      - textbox \"Phone Number*\"\n      - text: Tooltip\n      - button \"Tooltip\": \n    - text: Shipping Methods\n    - tabpanel:\n      - table:\n        - rowgroup:\n          - row\n        - rowgroup:\n          - row \"Fixed Flat Rate €5.00\":\n            - cell \"Fixed Flat Rate\":\n              - radio \"Fixed Flat Rate\"\n            - cell \"€5.00\"\n            - cell \"Fixed\"\n            - cell \"Flat Rate\"\n          - row \"Table Rate Best Way €10.00\":\n            - cell \"Table Rate Best Way\":\n              - radio \"Table Rate Best Way\"\n            - cell \"€10.00\"\n            - cell \"Table Rate\"\n            - cell \"Best Way\"\n      - button \"Next\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-011.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:50:53.960Z",
+      "type": "thinking",
+      "step": 11
+    },
+    {
+      "t": "2026-10-30T21:50:57.638Z",
+      "type": "decide",
+      "step": 11,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Street Address: Line 1",
+        "text": "100 Example Avenue"
+      },
+      "thought": "Fill street address.",
+      "thinkMs": 3677
+    },
+    {
+      "t": "2026-10-30T21:50:57.677Z",
+      "type": "target",
+      "step": 11,
+      "box": {
+        "x": 20,
+        "y": 715,
+        "width": 500,
+        "height": 32
+      },
+      "role": "textbox",
+      "name": "Street Address: Line 1",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input class=\"input-text\" type=\"text\" data-bind=\"\n    value: value,\n    valueUpdate: 'keyup',\n    hasFocus: focused,\n    attr: {\n        name: inputName,\n        placeholder: placeholder,\n        'aria-describedby': getDescriptionId(),\n        'aria-required': required,\n        'aria-invalid': error() ? true : 'false',\n        id: uid,\n        disabled: disabled\n    }\" name=\"street[0]\" aria-required=\"true\" aria-invalid=\"false\" id=\"G7T4PA6\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:51:01.105Z",
+      "type": "act",
+      "step": 11,
+      "result": "Filled textbox \"Street Address: Line 1\" with \"100 Example Avenue\".",
+      "actMs": 420,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:01.268Z",
+      "type": "observe",
+      "step": 12,
+      "path": "/checkout/",
+      "url": "https://magento2-demo.magebit.com/checkout/#shipping",
+      "title": "Checkout",
+      "text": "Page title: Checkout\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog:\n  - text: Order Summary\n  - tablist:\n    - tab \"1 Item in Cart \":\n      - heading \"1 Item in Cart\" [level=1]\n      - text: \n\nThe page:\n- banner:\n  - link \"store logo\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - button \"Sign In\"\n  - list:\n    - listitem: Shipping \n    - listitem: Review & Payments\n  - list:\n    - listitem:\n      - text: Shipping Address\n      - group:\n        - text: Email Address*\n        - textbox \"Email Address*\": alex.morgan@example.com\n        - text: Tooltip\n        - button \"Tooltip\": \n        - text: You can create an account after checkout.\n      - text: First Name*\n      - textbox \"First Name*\": Alex\n      - text: Last Name*\n      - textbox \"Last Name*\": Morgan\n      - text: Company\n      - textbox \"Company\"\n      - group \"Street Address *\":\n        - text: \"Street Address * Street Address: Line 1\"\n        - 'textbox \"Street Address: Line 1\"': 100 Example Avenue\n        - text: \"Street Address: Line 2\"\n        - 'textbox \"Street Address: Line 2\"'\n      - text: Country*\n      - combobox \"Country*\":\n        - option\n        - option \"Afghanistan\"\n        - option \"Albania\"\n        - option \"Algeria\"\n        - option \"American Samoa\"\n        - option \"United States\" [selected]\n        - (248 options in total; choose one by its name)\n      - text: State/Province*\n      - combobox \"State/Province*\":\n        - option \"Please select a region, state or province.\" [selected]\n        - option \"Alabama\"\n        - option \"Alaska\"\n        - option \"American Samoa\"\n        - (66 options in total; choose one by its name)\n      - text: City*\n      - textbox \"City*\"\n      - text: Zip/Postal Code*\n      - textbox \"Zip/Postal Code*\"\n      - text: Phone Number*\n      - textbox \"Phone Number*\"\n      - text: Tooltip\n      - button \"Tooltip\": \n    - text: Shipping Methods\n    - tabpanel:\n      - table:\n        - rowgroup:\n          - row\n        - rowgroup:\n          - row \"Fixed Flat Rate €5.00\":\n            - cell \"Fixed Flat Rate\":\n              - radio \"Fixed Flat Rate\"\n            - cell \"€5.00\"\n            - cell \"Fixed\"\n            - cell \"Flat Rate\"\n          - row \"Table Rate Best Way €10.00\":\n            - cell \"Table Rate Best Way\":\n              - radio \"Table Rate Best Way\"\n            - cell \"€10.00\"\n            - cell \"Table Rate\"\n            - cell \"Best Way\"\n      - button \"Next\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-012.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:51:01.268Z",
+      "type": "thinking",
+      "step": 12
+    },
+    {
+      "t": "2026-10-30T21:51:04.814Z",
+      "type": "decide",
+      "step": 12,
+      "action": "select",
+      "args": {
+        "name": "State/Province*",
+        "option": "New York"
+      },
+      "thought": "Choose the state.",
+      "thinkMs": 3546
+    },
+    {
+      "t": "2026-10-30T21:51:04.968Z",
+      "type": "target",
+      "step": 12,
+      "box": {
+        "x": 20,
+        "y": 414,
+        "width": 500,
+        "height": 32
+      },
+      "role": "combobox",
+      "name": "State/Province*",
+      "scrolled": true,
+      "tag": "select",
+      "outer": "<select class=\"select\" data-bind=\"\n    attr: {\n        name: inputName,\n        id: uid,\n        disabled: disabled,\n        'aria-describedby': getDescriptionId(),\n        'aria-required': required,\n        'aria-invalid': error() ? true : 'false',\n        placeholder: placeholder\n    },\n    hasFocus: focused,\n    optgroup: options,\n    value: value,\n    optionsCaption: caption,\n    optionsValue: 'value',\n    optionsText: 'label',\n    optionsAfterRender: function(option, item) {\n        if (item &amp;&amp; item.disabled) {\n            ko.applyBindingsToNode(option, {attr: {disabled: true}}, i",
+      "image": "step-012-t.jpg"
+    },
+    {
+      "t": "2026-10-30T21:51:08.643Z",
+      "type": "act",
+      "step": 12,
+      "result": "Selected \"New York\" in \"State/Province*\".",
+      "actMs": 672,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:08.770Z",
+      "type": "observe",
+      "step": 13,
+      "path": "/checkout/",
+      "url": "https://magento2-demo.magebit.com/checkout/#shipping",
+      "title": "Checkout",
+      "text": "Page title: Checkout\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog:\n  - text: Order Summary\n  - tablist:\n    - tab \"1 Item in Cart \":\n      - heading \"1 Item in Cart\" [level=1]\n      - text: \n\nThe page:\n- banner:\n  - link \"store logo\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - button \"Sign In\"\n  - list:\n    - listitem: Shipping \n    - listitem: Review & Payments\n  - list:\n    - listitem:\n      - text: Shipping Address\n      - group:\n        - text: Email Address*\n        - textbox \"Email Address*\": alex.morgan@example.com\n        - text: Tooltip\n        - button \"Tooltip\": \n        - text: You can create an account after checkout.\n      - text: First Name*\n      - textbox \"First Name*\": Alex\n      - text: Last Name*\n      - textbox \"Last Name*\": Morgan\n      - text: Company\n      - textbox \"Company\"\n      - group \"Street Address *\":\n        - text: \"Street Address * Street Address: Line 1\"\n        - 'textbox \"Street Address: Line 1\"': 100 Example Avenue\n        - text: \"Street Address: Line 2\"\n        - 'textbox \"Street Address: Line 2\"'\n      - text: Country*\n      - combobox \"Country*\":\n        - option\n        - option \"Afghanistan\"\n        - option \"Albania\"\n        - option \"Algeria\"\n        - option \"American Samoa\"\n        - option \"United States\" [selected]\n        - (248 options in total; choose one by its name)\n      - text: State/Province*\n      - combobox \"State/Province*\":\n        - option \"Please select a region, state or province.\"\n        - option \"Alabama\"\n        - option \"Alaska\"\n        - option \"American Samoa\"\n        - option \"New York\" [selected]\n        - (66 options in total; choose one by its name)\n      - text: City*\n      - textbox \"City*\"\n      - text: Zip/Postal Code*\n      - textbox \"Zip/Postal Code*\"\n      - text: Phone Number*\n      - textbox \"Phone Number*\"\n      - text: Tooltip\n      - button \"Tooltip\": \n    - text: Shipping Methods\n    - tabpanel:\n      - table:\n        - rowgroup:\n          - row\n        - rowgroup:\n          - row \"Fixed Flat Rate €5.00\":\n            - cell \"Fixed Flat Rate\":\n              - radio \"Fixed Flat Rate\" [disabled]\n            - cell \"€5.00\"\n            - cell \"Fixed\"\n            - cell \"Flat Rate\"\n          - row \"Table Rate Best Way €10.00\":\n            - cell \"Table Rate Best Way\":\n              - radio \"Table Rate Best Way\" [disabled]\n            - cell \"€10.00\"\n            - cell \"Table Rate\"\n            - cell \"Best Way\"\n      - button \"Next\"\n    - img \"Loading...\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-013.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:51:08.770Z",
+      "type": "thinking",
+      "step": 13
+    },
+    {
+      "t": "2026-10-30T21:51:12.793Z",
+      "type": "decide",
+      "step": 13,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "City*",
+        "text": "New York"
+      },
+      "thought": "Fill city.",
+      "thinkMs": 4023
+    },
+    {
+      "t": "2026-10-30T21:51:12.890Z",
+      "type": "target",
+      "step": 13,
+      "box": {
+        "x": 20,
+        "y": 494,
+        "width": 500,
+        "height": 32
+      },
+      "role": "textbox",
+      "name": "City*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input class=\"input-text\" type=\"text\" data-bind=\"\n    value: value,\n    valueUpdate: 'keyup',\n    hasFocus: focused,\n    attr: {\n        name: inputName,\n        placeholder: placeholder,\n        'aria-describedby': getDescriptionId(),\n        'aria-required': required,\n        'aria-invalid': error() ? true : 'false',\n        id: uid,\n        disabled: disabled\n    }\" name=\"city\" aria-required=\"true\" aria-invalid=\"false\" id=\"V6FGKHP\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:51:16.042Z",
+      "type": "act",
+      "step": 13,
+      "result": "Filled textbox \"City*\" with \"New York\".",
+      "actMs": 151,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:16.082Z",
+      "type": "observe",
+      "step": 14,
+      "path": "/checkout/",
+      "url": "https://magento2-demo.magebit.com/checkout/#shipping",
+      "title": "Checkout",
+      "text": "Page title: Checkout\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog:\n  - text: Order Summary\n  - tablist:\n    - tab \"1 Item in Cart \":\n      - heading \"1 Item in Cart\" [level=1]\n      - text: \n\nThe page:\n- banner:\n  - link \"store logo\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - button \"Sign In\"\n  - list:\n    - listitem: Shipping \n    - listitem: Review & Payments\n  - list:\n    - listitem:\n      - text: Shipping Address\n      - group:\n        - text: Email Address*\n        - textbox \"Email Address*\": alex.morgan@example.com\n        - text: Tooltip\n        - button \"Tooltip\": \n        - text: You can create an account after checkout.\n      - text: First Name*\n      - textbox \"First Name*\": Alex\n      - text: Last Name*\n      - textbox \"Last Name*\": Morgan\n      - text: Company\n      - textbox \"Company\"\n      - group \"Street Address *\":\n        - text: \"Street Address * Street Address: Line 1\"\n        - 'textbox \"Street Address: Line 1\"': 100 Example Avenue\n        - text: \"Street Address: Line 2\"\n        - 'textbox \"Street Address: Line 2\"'\n      - text: Country*\n      - combobox \"Country*\":\n        - option\n        - option \"Afghanistan\"\n        - option \"Albania\"\n        - option \"Algeria\"\n        - option \"American Samoa\"\n        - option \"United States\" [selected]\n        - (248 options in total; choose one by its name)\n      - text: State/Province*\n      - combobox \"State/Province*\":\n        - option \"Please select a region, state or province.\"\n        - option \"Alabama\"\n        - option \"Alaska\"\n        - option \"American Samoa\"\n        - option \"New York\" [selected]\n        - (66 options in total; choose one by its name)\n      - text: City*\n      - textbox \"City*\": New York\n      - text: Zip/Postal Code*\n      - textbox \"Zip/Postal Code*\"\n      - text: Phone Number*\n      - textbox \"Phone Number*\"\n      - text: Tooltip\n      - button \"Tooltip\": \n    - text: Shipping Methods\n    - tabpanel:\n      - table:\n        - rowgroup:\n          - row\n        - rowgroup:\n          - row \"Fixed Flat Rate €5.00\":\n            - cell \"Fixed Flat Rate\":\n              - radio \"Fixed Flat Rate\"\n            - cell \"€5.00\"\n            - cell \"Fixed\"\n            - cell \"Flat Rate\"\n          - row \"Table Rate Best Way €10.00\":\n            - cell \"Table Rate Best Way\":\n              - radio \"Table Rate Best Way\"\n            - cell \"€10.00\"\n            - cell \"Table Rate\"\n            - cell \"Best Way\"\n      - button \"Next\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-014.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:51:16.082Z",
+      "type": "thinking",
+      "step": 14
+    },
+    {
+      "t": "2026-10-30T21:51:18.937Z",
+      "type": "decide",
+      "step": 14,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Zip/Postal Code*",
+        "text": "10001"
+      },
+      "thought": "Fill ZIP.",
+      "thinkMs": 2855
+    },
+    {
+      "t": "2026-10-30T21:51:18.955Z",
+      "type": "target",
+      "step": 14,
+      "box": {
+        "x": 20,
+        "y": 574,
+        "width": 500,
+        "height": 32
+      },
+      "role": "textbox",
+      "name": "Zip/Postal Code*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input class=\"input-text\" type=\"text\" data-bind=\"\n    value: value,\n    valueUpdate: 'keyup',\n    hasFocus: focused,\n    attr: {\n        name: inputName,\n        placeholder: placeholder,\n        'aria-describedby': getDescriptionId(),\n        'aria-required': required,\n        'aria-invalid': error() ? true : 'false',\n        id: uid,\n        disabled: disabled\n    }\" name=\"postcode\" aria-required=\"true\" aria-invalid=\"false\" id=\"N68IX7N\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:51:22.063Z",
+      "type": "act",
+      "step": 14,
+      "result": "Filled textbox \"Zip/Postal Code*\" with \"10001\".",
+      "actMs": 108,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:22.099Z",
+      "type": "observe",
+      "step": 15,
+      "path": "/checkout/",
+      "url": "https://magento2-demo.magebit.com/checkout/#shipping",
+      "title": "Checkout",
+      "text": "Page title: Checkout\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog:\n  - text: Order Summary\n  - tablist:\n    - tab \"1 Item in Cart \":\n      - heading \"1 Item in Cart\" [level=1]\n      - text: \n\nThe page:\n- banner:\n  - link \"store logo\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - button \"Sign In\"\n  - list:\n    - listitem: Shipping \n    - listitem: Review & Payments\n  - list:\n    - listitem:\n      - text: Shipping Address\n      - group:\n        - text: Email Address*\n        - textbox \"Email Address*\": alex.morgan@example.com\n        - text: Tooltip\n        - button \"Tooltip\": \n        - text: You can create an account after checkout.\n      - text: First Name*\n      - textbox \"First Name*\": Alex\n      - text: Last Name*\n      - textbox \"Last Name*\": Morgan\n      - text: Company\n      - textbox \"Company\"\n      - group \"Street Address *\":\n        - text: \"Street Address * Street Address: Line 1\"\n        - 'textbox \"Street Address: Line 1\"': 100 Example Avenue\n        - text: \"Street Address: Line 2\"\n        - 'textbox \"Street Address: Line 2\"'\n      - text: Country*\n      - combobox \"Country*\":\n        - option\n        - option \"Afghanistan\"\n        - option \"Albania\"\n        - option \"Algeria\"\n        - option \"American Samoa\"\n        - option \"United States\" [selected]\n        - (248 options in total; choose one by its name)\n      - text: State/Province*\n      - combobox \"State/Province*\":\n        - option \"Please select a region, state or province.\"\n        - option \"Alabama\"\n        - option \"Alaska\"\n        - option \"American Samoa\"\n        - option \"New York\" [selected]\n        - (66 options in total; choose one by its name)\n      - text: City*\n      - textbox \"City*\": New York\n      - text: Zip/Postal Code*\n      - textbox \"Zip/Postal Code*\": \"10001\"\n      - text: Phone Number*\n      - textbox \"Phone Number*\"\n      - text: Tooltip\n      - button \"Tooltip\": \n    - text: Shipping Methods\n    - tabpanel:\n      - table:\n        - rowgroup:\n          - row\n        - rowgroup:\n          - row \"Fixed Flat Rate €5.00\":\n            - cell \"Fixed Flat Rate\":\n              - radio \"Fixed Flat Rate\" [disabled]\n            - cell \"€5.00\"\n            - cell \"Fixed\"\n            - cell \"Flat Rate\"\n          - row \"Table Rate Best Way €10.00\":\n            - cell \"Table Rate Best Way\":\n              - radio \"Table Rate Best Way\" [disabled]\n            - cell \"€10.00\"\n            - cell \"Table Rate\"\n            - cell \"Best Way\"\n      - button \"Next\"\n    - img \"Loading...\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-015.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:51:22.099Z",
+      "type": "thinking",
+      "step": 15
+    },
+    {
+      "t": "2026-10-30T21:51:25.192Z",
+      "type": "decide",
+      "step": 15,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Phone Number*",
+        "text": "(212) 555-0142"
+      },
+      "thought": "Fill phone number.",
+      "thinkMs": 3093
+    },
+    {
+      "t": "2026-10-30T21:51:25.226Z",
+      "type": "target",
+      "step": 15,
+      "box": {
+        "x": 20,
+        "y": 654,
+        "width": 464,
+        "height": 32
+      },
+      "role": "textbox",
+      "name": "Phone Number*",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input class=\"input-text\" type=\"text\" data-bind=\"\n    value: value,\n    valueUpdate: 'keyup',\n    hasFocus: focused,\n    attr: {\n        name: inputName,\n        placeholder: placeholder,\n        'aria-describedby': getDescriptionId(),\n        'aria-required': required,\n        'aria-invalid': error() ? true : 'false',\n        id: uid,\n        disabled: disabled\n    }\" name=\"telephone\" aria-required=\"true\" aria-invalid=\"false\" id=\"CRAD6YV\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:51:28.659Z",
+      "type": "act",
+      "step": 15,
+      "result": "Filled textbox \"Phone Number*\" with \"(212) 555-0142\".",
+      "actMs": 428,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:28.732Z",
+      "type": "observe",
+      "step": 16,
+      "path": "/checkout/",
+      "url": "https://magento2-demo.magebit.com/checkout/#shipping",
+      "title": "Checkout",
+      "text": "Page title: Checkout\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog:\n  - text: Order Summary\n  - tablist:\n    - tab \"1 Item in Cart \":\n      - heading \"1 Item in Cart\" [level=1]\n      - text: \n\nThe page:\n- banner:\n  - link \"store logo\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - button \"Sign In\"\n  - list:\n    - listitem: Shipping \n    - listitem: Review & Payments\n  - list:\n    - listitem:\n      - text: Shipping Address\n      - group:\n        - text: Email Address*\n        - textbox \"Email Address*\": alex.morgan@example.com\n        - text: Tooltip\n        - button \"Tooltip\": \n        - text: You can create an account after checkout.\n      - text: First Name*\n      - textbox \"First Name*\": Alex\n      - text: Last Name*\n      - textbox \"Last Name*\": Morgan\n      - text: Company\n      - textbox \"Company\"\n      - group \"Street Address *\":\n        - text: \"Street Address * Street Address: Line 1\"\n        - 'textbox \"Street Address: Line 1\"': 100 Example Avenue\n        - text: \"Street Address: Line 2\"\n        - 'textbox \"Street Address: Line 2\"'\n      - text: Country*\n      - combobox \"Country*\":\n        - option\n        - option \"Afghanistan\"\n        - option \"Albania\"\n        - option \"Algeria\"\n        - option \"American Samoa\"\n        - option \"United States\" [selected]\n        - (248 options in total; choose one by its name)\n      - text: State/Province*\n      - combobox \"State/Province*\":\n        - option \"Please select a region, state or province.\"\n        - option \"Alabama\"\n        - option \"Alaska\"\n        - option \"American Samoa\"\n        - option \"New York\" [selected]\n        - (66 options in total; choose one by its name)\n      - text: City*\n      - textbox \"City*\": New York\n      - text: Zip/Postal Code*\n      - textbox \"Zip/Postal Code*\": \"10001\"\n      - text: Phone Number*\n      - textbox \"Phone Number*\": (212) 555-0142\n      - text: Tooltip\n      - button \"Tooltip\": \n    - text: Shipping Methods\n    - tabpanel:\n      - table:\n        - rowgroup:\n          - row\n        - rowgroup:\n          - row \"Fixed Flat Rate €5.00\":\n            - cell \"Fixed Flat Rate\":\n              - radio \"Fixed Flat Rate\"\n            - cell \"€5.00\"\n            - cell \"Fixed\"\n            - cell \"Flat Rate\"\n          - row \"Table Rate Best Way €10.00\":\n            - cell \"Table Rate Best Way\":\n              - radio \"Table Rate Best Way\"\n            - cell \"€10.00\"\n            - cell \"Table Rate\"\n            - cell \"Best Way\"\n      - button \"Next\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-016.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:51:28.732Z",
+      "type": "thinking",
+      "step": 16
+    },
+    {
+      "t": "2026-10-30T21:51:32.002Z",
+      "type": "decide",
+      "step": 16,
+      "action": "check",
+      "args": {
+        "role": "radio",
+        "name": "Fixed Flat Rate"
+      },
+      "thought": "Pick a shipping method.",
+      "thinkMs": 3270
+    },
+    {
+      "t": "2026-10-30T21:51:32.068Z",
+      "type": "target",
+      "step": 16,
+      "box": {
+        "x": 20,
+        "y": 798,
+        "width": 13,
+        "height": 13
+      },
+      "role": "radio",
+      "name": "Fixed Flat Rate",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input type=\"radio\" class=\"radio\" data-bind=\"attr: {'aria-labelledby': 'label_method_' + method.method_code + '_' + method.carrier_code + ' ' + 'label_carrier_' + method.method_code + '_' + method.carrier_code,\n                    'checked': element.rates().length == 1 || element.isSelected}, value: method.carrier_code + '_' + method.method_code, checked: element.isSelected\" aria-labelledby=\"label_method_flatrate_flatrate label_carrier_flatrate_flatrate\" value=\"flatrate_flatrate\" name=\"ko_unique_5\" style=\"\">"
+    },
+    {
+      "t": "2026-10-30T21:51:35.598Z",
+      "type": "act",
+      "step": 16,
+      "result": "Checked radio \"Fixed Flat Rate\".",
+      "actMs": 525,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:35.646Z",
+      "type": "observe",
+      "step": 17,
+      "path": "/checkout/",
+      "url": "https://magento2-demo.magebit.com/checkout/#shipping",
+      "title": "Checkout",
+      "text": "Page title: Checkout\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog:\n  - text: Order Summary\n  - tablist:\n    - tab \"1 Item in Cart \":\n      - heading \"1 Item in Cart\" [level=1]\n      - text: \n\nThe page:\n- banner:\n  - link \"store logo\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - button \"Sign In\"\n  - list:\n    - listitem: Shipping \n    - listitem: Review & Payments\n  - list:\n    - listitem:\n      - text: Shipping Address\n      - group:\n        - text: Email Address*\n        - textbox \"Email Address*\": alex.morgan@example.com\n        - text: Tooltip\n        - button \"Tooltip\": \n        - text: You can create an account after checkout.\n      - text: First Name*\n      - textbox \"First Name*\": Alex\n      - text: Last Name*\n      - textbox \"Last Name*\": Morgan\n      - text: Company\n      - textbox \"Company\"\n      - group \"Street Address *\":\n        - text: \"Street Address * Street Address: Line 1\"\n        - 'textbox \"Street Address: Line 1\"': 100 Example Avenue\n        - text: \"Street Address: Line 2\"\n        - 'textbox \"Street Address: Line 2\"'\n      - text: Country*\n      - combobox \"Country*\":\n        - option\n        - option \"Afghanistan\"\n        - option \"Albania\"\n        - option \"Algeria\"\n        - option \"American Samoa\"\n        - option \"United States\" [selected]\n        - (248 options in total; choose one by its name)\n      - text: State/Province*\n      - combobox \"State/Province*\":\n        - option \"Please select a region, state or province.\"\n        - option \"Alabama\"\n        - option \"Alaska\"\n        - option \"American Samoa\"\n        - option \"New York\" [selected]\n        - (66 options in total; choose one by its name)\n      - text: City*\n      - textbox \"City*\": New York\n      - text: Zip/Postal Code*\n      - textbox \"Zip/Postal Code*\": \"10001\"\n      - text: Phone Number*\n      - textbox \"Phone Number*\": (212) 555-0142\n      - text: Tooltip\n      - button \"Tooltip\": \n    - text: Shipping Methods\n    - tabpanel:\n      - table:\n        - rowgroup:\n          - row\n        - rowgroup:\n          - row \"Fixed Flat Rate €5.00\":\n            - cell \"Fixed Flat Rate\":\n              - radio \"Fixed Flat Rate\" [checked]\n            - cell \"€5.00\"\n            - cell \"Fixed\"\n            - cell \"Flat Rate\"\n          - row \"Table Rate Best Way €10.00\":\n            - cell \"Table Rate Best Way\":\n              - radio \"Table Rate Best Way\"\n            - cell \"€10.00\"\n            - cell \"Table Rate\"\n            - cell \"Best Way\"\n      - button \"Next\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-017.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:51:35.646Z",
+      "type": "thinking",
+      "step": 17
+    },
+    {
+      "t": "2026-10-30T21:51:39.110Z",
+      "type": "decide",
+      "step": 17,
+      "action": "click",
+      "args": {
+        "role": "button",
+        "name": "Next"
+      },
+      "thought": "Continue to the payment step.",
+      "thinkMs": 3464
+    },
+    {
+      "t": "2026-10-30T21:51:39.183Z",
+      "type": "target",
+      "step": 17,
+      "box": {
+        "x": 740,
+        "y": 650,
+        "width": 77,
+        "height": 52
+      },
+      "role": "button",
+      "name": "Next",
+      "scrolled": true,
+      "tag": "button",
+      "outer": "<button data-role=\"opc-continue\" type=\"submit\" class=\"button action continue primary\">\n                            <span data-bind=\"i18n: 'Next'\">Next</span>\n                        </button>",
+      "image": "step-017-t.jpg"
+    },
+    {
+      "t": "2026-10-30T21:51:42.722Z",
+      "type": "act",
+      "step": 17,
+      "result": "Clicked button \"Next\".",
+      "actMs": 538,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:42.767Z",
+      "type": "observe",
+      "step": 18,
+      "path": "/checkout/",
+      "url": "https://magento2-demo.magebit.com/checkout/#shipping",
+      "title": "Checkout",
+      "text": "Page title: Checkout\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog:\n  - text: Order Summary\n  - tablist:\n    - tab \"1 Item in Cart \":\n      - heading \"1 Item in Cart\" [level=1]\n      - text: \n\nThe page:\n- img \"Loading...\"\n- banner:\n  - link \"store logo\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - button \"Sign In\"\n  - list:\n    - listitem: Shipping \n    - listitem: Review & Payments\n  - list:\n    - listitem:\n      - text: Shipping Address\n      - group:\n        - text: Email Address*\n        - textbox \"Email Address*\": alex.morgan@example.com\n        - text: Tooltip\n        - button \"Tooltip\": \n        - text: You can create an account after checkout.\n      - text: First Name*\n      - textbox \"First Name*\": Alex\n      - text: Last Name*\n      - textbox \"Last Name*\": Morgan\n      - text: Company\n      - textbox \"Company\"\n      - group \"Street Address *\":\n        - text: \"Street Address * Street Address: Line 1\"\n        - 'textbox \"Street Address: Line 1\"': 100 Example Avenue\n        - text: \"Street Address: Line 2\"\n        - 'textbox \"Street Address: Line 2\"'\n      - text: Country*\n      - combobox \"Country*\":\n        - option\n        - option \"Afghanistan\"\n        - option \"Albania\"\n        - option \"Algeria\"\n        - option \"American Samoa\"\n        - option \"United States\" [selected]\n        - (248 options in total; choose one by its name)\n      - text: State/Province*\n      - combobox \"State/Province*\":\n        - option \"Please select a region, state or province.\"\n        - option \"Alabama\"\n        - option \"Alaska\"\n        - option \"American Samoa\"\n        - option \"New York\" [selected]\n        - (66 options in total; choose one by its name)\n      - text: City*\n      - textbox \"City*\": New York\n      - text: Zip/Postal Code*\n      - textbox \"Zip/Postal Code*\": \"10001\"\n      - text: Phone Number*\n      - textbox \"Phone Number*\": (212) 555-0142\n      - text: Tooltip\n      - button \"Tooltip\": \n    - text: Shipping Methods\n    - tabpanel:\n      - table:\n        - rowgroup:\n          - row\n        - rowgroup:\n          - row \"Fixed Flat Rate €5.00\":\n            - cell \"Fixed Flat Rate\":\n              - radio \"Fixed Flat Rate\" [checked]\n            - cell \"€5.00\"\n            - cell \"Fixed\"\n            - cell \"Flat Rate\"\n          - row \"Table Rate Best Way €10.00\":\n            - cell \"Table Rate Best Way\":\n              - radio \"Table Rate Best Way\"\n            - cell \"€10.00\"\n            - cell \"Table Rate\"\n            - cell \"Best Way\"\n      - button \"Next\"\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-018.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:51:42.767Z",
+      "type": "thinking",
+      "step": 18
+    },
+    {
+      "t": "2026-10-30T21:51:46.252Z",
+      "type": "decide",
+      "step": 18,
+      "action": "read",
+      "args": {},
+      "thought": "Page is loading; read again.",
+      "thinkMs": 3485
+    },
+    {
+      "t": "2026-10-30T21:51:49.254Z",
+      "type": "act",
+      "step": 18,
+      "result": "You read the page again.",
+      "actMs": 0,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:56.642Z",
+      "type": "decide",
+      "step": 19,
+      "action": "done",
+      "args": {},
+      "thought": "Payment step with Place Order button is on screen; stop here without paying.",
+      "final": true
+    },
+    {
+      "t": "2026-10-30T21:51:56.732Z",
+      "type": "end",
+      "outcome": {
+        "status": "reached-payment",
+        "reason": "Reached the payment step. Stopped there: nothing was paid."
+      },
+      "findings": [
+        {
+          "page": "Magento 2 Commerce (Enterprise) Demo - Magebit",
+          "problem": "On the home page the Add to Cart buttons in the Hot Sellers grid could not be clicked because the product grid list was covering them; I had to open the product page instead.",
+          "step": 1,
+          "element": {
+            "role": "button",
+            "name": "Add to Cart"
+          }
+        },
+        {
+          "page": "Fusion Backpack",
+          "problem": "Right after the product page opened, the Add to Cart button was shown as disabled and the page lacked its tabs and gallery; I had to read again before the button became usable, with no message about loading.",
+          "step": 3,
+          "element": {
+            "role": "button",
+            "name": "Add to Cart"
+          }
+        },
+        {
+          "page": "Checkout",
+          "problem": "The checkout page first showed only a Loading image with no form; I had to read again to see the form, and the loading state was announced only as an unlabelled image.",
+          "step": 7,
+          "element": {
+            "role": "img",
+            "name": "Loading..."
+          }
+        },
+        {
+          "page": "Checkout",
+          "problem": "The Email Address field has a Tooltip button with no meaningful name (just the word Tooltip), and the same for the phone number Tooltip, so the purpose of these buttons is unclear. Also many fields show labels as plain text beside the textbox with the asterisk in the name.",
+          "step": 8,
+          "element": {
+            "role": "button",
+            "name": "Tooltip"
+          }
+        },
+        {
+          "page": "Checkout",
+          "problem": "After choosing the state, city, or ZIP, the shipping method radios became disabled and a Loading image appeared without any announcement, so I could not tell when I could pick a shipping method.",
+          "step": 13,
+          "element": {
+            "role": "radio",
+            "name": "Fixed Flat Rate"
+          }
+        },
+        {
+          "page": "Checkout",
+          "problem": "After clicking Next the page showed only a Loading image and the old shipping form for a step; the move to the payment step was not announced and I had to read again to find the payment form.",
+          "step": 18,
+          "element": {
+            "role": "button",
+            "name": "Next"
+          }
+        }
+      ],
+      "steps": 18,
+      "path": "/checkout/",
+      "url": "https://magento2-demo.magebit.com/checkout/#payment",
+      "title": "Checkout",
+      "text": "Page title: Checkout\n\nPage as an accessibility tree:\nOpen dialogs (shown on top of the page):\n- dialog:\n  - text: Order Summary\n  - table \"Order Summary\":\n    - rowgroup:\n      - row \"Cart Subtotal €59.00\":\n        - rowheader \"Cart Subtotal\"\n        - cell \"€59.00\"\n      - row \"Shipping Flat Rate - Fixed €5.00\":\n        - rowheader \"Shipping Flat Rate - Fixed\"\n        - cell \"€5.00\"\n      - row \"Order Total €64.00\":\n        - rowheader \"Order Total\":\n          - strong: Order Total\n        - cell \"€64.00\":\n          - strong: €64.00\n  - tablist:\n    - tab \"1 Item in Cart \":\n      - heading \"1 Item in Cart\" [level=1]\n      - text: \n  - text: \"Ship To:\"\n  - button \" edit\"\n  - text: Alex Morgan 100 Example Avenue New York, New York 10001 United States\n  - link \"(212) 555-0142\"\n  - text: \"Shipping Method:\"\n  - button \" edit\"\n  - text: Flat Rate - Fixed\n\nThe page:\n- banner:\n  - link \"store logo\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - button \"Sign In\"\n  - list:\n    - listitem: Shipping \n    - listitem: Review & Payments \n  - list:\n    - tabpanel:\n      - group \"Payment Information\":\n        - text: Payment Information Payment Method Check / Money order\n        - checkbox \"My billing and shipping address are the same\" [checked]\n        - text: My billing and shipping address are the same Alex Morgan 100 Example Avenue New York, New York 10001 United States\n        - link \"(212) 555-0142\"\n        - button \"Place Order\"\n        - tablist:\n          - tab \"Apply Discount Code \":\n            - heading \"Apply Discount Code \" [level=2]\n- text: Copyright © 2013-present Magento, Inc. All rights reserved.",
+      "image": "step-999.jpg"
+    },
+    {
+      "t": "2026-10-30T21:51:56.798Z",
+      "type": "finished",
+      "outcome": {
+        "status": "reached-payment",
+        "reason": "Reached the payment step. Stopped there: nothing was paid."
+      }
+    }
+  ],
+  "robots": {
+    "ok": true,
+    "robotsUrl": "https://magento2-demo.magebit.com/robots.txt",
+    "crawlerSkips": []
+  },
+  "steps": 18,
+  "scan": {
+    "totalViolations": 54,
+    "pages": [
+      {
+        "url": "https://magento2-demo.magebit.com/",
+        "violations": 15,
+        "rules": [
+          "aria-required-children",
+          "aria-required-parent",
+          "listitem",
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://magento2-demo.magebit.com/fusion-backpack.html",
+        "violations": 19,
+        "rules": [
+          "aria-required-children",
+          "aria-required-parent",
+          "listitem",
+          "nested-interactive",
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://magento2-demo.magebit.com/checkout/cart/",
+        "violations": 15,
+        "rules": [
+          "aria-required-children",
+          "aria-required-parent",
+          "listitem",
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://magento2-demo.magebit.com/checkout/",
+        "violations": 1,
+        "rules": [
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://magento2-demo.magebit.com/checkout/#shipping",
+        "violations": 4,
+        "rules": [
+          "aria-allowed-role",
+          "aria-dialog-name",
+          "list",
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      }
+    ],
+    "inRun": true
+  }
+}

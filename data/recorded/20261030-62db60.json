@@ -1,0 +1,1568 @@
+{
+  "id": "20261030-62db60",
+  "createdAt": "2026-10-30T21:48:22.443Z",
+  "label": "platform sweep",
+  "persona": "keyboard",
+  "brainKind": "external",
+  "model": null,
+  "instanceId": null,
+  "defects": [],
+  "patches": [],
+  "site": {
+    "url": "https://hydrogen.shop/",
+    "host": "hydrogen.shop"
+  },
+  "paypalMode": "sandbox",
+  "goalId": "checkout",
+  "goal": "This is a real online shop. Add any one in-stock product to the cart and go through checkout as far as the payment step, then stop. Never pay, never place or submit an order, never create an account or sign in, never type card details. If the shop asks for contact or shipping details before payment, use: full name Alex Morgan, email alex.morgan@example.com, street address 100 Example Avenue, city New York, state New York, ZIP 10001, country United States (or the closest option the shop offers), phone (212) 555-0142. Decline cookie banners, newsletters and promotions. When you see the payment form or a button that would pay or place the order, finish with done and your findings. If you cannot get that far, give up with honest findings.",
+  "maxSteps": 90,
+  "status": "finished",
+  "outcome": {
+    "status": "reached-payment",
+    "reason": "Reached the payment step. Stopped there: nothing was paid."
+  },
+  "findings": [
+    {
+      "page": "Home | Hydrogen Demo Store",
+      "problem": "Cookie banner: after pressing Decline, focus landed on an unnamed div instead of staying logical, so I did not know where I was; banner buttons come before the Skip to content link.",
+      "step": 5,
+      "element": {
+        "role": "generic",
+        "name": ""
+      }
+    },
+    {
+      "page": "Home | Hydrogen Demo Store",
+      "problem": "Skip to content link did nothing visible: focus was reset to top of page, and the next Tab went to the hero banner link, so it saved no effort.",
+      "step": 7,
+      "element": {
+        "role": "link",
+        "name": "Skip to content"
+      }
+    },
+    {
+      "page": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "problem": "Two links in the product area had no name at all (likely image gallery), so I could not tell what they do.",
+      "step": 11,
+      "element": {
+        "role": "link",
+        "name": ""
+      }
+    },
+    {
+      "page": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "problem": "Size and binding options are links with no state announced (no selected/pressed); pressing Enter on 154cm gave no feedback, and the Color group had no options I could focus. I needed about 8 Tabs to reach Add to Cart.",
+      "step": 14,
+      "element": {
+        "role": "link",
+        "name": "154cm"
+      }
+    },
+    {
+      "page": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "problem": "After Add to Cart the cart panel first said the cart was empty and header count stayed 0; only after re-reading did it show the item. No clear announcement that the item was added, and focus was on an unnamed button.",
+      "step": 21,
+      "element": {
+        "role": "button",
+        "name": "Add to Cart"
+      }
+    },
+    {
+      "page": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "problem": "Cart panel opened but the page behind stayed in the Tab order and the first focused cart control (step 21) was an unnamed icon button (probably close); the Remove button is an icon button with just the word Remove, and the quantity minus control was not reachable.",
+      "step": 23,
+      "element": {
+        "role": "button",
+        "name": ""
+      }
+    },
+    {
+      "page": "Checkout - Hydrogen Demo Store",
+      "problem": "Checkout page showed only the store name at first with no loading message and no focus; I had to re-read to find the form. Page also lists Processing... text and no focus was placed on the first field.",
+      "step": 29,
+      "element": {
+        "role": "document",
+        "name": "Checkout"
+      }
+    }
+  ],
+  "events": [
+    {
+      "t": "2026-10-30T21:48:23.665Z",
+      "type": "start",
+      "persona": "keyboard",
+      "startUrl": "https://hydrogen.shop/"
+    },
+    {
+      "t": "2026-10-30T21:48:24.404Z",
+      "type": "scan-page",
+      "url": "https://hydrogen.shop/",
+      "violations": 5,
+      "rules": [
+        "color-contrast",
+        "landmark-unique",
+        "page-has-heading-one",
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:48:24.732Z",
+      "type": "observe",
+      "step": 1,
+      "path": "/",
+      "url": "https://hydrogen.shop/",
+      "title": "Home | Hydrogen Demo Store",
+      "text": "Page title: Home | Hydrogen Demo Store\n\nWhat is visible on screen:\nCookie consent\n\nWe and our partners, including Shopify, use cookies and other technologies to personalize your experience, show you ads, and perform analytics, and we will not use cookies or other technologies for these purposes unless you accept them. Learn more in our Privacy Policy\n\nManage preferences\nAccept\nDecline\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nAll Mountain All Season\n\nThe All New Hydrogen Snowboard Exclusively From Shopify\n\nShop Now →\nFeatured Products\nSale\nThe Hydrogen Snowboard\n$500\n$649.95\nThe Full Stack Snowboard\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Toggle Snowboard\n$885.95\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nFrom the Slopes to the Chalet\nShop Now →\nCollections\nBundles\nFreestyle Collection\nBackcountry Collection\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-001.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:48:24.732Z",
+      "type": "thinking",
+      "step": 1
+    },
+    {
+      "t": "2026-10-30T21:49:41.428Z",
+      "type": "decide",
+      "step": 1,
+      "action": "next",
+      "args": {},
+      "thought": "Cookie banner first; tab to reach Decline.",
+      "thinkMs": 76697
+    },
+    {
+      "t": "2026-10-30T21:49:44.517Z",
+      "type": "act",
+      "step": 1,
+      "result": "Focus moved to: button \"Manage preferences\"",
+      "actMs": 88,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:49:44.551Z",
+      "type": "observe",
+      "step": 2,
+      "path": "/",
+      "url": "https://hydrogen.shop/",
+      "title": "Home | Hydrogen Demo Store",
+      "text": "Page title: Home | Hydrogen Demo Store\n\nWhat is visible on screen:\nCookie consent\n\nWe and our partners, including Shopify, use cookies and other technologies to personalize your experience, show you ads, and perform analytics, and we will not use cookies or other technologies for these purposes unless you accept them. Learn more in our Privacy Policy\n\nManage preferences\nAccept\nDecline\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nAll Mountain All Season\n\nThe All New Hydrogen Snowboard Exclusively From Shopify\n\nShop Now →\nFeatured Products\nSale\nThe Hydrogen Snowboard\n$500\n$649.95\nThe Full Stack Snowboard\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Toggle Snowboard\n$885.95\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nFrom the Slopes to the Chalet\nShop Now →\nCollections\nBundles\nFreestyle Collection\nBackcountry Collection\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: button \"Manage preferences\"",
+      "image": "step-002.jpg",
+      "focus": {
+        "x": 224,
+        "y": 791,
+        "width": 257,
+        "height": 37
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:49:44.551Z",
+      "type": "thinking",
+      "step": 2
+    },
+    {
+      "t": "2026-10-30T21:49:47.285Z",
+      "type": "decide",
+      "step": 2,
+      "action": "next",
+      "args": {},
+      "thought": "Keep tabbing to Decline.",
+      "thinkMs": 2733
+    },
+    {
+      "t": "2026-10-30T21:49:50.370Z",
+      "type": "act",
+      "step": 2,
+      "result": "Focus moved to: button \"Accept\"",
+      "actMs": 84,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:49:50.399Z",
+      "type": "observe",
+      "step": 3,
+      "path": "/",
+      "url": "https://hydrogen.shop/",
+      "title": "Home | Hydrogen Demo Store",
+      "text": "Page title: Home | Hydrogen Demo Store\n\nWhat is visible on screen:\nCookie consent\n\nWe and our partners, including Shopify, use cookies and other technologies to personalize your experience, show you ads, and perform analytics, and we will not use cookies or other technologies for these purposes unless you accept them. Learn more in our Privacy Policy\n\nManage preferences\nAccept\nDecline\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nAll Mountain All Season\n\nThe All New Hydrogen Snowboard Exclusively From Shopify\n\nShop Now →\nFeatured Products\nSale\nThe Hydrogen Snowboard\n$500\n$649.95\nThe Full Stack Snowboard\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Toggle Snowboard\n$885.95\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nFrom the Slopes to the Chalet\nShop Now →\nCollections\nBundles\nFreestyle Collection\nBackcountry Collection\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: button \"Accept\"",
+      "image": "step-003.jpg",
+      "focus": {
+        "x": 501,
+        "y": 791,
+        "width": 258,
+        "height": 37
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:49:50.399Z",
+      "type": "thinking",
+      "step": 3
+    },
+    {
+      "t": "2026-10-30T21:49:50.534Z",
+      "type": "decide",
+      "step": 3,
+      "action": "next",
+      "args": {},
+      "thought": "Tab again to reach Decline.",
+      "thinkMs": 135
+    },
+    {
+      "t": "2026-10-30T21:49:53.648Z",
+      "type": "act",
+      "step": 3,
+      "result": "Focus moved to: button \"Decline\"",
+      "actMs": 88,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:49:53.682Z",
+      "type": "observe",
+      "step": 4,
+      "path": "/",
+      "url": "https://hydrogen.shop/",
+      "title": "Home | Hydrogen Demo Store",
+      "text": "Page title: Home | Hydrogen Demo Store\n\nWhat is visible on screen:\nCookie consent\n\nWe and our partners, including Shopify, use cookies and other technologies to personalize your experience, show you ads, and perform analytics, and we will not use cookies or other technologies for these purposes unless you accept them. Learn more in our Privacy Policy\n\nManage preferences\nAccept\nDecline\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nAll Mountain All Season\n\nThe All New Hydrogen Snowboard Exclusively From Shopify\n\nShop Now →\nFeatured Products\nSale\nThe Hydrogen Snowboard\n$500\n$649.95\nThe Full Stack Snowboard\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Toggle Snowboard\n$885.95\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nFrom the Slopes to the Chalet\nShop Now →\nCollections\nBundles\nFreestyle Collection\nBackcountry Collection\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: button \"Decline\"",
+      "image": "step-004.jpg",
+      "focus": {
+        "x": 778,
+        "y": 791,
+        "width": 258,
+        "height": 37
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:49:53.682Z",
+      "type": "thinking",
+      "step": 4
+    },
+    {
+      "t": "2026-10-30T21:49:56.342Z",
+      "type": "decide",
+      "step": 4,
+      "action": "activate",
+      "args": {},
+      "thought": "Decline cookies.",
+      "thinkMs": 2660
+    },
+    {
+      "t": "2026-10-30T21:49:56.344Z",
+      "type": "target",
+      "step": 4,
+      "box": {
+        "x": 778,
+        "y": 791,
+        "width": 258,
+        "height": 37
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button id=\"shopify-pc__banner__btn-decline\" class=\"shopify-pc__banner__btn-decline\" type=\"button\">Decline</button>"
+    },
+    {
+      "t": "2026-10-30T21:49:59.853Z",
+      "type": "act",
+      "step": 4,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 508,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:49:59.883Z",
+      "type": "observe",
+      "step": 5,
+      "path": "/",
+      "url": "https://hydrogen.shop/",
+      "title": "Home | Hydrogen Demo Store",
+      "text": "Page title: Home | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nAll Mountain All Season\n\nThe All New Hydrogen Snowboard Exclusively From Shopify\n\nShop Now →\nFeatured Products\nSale\nThe Hydrogen Snowboard\n$500\n$649.95\nThe Full Stack Snowboard\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Toggle Snowboard\n$885.95\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nFrom the Slopes to the Chalet\nShop Now →\nCollections\nBundles\nFreestyle Collection\nBackcountry Collection\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: div",
+      "image": "step-005.jpg",
+      "focus": {
+        "x": -1,
+        "y": -1,
+        "width": 1,
+        "height": 1
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:49:59.883Z",
+      "type": "thinking",
+      "step": 5
+    },
+    {
+      "t": "2026-10-30T21:50:02.205Z",
+      "type": "decide",
+      "step": 5,
+      "action": "next",
+      "args": {},
+      "thought": "Tab onward to find a product link.",
+      "thinkMs": 2322
+    },
+    {
+      "t": "2026-10-30T21:50:05.293Z",
+      "type": "act",
+      "step": 5,
+      "result": "Focus moved to: link \"Skip to content\"",
+      "actMs": 87,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:05.315Z",
+      "type": "observe",
+      "step": 6,
+      "path": "/",
+      "url": "https://hydrogen.shop/",
+      "title": "Home | Hydrogen Demo Store",
+      "text": "Page title: Home | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nAll Mountain All Season\n\nThe All New Hydrogen Snowboard Exclusively From Shopify\n\nShop Now →\nFeatured Products\nSale\nThe Hydrogen Snowboard\n$500\n$649.95\nThe Full Stack Snowboard\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Toggle Snowboard\n$885.95\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nFrom the Slopes to the Chalet\nShop Now →\nCollections\nBundles\nFreestyle Collection\nBackcountry Collection\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: link \"Skip to content\"",
+      "image": "step-006.jpg",
+      "focus": {
+        "x": -1,
+        "y": -1,
+        "width": 1,
+        "height": 1
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:05.315Z",
+      "type": "thinking",
+      "step": 6
+    },
+    {
+      "t": "2026-10-30T21:50:07.623Z",
+      "type": "decide",
+      "step": 6,
+      "action": "activate",
+      "args": {},
+      "thought": "Use skip link to jump to main content.",
+      "thinkMs": 2308
+    },
+    {
+      "t": "2026-10-30T21:50:07.664Z",
+      "type": "target",
+      "step": 6,
+      "box": {
+        "x": -1,
+        "y": -1,
+        "width": 1,
+        "height": 1
+      },
+      "role": null,
+      "name": null,
+      "scrolled": true,
+      "tag": "a",
+      "outer": "<a href=\"#mainContent\" class=\"sr-only\">Skip to content</a>",
+      "image": "step-006-t.jpg"
+    },
+    {
+      "t": "2026-10-30T21:50:11.574Z",
+      "type": "act",
+      "step": 6,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 908,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:12.145Z",
+      "type": "scan-page",
+      "url": "https://hydrogen.shop/#mainContent",
+      "violations": 5,
+      "rules": [
+        "color-contrast",
+        "landmark-unique",
+        "page-has-heading-one",
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:50:12.185Z",
+      "type": "observe",
+      "step": 7,
+      "path": "/",
+      "url": "https://hydrogen.shop/#mainContent",
+      "title": "Home | Hydrogen Demo Store",
+      "text": "Page title: Home | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nAll Mountain All Season\n\nThe All New Hydrogen Snowboard Exclusively From Shopify\n\nShop Now →\nFeatured Products\nSale\nThe Hydrogen Snowboard\n$500\n$649.95\nThe Full Stack Snowboard\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Toggle Snowboard\n$885.95\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nFrom the Slopes to the Chalet\nShop Now →\nCollections\nBundles\nFreestyle Collection\nBackcountry Collection\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-007.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:12.185Z",
+      "type": "thinking",
+      "step": 7
+    },
+    {
+      "t": "2026-10-30T21:50:14.815Z",
+      "type": "decide",
+      "step": 7,
+      "action": "next",
+      "args": {},
+      "thought": "Tab to see where focus lands after skip link.",
+      "thinkMs": 2630
+    },
+    {
+      "t": "2026-10-30T21:50:17.902Z",
+      "type": "act",
+      "step": 7,
+      "result": "Focus moved to: link \"All Mountain All Season The All New Hydrogen Snowboard Exclusively From Shopify \"",
+      "actMs": 86,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:17.931Z",
+      "type": "observe",
+      "step": 8,
+      "path": "/",
+      "url": "https://hydrogen.shop/#mainContent",
+      "title": "Home | Hydrogen Demo Store",
+      "text": "Page title: Home | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nAll Mountain All Season\n\nThe All New Hydrogen Snowboard Exclusively From Shopify\n\nShop Now →\nFeatured Products\nSale\nThe Hydrogen Snowboard\n$500\n$649.95\nThe Full Stack Snowboard\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Toggle Snowboard\n$885.95\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nFrom the Slopes to the Chalet\nShop Now →\nCollections\nBundles\nFreestyle Collection\nBackcountry Collection\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: link \"All Mountain All Season The All New Hydrogen Snowboard Exclusively From Shopify \"",
+      "image": "step-008.jpg",
+      "focus": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 860
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:17.931Z",
+      "type": "thinking",
+      "step": 8
+    },
+    {
+      "t": "2026-10-30T21:50:20.106Z",
+      "type": "decide",
+      "step": 8,
+      "action": "next",
+      "args": {},
+      "thought": "Next to reach product links.",
+      "thinkMs": 2175
+    },
+    {
+      "t": "2026-10-30T21:50:23.195Z",
+      "type": "act",
+      "step": 8,
+      "result": "Focus moved to: link \"Sale The Hydrogen Snowboard $500 $649.95\"",
+      "actMs": 89,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:23.235Z",
+      "type": "observe",
+      "step": 9,
+      "path": "/",
+      "url": "https://hydrogen.shop/#mainContent",
+      "title": "Home | Hydrogen Demo Store",
+      "text": "Page title: Home | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nAll Mountain All Season\n\nThe All New Hydrogen Snowboard Exclusively From Shopify\n\nShop Now →\nFeatured Products\nSale\nThe Hydrogen Snowboard\n$500\n$649.95\nThe Full Stack Snowboard\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Toggle Snowboard\n$885.95\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nFrom the Slopes to the Chalet\nShop Now →\nCollections\nBundles\nFreestyle Collection\nBackcountry Collection\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: link \"Sale The Hydrogen Snowboard $500 $649.95\"",
+      "image": "step-009.jpg",
+      "focus": {
+        "x": 48,
+        "y": 276,
+        "width": 320,
+        "height": 468
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:23.235Z",
+      "type": "thinking",
+      "step": 9
+    },
+    {
+      "t": "2026-10-30T21:50:25.431Z",
+      "type": "decide",
+      "step": 9,
+      "action": "activate",
+      "args": {},
+      "thought": "Open the Hydrogen Snowboard.",
+      "thinkMs": 2196
+    },
+    {
+      "t": "2026-10-30T21:50:25.432Z",
+      "type": "target",
+      "step": 9,
+      "box": {
+        "x": 48,
+        "y": 276,
+        "width": 320,
+        "height": 468
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "a",
+      "outer": "<a data-discover=\"true\" href=\"/products/v2-snowboard\"><div class=\"grid gap-4 snap-start w-80\"><div class=\"card-image aspect-[4/5] bg-primary/5\"><img alt=\"Hydrogen snowboard. Front and back.\" decoding=\"async\" height=\"125\" loading=\"lazy\" sizes=\"(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw\" src=\"https://cdn.shopify.com/s/files/1/0551/4566/0472/files/Main_7dd3f38c-b500-42c8-9033-3c3c847fe154.jpg?v=1710175613&amp;width=100&amp;height=125&amp;crop=center\" srcset=\"https://cdn.shopify.com/s/files/1/0551/4566/0472/files/Main_7dd3f38c-b500-42c8-9033-3c3c847fe154.jpg?v=1710175613&amp;width=200&am"
+    },
+    {
+      "t": "2026-10-30T21:50:28.942Z",
+      "type": "act",
+      "step": 9,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 510,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:29.265Z",
+      "type": "scan-page",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "violations": 7,
+      "rules": [
+        "color-contrast",
+        "heading-order",
+        "landmark-unique",
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:50:29.280Z",
+      "type": "observe",
+      "step": 10,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-010.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:29.280Z",
+      "type": "thinking",
+      "step": 10
+    },
+    {
+      "t": "2026-10-30T21:50:31.892Z",
+      "type": "decide",
+      "step": 10,
+      "action": "next",
+      "args": {},
+      "thought": "Tab through to variant options and Add to Cart.",
+      "thinkMs": 2612
+    },
+    {
+      "t": "2026-10-30T21:50:34.978Z",
+      "type": "act",
+      "step": 10,
+      "result": "Focus moved to: link",
+      "actMs": 85,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:35.000Z",
+      "type": "observe",
+      "step": 11,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: link",
+      "image": "step-011.jpg",
+      "focus": {
+        "x": 891,
+        "y": 354,
+        "width": 32,
+        "height": 41
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:35.000Z",
+      "type": "thinking",
+      "step": 11
+    },
+    {
+      "t": "2026-10-30T21:50:38.590Z",
+      "type": "decide",
+      "step": 11,
+      "action": "next",
+      "args": {},
+      "thought": "Unnamed link focused; keep tabbing.",
+      "thinkMs": 3590
+    },
+    {
+      "t": "2026-10-30T21:50:41.693Z",
+      "type": "act",
+      "step": 11,
+      "result": "Focus moved to: link",
+      "actMs": 100,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:41.776Z",
+      "type": "observe",
+      "step": 12,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: link",
+      "image": "step-012.jpg",
+      "focus": {
+        "x": 939,
+        "y": 354,
+        "width": 32,
+        "height": 41
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:41.776Z",
+      "type": "thinking",
+      "step": 12
+    },
+    {
+      "t": "2026-10-30T21:50:44.866Z",
+      "type": "decide",
+      "step": 12,
+      "action": "next",
+      "args": {},
+      "thought": "Another unnamed link; continue.",
+      "thinkMs": 3090
+    },
+    {
+      "t": "2026-10-30T21:50:47.964Z",
+      "type": "act",
+      "step": 12,
+      "result": "Focus moved to: link \"154cm\"",
+      "actMs": 98,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:48.009Z",
+      "type": "observe",
+      "step": 13,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: link \"154cm\"",
+      "image": "step-013.jpg",
+      "focus": {
+        "x": 891,
+        "y": 459,
+        "width": 49,
+        "height": 25
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:48.009Z",
+      "type": "thinking",
+      "step": 13
+    },
+    {
+      "t": "2026-10-30T21:50:51.740Z",
+      "type": "decide",
+      "step": 13,
+      "action": "activate",
+      "args": {},
+      "thought": "Select the 154cm size explicitly.",
+      "thinkMs": 3731
+    },
+    {
+      "t": "2026-10-30T21:50:51.771Z",
+      "type": "target",
+      "step": 13,
+      "box": {
+        "x": 891,
+        "y": 459,
+        "width": 49,
+        "height": 25
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "a",
+      "outer": "<a class=\"leading-none py-1 border-b-[1.5px] cursor-pointer transition-all duration-200 border-primary/50 opacity-100\" rel=\"nofollow\" data-discover=\"true\" href=\"/products/v2-snowboard?Color=Turquoise&amp;Size=154cm&amp;Binding+mount=Nested&amp;Material=Carbon-fiber\">154cm</a>"
+    },
+    {
+      "t": "2026-10-30T21:50:55.368Z",
+      "type": "act",
+      "step": 13,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 587,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:50:55.424Z",
+      "type": "observe",
+      "step": 14,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: link \"154cm\"",
+      "image": "step-014.jpg",
+      "focus": {
+        "x": 891,
+        "y": 459,
+        "width": 49,
+        "height": 25
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:50:55.424Z",
+      "type": "thinking",
+      "step": 14
+    },
+    {
+      "t": "2026-10-30T21:50:58.356Z",
+      "type": "decide",
+      "step": 14,
+      "action": "next",
+      "args": {},
+      "thought": "Continue tabbing toward Add to Cart.",
+      "thinkMs": 2931
+    },
+    {
+      "t": "2026-10-30T21:51:01.454Z",
+      "type": "act",
+      "step": 14,
+      "result": "Focus moved to: link \"158cm\"",
+      "actMs": 95,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:01.774Z",
+      "type": "observe",
+      "step": 15,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: link \"158cm\"",
+      "image": "step-015.jpg",
+      "focus": {
+        "x": 956,
+        "y": 459,
+        "width": 49,
+        "height": 25
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:01.774Z",
+      "type": "thinking",
+      "step": 15
+    },
+    {
+      "t": "2026-10-30T21:51:04.517Z",
+      "type": "decide",
+      "step": 15,
+      "action": "next",
+      "args": {},
+      "thought": "Continue.",
+      "thinkMs": 2743
+    },
+    {
+      "t": "2026-10-30T21:51:07.605Z",
+      "type": "act",
+      "step": 15,
+      "result": "Focus moved to: link \"160cm\"",
+      "actMs": 88,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:07.639Z",
+      "type": "observe",
+      "step": 16,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: link \"160cm\"",
+      "image": "step-016.jpg",
+      "focus": {
+        "x": 1021,
+        "y": 459,
+        "width": 49,
+        "height": 25
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:07.639Z",
+      "type": "thinking",
+      "step": 16
+    },
+    {
+      "t": "2026-10-30T21:51:11.144Z",
+      "type": "decide",
+      "step": 16,
+      "action": "next",
+      "args": {},
+      "thought": "Continue.",
+      "thinkMs": 3505
+    },
+    {
+      "t": "2026-10-30T21:51:14.239Z",
+      "type": "act",
+      "step": 16,
+      "result": "Focus moved to: link \"Nested\"",
+      "actMs": 90,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:14.274Z",
+      "type": "observe",
+      "step": 17,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: link \"Nested\"",
+      "image": "step-017.jpg",
+      "focus": {
+        "x": 891,
+        "y": 548,
+        "width": 51,
+        "height": 25
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:14.274Z",
+      "type": "thinking",
+      "step": 17
+    },
+    {
+      "t": "2026-10-30T21:51:16.812Z",
+      "type": "decide",
+      "step": 17,
+      "action": "next",
+      "args": {},
+      "thought": "Continue.",
+      "thinkMs": 2538
+    },
+    {
+      "t": "2026-10-30T21:51:19.898Z",
+      "type": "act",
+      "step": 17,
+      "result": "Focus moved to: link \"Optimistic\"",
+      "actMs": 84,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:19.938Z",
+      "type": "observe",
+      "step": 18,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: link \"Optimistic\"",
+      "image": "step-018.jpg",
+      "focus": {
+        "x": 958,
+        "y": 548,
+        "width": 73,
+        "height": 25
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:19.938Z",
+      "type": "thinking",
+      "step": 18
+    },
+    {
+      "t": "2026-10-30T21:51:22.444Z",
+      "type": "decide",
+      "step": 18,
+      "action": "next",
+      "args": {},
+      "thought": "Continue.",
+      "thinkMs": 2506
+    },
+    {
+      "t": "2026-10-30T21:51:25.557Z",
+      "type": "act",
+      "step": 18,
+      "result": "Focus moved to: button \"Carbon-fiber\" [shows an icon]",
+      "actMs": 110,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:25.650Z",
+      "type": "observe",
+      "step": 19,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: button \"Carbon-fiber\" [shows an icon]",
+      "image": "step-019.jpg",
+      "focus": {
+        "x": 891,
+        "y": 637,
+        "width": 341,
+        "height": 50
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:25.650Z",
+      "type": "thinking",
+      "step": 19
+    },
+    {
+      "t": "2026-10-30T21:51:28.079Z",
+      "type": "decide",
+      "step": 19,
+      "action": "next",
+      "args": {},
+      "thought": "Continue to Add to Cart.",
+      "thinkMs": 2429
+    },
+    {
+      "t": "2026-10-30T21:51:31.182Z",
+      "type": "act",
+      "step": 19,
+      "result": "Focus moved to: button \"Add to Cart · $500 $649.95\"",
+      "actMs": 93,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:31.238Z",
+      "type": "observe",
+      "step": 20,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\n\nKeyboard focus: button \"Add to Cart · $500 $649.95\"",
+      "image": "step-020.jpg",
+      "focus": {
+        "x": 891,
+        "y": 719,
+        "width": 341,
+        "height": 48
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:31.238Z",
+      "type": "thinking",
+      "step": 20
+    },
+    {
+      "t": "2026-10-30T21:51:34.084Z",
+      "type": "decide",
+      "step": 20,
+      "action": "activate",
+      "args": {},
+      "thought": "Add to cart.",
+      "thinkMs": 2846
+    },
+    {
+      "t": "2026-10-30T21:51:34.091Z",
+      "type": "target",
+      "step": 20,
+      "box": {
+        "x": 891,
+        "y": 719,
+        "width": 341,
+        "height": 48
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button class=\"inline-block rounded font-medium text-center py-3 px-6 bg-primary text-contrast w-full\" type=\"submit\" data-test=\"add-to-cart\"><span class=\"max-w-prose whitespace-pre-wrap inherit text-copy flex items-center justify-center gap-2\"><span>Add to Cart</span> <span>·</span> <span data-test=\"price\">$500</span><span class=\"opacity-50 strike\">$649.95</span></span></button>"
+    },
+    {
+      "t": "2026-10-30T21:51:37.670Z",
+      "type": "act",
+      "step": 20,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 573,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:37.711Z",
+      "type": "observe",
+      "step": 21,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n0\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\nCart\nLooks like you haven’t added anything yet, let’s get you started!\nContinue shopping\nShop Best Sellers\nSale\nThe Hydrogen Snowboard\n$500\n$649.95\nAdd to Cart\nThe Full Stack Snowboard\n$749.95\nSold out\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nAdd to Cart\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nAdd to Cart\n\nKeyboard focus: button [shows an icon]",
+      "image": "step-021.jpg",
+      "focus": {
+        "x": 1196,
+        "y": 22,
+        "width": 52,
+        "height": 52
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:37.711Z",
+      "type": "thinking",
+      "step": 21
+    },
+    {
+      "t": "2026-10-30T21:51:40.439Z",
+      "type": "decide",
+      "step": 21,
+      "action": "read",
+      "args": {},
+      "thought": "Re-read to see if cart updated.",
+      "thinkMs": 2728
+    },
+    {
+      "t": "2026-10-30T21:51:43.440Z",
+      "type": "act",
+      "step": 21,
+      "result": "You read the page again.",
+      "actMs": 0,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:43.513Z",
+      "type": "observe",
+      "step": 22,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n1\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\nCart\nThe Hydrogen Snowboard\nColor: Turquoise\nSize: 154cm\nBinding mount: Nested\nMaterial: Carbon-fiber\nQuantity, 1\n−\n1\n+\nRemove\n$500\nOrder summary\nSubtotal\n$500.00\nApply Discount\nContinue to Checkout\n\nKeyboard focus: button [shows an icon]",
+      "image": "step-022.jpg",
+      "focus": {
+        "x": 1196,
+        "y": 22,
+        "width": 52,
+        "height": 52
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:43.513Z",
+      "type": "thinking",
+      "step": 22
+    },
+    {
+      "t": "2026-10-30T21:51:46.473Z",
+      "type": "decide",
+      "step": 22,
+      "action": "next",
+      "args": {},
+      "thought": "Tab toward Continue to Checkout.",
+      "thinkMs": 2960
+    },
+    {
+      "t": "2026-10-30T21:51:49.606Z",
+      "type": "act",
+      "step": 22,
+      "result": "Focus moved to: link \"The Hydrogen Snowboard\"",
+      "actMs": 130,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:49.679Z",
+      "type": "observe",
+      "step": 23,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n1\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\nCart\nThe Hydrogen Snowboard\nColor: Turquoise\nSize: 154cm\nBinding mount: Nested\nMaterial: Carbon-fiber\nQuantity, 1\n−\n1\n+\nRemove\n$500\nOrder summary\nSubtotal\n$500.00\nApply Discount\nContinue to Checkout\n\nKeyboard focus: link \"The Hydrogen Snowboard\"",
+      "image": "step-023.jpg",
+      "focus": {
+        "x": 944,
+        "y": 98,
+        "width": 193,
+        "height": 19
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:49.679Z",
+      "type": "thinking",
+      "step": 23
+    },
+    {
+      "t": "2026-10-30T21:51:52.250Z",
+      "type": "decide",
+      "step": 23,
+      "action": "next",
+      "args": {},
+      "thought": "Continue tabbing.",
+      "thinkMs": 2571
+    },
+    {
+      "t": "2026-10-30T21:51:55.367Z",
+      "type": "act",
+      "step": 23,
+      "result": "Focus moved to: button \"+\" showing \"Increase quantity\"",
+      "actMs": 111,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:51:55.442Z",
+      "type": "observe",
+      "step": 24,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n1\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\nCart\nThe Hydrogen Snowboard\nColor: Turquoise\nSize: 154cm\nBinding mount: Nested\nMaterial: Carbon-fiber\nQuantity, 1\n−\n1\n+\nRemove\n$500\nOrder summary\nSubtotal\n$500.00\nApply Discount\nContinue to Checkout\n\nKeyboard focus: button \"+\" showing \"Increase quantity\"",
+      "image": "step-024.jpg",
+      "focus": {
+        "x": 1010,
+        "y": 241,
+        "width": 40,
+        "height": 40
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:51:55.442Z",
+      "type": "thinking",
+      "step": 24
+    },
+    {
+      "t": "2026-10-30T21:51:58.766Z",
+      "type": "decide",
+      "step": 24,
+      "action": "next",
+      "args": {},
+      "thought": "Continue tabbing.",
+      "thinkMs": 3324
+    },
+    {
+      "t": "2026-10-30T21:52:01.855Z",
+      "type": "act",
+      "step": 24,
+      "result": "Focus moved to: button \"Remove\" [shows an icon]",
+      "actMs": 87,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:01.907Z",
+      "type": "observe",
+      "step": 25,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n1\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\nCart\nThe Hydrogen Snowboard\nColor: Turquoise\nSize: 154cm\nBinding mount: Nested\nMaterial: Carbon-fiber\nQuantity, 1\n−\n1\n+\nRemove\n$500\nOrder summary\nSubtotal\n$500.00\nApply Discount\nContinue to Checkout\n\nKeyboard focus: button \"Remove\" [shows an icon]",
+      "image": "step-025.jpg",
+      "focus": {
+        "x": 1059,
+        "y": 241,
+        "width": 40,
+        "height": 40
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:52:01.907Z",
+      "type": "thinking",
+      "step": 25
+    },
+    {
+      "t": "2026-10-30T21:52:05.364Z",
+      "type": "decide",
+      "step": 25,
+      "action": "next",
+      "args": {},
+      "thought": "Continue, skip discount.",
+      "thinkMs": 3457
+    },
+    {
+      "t": "2026-10-30T21:52:08.580Z",
+      "type": "act",
+      "step": 25,
+      "result": "Focus moved to: text field showing \"Discount code\"",
+      "actMs": 200,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:08.698Z",
+      "type": "observe",
+      "step": 26,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n1\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\nCart\nThe Hydrogen Snowboard\nColor: Turquoise\nSize: 154cm\nBinding mount: Nested\nMaterial: Carbon-fiber\nQuantity, 1\n−\n1\n+\nRemove\n$500\nOrder summary\nSubtotal\n$500.00\nApply Discount\nContinue to Checkout\n\nKeyboard focus: text field showing \"Discount code\"",
+      "image": "step-026.jpg",
+      "focus": {
+        "x": 816,
+        "y": 726,
+        "width": 287,
+        "height": 38
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:52:08.698Z",
+      "type": "thinking",
+      "step": 26
+    },
+    {
+      "t": "2026-10-30T21:52:12.711Z",
+      "type": "decide",
+      "step": 26,
+      "action": "next",
+      "args": {},
+      "thought": "Continue.",
+      "thinkMs": 4013
+    },
+    {
+      "t": "2026-10-30T21:52:15.807Z",
+      "type": "act",
+      "step": 26,
+      "result": "Focus moved to: button \"Apply Discount\"",
+      "actMs": 92,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:15.853Z",
+      "type": "observe",
+      "step": 27,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n1\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\nCart\nThe Hydrogen Snowboard\nColor: Turquoise\nSize: 154cm\nBinding mount: Nested\nMaterial: Carbon-fiber\nQuantity, 1\n−\n1\n+\nRemove\n$500\nOrder summary\nSubtotal\n$500.00\nApply Discount\nContinue to Checkout\n\nKeyboard focus: button \"Apply Discount\"",
+      "image": "step-027.jpg",
+      "focus": {
+        "x": 1119,
+        "y": 733,
+        "width": 113,
+        "height": 24
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:52:15.853Z",
+      "type": "thinking",
+      "step": 27
+    },
+    {
+      "t": "2026-10-30T21:52:18.823Z",
+      "type": "decide",
+      "step": 27,
+      "action": "next",
+      "args": {},
+      "thought": "Continue.",
+      "thinkMs": 2970
+    },
+    {
+      "t": "2026-10-30T21:52:21.908Z",
+      "type": "act",
+      "step": 27,
+      "result": "Focus moved to: link \"Continue to Checkout\"",
+      "actMs": 84,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:21.946Z",
+      "type": "observe",
+      "step": 28,
+      "path": "/products/v2-snowboard",
+      "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+      "title": "The Hydrogen Snowboard | Hydrogen Demo Store",
+      "text": "Page title: The Hydrogen Snowboard | Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nCollections\nProducts\nJournal\n1\nThe Hydrogen Snowboard\nSnowdevil\nColor\nSize\n154cm\n158cm\n160cm\nBinding mount\nNested\nOptimistic\nMaterial\nCarbon-fiber\nAdd to Cart\n·\n$500\n$649.95\nProduct Details\nShipping\nReturns\nRelated Products\nShopify Wax (Subscription)\n$5\nSale\nThe Red Hydrogen Snowboard\n$610\n$659.95\nSale\nThe Hydrogen Snowboards (Combined)\n$500\n$649.95\nSale\nThe .dev Snowboard\n$729.95\n$799.99\nSale\nThe Apex\n$729.95\n$749.95\nThe S-Series Snowboard\n$639.95\nSale\nThe H2 Snowboard\n$629.95\n$799.99\nThe Oxygen Snowboard\n$1,025\nThe Liquid Snowboard\n$749.95\nThe Toggle Snowboard\n$885.95\nThe Full Stack Snowboard\n$749.95\nSale\nThe Hero Snowboard\n$629.95\n$799.99\nCommunity\nGithub\nDiscord\nTwitter\nSupport\nResources\nHydrogen docs\nTutorial series\nAPI Documentation\nTemplates\nPolicies\n404\nCart\nPrivacy Policy\nYour Privacy Choices\nCountry\nUnited States (USD $)\n© 2026 / Shopify, Inc. Hydrogen is an MIT Licensed Open Source project.\nCart\nThe Hydrogen Snowboard\nColor: Turquoise\nSize: 154cm\nBinding mount: Nested\nMaterial: Carbon-fiber\nQuantity, 1\n−\n1\n+\nRemove\n$500\nOrder summary\nSubtotal\n$500.00\nApply Discount\nContinue to Checkout\n\nKeyboard focus: link \"Continue to Checkout\"",
+      "image": "step-028.jpg",
+      "focus": {
+        "x": 816,
+        "y": 788,
+        "width": 416,
+        "height": 48
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-10-30T21:52:21.946Z",
+      "type": "thinking",
+      "step": 28
+    },
+    {
+      "t": "2026-10-30T21:52:24.133Z",
+      "type": "decide",
+      "step": 28,
+      "action": "activate",
+      "args": {},
+      "thought": "Go to checkout.",
+      "thinkMs": 2187
+    },
+    {
+      "t": "2026-10-30T21:52:24.134Z",
+      "type": "target",
+      "step": 28,
+      "box": {
+        "x": 816,
+        "y": 788,
+        "width": 416,
+        "height": 48
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "a",
+      "outer": "<a href=\"https://checkout.hydrogen.shop/cart/c/hWNIaCPJOXsc2Jhw9CbnqdGt?key=TB_-iCwQMsSUISh8SOBO3DIKgEzP1bOyMA476p4DarZ4SRB23vSH-4vqS0Icuq8-zUXD-4XNgLvlYmKHU11Rk2G-2qvVJkgyBuYS8TQSl8ClxxWBVy_8JIjGBRvaNbJVr9AZ4Nu7veZsHUbI25AWiA%3D%3D&amp;_s=2fd83913-ca74-4f13-9383-7b6f1639a12d&amp;_y=6b4b0c61-c41c-4ab1-8da4-3c98cec2be36\" target=\"_self\"><span class=\"inline-block rounded font-medium text-center py-3 px-6 bg-primary text-contrast w-full\">Continue to Checkout</span></a>"
+    },
+    {
+      "t": "2026-10-30T21:52:27.644Z",
+      "type": "act",
+      "step": 28,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 508,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:27.953Z",
+      "type": "scan-page",
+      "url": "https://checkout.hydrogen.shop/checkouts/cn/hWNIaCPJOXsc2Jhw9CbnqdGt/en-us?_r=AQABSel3aR-xvFlaHjiKoFd-53vhZy9ieTSix3POexo5oWbEXXds&_s=2fd83913-ca74-4f13-9383-7b6f1639a12d&_y=6b4b0c61-c41c-4ab1-8da4-3c98cec2be36&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "violations": 1,
+      "rules": [
+        "empty-heading"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-10-30T21:52:27.965Z",
+      "type": "observe",
+      "step": 29,
+      "path": "/checkouts/cn/hWNIaCPJOXsc2Jhw9CbnqdGt/en-us",
+      "url": "https://checkout.hydrogen.shop/checkouts/cn/hWNIaCPJOXsc2Jhw9CbnqdGt/en-us?_r=AQABSel3aR-xvFlaHjiKoFd-53vhZy9ieTSix3POexo5oWbEXXds&_s=2fd83913-ca74-4f13-9383-7b6f1639a12d&_y=6b4b0c61-c41c-4ab1-8da4-3c98cec2be36&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "title": "Checkout - Hydrogen Demo Store",
+      "text": "Page title: Checkout - Hydrogen Demo Store\n\nWhat is visible on screen:\nHydrogen Demo Store\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-029.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-10-30T21:52:27.965Z",
+      "type": "thinking",
+      "step": 29
+    },
+    {
+      "t": "2026-10-30T21:52:30.115Z",
+      "type": "decide",
+      "step": 29,
+      "action": "read",
+      "args": {},
+      "thought": "Page seems still loading; re-read.",
+      "thinkMs": 2151
+    },
+    {
+      "t": "2026-10-30T21:52:33.115Z",
+      "type": "act",
+      "step": 29,
+      "result": "You read the page again.",
+      "actMs": 0,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-10-30T21:52:41.333Z",
+      "type": "decide",
+      "step": 30,
+      "action": "done",
+      "args": {},
+      "thought": "Payment form is on screen; finish without paying.",
+      "final": true
+    },
+    {
+      "t": "2026-10-30T21:52:41.366Z",
+      "type": "end",
+      "outcome": {
+        "status": "reached-payment",
+        "reason": "Reached the payment step. Stopped there: nothing was paid."
+      },
+      "findings": [
+        {
+          "page": "Home | Hydrogen Demo Store",
+          "problem": "Cookie banner: after pressing Decline, focus landed on an unnamed div instead of staying logical, so I did not know where I was; banner buttons come before the Skip to content link.",
+          "step": 5,
+          "element": {
+            "role": "generic",
+            "name": ""
+          }
+        },
+        {
+          "page": "Home | Hydrogen Demo Store",
+          "problem": "Skip to content link did nothing visible: focus was reset to top of page, and the next Tab went to the hero banner link, so it saved no effort.",
+          "step": 7,
+          "element": {
+            "role": "link",
+            "name": "Skip to content"
+          }
+        },
+        {
+          "page": "The Hydrogen Snowboard | Hydrogen Demo Store",
+          "problem": "Two links in the product area had no name at all (likely image gallery), so I could not tell what they do.",
+          "step": 11,
+          "element": {
+            "role": "link",
+            "name": ""
+          }
+        },
+        {
+          "page": "The Hydrogen Snowboard | Hydrogen Demo Store",
+          "problem": "Size and binding options are links with no state announced (no selected/pressed); pressing Enter on 154cm gave no feedback, and the Color group had no options I could focus. I needed about 8 Tabs to reach Add to Cart.",
+          "step": 14,
+          "element": {
+            "role": "link",
+            "name": "154cm"
+          }
+        },
+        {
+          "page": "The Hydrogen Snowboard | Hydrogen Demo Store",
+          "problem": "After Add to Cart the cart panel first said the cart was empty and header count stayed 0; only after re-reading did it show the item. No clear announcement that the item was added, and focus was on an unnamed button.",
+          "step": 21,
+          "element": {
+            "role": "button",
+            "name": "Add to Cart"
+          }
+        },
+        {
+          "page": "The Hydrogen Snowboard | Hydrogen Demo Store",
+          "problem": "Cart panel opened but the page behind stayed in the Tab order and the first focused cart control (step 21) was an unnamed icon button (probably close); the Remove button is an icon button with just the word Remove, and the quantity minus control was not reachable.",
+          "step": 23,
+          "element": {
+            "role": "button",
+            "name": ""
+          }
+        },
+        {
+          "page": "Checkout - Hydrogen Demo Store",
+          "problem": "Checkout page showed only the store name at first with no loading message and no focus; I had to re-read to find the form. Page also lists Processing... text and no focus was placed on the first field.",
+          "step": 29,
+          "element": {
+            "role": "document",
+            "name": "Checkout"
+          }
+        }
+      ],
+      "steps": 29,
+      "path": "/checkouts/cn/hWNIaCPJOXsc2Jhw9CbnqdGt/en-us",
+      "url": "https://checkout.hydrogen.shop/checkouts/cn/hWNIaCPJOXsc2Jhw9CbnqdGt/en-us?_r=AQABSel3aR-xvFlaHjiKoFd-53vhZy9ieTSix3POexo5oWbEXXds&_s=2fd83913-ca74-4f13-9383-7b6f1639a12d&_y=6b4b0c61-c41c-4ab1-8da4-3c98cec2be36&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+      "title": "Checkout - Hydrogen Demo Store",
+      "text": "Page title: Checkout - Hydrogen Demo Store\n\nWhat is visible on screen:\nSkip to content\nHydrogen Demo Store\nNavigate to Online Store\nHydrogen Demo Store Checkout\nExpress checkout\n\nOR\n\nContact\nSign in\nEmail or mobile phone number\nUsed for your order confirmation and cart reminders\nEmail me with news and offers\nDelivery\nCountry/Region\nUnited States\nAndorra\nAustralia\nAustria\nBelgium\nCanada\nChina\nCyprus\nEstonia\nFinland\nFrance\nGermany\nGreece\nIndia\nIndonesia\nIreland\nItaly\nJapan\nKosovo\nLatvia\nLithuania\nLuxembourg\nMalta\nMonaco\nMontenegro\nNetherlands\nNew Zealand\nPortugal\nSan Marino\nSingapore\nSlovakia\nSlovenia\nSouth Korea\nSpain\nThailand\nUnited Kingdom\nUnited States\nVatican City\nVietnam\nFirst name (optional)\nLast name\nAddress\nApartment, suite, etc. (optional)\nCity\nState\n \nAlabama\nAlaska\nAmerican Samoa\nArizona\nArkansas\nCalifornia\nColorado\nConnecticut\nDelaware\nMicronesia\nFlorida\nGeorgia\nGuam\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMarshall Islands\nMaryland\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nNorthern Mariana Islands\nOhio\nOklahoma\nOregon\nPalau\nPennsylvania\nPuerto Rico\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWashington DC\nWest Virginia\nWisconsin\nWyoming\nU.S. Virgin Islands\nArmed Forces Americas\nArmed Forces Europe\nArmed Forces Pacific\nZIP code\nShipping method\n\nEnter your shipping address to view available shipping methods.\n\nPay with credit card\nAdditional payment methods: Discover, Diners Club, JCB, and UnionPay\n+4\n\nAll transactions are secure and encrypted.\n\nCard number\nExpiration date (MM / YY)\nSecurity code\n3-digit security code usually found on the back of your card. American Express cards have a 4-digit code located on the front.\nName on card\nUse shipping address as billing address\nAdd discount\nRemember me\nSave my information for a faster checkout\nMobile phone (optional)\nBy providing your phone number, you agree to create a Shop account subject to Shop's Terms and Privacy Policy.\nFinalize order\nPay now\n$500.00\nSubmit\nTerms and policies\nCookies\nOrder summary\nShopping cart\nProduct image\nDescription\nQuantity\nPrice\nQuantity\n1\n\nThe Hydrogen Snowboard\n\n154cm / Nested / Carbon-fiber\n\n1\n$500.00\nScroll for more items\nDiscount code or gift card\nDiscount code or gift card\nApply\nSubmit\nBack to finalize order\nCost summary\nItem\nValue\nSubtotal\n$500.00\nShipping\nEnter shipping address\nTotal\nUSD\n$500.00\n\nProcessing…\n\nOpens external website in a new window.\nOpens in a new window.\nOpens external website.\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-999.jpg"
+    },
+    {
+      "t": "2026-10-30T21:52:41.379Z",
+      "type": "finished",
+      "outcome": {
+        "status": "reached-payment",
+        "reason": "Reached the payment step. Stopped there: nothing was paid."
+      }
+    }
+  ],
+  "robots": {
+    "ok": true,
+    "robotsUrl": "https://hydrogen.shop/robots.txt",
+    "crawlerSkips": [
+      "/cart",
+      "/checkout"
+    ]
+  },
+  "steps": 29,
+  "scan": {
+    "totalViolations": 18,
+    "pages": [
+      {
+        "url": "https://hydrogen.shop/",
+        "violations": 5,
+        "rules": [
+          "color-contrast",
+          "landmark-unique",
+          "page-has-heading-one",
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://hydrogen.shop/#mainContent",
+        "violations": 5,
+        "rules": [
+          "color-contrast",
+          "landmark-unique",
+          "page-has-heading-one",
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://hydrogen.shop/products/v2-snowboard?Color=Turquoise&Size=154cm&Binding+mount=Nested&Material=Carbon-fiber",
+        "violations": 7,
+        "rules": [
+          "color-contrast",
+          "heading-order",
+          "landmark-unique",
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "https://checkout.hydrogen.shop/checkouts/cn/hWNIaCPJOXsc2Jhw9CbnqdGt/en-us?_r=AQABSel3aR-xvFlaHjiKoFd-53vhZy9ieTSix3POexo5oWbEXXds&_s=2fd83913-ca74-4f13-9383-7b6f1639a12d&_y=6b4b0c61-c41c-4ab1-8da4-3c98cec2be36&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+        "violations": 1,
+        "rules": [
+          "empty-heading"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      }
+    ],
+    "inRun": true
+  }
+}

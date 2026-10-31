@@ -49,3 +49,12 @@ test('on a real site, a payment method choice at checkout counts as the payment 
   assert.equal(await reachedPayment(page), false);
   await page.close();
 });
+
+test('a long country list is chosen by the start of a name, as typing would', async () => {
+  const page = await browser.newPage();
+  await page.setContent('<label>Country <select><option>Choose</option><option>Germany</option><option>United Kingdom</option><option>United States of America</option></select></label>');
+  const s = new Session(page, 'agent', {});
+  const r = await s.act({ action: 'select', args: { name: 'Country', option: 'United States' } });
+  assert.match(r, /Selected "United States of America"/);
+  await page.close();
+});
