@@ -463,7 +463,8 @@ export function SiteFooter() {
           </ul>
           <ul>
             <li><a href="#/test">Run a test</a></li>
-            <li><a href="#/runs">Runs</a></li>
+            <li><a href="#/results">Results by site</a></li>
+            <li><a href="#/runs">Every run</a></li>
             <li><a href="#/analytics">Analytics</a></li>
             <li><a href="#/defects">Defects and results</a></li>
           </ul>

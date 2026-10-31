@@ -4,7 +4,7 @@ import { api } from './api.js';
 import { ThemeContext, initialTheme, applyTheme } from './theme.js';
 import NewTest from './NewTest.jsx';
 import OwnSite from './OwnSite.jsx';
-import SiteReport, { SitesList } from './SiteReport.jsx';
+import Results from './SiteReport.jsx';
 import RunView from './RunView.jsx';
 import RunsGrid from './RunsGrid.jsx';
 import Defects from './Defects.jsx';
@@ -53,12 +53,10 @@ export default function App() {
     ['#/method', 'Method', route === '/method'],
     ['#/customers', 'Customers', route === '/customers'],
     ['#/paypal', 'For PayPal', route === '/paypal'],
+    // Results holds every site analysis; single runs and the demo shop's defects open from there.
+    ['#/results', 'Results', route.startsWith('/sites') || route === '/results' || route.startsWith('/runs') || route === '/defects' || route.startsWith('/report')],
     ['#/analytics', 'Analytics', route === '/analytics'],
-    ['#/sites', 'Sites', route.startsWith('/sites')],
     ['#/own-site', 'Your site', route === '/own-site'],
-    ['#/runs', 'Runs', route.startsWith('/runs')],
-    ['#/defects', 'Defects', route === '/defects'],
-    ['#/honesty', 'Honesty', route === '/honesty'],
   ];
 
   let page;
@@ -73,8 +71,8 @@ export default function App() {
   else if (route === '/defects') page = <Defects meta={meta} />;
   else if (route === '/test') page = <NewTest meta={meta} />;
   else if (route === '/own-site') page = <OwnSite meta={meta} />;
-  else if (route === '/sites') page = <SitesList />;
-  else if (/^\/sites\/.+/.test(route)) page = <SiteReport siteKey={decodeURIComponent(route.slice(7))} />;
+  else if (route === '/sites' || route === '/results') page = <Results />;
+  else if (/^\/sites\/.+/.test(route)) page = <Results siteKey={decodeURIComponent(route.slice(7))} />;
   else if (route === '/analytics') page = <Analytics meta={meta} />;
   else page = <Landing meta={meta} />;
 

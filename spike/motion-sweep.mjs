@@ -1,6 +1,6 @@
 // Scrolls every page top to bottom with motion on: every revealed block must end up visible, no errors.
 import { chromium } from 'playwright';
-const routes = ['/', '/method', '/customers', '/paypal', '/honesty', '/test', '/own-site', '/analytics', '/sites', '/sites/demo.solidus.io', '/runs', '/defects', '/runs/20261030-c2dca6', '/report/case/20261030-cea700'];
+const routes = ['/', '/method', '/customers', '/paypal', '/honesty', '/test', '/own-site', '/analytics', '/results', '/sites/demo.solidus.io', '/runs', '/defects', '/runs/20261030-c2dca6', '/report/case/20261030-cea700'];
 const b = await chromium.launch();
 for (const width of [1440, 390]) {
   const p = await b.newPage({ viewport: { width, height: 900 } });

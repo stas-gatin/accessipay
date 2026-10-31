@@ -31,3 +31,12 @@ test('a site analysis joins every customer type and finds shared problems', () =
   const named = full.themes.find((t) => /Unnamed/.test(t.theme));
   assert.deepEqual(named.personas.sort(), ['keyboard', 'screenreader']);
 });
+
+test('a site where some customer types never ran still gets an analysis', () => {
+  const all = [run('r1', 'screenreader', 'reached-payment', [{ page: 'Home', problem: 'Links have no name', step: 1 }])];
+  const runs = { list: () => all, get: (id) => all.find((r) => r.id === id) };
+  const sites = createSiteAnalysis({ runs, dataDir: fs.mkdtempSync(path.join(os.tmpdir(), 'accessipay-sites-')) });
+  const full = sites.get('shop.example');
+  assert.equal(full.customers.find((c) => c.persona === 'keyboard').run, null);
+  assert.equal(full.findings, 1);
+});

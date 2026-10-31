@@ -57,7 +57,7 @@ export default function RunsGrid({ meta }) {
   return (
     <div className="page">
       <h1>Runs</h1>
-      <p className="note" style={{ marginTop: -8 }}>Every single run. For one analysis per site, with all customer types together, see <a href="#/sites">Sites</a>.</p>
+      <p className="note" style={{ marginTop: -8 }}>Every single run. For one analysis per site, with all customers together, see <a href="#/results">Results</a>.</p>
       <p className="lead">Every run, grouped the way you choose. Expand a row to see what the shopper reported; drag a column header into the bar to regroup.</p>
       <div className="row" style={{ marginBottom: 10 }} role="group" aria-label="Group runs by">
         <span className="note">Group by</span>

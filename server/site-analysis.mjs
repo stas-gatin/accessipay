@@ -53,8 +53,10 @@ export function createSiteAnalysis({ runs, dataDir }) {
     };
   }
 
+  // Most complete analyses first: more customer types tested, then more of them reaching payment.
   function list() {
-    return [...groups()].map(([key, l]) => summaryOf(key, l)).sort((a, b) => (a.lastRun < b.lastRun ? 1 : -1));
+    return [...groups()].map(([key, l]) => summaryOf(key, l))
+      .sort((a, b) => b.tested - a.tested || b.reached - a.reached || a.key.localeCompare(b.key, 'en', { numeric: true }));
   }
 
   function agentAccess(key) {
@@ -70,7 +72,7 @@ export function createSiteAnalysis({ runs, dataDir }) {
     const latest = latestByPersona(l);
     const customers = PERSONAS.map((p) => {
       const brief = latest[p];
-      if (!brief) return { persona: p, run: null };
+      if (!brief) return { persona: p, run: null, metrics: null, scan: null, findings: [], earlier: [] };
       const run = runs.get(brief.id);
       const m = run.status === 'finished' ? runMetrics(run) : null;
       const final = [...(run.events || [])].reverse().find((e) => e.type === 'decide' && (e.action === 'give_up' || e.action === 'done'));
