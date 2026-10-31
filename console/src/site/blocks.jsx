@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { api } from '../api.js';
 import Logo, { LogoMark } from '../Logo.jsx';
-import { RUNS, ORDERS, PAY_FIX, SKIP_FIX, REPORT_HREF, METHOD } from './facts.js';
+import { RUNS, ORDERS, PAY_FIX, SKIP_FIX, REPORT_HREF, METHOD, lower } from './facts.js';
 import { useInView, useReducedMotion, Reveal } from './motion.jsx';
 
 export function SectionHead({ eyebrow, title, id, lead, light = false, center = false, children }) {
@@ -119,7 +119,7 @@ export function JourneyMap() {
               </div>
               <p className={`jm-out ${r.paid ? 'ok' : 'bad'}`}>
                 <span className="dot-word" aria-hidden="true" />{r.text}{r.paid && '; PayPal confirmed the payment'}.{' '}
-                <a href={`#/runs/${r.run}`}>Replay<span className="sr-only"> the {l.name.toLowerCase()} run</span></a>
+                <a href={`#/runs/${r.run}`}>Replay<span className="sr-only"> the {lower(l.name)} run</span></a>
               </p>
             </li>
           );
@@ -207,7 +207,7 @@ export function EffortBlock() {
           );
         })}
         <p className="effort-note">
-          The middle value of {m.n[0]} runs before and {m.n[1]} after the fix; before it, the runs took {m.steps.range[0].join(' and ')} steps. The time is
+          The middle value of {m.n[0]} runs before and {m.n[1]} after the fix; before the fix the two runs took {m.steps.range[0].join(' and ')} steps. The time is
           estimated from the keys pressed and the choices made ({'0.28\u00a0s'} per key, {'1.35\u00a0s'} per decision), not measured with a stopwatch. axe{'\u2011'}core found no problem on the shop’s own code before or after.
           {' '}<a href={`#/runs/${RUNS.frictionBefore[0]}`}>Before</a> · <a href={`#/runs/${RUNS.frictionAfter[0]}`}>After</a> · <a href="#/analytics">All runs</a>
         </p>
@@ -215,7 +215,7 @@ export function EffortBlock() {
       <div className="effort-fix">
         <p className="effort-k">The whole fix, on every page</p>
         <pre className="codeblock" tabIndex={0} aria-label="The patch that added a skip link"><span className="c-meta">layout, all pages</span>{'\n'}<span className="del">- {SKIP_FIX.before}</span>{'\n'}<span className="add">+ {SKIP_FIX.after}</span></pre>
-        <p>A second demo shop, without the popup: here the keyboard{'\u2011'}only customer could always pay. Before the fix it had to Tab past 25 category links on every page; after it, one “Skip to content” link takes it straight to the products.</p>
+        <p>A second demo shop, where the popup does not trap focus: here the keyboard{'\u2011'}only customer could always pay. Before the fix it had to Tab past 24 category links on every page; after it, one “Skip to main content” link takes it straight to the products.</p>
       </div>
     </div>
   );

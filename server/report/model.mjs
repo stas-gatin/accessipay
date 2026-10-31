@@ -10,7 +10,7 @@ import { exportFix, HONESTY_LABEL } from '../fixer/export.mjs';
 import { stuckPage } from '../fixer/fixer.mjs';
 import { findCulprit, siteCulprits, stuckEvidence, AXE_VERSION } from './culprit.mjs';
 
-export const REPORT_VERSION = 5;
+export const REPORT_VERSION = 6;
 
 // WCAG 2.2 success criteria used by the catalog and the suggestions.
 export const WCAG = {
@@ -162,7 +162,7 @@ function scorecard(run, rerun, baseline) {
   let claim = null;
   if (rerun) {
     const cmp = compareRuns(run, rerun);
-    if (cmp.kind === 'unblocked') claim = { kind: 'unblocked', label: 'impossible → possible', text: `Before the fix the ${customer(run.persona)} could not pay; after it, the same customer with the same task on the same shop paid. The before run has no finishing time or step count to compare, so this is not a "faster" claim.` };
+    if (cmp.kind === 'unblocked') claim = { kind: 'unblocked', label: 'impossible → possible', text: `Before the fix the ${customer(run.persona)} could not pay; after it, the same customer with the same task on the same shop paid. The before run never reached a payment, so there is nothing to compare its time with: this is not a "faster" claim.` };
     else if (cmp.kind === 'regressed') claim = { kind: 'regressed', label: 'possible → impossible', text: 'The customer paid before the change and could not pay after it.' };
     else claim = { kind: 'effort', label: 'same outcome, effort compared', text: `Both runs ended the same way. Change in steps: ${cmp.delta.steps > 0 ? '+' : ''}${cmp.delta.steps}. One run per condition: treat this as an observation, not an average.` };
     if (baseline && runMetrics(rerun).steps === runMetrics(baseline).steps) claim.baseline = `After the fix the path is the same length as on the shop without the defect: ${plural(runMetrics(rerun).steps, 'step')} (run ${baseline.id}).`;

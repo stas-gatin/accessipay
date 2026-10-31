@@ -102,7 +102,7 @@ export default function Results() {
       <h1>What the customers met</h1>
       <TestShopCases />
       <h2 className="res-h2">Real shops, three customers each</h2>
-      <p className="lead">Every shop is tested by a screen reader user, a keyboard-only user and an AI shopping agent, in one visit. Nobody pays on a real shop: a customer passes when it reaches the payment step. Large retailers are shown without their names.</p>
+      <p className="lead">Every shop is tested by a screen reader user, a keyboard-only user and an AI shopping agent, in one visit. Nobody pays on a real shop: a customer passes when it reaches the payment step. Shops are shown without their names.</p>
       {list && (
         <ul className="res-stats" aria-label="Summary">
           <li><b>{tested.length}</b><span>shops tested by all three customers</span></li>
@@ -127,7 +127,7 @@ export default function Results() {
           />
         )}
       </div>
-      <p className="note">Click a shop to open its whole analysis: each customer, the stage it reached, its findings and its run step by step. Shops behind bot protection are listed too: AccessiPay never gets past it, and an AI shopping agent may meet the same wall. Their owners can <a href="#/own-site">let the test in</a>. Retailer letters follow the order the shops were added; a missing letter is a shop still waiting for its test.</p>
+      <p className="note">Click a shop to open its whole analysis: each customer, the stage it reached, its findings and its run step by step. Shops behind bot protection are listed too: AccessiPay never gets past it, and an AI shopping agent may meet the same wall. Their owners can <a href="#/own-site">let the test in</a>. Retailer letters follow the order the shops were added; a missing letter is a shop we did not test.</p>
     </div>
   );
 }
@@ -210,7 +210,7 @@ function SiteAnalysis({ siteKey }) {
 
   const head = (
     <>
-      <p className="eyebrow">{s.anonymized ? 'Large retailer, name withheld' : 'Real shop'}</p>
+      <p className="eyebrow">{s.anonymized ? 'Real shop, name withheld' : 'Real shop'}</p>
       <h2 className="sr-name" id="site-name">{s.key}</h2>
       <p className="lead">
         {s.url && !s.anonymized ? <a href={s.url} rel="noreferrer noopener" target="_blank">{s.url}</a> : 'Recorded without the name, the address or screenshots.'}

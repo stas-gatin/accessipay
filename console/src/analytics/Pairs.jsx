@@ -2,6 +2,7 @@
 // A blocked-then-paid pair is never called "faster": before, the purchase did not happen at all.
 import React from 'react';
 import { useInView, GlyphKey, DataTable } from './kit.jsx';
+import { lower } from '../site/facts.js';
 import { STAGE_ORDER, personaLabel, defectLabel, outcomeLabel, outcomeShape, fmtRange, baseline, pairReplicates, plural } from './derive.js';
 
 function StageTrack({ stage, outcome, seen, delay }) {
@@ -34,7 +35,7 @@ function PairRow({ which, id, outcome, stage, steps, keys, order, seen, delay, a
         {agent ? <span className="ax-nw" title="The AI agent acts on elements, not keys"><b>—</b> keypresses</span> : <span className="ax-nw"><b>{keys}</b> {keys === 1 ? 'keypress' : 'keypresses'}</span>}
         {order && <span>PayPal confirmed</span>}
       </span>
-      <a className="ax-pair-go" href={`#/runs/${id}`}>Watch replay<span className="sr-only">: {which.toLowerCase()}</span> <span aria-hidden="true">→</span></a>
+      <a className="ax-pair-go" href={`#/runs/${id}`}>Watch replay<span className="sr-only">: {lower(which)}</span> <span aria-hidden="true">→</span></a>
     </div>
   );
 }

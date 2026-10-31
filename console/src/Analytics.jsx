@@ -65,7 +65,7 @@ export default function Analytics({ meta }) {
 
       <div className="ax-kpis">
         <Kpi value={t.runs} label="runs counted" sub="demo shop, PayPal sandbox" />
-        <Kpi value={t.sandboxOrders} label="orders PayPal confirmed" sub={`median ${t.medianStepsToBuy ?? '—'} steps each`} />
+        <Kpi value={t.sandboxOrders} label="orders PayPal confirmed" sub={`median ${t.medianStepsToBuy ?? '—'} steps to buy`} />
         <Kpi value={t.unblockedByFix} label={t.unblockedByFix === 1 ? 'blocker fixed by AI' : 'blockers fixed by AI'} sub={`${t.unblockedAfterPaid} of ${t.unblockedAfterRuns} re-runs paid`} tone="good" />
         <Kpi value={t.blockedWhileClean} label="blocked, scanner clean" sub="axe-core found nothing" tone="alert" />
         <Kpi value={t.steps} label="steps taken" sub="one decision each" />

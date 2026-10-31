@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { api } from '../api.js';
-import { RUNS, ORDERS, PAY_FIX } from './facts.js';
+import { RUNS, ORDERS, PAY_FIX, GAVE_UP, lower } from './facts.js';
 import { useInView, usePageVisible, useReducedMotion } from './motion.jsx';
 
 // M1: replay of the real run pair. Run c2dca6 (AI agent blocked: the Pay button is a <div>),
@@ -88,7 +88,8 @@ export default function HeroReplay() {
     return list.map((f) => ({ ...f, runId: ids[f.run] }));
   }, [runs]);
 
-  const blockedSteps = runs.blocked?.steps ?? 22;
+  // Steps as the run metrics count them (decisions, not the final give-up), the same number every page shows.
+  const blockedSteps = GAVE_UP.agent;
   const fixedSteps = runs.fixed?.steps ?? ORDERS.agentFixed.steps;
   const pay = runs.fixed?.payment || { amount: ORDERS.agentFixed.amount, status: 'COMPLETED' };
   const blockedViolations = runs.blocked?.scan?.totalViolations ?? 0;
@@ -185,7 +186,7 @@ export default function HeroReplay() {
           <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4.5L13 10l-5.5 5.5" /></svg>
         </button>
         <span className="rp-count tnum" aria-hidden="true">{i + 1} / {frames.length}</span>
-        <a className="rp-open" href={`#/runs/${f.runId}`}>Open this run<span className="sr-only"> ({runLabel.toLowerCase()})</span> →</a>
+        <a className="rp-open" href={`#/runs/${f.runId}`}>Open this run<span className="sr-only"> ({lower(runLabel)})</span> →</a>
       </div>
     </div>
   );

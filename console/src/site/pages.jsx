@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BrandImg, Reveal } from './motion.jsx';
 import { Arrow, SectionHead, PayPalConfirms, JourneyMap } from './blocks.jsx';
 import { Chain, Calculator, KindLegend } from './BusinessChain.jsx';
-import { CUSTOMERS, METHOD, RUNS, ORDERS, PAY_FIX, EAA_DATE, DEMO_DEFECTS, AXE_FLAGGED, HOLDOUT_DEFECTS, REPEATS } from './facts.js';
+import { CUSTOMERS, METHOD, RUNS, ORDERS, PAY_FIX, EAA_DATE, DEMO_DEFECTS, AXE_FLAGGED, HOLDOUT_DEFECTS, REPEATS, lower } from './facts.js';
 
 // Keep hyphenated words ("keyboard-only", "axe-core"), "WCAG 2.5.3" and "320 px" on one line.
 const NOWRAP = /([A-Za-z]+(?:-[A-Za-z]+)+|WCAG\s[\d.]+|\d+\spx)/g;
@@ -138,7 +138,7 @@ function CustomerCards() {
             <span className="hc-out">
               {blocked && <><span className="dot-word bad">Blocked</span><span aria-hidden="true" className="hc-arr">→</span></>}
               <span className="dot-word ok">Paid</span>
-              <a href={`#/runs/${paid.run}`}>Replay<span className="sr-only"> the {c.name.toLowerCase()} run</span></a>
+              <a href={`#/runs/${paid.run}`}>Replay<span className="sr-only"> the {lower(c.name)} run</span></a>
             </span>
           </li>
         );
@@ -183,7 +183,7 @@ export function CustomersPage() {
                 <div><dt>What it cannot tell you</dt><dd>{c.cannotClaim}</dd></div>
               </dl>
               <div className="cust-proof">
-                {c.proof.map((p) => <Outcome key={p.run} paid={p.paid} run={p.run} who={c.name.toLowerCase()}>{p.text}</Outcome>)}
+                {c.proof.map((p) => <Outcome key={p.run} paid={p.paid} run={p.run} who={lower(c.name)}>{p.text}</Outcome>)}
               </div>
             </Reveal>
           </div>
@@ -240,7 +240,7 @@ export function PayPalPage() {
                 <b>{nb(o.who)}</b>
                 <span className="dot-word">Paid</span>
                 <span className="pp-o-t">{nb(o.text)} · <span className="mono">${o.amount.toFixed(2)}</span></span>
-                <a href={`#/runs/${o.run}`}>Replay<span className="sr-only"> the {o.who.toLowerCase()} run</span></a>
+                <a href={`#/runs/${o.run}`}>Replay<span className="sr-only"> the {lower(o.who)} run</span></a>
               </li>
             ))}
           </Reveal>
@@ -309,7 +309,7 @@ export function Limits() {
           <h3>Real shops</h3>
           <ul>
             <li>Every shop is tested by all three customers. They stop at the payment step: no order is placed, no card data is typed, the details are made up.</li>
-            <li>Large retailers are published without their names, addresses or screenshots, and each is visited at most once a day.</li>
+            <li>Real shops are published without their names, addresses or screenshots, and each is visited at most once a day.</li>
             <li>A shop that turns our browser away is listed as such; AccessiPay never gets past bot protection.</li>
             <li>Every finding is checked again without AI against the record of its run; each one shows whether the record confirms it.</li>
           </ul>

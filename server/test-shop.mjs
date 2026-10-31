@@ -19,10 +19,11 @@ export const CASES = [
   },
   {
     key: 'skip-link', persona: 'keyboard', before: '20261030-ca91a3', after: '20261030-55d6a8',
-    title: '25 menu links and no skip link',
-    problem: 'Nothing is broken: every page starts with 25 category links, and a keyboard user tabs through all of them on every page. The customer pays, just slower.',
+    title: '24 menu links and no skip link',
+    problem: 'Nothing is broken: every page starts with 24 category links, and a keyboard user tabs through all of them on every page. The customer pays, just slower.',
     // The run paid either way, so its last screen says little; show the menu it had to tab through.
     beforeShot: 'first',
+    beforeCaption: 'The menu it had to tab through',
   },
   {
     key: 'card-fields', persona: 'screenreader', before: null, after: '20261030-d7eaff',
@@ -52,7 +53,7 @@ export function createTestShop({ runs, dataDir }) {
     return null;
   }
 
-  function side(id, which) {
+  function side(id, which, caption) {
     const run = id && runs.get(id);
     if (!run) return null;
     const m = run.status === 'finished' ? runMetrics(run) : null;
@@ -62,6 +63,7 @@ export function createTestShop({ runs, dataDir }) {
       outcome: run.outcome?.status || null,
       reason: final?.thought || null,
       shot: shotOf(run, which),
+      caption: caption || null,
       metrics: m && { steps: m.steps, keys: m.keys, klmSeconds: m.klmSeconds, furthestStage: m.furthestStage },
       // The PayPal order status and amount; the order id stays in the run record and the owner report.
       payment: run.payment ? { mode: run.payment.mode, status: run.payment.status, amount: run.payment.amount } : null,
@@ -71,7 +73,7 @@ export function createTestShop({ runs, dataDir }) {
   }
 
   function build(c) {
-    const before = side(c.before, c.beforeShot);
+    const before = side(c.before, c.beforeShot, c.beforeCaption);
     const after = side(c.after);
     return { key: c.key, persona: c.persona, title: c.title, problem: c.problem, before, after, fix: fixFor(c.before) };
   }

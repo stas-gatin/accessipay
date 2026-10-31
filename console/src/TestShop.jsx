@@ -69,7 +69,7 @@ export function TestShopCases() {
 // One side of a case as a card: the screen, a button to the full run, a short summary.
 function SideCard({ title, s, persona, fallbackCap }) {
   const top = [...s.findings].sort((a, b) => (a.step ?? 1e9) - (b.step ?? 1e9)).slice(0, 2);
-  const cap = paid(s) ? (s.payment ? `PayPal order ${s.payment.status}` : 'Paid') : fallbackCap || 'Where it got stuck';
+  const cap = s.caption || (paid(s) ? (s.payment ? `PayPal order ${s.payment.status}` : 'Paid') : fallbackCap || 'Where it got stuck');
   return (
     <article className={`card sr-card ${paid(s) ? 'ok' : 'bad'}`}>
       <header className="sr-card-head">
@@ -120,7 +120,7 @@ export function CasePage({ caseKey }) {
         {before && <SideCard title="Before the fix" s={before} persona={c.persona} fallbackCap={paid(before) ? 'Paid, after many steps' : undefined} />}
         <SideCard title={before ? 'After the fix' : 'The run'} s={after} persona={c.persona} />
       </div>
-      {c.key === 'skip-link' && <p className="note">The first picture is the page the customer had to tab through: 25 category links before the products.</p>}
+      {c.key === 'skip-link' && <p className="note">The first picture is the page the customer had to tab through: 24 category links before the products.</p>}
 
       {fix && (
         <section className="card ts-fix" aria-labelledby="ts-fix-h">

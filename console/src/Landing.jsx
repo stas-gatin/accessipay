@@ -185,7 +185,7 @@ export default function Landing({ meta }) {
       <section className="s-light sec" id="real-sites" aria-labelledby="real-t">
         <div className="wrap">
           <SectionHead eyebrow="Outside our demo shop" id="real-t" title="Real shops, three customers each."
-            lead="Every shop gets the same three customers. Nobody pays on a real shop, so the pass mark there is different: a customer passes when it reaches the payment step. No order, no card data. Large retailers are shown without their names." />
+            lead="Every shop gets the same three customers. Nobody pays on a real shop, so the pass mark there is different: a customer passes when it reaches the payment step. No order, no card data. Shops are shown without their names." />
           <BrandImg name="07-real-sites.png" art="sites" alt="Three small shop fronts side by side with navy, white and green awnings." ratio="21 / 8" className="sec-banner" />
           <RealShops />
           <p className="sweep-own">Many shops turn automated browsers away, and AccessiPay never tries to get past that. <a className="lp-link" href="#/own-site">Connect your own site and let the test in <Arrow /></a></p>

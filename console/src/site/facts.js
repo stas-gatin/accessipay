@@ -8,7 +8,7 @@ export const RUNS = {
   keyboardBlocked: '20261030-cea700', // keyboard, focus-trapping popup, blocked on the cart, gave up after 14 steps (metrics), axe 0 on the shop's own code
   keyboardFixed: '20261030-0e4e77', // keyboard after the AI fix (7 changes), paid in 49 steps
   screenReader: '20261030-d7eaff', // screen reader, clean shop, paid in 36 steps through PayPal Card Fields
-  // Friction: 25 category links before the content and no skip link. Paid either way; the fix is one skip link.
+  // Friction: 24 category links before the content and no skip link. Paid either way; the fix is one skip link.
   frictionBefore: ['20261030-ca91a3', '20261030-9bcad1'],
   frictionAfter: ['20261030-55d6a8', '20261030-0c895e'],
 };
@@ -31,6 +31,9 @@ export const ORDERS = {
 };
 
 // Non-breaking spaces so the date never splits across lines.
+// A customer name inside a sentence: lower case, but "AI" stays as it is.
+export const lower = (s) => String(s).toLowerCase().replace(/\bai\b/g, 'AI');
+
 export const EAA_DATE = 'June\u00a028,\u00a02025';
 
 // The demo shop's defects (server/shop/defects.mjs) and how many of them axe-core (default rules) flags,
