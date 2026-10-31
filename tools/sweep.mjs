@@ -38,11 +38,17 @@ if (cmd === 'start') {
   }
   const visits = read(visitsFile, {});
   const sweeps = read(sweepsFile, []);
+  // Too many browsers and AI brains at once slow every step past the brain's decision timeout,
+  // and the runs end for reasons that have nothing to do with the site.
+  const MAX_PARALLEL = Number(process.env.SWEEP_MAX_PARALLEL || 6);
+  let running = (await api('/api/runs')).filter((r) => r.status === 'running').length;
   const pick = (name) => !only.length || only.some((o) => name.toLowerCase().includes(o.toLowerCase()));
   const list = group === 'platforms' ? sites.platforms.filter((p) => pick(p.name)) : sites.retailers.filter((r) => r.preflight === 'ok' && (!only.length || only.includes(r.label)));
   for (const s of list) {
     const host = hostOf(s.url);
     if (group === 'retailers' && (visits[host] || []).includes(today)) { console.log(`skip ${s.label}: already visited today`); continue; }
+    if (running >= MAX_PARALLEL) { console.log(`skip ${s.label || s.name}: ${running} runs already going (limit ${MAX_PARALLEL}); start it later`); continue; }
+    running += 1;
     const j = await api('/api/runs', { persona, url: s.url, brain: 'external', label: `${group === 'platforms' ? 'platform' : 'retailer'} sweep` });
     if (group === 'retailers') (visits[host] ||= []).push(today);
     sweeps.push({ id: j.id, date: today, persona, kind: group === 'platforms' ? 'platform' : 'retailer', label: s.label || s.name, recorded: false });

@@ -44,19 +44,22 @@ Measured, not estimated. Runs below used the real PayPal sandbox; the shopper's 
 
 On real sites the shopper goes as far as the payment step and stops: the engine refuses to pay, place an order, type card data, sign in or type passwords, and a network guard blocks anything but reading to payment providers. Before a run it reads robots.txt; a bot check, a maintenance page or HTTP 403/429 ends the run as *not testable*: AccessiPay never tries to get past bot protection. There are at least 3 seconds between actions, and each large retailer is visited at most once a day.
 
-**Open-source platform demos** (named; findings to be checked by hand before any issue is filed):
+**Open-source platform demos** (named; findings to be checked by hand before any issue is filed). Each demo gets each customer type; "reached payment" means the payment form or the payment method choice was on screen:
 
-| Site | Platform | Customer | Outcome | axe-core (own code) | What blocked or confused the customer |
-|---|---|---|---|---|---|
-| hydrogen.shop | Shopify Hydrogen | AI agent | reached the payment form, 7 steps | 24 issues on 4 pages | card fields are iframes with no accessible name; variant options do not say which is selected; "added to cart" is not announced |
-| next.medusajs.com | Medusa | AI agent | reached "Place order", 28 steps | 52 issues on 6 pages | every checkout text field and the country select have no accessible name; the email field is named by its error text |
-| storefront.saleor.io | Saleor | AI agent | stopped at payment, 28 steps | 49 issues on 5 pages | the demo has no payment gateway configured (a demo setting, not counted as an accessibility blocker) |
-| demo.solidus.io | Solidus | keyboard only | reached payment, 67 steps | 42 issues | no skip link; unnamed header controls; every product link reads "SHOP NOW"; focus resets to the top after each step |
-| v2.demo.sylius.com | Sylius | keyboard only | ran out of its 90-step budget on the address form | 134 issues | no skip link; size options unreachable by keyboard; unnamed icon link and "Value" field before the content |
+| Platform demo | Screen reader | Keyboard only | AI agent |
+|---|---|---|---|
+| Shopify Hydrogen | reached payment, 11 steps | reached payment, 29 steps | reached payment, 7 steps |
+| Medusa | not counted: the demo answered HTTP 500 | not run (demo down) | reached "Place order", 28 steps (30 Oct) |
+| Saleor | stopped at payment: demo has no payment gateway | ran out of 90 steps on the address form | stopped at payment: no gateway |
+| Solidus | reached payment, 26 steps | reached payment, 67 steps | reached payment, 13 steps |
+| Sylius | reached the payment method choice, 30 steps | ran out of 90 steps on the address form | reached the payment method choice, 25 steps |
+| Shopware Frontends | reached payment, 27 steps | reached payment, 59 steps | not testable: a bot check never finished |
+| Next.js Commerce | not testable: a visual puzzle CAPTCHA appeared at checkout | not testable: same CAPTCHA | not testable: same CAPTCHA |
+| Magento 2 (Magebit demo) | reached payment, 28 steps | reached payment, 88 steps | reached payment, 18 steps |
 
-Two more demos were tried and not counted: one URL was a marketing page with no shop, and one demo's checkout did not render a form even with a mouse.
+What the customers met most often: buttons and links with no name or the same name on every product ("Add to cart", "SHOP NOW"), focus thrown to the top of the page after every step, nothing announced while a page or form section loads, size and colour options that do not say which one is selected, and long forms that change silently (a state list swapped after a country choice, an item named "test" appearing in the cart). On Next.js Commerce a visual puzzle CAPTCHA ("click on all cells where two lines overlap") appeared at checkout after the email was typed; a blind customer cannot solve it.
 
-**Large retailers** (published only as Retailer A to N): 14 well-known stores were checked. 7 were not testable (5 answered HTTP 403 to an automated browser, 1 showed a press-and-hold bot check, 1 showed a maintenance page). Of the rest, the AI agent reached the payment form on 3 so far (10 to 17 steps), with findings such as identically named "Add to cart" and "Quick add" buttons, promo and country pop-ups that block clicks without a dialog role, and a pre-ticked marketing checkbox. 4 runs are being redone after engine fixes (dialogs on long pages, clicks through a field's own label, clicks that start a page load), on another day because of the once-a-day rule.
+**Large retailers** (published only as Retailer A, B, ...): 34 well-known stores were checked. 13 were not testable: most answer HTTP 403 to an automated browser, others showed a press-and-hold bot check, an "unusual activity" page, a maintenance page, refused every Add to cart, or ended guest checkout on a sign-in page. Of the runs that could start, the screen reader customer reached the payment form on 7 of 7 and the AI agent on 3 of 3. Recurring findings: three overlapping pop-ups before the shop, cookie banners with no plain Decline button, carts that first announce "0 items" after an add, raw template text in names ("{{ count }} items", "undefined Artículos en la cesta"), paid add-ons (package protection) already in the bag, and pre-ticked marketing checkboxes. A night sweep on 31 October was discarded: too many runs at once slowed every step past the decision timeout. Those retailers are visited again on another day, at most six runs at a time.
 
 Most axe-core issues on these sites are colour contrast and landmark rules; the problems that actually stopped or slowed the customer are mostly different ones.
 

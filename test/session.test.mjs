@@ -58,3 +58,18 @@ test('a long country list is chosen by the start of a name, as typing would', as
   assert.match(r, /Selected "United States of America"/);
   await page.close();
 });
+
+test('focus inside a shadow DOM widget (cookie banners, overlays) is followed, not stuck on its host', async () => {
+  for (const persona of ['keyboard', 'screenreader']) {
+    const page = await browser.newPage();
+    await page.setContent(`<div id="host" aria-label="Cookie consent"></div><a href="#main">Skip to content</a>
+      <script>const r = document.getElementById('host').attachShadow({ mode: 'open' });
+      r.innerHTML = '<p>We use cookies</p><button>Decline</button><button>Accept</button>';</script>`);
+    const s = new Session(page, persona, {});
+    const first = await s.act({ action: 'next', args: {} });
+    const second = await s.act({ action: 'next', args: {} });
+    assert.match(first, /Decline/, persona);
+    assert.match(second, /Accept/, persona);
+    await page.close();
+  }
+});

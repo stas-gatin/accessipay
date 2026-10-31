@@ -109,11 +109,11 @@ export class Session {
   }
 
   // The frame that holds keyboard focus: an iframe's document when focus is inside it, else the page.
-  // Follows document.activeElement through nested iframes (a ':focus' locator waits forever on a focused iframe).
+  // Follows the focused element through shadow roots and nested iframes (a ':focus' locator waits forever on a focused iframe).
   async focusFrame() {
     let frame = this.page.mainFrame();
     for (let depth = 0; depth < 4; depth++) {
-      const h = await frame.evaluateHandle(() => (document.activeElement?.tagName === 'IFRAME' ? document.activeElement : null)).catch(() => null);
+      const h = await frame.evaluateHandle(() => ((a) => (a?.tagName === 'IFRAME' ? a : null))((() => { let e = document.activeElement; while (e && e.shadowRoot && e.shadowRoot.activeElement) e = e.shadowRoot.activeElement; return e; })())).catch(() => null);
       const el = h?.asElement();
       if (!el) break;
       const inner = await el.contentFrame().catch(() => null);
@@ -137,7 +137,7 @@ export class Session {
   async focusedName() {
     const frame = await this.focusFrame();
     return frame.evaluate(() => {
-      const el = document.activeElement;
+      const el = (() => { let e = document.activeElement; while (e && e.shadowRoot && e.shadowRoot.activeElement) e = e.shadowRoot.activeElement; return e; })();
       if (!el || el === document.body) return '';
       const label = el.labels && el.labels[0] ? el.labels[0].innerText : '';
       return [el.getAttribute('aria-label'), label, el.getAttribute('placeholder'), el.getAttribute('autocomplete'), el.getAttribute('name'), el.innerText, el.value].filter(Boolean).join(' ').slice(0, 200);
@@ -159,7 +159,7 @@ export class Session {
     if (['click', 'check'].includes(d.action) && ACCOUNT_ACTION.test(a.name || '')) return account;
     if (d.action === 'fill' && /password/i.test(a.name || '')) return account;
     if (d.action === 'type' || d.action === 'activate') {
-      const isPassword = await (await this.focusFrame()).evaluate(() => document.activeElement?.type === 'password').catch(() => false);
+      const isPassword = await (await this.focusFrame()).evaluate(() => (() => { let e = document.activeElement; while (e && e.shadowRoot && e.shadowRoot.activeElement) e = e.shadowRoot.activeElement; return e; })()?.type === 'password').catch(() => false);
       if (isPassword) return account;
       if (d.action === 'activate' && ACCOUNT_ACTION.test(await this.focusedName())) return account;
     }
@@ -219,7 +219,8 @@ export class Session {
     const loc = frame.locator(':focus');
     if ((await loc.count()) === 0) return inFrame ? 'an embedded frame with nothing focused inside it' : 'nothing focused (top of page)';
     try {
-      const said = noUrls((await loc.first().ariaSnapshot({ timeout: 2000 })).trim()).replace(/^- /, '');
+      // Inside a shadow root both the host and the inner element match :focus; the inner one comes last.
+      const said = noUrls((await loc.last().ariaSnapshot({ timeout: 2000 })).trim()).replace(/^- /, '');
       return inFrame ? `${said} (inside an embedded payment field)` : said;
     } catch { return 'an element with no name'; }
   }
@@ -229,7 +230,7 @@ export class Session {
     const frame = await this.focusFrame();
     const inFrame = frame !== this.page.mainFrame();
     const text = await frame.evaluate(() => {
-      const el = document.activeElement;
+      const el = (() => { let e = document.activeElement; while (e && e.shadowRoot && e.shadowRoot.activeElement) e = e.shadowRoot.activeElement; return e; })();
       if (!el || el === document.body) return 'nothing focused (top of page)';
       const tag = el.tagName.toLowerCase();
       const type = el.getAttribute('type');
@@ -252,7 +253,7 @@ export class Session {
   // Headless Chromium on macOS would otherwise open a system menu that no automation can reach.
   async selectKey(key) {
     const r = await this.page.evaluate((key) => {
-      const el = document.activeElement;
+      const el = (() => { let e = document.activeElement; while (e && e.shadowRoot && e.shadowRoot.activeElement) e = e.shadowRoot.activeElement; return e; })();
       if (!el || el.tagName !== 'SELECT') return null;
       const n = el.options.length;
       let i = el.selectedIndex;
@@ -271,7 +272,7 @@ export class Session {
 
   async selectType(text) {
     return this.page.evaluate((text) => {
-      const el = document.activeElement;
+      const el = (() => { let e = document.activeElement; while (e && e.shadowRoot && e.shadowRoot.activeElement) e = e.shadowRoot.activeElement; return e; })();
       if (!el || el.tagName !== 'SELECT') return null;
       const t = text.trim().toLowerCase();
       const i = Array.from(el.options).findIndex((o) => o.text.toLowerCase().startsWith(t));
@@ -309,7 +310,7 @@ export class Session {
 
   // The focused element on the page itself; when focus is inside an iframe, that iframe.
   async focusedHandle() {
-    const h = await this.page.evaluateHandle(() => (document.activeElement && document.activeElement !== document.body ? document.activeElement : null)).catch(() => null);
+    const h = await this.page.evaluateHandle(() => ((a) => (a && a !== document.body ? a : null))((() => { let e = document.activeElement; while (e && e.shadowRoot && e.shadowRoot.activeElement) e = e.shadowRoot.activeElement; return e; })())).catch(() => null);
     return h?.asElement() || null;
   }
 
@@ -380,7 +381,7 @@ export class Session {
         }
         case 'type': {
           const editable = await (await this.focusFrame()).evaluate(() => {
-            const el = document.activeElement;
+            const el = (() => { let e = document.activeElement; while (e && e.shadowRoot && e.shadowRoot.activeElement) e = e.shadowRoot.activeElement; return e; })();
             return !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
           });
           const picked = await this.selectType(String(a.text ?? ''));
