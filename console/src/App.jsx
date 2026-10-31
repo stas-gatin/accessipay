@@ -20,10 +20,13 @@ function useHash() {
   const read = () => (location.hash.startsWith('#/') ? location.hash : '#/');
   const [hash, setHash] = useState(read);
   useEffect(() => {
-    const on = () => {
+    const on = (e) => {
       if (location.hash && !location.hash.startsWith('#/')) return;
+      // Picking another shop on Results keeps the page where it is; the shop's analysis scrolls itself into view.
+      const family = (h) => /^#\/(results|sites)(\/|$)/.test(h);
+      const from = e?.oldURL ? new URL(e.oldURL).hash : '';
       setHash(read());
-      window.scrollTo(0, 0);
+      if (!(family(from) && family(read()))) window.scrollTo(0, 0);
     };
     window.addEventListener('hashchange', on);
     return () => window.removeEventListener('hashchange', on);
@@ -100,7 +103,7 @@ export default function App() {
         </div>
       </header>
       {meta?.privateView && <p className="private-view" role="note">Private view on this computer: real shop names, page text and screenshots. The public site shows them as Retailer A, B and so on.</p>}
-      <main id="main" tabIndex={-1} ref={mainRef}><div key={route} className="route-in">{page}</div></main>
+      <main id="main" tabIndex={-1} ref={mainRef}><div key={/^\/(results|sites)(\/|$)/.test(route) ? '/results' : route} className="route-in">{page}</div></main>
       <div className="lp"><SiteFooter /></div>
     </ThemeContext.Provider>
   );

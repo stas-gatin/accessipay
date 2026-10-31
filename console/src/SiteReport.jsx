@@ -46,6 +46,7 @@ function CustomerCell({ value, node }) {
   );
 }
 
+let jumpTo = null;
 const groupOf = (s) => (s.running ? 'Testing now' : s.notTestable ? 'Turned away' : 'Tested');
 
 // Every shop in one table (AG Grid): click a row and its whole analysis opens below.
@@ -116,12 +117,12 @@ export default function Results({ siteKey }) {
             rowHeight={narrow ? 48 : 58}
             getRowId={(p) => p.data.key}
             rowClassRules={{ 'res-row-on': (p) => p.data?.key === selected }}
-            onRowClicked={(e) => e.data && (location.hash = siteHref(e.data.key))}
+            onRowClicked={(e) => { if (!e.data) return; jumpTo = e.data.key; location.hash = siteHref(e.data.key); }}
           />
         )}
       </div>
       <p className="note">Click a shop to open its whole analysis below. Shops behind bot protection are listed too: AccessiPay never gets past it, and an AI shopping agent may meet the same wall. Their owners can <a href="#/own-site">let the test in</a>. Retailer letters follow the order the shops were added; a missing letter is a shop still waiting for its test.</p>
-      <div className="res-detail" id="analysis">
+      <div className="res-detail" id="analysis" tabIndex={-1}>
         {selected && <SiteAnalysis key={selected} siteKey={selected} />}
       </div>
     </div>
@@ -140,13 +141,21 @@ function SiteAnalysis({ siteKey }) {
     load();
     return () => { live = false; clearTimeout(t); };
   }, [siteKey]);
+  // A click on a shop scrolls to its analysis, which sits below the whole table. The page remounts on the
+  // new address, so the wish is kept outside the component until the analysis has loaded and the table is laid out.
+  useEffect(() => {
+    if (!s || jumpTo !== siteKey) return;
+    jumpTo = null;
+    const t = setTimeout(() => document.getElementById('analysis')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }), 250);
+    return () => clearTimeout(t);
+  }, [s, siteKey]);
   if (error) return <p className="note">{error}</p>;
   if (!s) return <p className="note">Loading the analysis…</p>;
 
   const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
   const head = (
     <>
-      <p className="eyebrow">{s.anonymized ? 'Large retailer, name withheld' : 'Real shop'}</p>
+      <p className="eyebrow">{s.anonymized ? 'Large retailer, name withheld' : 'Real shop'} · <a href="#/results" onClick={(e) => { e.preventDefault(); document.querySelector('.res-table')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}>↑ All shops</a></p>
       <h2 className="sr-name" id="site-name">{s.key}</h2>
       <p className="lead">
         {s.url && !s.anonymized ? <a href={s.url} rel="noreferrer noopener" target="_blank">{s.url}</a> : 'Recorded without the name, the address or screenshots.'}
