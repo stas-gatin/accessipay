@@ -20,8 +20,8 @@ export function KindLegend() {
 }
 
 const NODES = [
-  { k: 'measured', title: 'A merchant runs AccessiPay', body: 'Three simulated customers try to buy. Blockers are found and fixed.' },
-  { k: 'measured', title: 'More customers can pay', body: `Keyboard-only: blocked, then paid. AI agent: blocked, then paid.`, links: [[RUNS.keyboardFixed, 'keyboard run'], [RUNS.agentFixed, 'agent run']] },
+  { k: 'step', title: 'A merchant runs AccessiPay', body: 'Three simulated customers try to buy. Blockers are found and fixed.' },
+  { k: 'measured', title: 'More customers can pay', body: 'Keyboard-only: blocked, then paid. AI shopping agent: blocked, then paid.', links: [[RUNS.keyboardFixed, 'Replay keyboard'], [RUNS.agentFixed, 'Replay agent']] },
   { k: 'yours', title: 'Customers who reach checkout', body: 'Your monthly checkout starts and who they are.' },
   { k: 'calc', title: 'Orders recovered', body: 'Blocked customers who can now pay, at your usual conversion.' },
   { k: 'calc', title: 'Paid with PayPal', body: 'Recovered revenue times your PayPal share.' },
@@ -51,7 +51,7 @@ export function Chain() {
         {NODES.map((n, i) => (
           <li key={n.title} className={`chain-node k-${n.k}${i <= lit && lit < NODES.length ? ' past' : ''}${i === lit ? ' lit' : ''}`} style={{ '--i': i }}>
             <span className="chain-n" aria-hidden="true">{i + 1}</span>
-            <Kind k={n.k} />
+            {n.k !== 'step' && <Kind k={n.k} />}
             <h3>{n.title}</h3>
             <p>{n.body}</p>
             {n.links && <p className="chain-links">{n.links.map(([id, t]) => <a key={id} href={`#/runs/${id}`}>{t}</a>)}</p>}
@@ -71,17 +71,19 @@ export function Chain() {
   );
 }
 
+// Labels stay on one line; the helper text sits under the field.
 const FIELDS = [
-  { id: 'starts', label: 'Checkout starts per month', unit: 'sessions', help: 'From your analytics: sessions that reach cart or checkout.' },
-  { id: 'aov', label: 'Average order value', unit: 'your currency', help: 'From your store.' },
-  { id: 'conv', label: 'Usual checkout conversion', unit: '%', help: 'Share of checkout starts that become orders today. Recovered customers are assumed to convert at this rate, not 100%.' },
-  { id: 'sr', label: 'Share of starts by screen reader users', unit: '%', help: 'Your estimate.' },
-  { id: 'kb', label: 'Share by keyboard-only users', unit: '%', help: 'Your estimate.' },
-  { id: 'ag', label: 'Share by AI shopping agents', unit: '%', help: 'Your estimate; it will change over time.' },
-  { id: 'pp', label: 'Share of orders paid with PayPal', unit: '%', help: 'From your PayPal and store reports.' },
+  { id: 'starts', label: 'Checkout starts per month', unit: 'sessions', help: 'From your analytics.' },
+  { id: 'aov', label: 'Average order value', unit: '', help: 'From your store, in your currency.' },
+  { id: 'conv', label: 'Usual checkout conversion', unit: '%', help: 'Recovered customers convert at this rate too.' },
+  { id: 'sr', label: 'Screen reader users', unit: '%', help: 'Your estimate: share of checkout starts.' },
+  { id: 'kb', label: 'Keyboard-only users', unit: '%', help: 'Your estimate: share of checkout starts.' },
+  { id: 'ag', label: 'AI shopping agents', unit: '%', help: 'Your estimate; it will change over time.' },
+  { id: 'pp', label: 'Orders paid with PayPal', unit: '%', help: 'From your PayPal and store reports.' },
   { id: 'fee', label: 'Your PayPal fee rate', unit: '%', help: 'From your PayPal statement.' },
-  { id: 'n', label: 'Merchants like you (scenario)', unit: 'count', help: 'Optional. Multiplies one merchant’s result; real merchants differ.' },
+  { id: 'n', label: 'Merchants like you', unit: 'count', help: 'Optional scenario; real merchants differ.' },
 ];
+const SHARE = { sr: 'Screen reader customer', kb: 'Keyboard-only customer', ag: 'AI shopping agent' };
 const EXAMPLE = { starts: '10000', aov: '60', conv: '40', sr: '1', kb: '2', ag: '1', pp: '30', fee: '3', n: '100' };
 const EMPTY = Object.fromEntries(FIELDS.map((f) => [f.id, '']));
 
@@ -113,6 +115,7 @@ export function Calculator() {
   }, [v, blocked]);
 
   const anyBlocked = blocked.sr || blocked.kb || blocked.ag;
+  const anyResult = out.blockedShare != null;
   const results = [
     { label: 'Share of checkout starts that were blocked', value: out.blockedShare == null ? '—' : `${fmt(out.blockedShare * 100, 1)}%`, formula: 'sum of the shares of the customer types your test found blocked' },
     { label: 'Orders recovered per month', value: fmt(out.orders, 0), formula: 'checkout starts × blocked share × usual conversion' },
@@ -136,44 +139,63 @@ export function Calculator() {
       </div>
       {example && <p className="calc-example" role="status">Made-up example, not data. Replace every field with your own numbers.</p>}
 
-      <fieldset className="calc-measured">
-        <legend><Kind k="measured" /> Customer types your test found blocked</legend>
-        <p className="calc-help">Set here from the demo shop’s test: the keyboard-only customer (<a href={`#/runs/${RUNS.keyboardBlocked}`}>run {RUNS.keyboardBlocked.slice(-6)}</a>) and the AI agent (<a href={`#/runs/${RUNS.agentBlocked}`}>run {RUNS.agentBlocked.slice(-6)}</a>) were blocked; both paid after the fix, confirmed by PayPal. Your own test sets these.</p>
+      <div className="calc-sub">
+        <Kind k="measured" />
+        <h4 id={`${uid}-m`}>Customer types your test found blocked</h4>
+      </div>
+      <div className="calc-measured" role="group" aria-labelledby={`${uid}-m`}>
         <div className="calc-checks">
-          {[['sr', 'Screen reader'], ['kb', 'Keyboard-only'], ['ag', 'AI agent']].map(([k, l]) => (
+          {[['sr', 'Screen reader'], ['kb', 'Keyboard-only'], ['ag', 'AI shopping agent']].map(([k, l]) => (
             <label key={k} className="calc-check">
               <input type="checkbox" checked={blocked[k]} onChange={(e) => setBlocked({ ...blocked, [k]: e.target.checked })} />
               <span>{l}</span>
             </label>
           ))}
         </div>
-      </fieldset>
+        <p className="calc-help">
+          Set from the demo shop’s test: the keyboard-only customer (<a href={`#/runs/${RUNS.keyboardBlocked}`}>Replay<span className="sr-only"> the keyboard-only run</span></a>)
+          {' '}and the AI shopping agent (<a href={`#/runs/${RUNS.agentBlocked}`}>Replay<span className="sr-only"> the AI shopping agent run</span></a>) were blocked; both paid after the fix, confirmed by PayPal. Your own test sets these.
+        </p>
+      </div>
 
+      <div className="calc-sub">
+        <Kind k="yours" />
+        <h4>Your shop</h4>
+      </div>
       <div className="calc-grid">
-        {FIELDS.map((f) => (
-          <div key={f.id} className="calc-field">
-            <label htmlFor={`${uid}-${f.id}`}>{f.label}{['sr', 'kb', 'ag'].includes(f.id) && !blocked[f.id] && <span className="calc-off"> · not counted</span>}</label>
-            <div className="calc-input">
-              <input id={`${uid}-${f.id}`} type="text" inputMode="decimal" autoComplete="off" value={v[f.id]} onChange={set(f.id)}
-                placeholder="Enter your number" aria-describedby={`${uid}-${f.id}-h`} />
-              <span className="calc-unit" aria-hidden="true">{f.unit === 'your currency' ? '' : f.unit}</span>
+        {FIELDS.map((f) => {
+          const off = f.id in SHARE && !blocked[f.id];
+          return (
+            <div key={f.id} className={`calc-field${off ? ' off' : ''}`}>
+              <label htmlFor={`${uid}-${f.id}`}>{f.label}</label>
+              <div className="calc-input">
+                <input id={`${uid}-${f.id}`} type="text" inputMode="decimal" autoComplete="off" value={off ? '' : v[f.id]} onChange={set(f.id)}
+                  placeholder={off ? 'Not counted' : 'Enter your number'} disabled={off} aria-describedby={`${uid}-${f.id}-h`} />
+                <span className="calc-unit" aria-hidden="true">{f.unit}</span>
+              </div>
+              <p id={`${uid}-${f.id}-h`} className="calc-help">{off ? 'Not blocked in your test, so not counted.' : f.help}</p>
             </div>
-            <p id={`${uid}-${f.id}-h`} className="calc-help"><Kind k="yours" /> {f.help}{f.unit === 'your currency' ? ' In your currency.' : ''}</p>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="calc-out">
-        {!anyBlocked && <p className="calc-help">No customer type is marked as blocked, so there is nothing to recover.</p>}
-        <ul>
-          {results.map((r) => (
-            <li key={r.label} className={r.strong ? 'strong' : ''}>
-              <div className="calc-out-top"><Kind k="calc" /><span className="calc-out-label">{r.label}</span></div>
-              <p className="calc-out-v tnum" key={r.value}>{r.value}{r.unit && r.value !== '—' ? <small> {r.unit}</small> : null}</p>
-              <p className="calc-formula">{r.formula}</p>
-            </li>
-          ))}
-        </ul>
+        {!anyBlocked ? (
+          <p className="calc-empty">No customer type is marked as blocked, so there is nothing to recover.</p>
+        ) : !anyResult ? (
+          <p className="calc-empty">Results appear here once you enter your numbers. To see how it works, use the made-up example above.</p>
+        ) : (
+          <ul>
+            {results.map((r) => (
+              <li key={r.label} className={r.strong ? 'strong' : ''}>
+                <Kind k="calc" />
+                <span className="calc-out-label">{r.label}</span>
+                <p className="calc-out-v tnum" key={r.value}>{r.value}{r.unit && r.value !== '—' ? <small> {r.unit}</small> : null}</p>
+                <p className="calc-formula">{r.formula}</p>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       <p className="calc-foot">
         <strong>Not a forecast.</strong> An illustration built from your numbers and our test results. “Blocked” means our simulated customer could not pay on the tested path; real customers may find another way or may leave.

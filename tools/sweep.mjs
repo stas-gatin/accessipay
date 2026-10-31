@@ -1,9 +1,11 @@
 // Real-site sweep over the private site list (data/private/sites.json, not committed).
 //   node tools/sweep.mjs start <persona> platforms [name...]  -> one run per open-source platform demo (or those named)
 //   node tools/sweep.mjs start <persona> retailers [label...] -> one run per retailer not visited today
+//   node tools/sweep.mjs start-site <label> [label ...]          -> all three customers on each site, one visit
 //   node tools/sweep.mjs status                               -> runs of today's sweeps and where they are
 //   node tools/sweep.mjs record                               -> records finished runs (retailers anonymized)
 //   node tools/sweep.mjs not-testable <runId> <reason>        -> relabels a run whose site was not testable (bot page, maintenance, broken demo)
+//   node tools/sweep.mjs not-counted <runId> <reason>           -> an engine fault, not the shop: shown as not counted, repeated later
 //   node tools/sweep.mjs reached <runId> <evidence>              -> relabels a run whose last screen shows the payment step (checked by hand)
 // A large retailer is visited at most once a day, whatever the customer type; the visit log is
 // data/private/visits.json. Runs use the external brain: a Claude Code agent decides each step.
@@ -56,6 +58,29 @@ if (cmd === 'start') {
   }
   fs.writeFileSync(visitsFile, JSON.stringify(visits, null, 2));
   fs.writeFileSync(sweepsFile, JSON.stringify(sweeps, null, 2));
+} else if (cmd === 'start-site') {
+  // One site test: all three customers at once, counted as the site's one visit of the day.
+  const labels = [persona, group, ...only].filter(Boolean);
+  const visits = read(visitsFile, {});
+  const sweeps = read(sweepsFile, []);
+  const MAX_PARALLEL = Number(process.env.SWEEP_MAX_PARALLEL || 6);
+  let running = (await api('/api/runs')).filter((r) => r.status === 'running').length;
+  const out = [];
+  for (const label of labels) {
+    const site = sites.retailers.find((r) => r.label === label);
+    if (!site) { console.log(`skip ${label}: not in the site list`); continue; }
+    const host = hostOf(site.url);
+    if ((visits[host] || []).includes(today)) { console.log(`skip ${label}: already visited today`); continue; }
+    if (running + 3 > MAX_PARALLEL) { console.log(`skip ${label}: ${running} runs already going (limit ${MAX_PARALLEL}); start it later`); continue; }
+    const t = await api('/api/site-tests', { url: site.url, brain: 'external' });
+    (visits[host] ||= []).push(today);
+    running += 3;
+    for (const r of t.runs) sweeps.push({ id: r.id, date: today, persona: r.persona, kind: 'retailer', label, recorded: false });
+    out.push({ label, runs: t.runs });
+  }
+  fs.writeFileSync(visitsFile, JSON.stringify(visits, null, 2));
+  fs.writeFileSync(sweepsFile, JSON.stringify(sweeps, null, 2));
+  console.log(JSON.stringify(out));
 } else if (cmd === 'status') {
   for (const s of read(sweepsFile, []).filter((x) => x.date === today)) {
     const r = await api(`/api/runs/${s.id}`).catch(() => null);
@@ -86,6 +111,15 @@ if (cmd === 'start') {
   // Findings made before the wall stay in the record; analytics leaves not-testable runs out.
   fs.writeFileSync(file, JSON.stringify(r));
   console.log(`${id} -> not-testable`);
+} else if (cmd === 'not-counted') {
+  // An engine fault, not the shop: the run stays in the record, is shown as not counted, and is repeated.
+  const id = persona;
+  const reason = [group, ...only].join(' ');
+  const file = path.join(root, 'data', 'runs', `${id}.json`);
+  const r = JSON.parse(fs.readFileSync(file, 'utf8'));
+  r.outcome = { status: 'error', reason: `Not counted: ${reason}`, reclassified: { from: r.outcome?.status, by: 'operator', why: reason } };
+  fs.writeFileSync(file, JSON.stringify(r));
+  console.log(`${id} -> not counted`);
 } else if (cmd === 'reached') {
   const id = persona;
   const evidence = [group, ...only].join(' ');

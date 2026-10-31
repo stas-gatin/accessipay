@@ -1,31 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { api, OUTCOME, shortDate } from './api.js';
+import { RUNS } from './site/facts.js';
 
-const BRAINS = [
-  { id: 'anthropic', label: 'Claude API', note: 'Runs live. Each step is one Claude request.' },
-  { id: 'external', label: 'Claude Code agent', note: 'An agent drives the run from tools/agent.mjs.' },
-];
 
 export default function NewTest({ meta }) {
   const train = meta.defects.filter((d) => d.split === 'train');
   const [scenario, setScenario] = useState('focus-trap-modal');
   const [custom, setCustom] = useState([]);
   const [persona, setPersona] = useState('screenreader');
-  const [brain, setBrain] = useState(meta.claude ? 'anthropic' : 'external');
+  const brain = meta.claude ? 'anthropic' : 'external';
+  // Without a Claude API key a run would wait for a Claude Code agent (tools/agent.mjs); the console only starts live runs.
+  const live = meta.claude || /[?&]agent=1\b/.test(location.search);
   const [goalId, setGoalId] = useState('checkout');
-  const [siteUrl, setSiteUrl] = useState('https://hydrogen.shop');
+  const [siteUrl, setSiteUrl] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [recent, setRecent] = useState([]);
 
-  useEffect(() => { api('/api/runs').then((r) => setRecent(r.slice(0, 8))).catch(() => {}); }, []);
+  useEffect(() => { api('/api/runs').then((r) => {
+    // Newest first, one row per customer and scenario.
+    const seen = new Set();
+    setRecent(r.filter((x) => !x.site && x.payment?.mode !== 'mock' && x.steps > 0).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+      .filter((x) => { const k = `${x.persona}|${x.defects.join(',')}|${x.patches?.length ? 1 : 0}`; if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, 8));
+  }).catch(() => {}); }, []);
   const proof = recent.find((r) => r.outcome?.status === 'blocked' && r.scan?.totalViolations === 0 && r.defects?.length && !r.patches?.length);
 
   const scenarios = [
     { id: 'clean', title: 'Clean shop', note: 'No defects. The control: every customer should be able to buy.' },
     ...train.map((d) => ({ id: d.id, title: d.short, note: `${d.title}. ${d.page[0].toUpperCase() + d.page.slice(1)} page.` })),
-    { id: 'custom', title: 'Pick defects', note: 'Any mix, including the holdout set.' },
-    { id: 'site', title: 'A real site', note: 'Goes as far as the payment step and stops. Never pays, never types card data.' },
+    { id: 'custom', title: 'Pick defects', note: `Any combination of the ${meta.defects.length} defects.` },
+    { id: 'site', title: 'A real shop', note: 'All three customers go as far as the payment step and stop. Never pays, never types card data.' },
   ];
   const defects = scenario === 'clean' ? [] : scenario === 'custom' ? custom : [scenario];
 
@@ -44,16 +48,16 @@ export default function NewTest({ meta }) {
 
   return (
     <div className="page">
-      <p className="eyebrow">Console</p>
-      <h1>Run a test</h1>
-      <p className="lead">Pick a shop, a customer and who decides each step. The run streams live; the scanner checks the same pages at the end.</p>
+      <p className="eyebrow">Run a test</p>
+      <h1>Send a customer to buy</h1>
+      <p className="lead">Pick a shop and a customer. The run streams live, step by step; the scanner checks the same pages at the end.</p>
       <a className="card own-cta" href="#/own-site">
         <span className="own-cta-k">Your own shop</span>
         <strong>Connect your site</strong>
         <span>Prove it is yours with a file or a DNS record, add one rule so your bot protection lets the test in, then send all three customers. Also checks whether AI assistants can shop there.</span>
         <span className="own-cta-go">Connect your site →</span>
       </a>
-      <p className="note" style={{ marginTop: 0, marginBottom: 24 }}>Payments: {meta.paypal === 'sandbox' ? 'PayPal sandbox' : 'mock mode, no PayPal call'}. Claude API: {meta.claude ? 'connected' : 'not connected, runs are driven by a Claude Code agent'}.</p>
+      <p className="note" style={{ marginTop: 0, marginBottom: 24 }}>{meta.paypal === 'sandbox' ? 'Payments run in the PayPal sandbox. No real money moves.' : 'Mock payments: this server makes no PayPal call.'}</p>
 
       <div className="grid-2">
         <section className="card" aria-labelledby="s1">
@@ -68,8 +72,8 @@ export default function NewTest({ meta }) {
           {scenario === 'site' && (
             <div style={{ paddingTop: 12 }}>
               <label htmlFor="site-url" className="note" style={{ display: 'block', marginBottom: 6 }}>Shop address</label>
-              <input id="site-url" type="url" value={siteUrl} onChange={(e) => setSiteUrl(e.target.value)} style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid var(--line-2)', background: 'var(--surface)' }} />
-              <p className="note">Public demo stores of real platforms work well: hydrogen.shop (Shopify Hydrogen), storefront.saleor.io (Saleor), next.medusajs.com (Medusa).</p>
+              <input id="site-url" type="url" placeholder="https://your-shop.example" value={siteUrl} onChange={(e) => setSiteUrl(e.target.value)} style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid var(--line-2)', background: 'var(--surface)' }} />
+              <p className="note">Many large shops turn automated browsers away, and AccessiPay never tries to get past that. For your own shop, <a href="#/own-site">connect it first</a>.</p>
             </div>
           )}
           {scenario === 'custom' && (
@@ -94,7 +98,7 @@ export default function NewTest({ meta }) {
                   <strong>All three customers</strong><span>Screen reader, keyboard-only and AI agent on the same site, as one site analysis.</span>
                 </button>
               )}
-              {Object.entries(meta.personas).map(([id, p]) => (
+              {scenario !== 'site' && Object.entries(meta.personas).map(([id, p]) => (
                 <button key={id} type="button" className="choice" aria-pressed={persona === id} onClick={() => setPersona(id)}>
                   <strong>{p.label}</strong><span>{p.summary}</span>
                 </button>
@@ -116,17 +120,12 @@ export default function NewTest({ meta }) {
           )}
 
           <section className="card" aria-labelledby="s3">
-            <h2 className="section-title" id="s3"><span className="step-no">3</span>Who decides each step</h2>
-            <div className="grid-2">
-              {BRAINS.filter((b) => meta.brains.includes(b.id)).map((b) => (
-                <button key={b.id} type="button" className="choice" aria-pressed={brain === b.id} onClick={() => setBrain(b.id)} disabled={b.id === 'anthropic' && !meta.claude} title={b.id === 'anthropic' && !meta.claude ? 'No Claude API key on the server yet' : undefined}>
-                  <strong>{b.label}</strong><span>{b.note}</span>
-                </button>
-              ))}
-            </div>
-            {brain === 'external' && <p className="note">After you start, run <code>node tools/agent.mjs turn &lt;run id&gt;</code> and let a Claude Code agent decide each step.</p>}
+            <h2 className="section-title" id="s3"><span className="step-no">3</span>Start</h2>
+            {meta.claude ? <p className="note">Claude decides each step of the customer, live.</p> : (
+              <p className="note">Live runs are switched off on this copy of AccessiPay. Every recorded run can be replayed step by step, for example <a href={`#/runs/${RUNS.agentBlocked}`}>the AI agent stopped by a Pay button that is not a real button</a> or <a href={`#/runs/${RUNS.keyboardFixed}`}>the keyboard customer paying after the fix</a>.</p>
+            )}
             <p className="row" style={{ marginTop: 14 }}>
-              <button type="button" className="btn primary" onClick={start} disabled={busy || (scenario === 'custom' && !custom.length)}>
+              <button type="button" className="btn primary" onClick={start} disabled={busy || !live || (scenario === 'custom' && !custom.length) || (scenario === 'site' && !/^https?:\/\/\S+\.\S+/.test(siteUrl))}>
                 {busy ? 'Starting…' : 'Start test'}
               </button>
               {error && <span role="alert" className="pill bad">{error}</span>}
@@ -134,14 +133,14 @@ export default function NewTest({ meta }) {
           </section>
 
           <section className="card" aria-labelledby="s4">
-            <h2 className="section-title" id="s4">Recent runs</h2>
+            <h2 className="section-title" id="s4">Recent runs in the demo shop</h2>
             {recent.length === 0 ? <p className="note">No runs yet.</p> : (
-              <ul className="findings" style={{ listStyle: 'none', padding: 0 }}>
+              <ul className="recent-runs">
                 {recent.map((r) => (
-                  <li key={r.id} className="row">
+                  <li key={r.id}>
                     <a href={`#/runs/${r.id}`}>{meta.personas[r.persona]?.label}, {r.defects.length ? r.defects.map((id) => meta.defects.find((d) => d.id === id)?.short || id).join(', ') : 'clean shop'}{r.patches?.length ? ', after the fix' : ''}</a>
                     <span className={`pill ${OUTCOME[r.outcome?.status]?.tone || 'muted'}`}>{OUTCOME[r.outcome?.status]?.label || r.status}</span>
-                    <span className="note">{shortDate(r.createdAt)}{r.recorded ? ' · recorded' : ''}</span>
+                    <span className="note">{shortDate(r.createdAt)}</span>
                   </li>
                 ))}
               </ul>

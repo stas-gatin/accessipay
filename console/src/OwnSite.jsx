@@ -5,12 +5,6 @@ import { api } from './api.js';
 // protection with an access key, then send the customers. Plus a check of how open the shop is to AI assistants.
 
 const KEEP = 'accessipay-own-site';
-const PERSONAS = [
-  ['all', 'All three customers, one site analysis'],
-  ['screenreader', 'Screen reader customer'],
-  ['keyboard', 'Keyboard-only customer'],
-  ['agent', 'AI shopping agent'],
-];
 const field = { width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid var(--line-2)', background: 'var(--surface)', color: 'var(--ink)' };
 
 function Copy({ text, label }) {
@@ -33,6 +27,15 @@ function Code({ children, label }) {
 
 const Mark = ({ ok, yes = 'yes', no = 'no' }) => <span className={`dot-word ${ok ? 'ok' : 'bad'}`} style={{ color: ok ? 'var(--accent)' : 'var(--bad)', fontWeight: 600 }}>{ok ? yes : no}</span>;
 
+function Locked({ n, title, after }) {
+  return (
+    <section className="card own-locked" aria-label={`Step ${n}: ${title}, opens after step ${after}`}>
+      <h2 className="section-title"><span className="step-no">{n}</span>{title}</h2>
+      <p className="note">Opens after step {after}.</p>
+    </section>
+  );
+}
+
 export default function OwnSite({ meta }) {
   const [url, setUrl] = useState('https://');
   const [site, setSite] = useState(null);
@@ -42,7 +45,6 @@ export default function OwnSite({ meta }) {
   const [showKey, setShowKey] = useState(false);
   const [busy, setBusy] = useState('');
   const [error, setError] = useState('');
-  const [persona, setPersona] = useState('all');
 
   useEffect(() => {
     let id = null;
@@ -64,13 +66,9 @@ export default function OwnSite({ meta }) {
   const checkAccess = () => run('check', async () => setCheck(await api(`/api/owner-sites/${site.id}/check`, {})));
   const startRun = () => run('run', async () => {
     const brain = meta.claude ? 'anthropic' : 'external';
-    if (persona === 'all') {
-      const t = await api('/api/site-tests', { url: site.url, brain, ownerSiteId: site.id });
-      location.hash = `#/sites/${encodeURIComponent(t.key)}`;
-      return;
-    }
-    const r = await api('/api/runs', { persona, brain, url: site.url, ownerSiteId: site.id });
-    location.hash = `#/runs/${r.id}`;
+    // Every shop is always tested by all three customers, as one site analysis.
+    const t = await api('/api/site-tests', { url: site.url, brain, ownerSiteId: site.id });
+    location.hash = `#/sites/${encodeURIComponent(t.key)}`;
   });
 
   const key = site?.access.key || '';
@@ -78,14 +76,14 @@ export default function OwnSite({ meta }) {
 
   return (
     <div className="page">
-      <p className="eyebrow">Your own shop</p>
-      <h1>Test your own site</h1>
+      <p className="eyebrow">Your site</p>
+      <h1>Connect your shop</h1>
       <p className="lead">
         Bot protection stops automated browsers, ours too, and AccessiPay never tries to get past it. On your own shop you can let it in:
         prove the site is yours, add one rule to your bot protection, and send the customers. The protection stays on for everyone else.
       </p>
 
-      <div className="grid-2">
+      <div className="own-steps">
         <section className="card" aria-labelledby="o1">
           <h2 className="section-title" id="o1"><span className="step-no">1</span>Your shop address</h2>
           <label htmlFor="own-url" className="note" style={{ display: 'block', marginBottom: 6 }}>Home page, or a staging copy of the shop</label>
@@ -96,6 +94,7 @@ export default function OwnSite({ meta }) {
           {site && <p className="note" style={{ marginTop: 10 }}>Site <b className="mono">{site.host}</b>: {site.verified ? <Mark ok yes={`verified by ${site.method === 'dns' ? 'DNS record' : 'file'}`} /> : 'not verified yet'}.</p>}
         </section>
 
+        {!site && <Locked n={2} title="Prove the site is yours" after="1" />}
         {site && (
           <section className="card" aria-labelledby="o2">
             <h2 className="section-title" id="o2"><span className="step-no">2</span>Prove the site is yours</h2>
@@ -127,9 +126,10 @@ export default function OwnSite({ meta }) {
           </section>
         )}
 
+        {!site?.verified && <Locked n={3} title="Let the test through your bot protection" after="2" />}
         {site?.verified && (
           <section className="card" aria-labelledby="o3">
-            <h2 className="section-title" id="o3"><span className="step-no">3</span>Let the checker through your bot protection</h2>
+            <h2 className="section-title" id="o3"><span className="step-no">3</span>Let the test through your bot protection</h2>
             <p className="note">Every request AccessiPay's browser makes to <b className="mono">{site.host}</b> (and its subdomains, nothing else) carries this header. Allow requests that carry it.</p>
             <p className="note" style={{ marginBottom: 0 }}>Header name</p>
             <Code label="header name">{site.access.header}</Code>
@@ -165,22 +165,19 @@ export default function OwnSite({ meta }) {
           </section>
         )}
 
+        {!site?.verified && <Locked n={4} title="Send the three customers" after="3" />}
         {site?.verified && (
           <section className="card" aria-labelledby="o4">
-            <h2 className="section-title" id="o4"><span className="step-no">4</span>Send the customers</h2>
-            <div style={{ display: 'grid', gap: 8, marginBottom: 12 }}>
-              {PERSONAS.map(([id, l]) => (
-                <button key={id} type="button" className="choice" aria-pressed={persona === id} onClick={() => setPersona(id)}><strong>{l}</strong></button>
-              ))}
-            </div>
-            <p className="note">The customer goes as far as the payment step and stops: no order is placed and no card data is typed. On your verified site the run ignores the robots.txt rules meant for crawlers.</p>
-            <button type="button" className="btn primary" onClick={startRun} disabled={busy === 'run'}>Start the test</button>
+            <h2 className="section-title" id="o4"><span className="step-no">4</span>Send the three customers</h2>
+            <p>A screen reader user, a keyboard-only user and an AI shopping agent shop at the same time. Their results come together as one analysis of your shop.</p>
+            <p className="note">Each customer goes as far as the payment step and stops: no order is placed and no card data is typed. On your verified site the rules meant for search crawlers (robots.txt) are not applied, because you asked for the test.</p>
+            <button type="button" className="btn primary" onClick={startRun} disabled={busy === 'run'}>{busy === 'run' ? 'Starting…' : 'Start the test'}</button>
           </section>
         )}
       </div>
       {error && <p className="note" role="alert" style={{ color: 'var(--bad)', marginTop: 16 }}>{error}</p>}
 
-      <AgentAccess initial={site?.url} />
+      <AgentAccess initial={/^https?:\/\/[^/]+\./.test(url) ? url : site?.url} />
     </div>
   );
 }
@@ -210,8 +207,9 @@ export function AgentAccess({ initial }) {
   }
   return (
     <section className="card" aria-labelledby="aa" style={{ marginTop: 24 }}>
+      <p className="eyebrow">Works on any shop, no setup</p>
       <h2 className="section-title" id="aa">Can AI assistants shop here?</h2>
-      <p className="note">Reads what the shop publishes for AI agents (robots.txt rules, llms.txt, structured product data) and loads the home page once in an ordinary automated browser. It never pretends to be another company’s agent.</p>
+      <p className="note">Reads what the shop tells AI agents (its rules for bots in robots.txt, an llms.txt guide, product data that machines can read) and loads the home page once in an ordinary automated browser. It never pretends to be another company’s agent.</p>
       <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
         <label htmlFor="aa-url" className="sr-only">Shop address</label>
         <input id="aa-url" type="url" value={url} onChange={(e) => setUrl(e.target.value)} style={field} />

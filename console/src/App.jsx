@@ -6,13 +6,12 @@ import NewTest from './NewTest.jsx';
 import OwnSite from './OwnSite.jsx';
 import Results from './SiteReport.jsx';
 import RunView from './RunView.jsx';
-import RunsGrid from './RunsGrid.jsx';
-import Defects from './Defects.jsx';
 import Landing from './Landing.jsx';
 import Analytics from './Analytics.jsx';
 import Report from './Report.jsx';
 import Logo from './Logo.jsx';
-import { MethodPage, CustomersPage, PayPalPage, HonestyPage } from './site/pages.jsx';
+import { MethodPage, CustomersPage, PayPalPage } from './site/pages.jsx';
+import { SiteFooter } from './site/blocks.jsx';
 import './landing.css';
 
 // Routes live in the hash and always start with "#/". Any other hash ("#owner") is an in-page anchor:
@@ -32,7 +31,7 @@ function useHash() {
   return hash;
 }
 
-const SITE_ROUTES = new Set(['/', '/method', '/customers', '/paypal', '/honesty']);
+const SITE_ROUTES = new Set(['/', '/method', '/customers', '/paypal']);
 
 export default function App() {
   const hash = useHash();
@@ -48,14 +47,17 @@ export default function App() {
   const mainRef = useRef(null);
   useAutoReveal(mainRef, route);
   const runMatch = route.match(/^\/runs\/([\w-]+)/);
+  // A run or a report belongs to Results (a real shop) or to Analytics (the demo shop); the page says which once it has loaded.
+  const [section, setSection] = useState(null);
+  useEffect(() => { setSection(null); }, [route]);
   const nav = [
     ['#/', 'Overview', route === '/'],
-    ['#/method', 'Method', route === '/method'],
+    ['#/method', 'Method', route === '/method' || route === '/honesty' || route === '/defects'],
     ['#/customers', 'Customers', route === '/customers'],
     ['#/paypal', 'For PayPal', route === '/paypal'],
-    // Results holds every site analysis; single runs and the demo shop's defects open from there.
-    ['#/results', 'Results', route.startsWith('/sites') || route === '/results' || route.startsWith('/runs') || route === '/defects' || route.startsWith('/report')],
-    ['#/analytics', 'Analytics', route === '/analytics'],
+    // Results holds every real-shop analysis. A single run or report opens from Results or Analytics; its breadcrumb says which.
+    ['#/results', 'Results', route.startsWith('/sites') || route === '/results' || route === '/runs' || section === 'results'],
+    ['#/analytics', 'Analytics', route === '/analytics' || section === 'analytics'],
     ['#/own-site', 'Your site', route === '/own-site'],
   ];
 
@@ -63,12 +65,12 @@ export default function App() {
   if (route === '/method') page = <MethodPage />;
   else if (route === '/customers') page = <CustomersPage />;
   else if (route === '/paypal') page = <PayPalPage />;
-  else if (route === '/honesty') page = <HonestyPage />;
+  else if (route === '/honesty') page = <MethodPage />; // the limits are the last section of the Method page
   else if (!meta) page = <div className="page"><p className="empty">{error || 'Loading…'}</p></div>;
-  else if (runMatch) page = <RunView id={runMatch[1]} meta={meta} />;
-  else if (/^\/report\/(run|case|site)\/[\w-]+$/.test(route)) page = <Report route={route} meta={meta} />;
-  else if (route === '/runs') page = <RunsGrid meta={meta} />;
-  else if (route === '/defects') page = <Defects meta={meta} />;
+  else if (runMatch) page = <RunView id={runMatch[1]} meta={meta} onSection={setSection} />;
+  else if (/^\/report\/(run|case|site)\/[\w-]+$/.test(route)) page = <Report route={route} meta={meta} onSection={setSection} />;
+  else if (route === '/runs') page = <Results />;
+  else if (route === '/defects') page = <MethodPage />;
   else if (route === '/test') page = <NewTest meta={meta} />;
   else if (route === '/own-site') page = <OwnSite meta={meta} />;
   else if (route === '/sites' || route === '/results') page = <Results />;
@@ -91,13 +93,14 @@ export default function App() {
           <a href="#/test" className={`nav-mobile-only${route === '/test' ? ' active' : ''}`} aria-current={route === '/test' ? 'page' : undefined}>Run a test</a>
         </nav>
         <div className="header-right">
-          <button type="button" className="theme-toggle" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'dark'}>
-            <span aria-hidden="true">{theme === 'dark' ? '☾' : '☀'}</span><span className="tt-label">Dark theme</span>
+          <button type="button" className="theme-toggle" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? 'Switch to the light theme' : 'Switch to the dark theme'}>
+            <span aria-hidden="true">{theme === 'dark' ? '☀' : '☾'}</span><span className="tt-label" aria-hidden="true">{theme === 'dark' ? 'Light theme' : 'Dark theme'}</span>
           </button>
           <a className={`header-cta${route === '/test' ? ' active' : ''}`} href="#/test" aria-current={route === '/test' ? 'page' : undefined}>Run a test</a>
         </div>
       </header>
       <main id="main" tabIndex={-1} ref={mainRef}><div key={route} className="route-in">{page}</div></main>
+      <div className="lp"><SiteFooter /></div>
     </ThemeContext.Provider>
   );
 }

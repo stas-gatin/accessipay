@@ -181,7 +181,17 @@ export class Session {
       }
       if (/<label\b[^>]*>[^\n]*intercepts pointer events/.test(msg)) {
         await loc[how]({ timeout: 2500, force: true });
-      } else throw e;
+      } else if (/intercepts pointer events/.test(msg) || !(await loc.isVisible().catch(() => false))) {
+        // Covered by another element, or not on screen: that is what the customer meets, and it is reported.
+        throw e;
+      } else {
+        // On screen and not covered, yet Playwright's click waited in vain (an animation that never settles,
+        // a drawer still sliding). A person or an agent clicking that spot would press it: activate it directly.
+        if (how === 'check') await loc.check({ timeout: 2500, force: true });
+        else await loc.dispatchEvent('click');
+        await this.settle();
+        return `${how === 'check' ? 'Checked' : 'Clicked'}; the control was slow to accept a normal click, so it was pressed directly.`;
+      }
     }
     await this.settle();
     return null;

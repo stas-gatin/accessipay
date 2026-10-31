@@ -39,7 +39,7 @@ export function StageRail({ step, run, compactLabel }) {
 
 // The screenshot with the moving focus ring. Boxes are in screenshot pixels; the ring uses percentages,
 // so it follows the image at any displayed size.
-export function Screen({ runId, step, alt, mode, speed }) {
+export function Screen({ runId, step, alt, mode, speed, zoomable, noShots }) {
   const [size, setSize] = useState(VIEWPORT);
   const view = step?.view || {};
   const box = view.box;
@@ -52,38 +52,48 @@ export function Screen({ runId, step, alt, mode, speed }) {
   const missing = view.missing;
   return (
     <figure className="rv-screen">
+      <div className="rv-screen-bar"><span className={`rv-mode ${mode}`}>{mode === 'live' ? 'Live' : mode === 'earlier' ? 'Earlier step' : `Replay${speed ? ` · ${speed}x` : ''}`}</span></div>
       <div className="rv-shot-wrap">
         {view.image
-          ? <img key="shot" className="rv-shot" src={`/runs-data/${runId}/${view.image}`} alt={alt} width={size.width} height={size.height} onLoad={(e) => { const { naturalWidth: w, naturalHeight: h } = e.currentTarget; if (w && h && (w !== size.width || h !== size.height)) setSize({ width: w, height: h }); }} />
-          : <div className="rv-shot rv-shot-empty" role="img" aria-label="No screenshot yet">Waiting for the first screen…</div>}
+          ? (() => {
+            const src = `/runs-data/${runId}/${view.image}`;
+            const img = <img key="shot" className="rv-shot" src={src} alt={alt} width={size.width} height={size.height} onLoad={(e) => { const { naturalWidth: w, naturalHeight: h } = e.currentTarget; if (w && h && (w !== size.width || h !== size.height)) setSize({ width: w, height: h }); }} />;
+            // On a phone the screenshot is small: a tap opens it full size.
+            return zoomable ? <a className="rv-shot-zoom" href={src} target="_blank" rel="noreferrer">{img}<span className="sr-only"> (open full size in a new tab)</span></a> : img;
+          })()
+          : <div className="rv-shot rv-shot-empty" role="img" aria-label={noShots || 'No screenshot yet'}>{noShots || 'Waiting for the first screen…'}</div>}
         <span className={`rv-ring${ring ? '' : ' hidden'}${bad ? ' bad' : ''}`} style={ring || undefined} aria-hidden="true">
-          {step && !step.final && <span className={`rv-ring-badge${badgeBelow ? ' below' : ''}`}>{step.n} · {step.action ? actionLabel(step) : 'focus'}</span>}
+          {step && !step.final && !step.closingMove && <span className={`rv-ring-badge${badgeBelow ? ' below' : ''}`}>{step.n} · {step.action ? actionLabel(step) : 'focus'}</span>}
         </span>
         {missing && (
           <p className="rv-missing"><span aria-hidden="true">✕ </span>No {missing.role === 'textbox' ? 'text box' : missing.role || 'element'} named “{missing.name}” on this page</p>
         )}
-        <span className={`rv-mode ${mode}`}>{mode === 'live' ? 'Live' : mode === 'earlier' ? 'Earlier step' : `Replay${speed ? ` · ${speed}x` : ''}`}</span>
       </div>
     </figure>
   );
 }
 
-function fmtSecs(s) { return s >= 60 ? `${Math.floor(s / 60)} min ${Math.round(s % 60)} s` : `${s} s`; }
+// "1:49 min" or "42 s", the same format as the analytics page.
+function Est({ s }) {
+  const v = Math.round(s);
+  return v < 60 ? <>{v}<small> s</small></> : <>{Math.floor(v / 60)}:{String(v % 60).padStart(2, '0')}<small> min</small></>;
+}
 
 // "Now": the one sentence, the customer's own reasoning, what they heard or saw, and the counters.
-export function NowCard({ step, prev, run, live, now, total }) {
+export function NowCard({ step, prev, run, live, now, total, hideQuote, finalEst, partialEst = true }) {
   const n = step?.narration || { text: 'Opening the shop…', tone: 'idle' };
   const thinkingSince = live && step?.thinking && !step.action ? (step.thinkingAt || step.observedAt) : null;
   const secs = thinkingSince ? Math.max(0, Math.round((now - Date.parse(thinkingSince)) / 1000)) : 0;
   const c = step?.counts || { step: 0, keys: 0, deadEnds: 0, browserSeconds: 0, actions: 0 };
-  const thought = step?.final ? step.closing?.thought || step.lastThought : step?.thought;
+  // The customer's closing words are shown once, in the outcome card below (hideQuote).
+  const thought = step?.final ? (hideQuote ? null : step.closing?.thought || step.lastThought) : step?.thought;
   const agent = run.persona === 'agent';
   return (
     <section className="rv-now card" aria-labelledby="rv-now-title">
       <h2 className="rv-now-kicker" id="rv-now-title">
-        {live ? 'Now' : step?.final ? 'At the end' : `Step ${step?.n ?? ''}${total ? ` of ${total}` : ''}`}
+        {live ? 'Now' : step?.final ? 'At the end' : step?.closingMove ? 'Last decision' : `Step ${step?.counts?.step ?? step?.n ?? ''}${total ? ` of ${total}` : ''}`}
       </h2>
-      <p className={`rv-now-text tone-${n.tone}`}>
+      <p className={`rv-now-text tone-${step?.final && run.outcome?.status === 'reached-payment' ? 'neutral' : n.tone}`}>
         {n.tone === 'bad' && <span className="rv-now-icon" aria-hidden="true">✕ </span>}
         {n.tone === 'refused' && <span className="rv-now-icon" aria-hidden="true">■ </span>}
         {n.text}
@@ -104,12 +114,16 @@ export function NowCard({ step, prev, run, live, now, total }) {
         <p className="rv-circles" role="note"><span aria-hidden="true">↻ </span><strong>Going in circles.</strong> Back on the same screen {step.circling.times} times in the last {step.circling.window} steps, trying {step.circling.labels.join(', ')}.</p>
       )}
       <dl className="rv-counters">
-        <div><dt>Step</dt><dd>{c.step}</dd></div>
-        <div><dt>{agent ? 'Actions' : 'Keys pressed'}</dt><dd>{agent ? c.actions : c.keys}</dd></div>
-        <div className={c.deadEnds ? 'alert' : ''}><dt>Dead ends</dt><dd>{c.deadEnds}</dd></div>
-        <div><dt>Browser time</dt><dd>{c.browserSeconds} s</dd></div>
+        <div><dt>Steps</dt><dd>{c.step}</dd></div>
+        <div><dt>Keys</dt><dd>{agent ? <span title="The AI agent acts on elements, not keys">—</span> : c.keys}</dd></div>
+        <div className={c.deadEnds ? 'alert' : ''}><dt>Failed</dt><dd>{c.deadEnds}</dd></div>
+        <div><dt>Est. time for a person</dt><dd>{(() => {
+          // At the end: the run's own figure from the server. On a step: the running total, when the record allows it.
+          const est = agent ? null : step?.final && finalEst != null ? finalEst : partialEst ? c.klmSeconds : null;
+          return est == null ? '—' : <Est s={est} />;
+        })()}</dd></div>
       </dl>
-      {!live && step?.thinkMs ? <p className="rv-foot">The AI took {fmtSecs(Math.round(step.thinkMs / 1000))} to choose this move. Browser time is what the page itself took.</p> : null}
+      <p className="rv-foot">Failed: actions on a control that was missing or could not be used. Est. time: what this path would take a person, from the steps and keys (keystroke-level model){agent ? '; none for the AI agent, which presses no keys' : ''}. Not measured time.</p>
     </section>
   );
 }
@@ -141,12 +155,12 @@ export function Filmstrip({ runId, steps, current, onPick }) {
             {g.items.map((s) => {
               const isCur = current?.n === s.n;
               const state = s.final ? (s.ok ? 'ok' : 'bad') : s.result == null && s.action !== 'give_up' && s.action !== 'done' ? 'pending' : s.ok ? 'ok' : 'bad';
-              const label = `${s.final ? 'End' : `Step ${s.n}`}, ${STAGES[s.stage]}: ${s.narration?.text || ''}${state === 'bad' ? ' Failed.' : ''}`;
+              const label = `${s.final ? 'End' : s.closingMove ? 'Last decision' : `Step ${s.n}`}, ${STAGES[s.stage]}: ${s.narration?.text || ''}${state === 'bad' ? ' Failed.' : ''}`;
               return (
                 <li key={s.n}>
                   <button type="button" className={`rv-thumb ${state}`} aria-current={isCur ? 'step' : undefined} tabIndex={isCur ? 0 : -1} aria-label={label} onClick={() => onPick(s.n)} data-n={s.n}>
                     {s.image ? <img src={`/runs-data/${runId}/${s.image}`} alt="" loading="lazy" width="80" height="54" /> : <span className="rv-thumb-blank" />}
-                    <span className="rv-thumb-n" aria-hidden="true">{s.final ? 'end' : s.n}</span>
+                    <span className="rv-thumb-n" aria-hidden="true">{s.final ? 'end' : s.closingMove ? (s.action === 'done' ? 'done' : 'stop') : s.n}</span>
                   </button>
                 </li>
               );

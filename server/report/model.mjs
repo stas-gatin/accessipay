@@ -10,7 +10,7 @@ import { exportFix, HONESTY_LABEL } from '../fixer/export.mjs';
 import { stuckPage } from '../fixer/fixer.mjs';
 import { findCulprit, siteCulprits, stuckEvidence, AXE_VERSION } from './culprit.mjs';
 
-export const REPORT_VERSION = 4;
+export const REPORT_VERSION = 5;
 
 // WCAG 2.2 success criteria used by the catalog and the suggestions.
 export const WCAG = {

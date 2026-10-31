@@ -1,4 +1,4 @@
-import CheckBadge, { CheckLine } from './CheckBadge.jsx';
+import CheckBadge, { CheckLine, CheckLegend } from './CheckBadge.jsx';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { api, OUTCOME, shortDate } from './api.js';
 import { buildSteps, altFor, STAGES } from './run/model.js';
@@ -16,7 +16,7 @@ function writePref(on) { try { localStorage.setItem(PREF, on ? 'on' : 'off'); } 
 const CHIP = {
   running: { label: 'Live', tone: 'live' },
   purchased: { label: 'Paid', tone: 'ok' },
-  'reached-payment': { label: 'Reached payment', tone: 'ok' },
+  'reached-payment': { label: 'Reached payment', tone: 'muted' },
   blocked: { label: 'Blocked', tone: 'bad' },
   'wrong-item': { label: 'Wrong item', tone: 'warn' },
   stopped: { label: 'Stopped', tone: 'muted' },
@@ -36,22 +36,33 @@ function useReducedMotion() {
   return r;
 }
 
-// What the customer found, short: the element, the problem, and a link to the step it happened on.
-function FoundList({ findings, checks = [], onStep, max = 4 }) {
+const BLOCKING = /cannot|can't|could not|no way|unable|trapped|impossible|not possible/i;
+
+// What the customer found: the element, the problem, how it was checked, and a link to its step.
+// The finding that stopped a blocked run comes first, then the rest in step order.
+function FoundList({ findings, checks = [], onStep, blocked }) {
   if (!findings?.length) return null;
-  const shown = findings.slice(0, max);
+  const items = findings.map((f, i) => ({ f, check: checks[i], i }));
+  const lead = blocked ? (items.find((x) => BLOCKING.test(x.f.problem || '')) || items[0]) : null;
+  const rest = items.filter((x) => x !== lead).sort((x, y) => (x.f.step ?? 1e9) - (y.f.step ?? 1e9) || x.i - y.i);
+  const list = lead ? [lead, ...rest] : rest;
   return (
-    <div className="rv-found">
+    <div className="rv-found" id="found">
       <p className="rv-found-h">What the customer found ({findings.length})</p>
+      <CheckLegend />
       <ol>
-        {shown.map((f, i) => (
-          <li key={i}>
-            {f.step != null && <button type="button" className="rv-step-link" onClick={() => onStep(f.step)}>Step {f.step}<span className="sr-only">: show it in the replay</span></button>}
-            <span><b>{f.element?.name ? `${f.element.role || 'element'} “${f.element.name}”` : f.page}</b>: {f.problem} <CheckBadge check={checks[i]} /><CheckLine check={checks[i]} /></span>
+        {list.map(({ f, check, i }) => (
+          <li key={i} className={lead && lead.i === i ? 'rv-first' : undefined}>
+            {f.step != null ? <button type="button" className="rv-step-link" onClick={() => onStep(f.step)}>Step {f.step}<span className="sr-only">: show it in the replay</span></button> : <span />}
+            <span className="sr-finding">
+              <b title={f.element?.name || f.page}>{lead && lead.i === i && <span className="rv-blocking">Blocking</span>}{f.element?.name ? `${f.element.role || 'element'} “${f.element.name.length > 56 ? `${f.element.name.slice(0, 55)}…` : f.element.name}”` : f.page}</b>
+              <span>{f.problem}</span>
+              <span className="sr-finding-check"><CheckBadge check={check} /></span>
+              <CheckLine check={check} />
+            </span>
           </li>
         ))}
       </ol>
-      {findings.length > max && <a className="rv-found-all" href="#found" onClick={(e) => { e.preventDefault(); document.getElementById('found')?.scrollIntoView({ behavior: 'smooth' }); }}>All {findings.length} findings</a>}
     </div>
   );
 }
@@ -65,29 +76,35 @@ function checkText(run) {
   return o.reason;
 }
 
-function OutcomeBanner({ run, steps, metrics, onStep }) {
+function fmtTime(s) {
+  if (s == null) return '';
+  const v = Math.round(s);
+  return v < 60 ? `${v} s` : `${Math.floor(v / 60)}:${String(v % 60).padStart(2, '0')} min`;
+}
+
+function OutcomeBanner({ run, steps, metrics, onStep, hasFix }) {
   const o = run.outcome?.status;
   if (!o || run.status === 'running') return null;
   const last = steps.filter((s) => !s.final).at(-1);
   const stage = STAGES[steps.at(-1)?.prevStage ?? last?.stage ?? 0];
-  const n = metrics?.steps ?? steps.filter((s) => !s.final).length;
+  const n = metrics?.steps ?? steps.at(-1)?.counts?.step ?? 0;
   const final = [...(run.events || [])].reverse().find((e) => e.type === 'decide' && (e.action === 'give_up' || e.action === 'done'));
   const why = final?.thought;
   const scan = run.scan?.totalViolations;
   const effort = metrics && (
     <p className="rv-banner-effort">
-      {n} steps · {run.persona === 'agent' ? `${metrics.steps} actions` : `${metrics.keys} keys pressed (${metrics.tabs} Tab)`} · {metrics.deadEnds} dead end{metrics.deadEnds === 1 ? '' : 's'} · {metrics.noEffect} move{metrics.noEffect === 1 ? '' : 's'} that changed nothing
-      {metrics.klmSeconds != null && <> · about {metrics.klmSeconds} s for a person (keystroke-level model estimate)</>}
-      {scan != null && <> · scanner: {scan} violation{scan === 1 ? '' : 's'}</>}
+      {n} steps{run.persona === 'agent' ? '' : ` · ${metrics.keys} keys pressed (${metrics.tabs} Tab)`} · {metrics.deadEnds} failed action{metrics.deadEnds === 1 ? '' : 's'} · {metrics.noEffect} move{metrics.noEffect === 1 ? '' : 's'} that changed nothing
+      {metrics.klmSeconds != null && o === 'purchased' && <> · about {fmtTime(metrics.klmSeconds)} for a person (estimate)</>}
+      {scan != null && <> · axe-core: {scan === 0 ? 'no issues' : `${scan} issue${scan === 1 ? '' : 's'}`}</>}
     </p>
   );
   const relabel = run.outcome?.reclassified && <p className="rv-banner-sub">Relabelled by hand after checking the screenshots: {run.outcome.reclassified.why}</p>;
-  const found = <FoundList findings={run.findings} checks={run.checks} onStep={onStep} />;
+  const found = <FoundList findings={run.findings} checks={run.checks} onStep={onStep} blocked={!['purchased', 'reached-payment'].includes(o)} />;
   if (o === 'purchased') {
     const p = run.payment;
     return (
       <section className="rv-banner ok" role="status" aria-label="Outcome">
-        <p className="rv-banner-title"><span aria-hidden="true">✓ </span>Paid in {n} steps.{p ? ` ${p.mode === 'mock' ? 'Mock payment' : 'PayPal confirmed the payment'}${p.amount != null ? ` of $${Number(p.amount).toFixed(2)}` : ''}.` : ''}</p>
+        <p className="rv-banner-title"><span aria-hidden="true">✓ </span>Paid in {n} steps.{p ? ` ${p.mode === 'mock' ? 'Mock payment' : 'PayPal confirmed the order (sandbox)'}${p.amount != null ? `, $${Number(p.amount).toFixed(2)}` : ''}.` : ''}</p>
         {p && p.mode !== 'mock' && <p className="rv-banner-sub">Verified with PayPal Orders v2: the test counts only because PayPal confirms the order.</p>}
         {effort}
         {found}
@@ -96,8 +113,8 @@ function OutcomeBanner({ run, steps, metrics, onStep }) {
   }
   if (o === 'reached-payment') {
     return (
-      <section className="rv-banner ok" role="status" aria-label="Outcome">
-        <p className="rv-banner-title"><span aria-hidden="true">✓ </span>Reached the payment step of {run.site?.host || 'the shop'} in {n} steps.</p>
+      <section className="rv-banner muted" role="status" aria-label="Outcome">
+        <p className="rv-banner-title">Reached the payment step of {run.site?.host || 'the shop'} in {n} steps.</p>
         <p className="rv-banner-sub">Stopped there on purpose: AccessiPay never pays, signs in or types card data on a real site.</p>
         {relabel}
         {effort}
@@ -122,12 +139,12 @@ function OutcomeBanner({ run, steps, metrics, onStep }) {
       {relabel}
       {effort}
       {found}
-      {!run.site && o === 'blocked' && <p className="rv-banner-actions"><a className="btn small primary" href="#fix" onClick={(e) => { e.preventDefault(); const f = document.getElementById('fix'); f?.scrollIntoView(); f?.focus({ preventScroll: true }); }}>{run.outcome?.status === 'blocked' ? 'Fix it' : 'See the fix'}</a></p>}
+      {!run.site && o === 'blocked' && hasFix && <p className="rv-banner-actions"><a className="btn small" href="#fix" onClick={(e) => { e.preventDefault(); const f = document.getElementById('fix'); f?.scrollIntoView(); f?.focus({ preventScroll: true }); }}>Jump to the fix <span aria-hidden="true">↓</span></a></p>}
     </section>
   );
 }
 
-export default function RunView({ id, meta }) {
+export default function RunView({ id, meta, onSection }) {
   const [run, setRun] = useState(null);
   const [events, setEvents] = useState([]);
   const [sel, setSel] = useState(null);
@@ -137,12 +154,18 @@ export default function RunView({ id, meta }) {
   const [metrics, setMetrics] = useState(null);
   const [now, setNow] = useState(Date.now());
   const [error, setError] = useState('');
+  const [hasFix, setHasFix] = useState(false);
+  const [allSteps, setAllSteps] = useState(false);
   const headRef = useRef(null);
   const reduced = useReducedMotion();
   const [narrow] = useState(() => typeof matchMedia === 'function' && matchMedia('(max-width: 760px)').matches);
+  // Large retailers are recorded as text only: no screenshots, so no replay panel either.
+  const textOnly = !!run?.site?.anonymized;
+  const section = run ? (run.site ? 'results' : 'analytics') : null;
+  useEffect(() => { if (section) onSection?.(section); }, [section, id]);
 
   useEffect(() => {
-    setRun(null); setEvents([]); setSel(null); setPlaying(false); setMetrics(null);
+    setRun(null); setEvents([]); setSel(null); setPlaying(false); setMetrics(null); setHasFix(false); setAllSteps(false);
     window.scrollTo(0, 0);
     let es;
     api(`/api/runs/${id}`).then((r) => {
@@ -226,7 +249,7 @@ export default function RunView({ id, meta }) {
       if (e.altKey || e.ctrlKey || e.metaKey || e.defaultPrevented) return;
       const t = e.target;
       const tag = t?.tagName;
-      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || t?.isContentEditable || t?.closest?.('.perceive, .diff')) return;
+      if (textOnly || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || t?.isContentEditable || t?.closest?.('.perceive, .diff')) return;
       if (e.key === ' ' || e.code === 'Space') {
         if (tag === 'BUTTON' || tag === 'A' || tag === 'SUMMARY') return;
         e.preventDefault(); togglePlay();
@@ -238,7 +261,7 @@ export default function RunView({ id, meta }) {
     };
     window.addEventListener('keydown', on);
     return () => window.removeEventListener('keydown', on);
-  }, [togglePlay, go, idx, steps.length]);
+  }, [togglePlay, go, idx, steps.length, textOnly]);
 
   // Keep the run header right under the app header, whatever height the app header wraps to.
   useLayoutEffect(() => {
@@ -268,13 +291,42 @@ export default function RunView({ id, meta }) {
   const defects = run.defects.map((d) => meta.defects.find((x) => x.id === d)?.short || d);
   const external = !!run.site;
   const chip = CHIP[running ? 'running' : run.outcome?.status] || { label: run.status, tone: 'muted' };
-  const total = steps.filter((s) => !s.final).length;
+  const total = steps.filter((s) => !s.final && !s.closingMove).length;
   const where = external ? run.site.host : defects.length ? `Demo shop with ${defects.join(', ')}` : 'Demo shop, no defects';
-  const brain = run.brainKind === 'anthropic' ? `Claude API (${run.model})` : run.brainKind === 'external' ? 'Claude Code agent' : run.brainKind;
+  const o = run.outcome?.status;
+  // The closing words appear once: in the outcome card, when it quotes them.
+  const hideQuote = !running && o && !['purchased', 'reached-payment', 'not-testable'].includes(o);
+  const STEP_PREVIEW = 8;
+  const listed = allSteps ? steps : steps.slice(0, STEP_PREVIEW);
+  const stepList = (
+    <section className={`card rv-steps${textOnly ? ' rv-left rv-left-text' : ''}`} aria-labelledby="steps">
+      <h2 className="section-title" id="steps">All {total} steps as text</h2>
+      <ol className="timeline rv-steplist">
+        {listed.map((s) => (
+          <li key={s.n}>
+            <button type="button" aria-current={current?.n === s.n ? 'step' : undefined} onClick={() => { setPlaying(false); setSel(running && s.n === steps.at(-1)?.n ? null : s.n); if (!textOnly) window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' }); }}>
+              <span className="n">{s.final ? 'end' : s.closingMove ? (s.action === 'done' ? 'done' : 'stop') : s.n}</span>
+              <span><span className={`a tone-${s.narration?.tone}`}>{s.narration?.text}</span>{s.thought && !(hideQuote && s.closingMove) && <span className="r" style={{ display: 'block' }}>“{s.thought}”</span>}</span>
+            </button>
+          </li>
+        ))}
+      </ol>
+      {steps.length > STEP_PREVIEW && (
+        <button type="button" className="btn small rv-steps-more" aria-expanded={allSteps} onClick={() => setAllSteps((v) => !v)}>
+          {allSteps ? 'Show fewer steps' : `Show all ${total} steps`}
+        </button>
+      )}
+      {run.usage && <p className="note">Claude API: {run.usage.requests} requests, {Math.round((run.usage.input + run.usage.cacheRead + run.usage.cacheWrite) / 1000)}k input tokens, about ${run.usage.costUsd?.toFixed(3)}.</p>}
+    </section>
+  );
 
   return (
     <div className="page rv-page">
-      <p className="note rv-crumbs"><a href="#/results">Results</a>{external && <> · <a href={`#/sites/${encodeURIComponent(run.site.host)}`}>{run.site.host}: the whole site analysis</a></>} · <a href="#/runs">every run</a> · {shortDate(run.createdAt)} · {brain}{run.recorded ? ' · recorded run' : ''}{run.label ? ` · ${run.label}` : ''}</p>
+      <nav className="note rv-crumbs" aria-label="Breadcrumb">
+        {external
+          ? <><a href="#/results">Results</a><span aria-hidden="true"> › </span><a href={`#/sites/${encodeURIComponent(run.site.host)}`}>{run.site.host}</a><span aria-hidden="true"> › </span>{persona?.label || run.persona}</>
+          : <><a href="#/analytics">Analytics</a><span aria-hidden="true"> › </span>{persona?.label || run.persona}, {shortDate(run.createdAt)}</>}
+      </nav>
 
       <header className="rv-head" ref={headRef}>
         <div className="rv-who">
@@ -297,9 +349,10 @@ export default function RunView({ id, meta }) {
       )}
 
       <div className="rv-theater">
+        {textOnly ? stepList : (
         <section className="rv-left card" aria-labelledby="rv-screen-title">
           <h2 className="sr-only" id="rv-screen-title">What a sighted person would see</h2>
-          <Screen runId={run.id} step={current} alt={altFor(current, run, persona?.label)} mode={mode} speed={mode === 'replay' && playing ? speed : null} />
+          <Screen runId={run.id} step={current} alt={altFor(current, run, persona?.label)} mode={mode} speed={mode === 'replay' && playing ? speed : null} zoomable={narrow} />
           <div className="rv-controls" role="group" aria-label={running ? 'Step through the run' : 'Replay controls'}>
             <button type="button" className="btn small" onClick={() => { setPlaying(false); go(idx - 1); }} disabled={idx <= 0}><span aria-hidden="true">←</span> Previous</button>
             {!running && (
@@ -326,9 +379,10 @@ export default function RunView({ id, meta }) {
             </div>
           )}
         </section>
+        )}
 
         <div className="rv-right">
-          <NowCard step={current} prev={prevStep} run={run} live={live} now={now} total={total} />
+          <NowCard step={current} prev={prevStep} run={run} live={live} now={now} total={total} hideQuote={hideQuote} finalEst={metrics?.klmSeconds} partialEst={!(textOnly && run.persona === 'screenreader')} />
           <div className="rv-announce">
             <label className="rv-switch">
               <input type="checkbox" role="switch" checked={announce} onChange={(e) => { setAnnounce(e.target.checked); writePref(e.target.checked); }} />
@@ -336,16 +390,16 @@ export default function RunView({ id, meta }) {
             </label>
           </div>
         </div>
-        <details className="rv-perceive card" open={!narrow}>
+        {!run.site?.anonymized && <details className="rv-perceive card" open={!narrow}>
           <summary>What the customer perceives on this step</summary>
           <p className="note">{run.persona === 'keyboard' ? 'The visible text of the page and where the keyboard focus is.' : 'The accessibility tree: what a screen reader announces and what an AI agent reads.'}</p>
           <pre className="perceive" tabIndex={0} aria-label="Customer perception">{current?.text || '…'}</pre>
-        </details>
+        </details>}
       </div>
 
       <div aria-live="polite" aria-atomic="true" className="sr-only">{said}</div>
 
-      <OutcomeBanner run={run} steps={steps} metrics={metrics} onStep={goStep} />
+      <OutcomeBanner run={run} steps={steps} metrics={metrics} onStep={goStep} hasFix={hasFix} />
 
       {run.goalId === 'agentic' && (
         <p className="callout note" style={{ margin: '16px 0' }}>Agentic buyer task: {run.goal.split('"')[1]} {run.goalCheck && <strong>{run.goalCheck.met ? 'It bought the right item.' : `It bought ${run.goalCheck.bought.join(', ')} with ${run.goalCheck.delivery} delivery, which is not what was asked.`}</strong>}</p>
@@ -359,41 +413,15 @@ export default function RunView({ id, meta }) {
         </div>
         <div>
           <p className="label">What really happened</p>
-          <p className={`value ${outcome?.tone || 'neutral'}`}>{running ? `Step ${total}` : run.outcome?.status === 'reached-payment' ? 'Reached payment' : outcome?.tone === 'ok' ? 'Bought it' : outcome?.tone === 'bad' ? 'Could not buy' : outcome?.label || '—'}</p>
-          <p className="sub">{run.outcome?.reason}{run.payment?.status === 'COMPLETED' ? (run.payment.mode === 'mock' ? ' Mock payment.' : ' PayPal confirmed the payment.') : ''}</p>
+          <p className={`value ${o === 'reached-payment' ? 'neutral' : outcome?.tone || 'neutral'}`}>{running ? `Step ${total}` : o === 'reached-payment' ? 'Reached payment' : o === 'purchased' ? 'Bought it' : outcome?.tone === 'bad' ? 'Could not buy' : outcome?.label || '—'}</p>
+          <p className="sub">{/^The agent gave up\.?$/.test(run.outcome?.reason || '') ? 'The customer gave up.' : /payment oracle/.test(run.outcome?.reason || '') ? 'PayPal confirmed the order (sandbox).' : run.outcome?.reason}{run.payment?.status === 'COMPLETED' && !/payment oracle/.test(run.outcome?.reason || '') ? (run.payment.mode === 'mock' ? ' Mock payment.' : ' PayPal confirmed the order (sandbox).') : ''}</p>
         </div>
       </div>
-      {external && <p className="note" style={{ marginTop: 8 }}>Real site: <a href={run.site.url} target="_blank" rel="noreferrer">{run.site.host}<span className="sr-only"> (opens in a new tab)</span></a>. The customer goes as far as the payment step; nothing is paid.</p>}
+      {external && <p className="note" style={{ marginTop: 8 }}>Real shop{run.site.url ? <>: <a href={run.site.url} target="_blank" rel="noreferrer">{run.site.host}<span className="sr-only"> (opens in a new tab)</span></a></> : ''}. The customer goes as far as the payment step; nothing is paid.</p>}
 
-      <div className="grid-2" style={{ marginTop: 16 }}>
-        <section className="card" aria-labelledby="found">
-          <h2 className="section-title" id="found">What the customer reported</h2>
-          {run.findings?.length ? (
-            <ol className="findings">{run.findings.map((f, i) => (
-              <li key={i}>
-                {f.step != null && <button type="button" className="rv-step-link" onClick={() => goStep(f.step)}>Step {f.step}<span className="sr-only">: show it in the replay</span></button>}
-                <span><strong>{f.page}{f.element?.name ? `, ${f.element.role || 'element'} “${f.element.name}”` : ''}:</strong> {f.problem} <CheckBadge check={run.checks?.[i]} /><CheckLine check={run.checks?.[i]} /></span>
-              </li>
-            ))}</ol>
-          ) : <p className="note">{running ? 'Reported at the end of the run.' : 'Nothing reported.'}</p>}
-          {run.usage && <p className="note">Claude API: {run.usage.requests} requests, {Math.round((run.usage.input + run.usage.cacheRead + run.usage.cacheWrite) / 1000)}k input tokens, about ${run.usage.costUsd?.toFixed(3)}.</p>}
-        </section>
-        <section className="card" aria-labelledby="steps">
-          <h2 className="section-title" id="steps">All {total} steps as text</h2>
-          <ol className="timeline rv-steplist">
-            {steps.map((s) => (
-              <li key={s.n}>
-                <button type="button" aria-current={current?.n === s.n ? 'step' : undefined} onClick={() => { setPlaying(false); setSel(running && s.n === steps.at(-1)?.n ? null : s.n); window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' }); }}>
-                  <span className="n">{s.final ? 'end' : s.n}</span>
-                  <span><span className={`a tone-${s.narration?.tone}`}>{s.narration?.text}</span>{s.thought && <span className="r" style={{ display: 'block' }}>“{s.thought}”</span>}</span>
-                </button>
-              </li>
-            ))}
-          </ol>
-        </section>
-      </div>
+      {!textOnly && stepList}
 
-      {run.status === 'finished' && !external && <FixPanel run={run} meta={meta} />}
+      {run.status === 'finished' && !external && <FixPanel run={run} meta={meta} onPresence={setHasFix} />}
     </div>
   );
 }

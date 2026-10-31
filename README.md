@@ -6,13 +6,13 @@ Built for the PayPal AI Hackathon 2026.
 
 ## Why
 
-A checkout can pass an automated scan and still be impossible to complete. In the demo shop, axe-core (default rules, every page of the flow) flags 2 of 12 real checkout defects. The other 10 include a promo popup that traps the keyboard, a Pay button made of a `<div>`, and form errors hidden from assistive technology. Each of them can stop a purchase.
+A checkout can pass an automated scan and still be impossible to complete. In the demo shop, axe-core (default rules, every page of the flow) flags 2 of 13 real checkout defects. The other 11 include a promo popup that traps the keyboard, a Pay button made of a `<div>`, and form errors hidden from assistive technology. Each of them can stop a purchase.
 
 The same thing blocks AI shopping agents: they read pages through the accessibility tree, just like screen readers. A checkout a blind customer cannot finish is a checkout an agent cannot finish either.
 
 ## How it works
 
-1. **Demo shop.** Five pages (catalog, cart, checkout, payment, confirmation) with twelve switchable defects (`server/shop/defects.mjs`), split into a train set and a holdout set.
+1. **Demo shop.** Five pages (catalog, cart, checkout, payment, confirmation) with thirteen switchable defects (`server/shop/defects.mjs`), split into a train set and a holdout set.
 2. **Shoppers.** Three personas, each with its own perception and actions (`server/engine/session.mjs`):
    - *Screen reader user*: gets only the accessibility tree; moves with Tab, Shift+Tab, Enter, Space, arrows, and a screen reader elements list that can jump to focusable controls.
    - *Keyboard-only user*: sees the visible page text; uses only the keyboard.
@@ -44,52 +44,53 @@ Measured, not estimated. Runs below used the real PayPal sandbox; the shopper's 
 
 On real sites the shopper goes as far as the payment step and stops: the engine refuses to pay, place an order, type card data, sign in or type passwords, and a network guard blocks anything but reading to payment providers. Before a run it reads robots.txt; a bot check, a maintenance page or HTTP 403/429 ends the run as *not testable*: AccessiPay never tries to get past bot protection. There are at least 3 seconds between actions, and each large retailer is visited at most once a day.
 
-**Open-source platform demos** (named; findings to be checked by hand before any issue is filed). Each demo gets each customer type; "reached payment" means the payment form or the payment method choice was on screen:
+**Every shop gets all three customers, in one visit.** A screen reader user, a keyboard-only user and an AI shopping agent shop at the same time, and their runs are kept together as one analysis of the shop (console: *Results*). A shop is never tested by one customer alone, and each large retailer gets at most one such visit a day. Large retailers are published only as *Retailer A*, *Retailer B* and so on: their names, addresses, brand words, screenshots, page text and page addresses are removed from the recorded runs, and capitalised words that are not ordinary English (coined product names such as a jewelry line) are replaced with "[name]" (`server/anonymize.mjs`). The API applies the same mask to runs that are still in progress.
 
-| Platform demo | Screen reader | Keyboard only | AI agent |
-|---|---|---|---|
-| Shopify Hydrogen | reached payment, 10 steps | reached payment, 29 steps | reached payment, 7 steps |
-| Medusa | not counted: the demo answered HTTP 500 | not run (demo down) | reached "Place order", 28 steps (30 Oct) |
-| Saleor | stopped at payment: demo has no payment gateway | ran out of 90 steps on the address form | stopped at payment: no gateway |
-| Solidus | reached payment, 27 steps | reached payment, 67 steps | reached payment, 13 steps |
-| Sylius | reached the payment method choice, 30 steps | ran out of 90 steps on the address form | reached the payment method choice, 25 steps |
-| Shopware Frontends | reached payment, 27 steps | reached payment, 59 steps | not testable: a bot check never finished |
-| Next.js Commerce | not testable: a visual puzzle CAPTCHA appeared at checkout | not testable: same CAPTCHA | not testable: same CAPTCHA |
-| Magento 2 (Magebit demo) | reached payment, 28 steps | reached payment, 88 steps | reached payment, 18 steps |
+Results on 31 October 2026 (console: *Results*; `node tools/sweep.mjs status`):
 
-What the customers met most often: buttons and links with no name or the same name on every product ("Add to cart", "SHOP NOW"), focus thrown to the top of the page after every step, nothing announced while a page or form section loads, size and colour options that do not say which one is selected, and long forms that change silently (a state list swapped after a country choice, an item named "test" appearing in the cart). On Next.js Commerce a visual puzzle CAPTCHA ("click on all cells where two lines overlap") appeared at checkout after the email was typed; a blind customer cannot solve it.
+| | Shops | Customer runs that reached the payment step |
+|---|---|---|
+| Tested by all three customers | 21 | 47 of 55 counted runs |
+| Screen reader customer | | 20 of 20 |
+| AI shopping agent | | 15 of 17 |
+| Keyboard-only customer | | 12 of 21 |
+| Turned an automated browser away (HTTP 403/429, a bot check, a maintenance page) | 10 | not tested |
 
-**Large retailers** (published only as Retailer A, B, ...): 34 well-known stores were checked. 20 were not testable: 13 answered HTTP 403 (or 429) to an automated browser, 1 did not load, and 6 showed a press-and-hold bot check, an "unusual activity" page, a maintenance page, refused every Add to cart, or ended guest checkout on a sign-in page. On the other 14, the customer reached the payment form on 10 (screen reader 7 of 7, AI agent 3 of 3); 4 are to be run again because their first runs were distorted by engine bugs. Recurring findings: three overlapping pop-ups before the shop, cookie banners with no plain Decline button, carts that first announce "0 items" after an add, raw template text in names ("{{ count }} items", "undefined Artículos en la cesta"), paid add-ons (package protection) already in the bag, and pre-ticked marketing checkboxes. A night sweep on 31 October was discarded: too many runs at once slowed every step past the decision timeout. Those retailers are visited again on another day, at most six runs at a time.
+All three customers reached payment on 9 shops. Three runs are shown as *not counted*: our engine could not press a control that was on screen (Playwright's click waited and timed out), which is a fault on our side, not the shop's; those customers shop there again on another day. The engine now presses such a control directly, the way a person clicking that spot would.
+
+The keyboard-only customer is the one most often stopped: product pages and listings with dozens of tab stops before Add to cart (image galleries, filter lists, repeated headers without a skip link), cart drawers that open without moving focus into them, and a carousel that keeps focus. The AI agent was stopped by a cart drawer whose items and Checkout button were missing from the accessibility tree, and by size options it could not select. The problems met most often, across 326 reports: unnamed or mislabelled controls (20 of 21 shops), keyboard focus lost or far away (20), no feedback after an action such as Add to cart (19), and pop-ups and dialogs, cookie banners included, that take over the page (18).
+
+Before publishing, every finding is also checked without AI (below), and the records are checked for names with `node tools/leak-check.mjs`.
 
 Most axe-core issues on these sites are colour contrast and landmark rules; the problems that actually stopped or slowed the customer are mostly different ones.
 
-These runs, the demo shop runs and their fixes are in `data/recorded/` and can be replayed in the console. The full evaluation (every defect, every persona, Claude API, holdout set) is `eval/run-eval.mjs`; its results appear under *Defects and results* once it has run.
+These runs, the demo shop runs and their fixes are in `data/recorded/` and can be replayed in the console. The full evaluation (every defect, every persona, Claude API, holdout set) is `eval/run-eval.mjs`; its results appear in *Analytics* once it has run.
 
 ## Are the findings real?
 
 The customers' findings are written by AI, so every finding is checked again without AI against the record of its run (`server/verify.mjs`, `node tools/verify-findings.mjs`): the page as the customer perceived it at that step (accessibility tree, or visible text and focus for the keyboard customer), where keyboard focus actually went, the status messages on the page after an action, and axe-core on the same page in the same state. A claim about a named control that the record shows with a name is marked as not confirmed.
 
-On the real sites so far: 218 findings; 116 are of a kind that can be checked automatically (controls without a name, identical names, vague names, lost focus, no announcement after an action, empty pages while loading, no skip link, pre-ticked marketing boxes, raw template text); 104 of them (90%) are confirmed by the record and 12 are not. The other 102 (for example "the price in the cart is higher than on the product card") need a person to judge from the replay. Each finding shows its result in the run view and in the site analysis.
+On the real shops so far: 343 findings; 180 are of a kind that can be checked automatically (controls without a name, identical names, vague names, lost focus, no announcement after an action, empty pages while loading, no skip link, pre-ticked marketing boxes, raw template text); 149 of them (83%) are confirmed by the record (143 by the page record, 6 by axe-core alone) and 31 are not. The other 163 (for example "the price in the cart is higher than on the product card") need a person to judge from the replay. Each finding shows its result in the run view and in the shop's analysis. For a shop whose name is withheld, the check runs before its page text is removed from the record.
 
 ## Test your own site
 
-Bot protection turns automated browsers away, and AccessiPay never tries to get past it. On their own shop an owner can let it in (console: *Test your own site*):
+Bot protection turns automated browsers away, and AccessiPay never tries to get past it. On their own shop an owner can let it in (console: *Your site*):
 
 1. **Prove the site is yours**: publish `/.well-known/accessipay.txt` with a code, or add a DNS TXT record `accessipay-verification=<code>`.
 2. **Let the checker through**: AccessiPay's browser sends the header `x-accessipay-key: <your key>` on requests to your host and its subdomains, and to no other host. One allow rule in your bot protection (Cloudflare WAF custom rule with the Skip action, Akamai Bot Manager exception, or any firewall) lets those requests in; the protection stays on for everyone else. *Check access* loads your home page with and without the key to confirm.
-3. **Send the customers**: screen reader, keyboard-only and AI agent runs go to the payment step and stop. On a verified site the robots.txt rules meant for crawlers are not applied, because the owner asked for the test.
+3. **Send the customers**: all three, screen reader, keyboard-only and AI agent, go to the payment step and stop. On a verified site the robots.txt rules meant for crawlers are not applied, because the owner asked for the test.
 
 ## Can AI assistants shop here?
 
 A lighter check for any shop: it reads what the shop publishes for AI agents (robots.txt rules for ChatGPT-User, Claude-User, Perplexity-User, GPTBot, ClaudeBot and others; llms.txt; schema.org Product and Offer data) and loads the home page once in an ordinary automated browser. It never sends another company's user agent. Only a rule that names an agent counts as turning it away; a `User-agent: *` rule that keeps the checkout out of search results is reported separately.
 
-On the eight platform demos: all eight let an automated browser load the home page; none names an AI agent in robots.txt; three ask every crawler to skip the checkout; one publishes llms.txt; one has schema.org Product data on its home page. A full customer run still found a visual CAPTCHA at checkout on one of them, which this light check cannot see.
+The check runs on its own for any address (console: *Your site*), and its result is shown in the shop's analysis when one exists.
 
 ## What it does not claim
 
 - It is not a WCAG audit or certificate, and it does not replace testing with real people who use assistive technology.
 - The personas are models. The screen reader persona models focus navigation plus an elements list; it does not model browse-mode activation of elements that cannot take focus.
-- The twelve defects were written by us. The holdout set was not used while writing the shopper prompts.
+- The thirteen defects were written by us. The holdout set was not used while writing the shopper prompts.
 - On real sites the agent stops before paying, so "reached payment" means a payment form or an enabled pay or place-order button was on screen, not that a payment would have succeeded. On one-page checkouts the payment form is on the same page as the address form.
 - Shopper decisions in the recorded runs came from Claude models through the engine's agent interface; a different model, or a person, may take more or fewer steps.
 - In mock mode no PayPal call is made, and the console says so on every page.

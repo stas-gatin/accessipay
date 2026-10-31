@@ -6,6 +6,10 @@ import { FAILED, narrate } from '../../../shared/narrate.js';
 
 export { STAGES };
 export const VIEWPORT = { width: 1280, height: 860 };
+// Keystroke-level model, the same constants as server/metrics.mjs: 0.28 s per key, 1.35 s per decision,
+// words heard at 180 a minute (screen reader only). An estimate for a person, never measured time.
+const KLM = { keystroke: 0.28, mental: 1.35, wordsPerMinute: 180 };
+const wordCount = (t) => (String(t).match(/[A-Za-z0-9$£€]+/g) || []).length;
 
 function keysFor(action, args = {}) {
   if (['next', 'prev', 'activate', 'press'].includes(action)) return 1;
@@ -59,16 +63,24 @@ export function buildSteps(events, run) {
   }
 
   // Cumulative counters, circling detection and the view (image + box) of each step.
-  let keys = 0, deadEnds = 0, browserMs = 0, actions = 0;
+  // One step count everywhere (run view, banner, analytics): decisions, not counting the closing done or give_up.
+  let keys = 0, deadEnds = 0, browserMs = 0, actions = 0, decisions = 0, heard = 0;
+  const reader = run?.persona === 'screenreader';
   let lastFocus = null;
   list.forEach((s, i) => {
+    s.closingMove = s.action === 'done' || s.action === 'give_up';
+    if (!s.final && !s.closingMove && (s.action || (s.observed && run?.status === 'running'))) decisions += 1;
+    if (reader && s.action === 'read' && s.text) heard += wordCount(s.text);
     if (s.result != null) {
+      const f0 = reader && String(s.result).match(/^Focus moved to: ([\s\S]*)$/);
+      if (f0) heard += wordCount(f0[1]);
       actions += 1;
       keys += s.keys || 0;
       if (!s.ok) deadEnds += 1;
       browserMs += s.actMs || 0;
     }
-    s.counts = { step: s.final ? list.filter((x) => !x.final).length : i + 1, keys, deadEnds, browserSeconds: Math.round(browserMs / 100) / 10, actions };
+    const klmSeconds = run?.persona === 'agent' ? null : Math.round(keys * KLM.keystroke + decisions * KLM.mental + (heard / KLM.wordsPerMinute) * 60);
+    s.counts = { step: decisions, keys, deadEnds, browserSeconds: Math.round(browserMs / 100) / 10, actions, klmSeconds };
     s.narration = narrate(s, run?.persona, { lastFocus, stageName: STAGES[s.stage ?? 0] });
     const f = String(s.result || '').match(/^Focus moved to: ([\s\S]*)$/);
     if (f) lastFocus = f[1];

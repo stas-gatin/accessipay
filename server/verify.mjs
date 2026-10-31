@@ -164,6 +164,8 @@ export function verifyFinding(run, f) {
 }
 
 export function verifyFindings(run) {
+  // A withheld shop's run keeps the checks made before its page text was removed.
+  if (run.checksKept) return run.checksKept;
   return (run.findings || []).map((f) => verifyFinding(run, f));
 }
 

@@ -136,6 +136,31 @@ export function layoutMarks({ width, height, marks = [] }) {
   return out;
 }
 
+// Accessible names read out a close button as "×": that sign means nothing in a sentence.
+export const cleanText = (s) => String(s ?? '').replace(/[×✕✖]\s*/g, '').replace(/\s{2,}/g, ' ').trim();
+
+// The ellipse drawn around a mark passes through the corners of its box, which cuts through a popup's
+// title. Grow the box so the ellipse goes round the whole element, kept inside the screenshot.
+export function roomyBox(box, W, H) {
+  if (!box) return box;
+  const rx = (box.width / 2) * Math.SQRT2 + 10;
+  const ry = (box.height / 2) * Math.SQRT2 + 10;
+  const cx = box.x + box.width / 2;
+  const cy = box.y + box.height / 2;
+  const w = Math.max(box.width, 2 * (Math.min(rx, cx - 4, W - cx - 4) - 16));
+  const h = Math.max(box.height, 2 * (Math.min(ry, cy - 4, H - cy - 4) - 14));
+  return { x: cx - w / 2, y: cy - h / 2, width: w, height: h };
+}
+
+// Marks as the owner report shows them (the console's Report.jsx does the same): text cleaned, the
+// ellipse round the whole element, and on the picture the callout carries the title only; the full
+// note is the numbered list under it. Returns { marks, onPicture }.
+export function reportMarks({ width, height, marks = [] }) {
+  const side = (m) => m.kind === 'scanner' || m.kind === 'context';
+  const clean = marks.map((m) => (side(m) ? m : { ...m, title: cleanText(m.title), note: cleanText(m.note), box: roomyBox(m.box, width, height) }));
+  return { marks: clean, onPicture: clean.map((m) => (side(m) ? m : { ...m, note: '' })) };
+}
+
 // Short text alternative for the whole picture.
 export function annotationAlt({ marks = [], caption = '', scannerRecorded = true }) {
   const main = marks.filter((m) => m.kind !== 'scanner' && m.kind !== 'context');
@@ -201,11 +226,13 @@ export function annotationSvg({ width, height, marks = [], image = null, idPrefi
 
 // A complete accessible figure for HTML pages: the picture is one image with a text alternative,
 // the notes are repeated as a numbered list under it, and a legend explains the two kinds of marks.
-export function annotatedFigureHtml({ src, width, height, marks = [], caption = '', idPrefix = 'ap', legend = true, stuckLabel = 'Where the customer got stuck', scannerRecorded = true }) {
+// The callout on the picture carries the title only (see reportMarks), the same as the console.
+export function annotatedFigureHtml({ src, width, height, marks: given = [], caption = '', idPrefix = 'ap', legend = true, stuckLabel = 'Where the customer got stuck', scannerRecorded = true }) {
+  const { marks, onPicture } = reportMarks({ width, height, marks: given });
   const alt = annotationAlt({ marks, caption, scannerRecorded });
   const main = marks.filter((m) => m.kind !== 'scanner' && m.kind !== 'context');
   const scanner = marks.filter((m) => m.kind === 'scanner');
-  const svg = annotationSvg({ width, height, marks, idPrefix, animate: true });
+  const svg = annotationSvg({ width, height, marks: onPicture, idPrefix, animate: true });
   const notes = main.map((m) => `<li value="${esc(m.n)}"><strong>${esc(m.title || 'Element')}</strong>: ${esc(m.note)}</li>`).join('');
   const legendHtml = legend
     ? `<p class="ap-legend"><span class="ap-key ap-key-red" aria-hidden="true"></span> ${esc(stuckLabel)} <span class="ap-key ap-key-blue" aria-hidden="true"></span> ${!scannerRecorded ? 'Positions of what axe-core flagged were not recorded in this run' : scanner.length ? `What axe-core flagged (${scanner.length})` : 'axe-core flagged nothing on this screen'}</p>`

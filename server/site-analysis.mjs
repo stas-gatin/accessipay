@@ -47,16 +47,23 @@ export function createSiteAnalysis({ runs, dataDir }) {
       url: list.find((r) => r.site?.url)?.site.url || null,
       lastRun: list.map((r) => r.createdAt).sort().at(-1),
       running: list.filter((r) => r.status === 'running').length,
-      customers: Object.fromEntries(PERSONAS.map((p) => [p, latest[p] && { id: latest[p].id, status: latest[p].status, outcome: latest[p].outcome?.status || null, steps: latest[p].steps ?? null }])),
+      customers: Object.fromEntries(PERSONAS.map((p) => [p, latest[p] && { id: latest[p].id, status: latest[p].status, outcome: latest[p].outcome?.status || null, steps: latest[p].steps ?? null, problems: latest[p].findings?.length ?? 0 }])),
+      problems: tried.reduce((n, r) => n + (r.findings?.length || 0), 0),
       tested: testable.length,
       reached: testable.filter(ok).length,
       notTestable: done.some((r) => r.outcome.status === 'not-testable') && !testable.length,
+      // A site analysis is complete when all three customers finished there (a site that turned the browser away is complete too).
+      // A run that is not counted (a fault on our side) still finishes the visit; it shows as not counted.
+      complete: PERSONAS.every((p) => latest[p]?.status === 'finished'),
+      reason: done.find((r) => r.outcome.status === 'not-testable')?.outcome.reason || null,
     };
   }
 
   // Most complete analyses first: more customer types tested, then more of them reaching payment.
+  // Shown: complete analyses, sites being tested right now, and sites that turned the browser away.
   function list() {
     return [...groups()].map(([key, l]) => summaryOf(key, l))
+      .filter((s) => s.complete || s.running || s.notTestable)
       .sort((a, b) => b.tested - a.tested || b.reached - a.reached || a.key.localeCompare(b.key, 'en', { numeric: true }));
   }
 
@@ -88,8 +95,10 @@ export function createSiteAnalysis({ runs, dataDir }) {
     });
 
     // Problems more than one customer type met, by theme.
+    // Each finding is counted once, under the first theme it matches.
+    const taken = new Set();
     const themes = THEMES.map(([theme, re]) => {
-      const hits = customers.flatMap((c) => c.findings.filter((f) => re.test(`${f.page || ''} ${f.problem || ''} ${f.element?.name || ''}`)).map((f) => ({ ...f, persona: c.persona })));
+      const hits = customers.flatMap((c) => c.findings.filter((f) => !taken.has(f) && re.test(`${f.page || ''} ${f.problem || ''} ${f.element?.name || ''}`)).map((f) => { taken.add(f); return { ...f, persona: c.persona }; }));
       return { theme, count: hits.length, personas: [...new Set(hits.map((h) => h.persona))], examples: hits.slice(0, 3) };
     }).filter((t) => t.count).sort((a, b) => b.personas.length - a.personas.length || b.count - a.count);
 

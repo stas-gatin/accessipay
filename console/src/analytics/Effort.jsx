@@ -2,7 +2,7 @@
 // the formula behind the estimate, navigation overhead, and where in the checkout the steps go.
 import React from 'react';
 import { ChartBox, Card, Bar, DataTable, Legend, useInView, useTip, useWidth } from './kit.jsx';
-import { KLM, STAGE_ORDER, median, range, fmtRange, fmtSeconds, personaLabel, paidDemo, typicalRuns, stagesUsed, shortId, pct , lc } from './derive.js';
+import { KLM, STAGE_ORDER, median, range, fmtRange, fmtSeconds, personaLabel, paidDemo, typicalRuns, stagesUsed, pct, lc } from './derive.js';
 
 function order(meta, list) {
   const keys = Object.keys(meta.personas || {});
@@ -54,28 +54,28 @@ export function EffortCards({ a, meta }) {
     ? `The ${lc(hi.label)} needs a median of ${hi.value} steps to pay, ${(hi.value / lo.value).toFixed(1)} times the ${lc(lo.label)} (${lo.value}).`
     : hi ? `Median steps to pay: ${hi.value}.` : 'No paid runs yet.';
 
-  const keys = rows('medianKeys');
+  const keys = rows('medianKeys', () => 'No keys: acts on elements').map((r) => (r.persona === 'agent' ? { ...r, value: null } : r));
   const humanKeys = keys.filter((r) => r.persona !== 'agent' && r.value != null);
   const kHi = humanKeys.reduce((m, r) => (r.value > (m?.value ?? -1) ? r : m), null);
-  const keysTake = kHi ? `People pay with keys: the ${lc(kHi.label)} pressed a median of ${kHi.value} keys. The AI agent acts on elements directly and presses almost none.` : 'No keypresses recorded yet.';
+  const keysTake = kHi ? `People pay with keys: the ${lc(kHi.label)} pressed a median of ${kHi.value} keys. The AI agent acts on elements directly and presses no keys.` : 'No keypresses recorded yet.';
 
   const klm = rows('medianKlm', (e) => (e.persona === 'agent' ? 'No estimate: not a person' : 'Not enough data'));
   const humans = klm.filter((r) => r.value != null);
-  const klmTake = humans.length ? `Estimated time to pay for this path: ${humans.map((r) => `${fmtSeconds(r.value)} (${lc(r.label)})`).join(', ')}.` : 'No estimate yet.';
+  const klmTake = humans.length ? `Estimated time for a person to pay on this path: ${humans.map((r) => `${fmtSeconds(r.value)} (${lc(r.label)})`).join(', ')}.` : 'No estimate yet.';
 
   return (
     <>
     <div className="ax-grid three">
       <MetricCard title="Steps to pay" rows={steps} max={Math.max(1, ...steps.map((r) => r.value || 0))} takeaway={stepsTake} note="Median over paid demo-shop runs. A step is one decision: one key, one field typed, or one element used." />
       <MetricCard title="Keypresses to pay" rows={keys} max={Math.max(1, ...keys.map((r) => r.value || 0))} takeaway={keysTake} note="Tab, Enter and arrow keys count 1; typing counts every character plus Enter." />
-      <MetricCard title="Time to pay, estimate" rows={klm} max={Math.max(1, ...klm.map((r) => r.value || 0))} format={fmtSeconds} takeaway={klmTake} note="Keystroke-level model estimate for the recorded path. Not measured time, and never the run's duration." />
+      <MetricCard title="Estimated time for a person" rows={klm} max={Math.max(1, ...klm.map((r) => r.value || 0))} format={fmtSeconds} takeaway={klmTake} note="A person following the recorded path, from steps and keys (see How we estimate). Not measured time." />
     </div>
-    <DataTable caption="Effort per customer type" numeric={[1, 2, 3, 4]} head={['Customer', 'Paid demo-shop runs', 'Median steps', 'Median keypresses', 'Time to pay (estimate)']} rows={effortTable(a, meta)} />
+    <DataTable caption="Effort per customer type" numeric={[1, 2, 3, 4]} head={['Customer', 'Paid demo-shop runs', 'Median steps', 'Median keypresses', 'Estimated time for a person']} rows={effortTable(a, meta)} />
     </>
   );
 }
 
-// The formula, with one worked example taken from a real paid run.
+// The formula, with one worked example taken from a real paid run. Collapsed by default.
 export function Formula({ a, meta }) {
   const humans = typicalRuns(a).filter((t) => t.run.klmSeconds != null);
   const ex = humans.sort((x, y) => (y.run.wordsHeard || 0) - (x.run.wordsHeard || 0))[0];
@@ -84,21 +84,29 @@ export function Formula({ a, meta }) {
   const m = r ? r.steps * KLM.mental : 0;
   const l = r ? ((r.wordsHeard || 0) / KLM.wordsPerMinute) * 60 : 0;
   return (
-    <aside className="ax-formula" aria-labelledby="ax-formula-h">
-      <h3 id="ax-formula-h">How the time estimate is made</h3>
-      <p className="ax-eq"><span>estimate</span> = <span>keypresses × {KLM.keystroke} s</span> + <span>steps × {KLM.mental} s</span> + <span>words heard ÷ {KLM.wordsPerMinute} words per minute</span></p>
-      <p className="ax-note">Keystroke-level model (Card, Moran and Newell, 1983): {KLM.keystroke} s per keystroke for an average typist, {KLM.mental} s to decide each step. Words heard counts only for the screen reader customer.</p>
-      {r && (
-        <p className="ax-worked">
-          Worked example, {lc(personaLabel(meta, ex.persona))} (<a href={`#/runs/${r.id}`}>run {shortId(r.id)}</a>): {r.keys} × {KLM.keystroke} s = {k.toFixed(1)} s, plus {r.steps} × {KLM.mental} s = {m.toFixed(1)} s{r.wordsHeard ? <>, plus {r.wordsHeard} words ÷ {KLM.wordsPerMinute} wpm = {l.toFixed(1)} s</> : null}. Total {(k + m + l).toFixed(1)} s, about <strong>{fmtSeconds(r.klmSeconds)}</strong> (estimate).
+    <details className="ax-how">
+      <summary>How we estimate the time for a person</summary>
+      <div className="ax-how-body">
+        {/* Each operator stays with the term after it, so a line never ends with "+". */}
+        <p className="ax-eq">
+          <span className="ax-chip strong">estimate</span> ={' '}
+          <span className="ax-chip">keypresses × {KLM.keystroke}{'\u00a0'}s</span>{' '}
+          <span className="ax-nw">+ <span className="ax-chip">steps × {KLM.mental}{'\u00a0'}s</span></span>{' '}
+          <span className="ax-nw">+ <span className="ax-chip">words heard ÷ {KLM.wordsPerMinute} per minute</span></span>
         </p>
-      )}
-      <ul className="ax-caveats">
-        <li>It estimates a skilled, error-free person following this exact path, including the customer model's own detours.</li>
-        <li>The screen reader customer receives the whole page structure at once; real users take longer to orient, so treat its numbers as a lower bound.</li>
-        <li>No estimate for the AI agent: it has no keystroke time. The run's wall-clock time is mostly AI thinking and is never shown as a person's time.</li>
-      </ul>
-    </aside>
+        <p className="ax-note">Keystroke-level model (Card, Moran and Newell, 1983): {KLM.keystroke} s per keystroke for an average typist, {KLM.mental} s to decide each step. Words heard counts only for the screen reader customer.</p>
+        {r && (
+          <p className="ax-worked">
+            Worked example, {lc(personaLabel(meta, ex.persona))} (<a href={`#/runs/${r.id}`}>watch the replay</a>): {r.keys} × {KLM.keystroke} s = {k.toFixed(1)} s, plus {r.steps} × {KLM.mental} s = {m.toFixed(1)} s{r.wordsHeard ? <>, plus {r.wordsHeard} words ÷ {KLM.wordsPerMinute} per minute = {l.toFixed(1)} s</> : null}. Total {(k + m + l).toFixed(1)} s, about <strong>{fmtSeconds(r.klmSeconds)}</strong>.
+          </p>
+        )}
+        <ul className="ax-caveats">
+          <li>It estimates a skilled, error-free person following this exact path, including the customer model's own detours.</li>
+          <li>The screen reader customer receives the whole page structure at once; real users take longer to orient, so treat its numbers as a lower bound.</li>
+          <li>No estimate for the AI agent: it has no keystroke time. The run's wall-clock time is mostly AI thinking and is never shown as a person's time.</li>
+        </ul>
+      </div>
+    </details>
   );
 }
 
@@ -136,7 +144,7 @@ function StackRow({ t, label, stages, max, seen, index, width }) {
     <div className="ax-stack-row">
       <span className="ax-label">
         {label}
-        <a className="ax-sublink" href={`#/runs/${t.run.id}`}>run {shortId(t.run.id)}<span className="sr-only">, {label}</span></a>
+        <a className="ax-sublink" href={`#/runs/${t.run.id}`}>Watch replay<span className="sr-only">, {label}</span></a>
       </span>
       <span className="ax-stack-line">
         <span className="ax-stack" style={{ width: seen ? `${(total / max) * 100}%` : 0, transitionDelay: `${index * 120}ms` }}>
@@ -174,7 +182,7 @@ export function WhereEffort({ a, meta }) {
     ? `${lead[0].stage} takes the most steps for every customer type: ${Math.min(...shares)}% to ${Math.max(...shares)}% of the path to pay.`
     : lead.map((l) => `${personaLabel(meta, l.persona)}: most steps in ${l.stage} (${l.share}%)`).join('; ') + '.';
   return (
-    <Card wide title="Where the steps go, by checkout stage" takeaway={takeaway}
+    <Card title="Where the steps go, by checkout stage" takeaway={takeaway}
       note="One typical paid run per customer type (the paid demo-shop run closest to that type's median steps). Each step is counted at the stage of the page it started on.">
       <Legend items={stages.map((s) => ({ label: s, cls: `rect s${STAGE_ORDER.indexOf(s) + 1}` }))} />
       <ChartBox>
@@ -182,13 +190,13 @@ export function WhereEffort({ a, meta }) {
           {typical.map((t, i) => <StackRow key={t.persona} t={t} label={personaLabel(meta, t.persona)} stages={stages} max={max} seen={seen} index={i} width={width} />)}
         </div>
       </ChartBox>
-      <DataTable caption="Steps per checkout stage" numeric={stages.map((_, i) => i + 2).concat([stages.length + 2])}
-        head={['Customer', 'Run', ...stages, 'Total']}
-        rows={typical.map((t, i) => [personaLabel(meta, t.persona), shortId(t.run.id), ...stages.map((s) => t.run.stepsPerStage?.[s] || 0), totals[i]])} />
+      <DataTable caption="Steps per checkout stage" numeric={stages.map((_, i) => i + 1).concat([stages.length + 1])}
+        head={['Customer', ...stages, 'Total']}
+        rows={typical.map((t, i) => [personaLabel(meta, t.persona), ...stages.map((s) => t.run.stepsPerStage?.[s] || 0), totals[i]])} />
     </Card>
   );
 }
 
 export function effortTable(a, meta) {
-  return order(meta, a.effort).map((e) => [personaLabel(meta, e.persona), e.runs, e.medianSteps ?? '—', e.medianKeys ?? '—', e.medianKlm == null ? 'none' : `${fmtSeconds(e.medianKlm)} (estimate)`]);
+  return order(meta, a.effort).map((e) => [personaLabel(meta, e.persona), e.runs, e.medianSteps ?? '—', e.persona === 'agent' ? '—' : e.medianKeys ?? '—', e.medianKlm == null ? 'none' : fmtSeconds(e.medianKlm)]);
 }

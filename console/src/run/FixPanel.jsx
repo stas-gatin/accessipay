@@ -4,7 +4,7 @@ import { api, OUTCOME } from '../api.js';
 function Diff({ text }) {
   const lines = (text || '').split('\n').filter((l) => !l.startsWith('===') && !l.startsWith('Index'));
   return (
-    <pre className="diff" tabIndex={0} aria-label="Changes to the page">
+    <pre className="diff rv-diff" tabIndex={0} aria-label="Changes to the page">
       {lines.map((l, i) => {
         const cls = l.startsWith('@@') ? 'hunk' : l.startsWith('+') && !l.startsWith('+++') ? 'add' : l.startsWith('-') && !l.startsWith('---') ? 'del' : '';
         return <div key={i} className={cls}>{l || ' '}</div>;
@@ -13,7 +13,7 @@ function Diff({ text }) {
   );
 }
 
-export default function FixPanel({ run, meta }) {
+export default function FixPanel({ run, meta, onPresence }) {
   const [fix, setFix] = useState(null);
   const [fixer, setFixer] = useState(meta.claude ? 'anthropic' : 'external');
   const [error, setError] = useState('');
@@ -48,10 +48,12 @@ export default function FixPanel({ run, meta }) {
     } catch (e) { setError(e.message); setRerunning(false); }
   }
 
-  if (run.recorded && !fix) return null;
+  const shown = !(run.recorded && !fix);
+  useEffect(() => { onPresence?.(shown); }, [shown]);
+  if (!shown) return null;
   return (
     <section className="card" id="fix" tabIndex={-1} aria-labelledby="fix-title" style={{ marginTop: 16 }}>
-      <h2 className="section-title" id="fix-title">Fix it</h2>
+      <h2 className="section-title" id="fix-title">The fix</h2>
       {!fix && (
         <>
           <p className="note">The fixer reads the exact HTML of the page where the shopper got stuck, plus the shopper's transcript, and proposes the smallest change that removes the blocker.</p>
@@ -77,11 +79,11 @@ export default function FixPanel({ run, meta }) {
       {fix?.status === 'applied' && (
         <>
           <p><strong>{fix.summary}</strong></p>
-          <p className="note">{fix.accepted?.length} change(s) applied to the {fix.page} page{fix.rejected?.length ? `, ${fix.rejected.length} rejected because the text did not match exactly` : ''}.</p>
+          <p className="note">{fix.accepted?.length} {fix.accepted?.length === 1 ? 'change' : 'changes'} applied to the {fix.page} page{fix.rejected?.length ? `, ${fix.rejected.length} rejected because the text did not match exactly` : ''}.</p>
           <Diff text={fix.diff} />
           {after && (
             <p className="callout" style={{ marginTop: 12 }}>
-              After the fix, the same shopper tried again: <a href={`#/runs/${after.id}`}>{OUTCOME[after.outcome?.status]?.tone === 'ok' ? `bought it in ${after.steps} steps` : `${OUTCOME[after.outcome?.status]?.label || 'see the run'}`}{after.payment ? `, PayPal ${after.payment.mode} order ${after.payment.status}` : ''}</a>.
+              After the fix, the same customer tried again: <a href={`#/runs/${after.id}`}>{after.outcome?.status === 'purchased' ? `bought it in ${after.steps} steps` : `${OUTCOME[after.outcome?.status]?.label || 'see the run'}`}{after.payment?.status === 'COMPLETED' ? (after.payment.mode === 'mock' ? ', mock payment' : ', and PayPal confirmed the order (sandbox)') : ''}</a>.
             </p>
           )}
           {!run.recorded && !after && (

@@ -20,7 +20,8 @@ export const EXTERNAL_GOAL = [
   'Never pay, never place or submit an order, never create an account or sign in, never type card details.',
   'If the shop asks for contact or shipping details before payment, use: full name Alex Morgan, email alex.morgan@example.com,',
   'street address 100 Example Avenue, city New York, state New York, ZIP 10001, country United States (or the closest option the shop offers), phone (212) 555-0142.',
-  'Decline cookie banners, newsletters and promotions. When you see the payment form or a button that would pay or place the order,',
+  'Decline cookie banners, newsletters and promotions. If a cookie banner offers no way to decline that works, accept it, report that as a problem, and carry on.',
+  'When you see the payment form or a button that would pay or place the order,',
   'finish with done and your findings. If you cannot get that far, give up with honest findings.',
 ].join(' ');
 

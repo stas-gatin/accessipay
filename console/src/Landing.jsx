@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { api } from './api.js';
 import { LogoMark } from './Logo.jsx';
 import HeroReplay from './site/HeroReplay.jsx';
-import { Chain, Calculator, KindLegend } from './site/BusinessChain.jsx';
+import { Chain, KindLegend } from './site/BusinessChain.jsx';
 import { BrandImg, CountUp, Reveal } from './site/motion.jsx';
 import {
-  Arrow, SectionHead, TwoVerdicts, JourneyMap, EffortBlock, SweepMatrix, PayPalConfirms, OwnerOutputs, RealSites, MethodStrip, Ledger, SiteFooter,
+  Arrow, SectionHead, TwoVerdicts, JourneyMap, EffortBlock, RealShops, OwnerOutputs, MethodStrip,
 } from './site/blocks.jsx';
-import { RUNS, ORDERS, PAY_FIX, EAA_DATE } from './site/facts.js';
+import { RUNS, EAA_DATE } from './site/facts.js';
 
 // The home page. Every number comes from a recorded run (see site/facts.js) or from the API.
 // Surfaces alternate light / white / navy so no two neighbouring blocks share a layout.
@@ -15,6 +15,8 @@ export default function Landing({ meta }) {
   const total = meta.defects.length;
   const axe = meta.defects.filter((d) => d.axeExpected).length;
   const [orders, setOrders] = useState(null);
+  const [shops, setShops] = useState(null);
+  useEffect(() => { api('/api/sites').then((l) => setShops(l.filter((x) => x.complete && !x.notTestable).length)).catch(() => setShops(null)); }, []);
   useEffect(() => {
     api('/api/runs')
       .then((list) => setOrders(list.filter((r) => r.payment?.status === 'COMPLETED' && r.payment?.mode === 'sandbox' && !/^MOCK/.test(r.payment.orderId)).length))
@@ -30,14 +32,18 @@ export default function Landing({ meta }) {
             <p className="eyebrow-lp light">Accessibility, measured in completed payments</p>
             <h1 id="hero-t">Scanners pass your checkout. Can your customers actually pay?</h1>
             <p className="hero-sub">
-              AccessiPay sends a screen reader user, a keyboard-only user and an AI shopping agent to buy.
-              PayPal confirms who paid. AI fixes what blocked the rest, then retests.
+              AccessiPay sends a screen reader user, a keyboard{'\u2011'}only user and an AI shopping agent to buy.
+              A test passes only when PayPal confirms the order. AI fixes what blocked them, and the same customer tries again.
             </p>
             <div className="cta-row">
               <a className="btn-lp primary" href="#/test">Run a test</a>
               <a className="btn-lp ghost-light" href="#/own-site">Connect your site</a>
-              <a className="btn-lp ghost-light" href={`#/runs/${RUNS.agentBlocked}`}>Open the recorded run</a>
             </div>
+            <ol className="hero-proof" aria-label="One recorded case, before and after the fix">
+              <li className="bad"><a href={`#/runs/${RUNS.agentBlocked}`}><b>Blocked</b><span>AI agent at Payment. The scanner saw no problem.</span></a></li>
+              <li className="fix"><a href={`#/report/case/${RUNS.agentBlocked}`}><b>AI fix</b><span>5 changes to the page</span></a></li>
+              <li className="ok"><a href={`#/runs/${RUNS.agentFixed}`}><b>Paid</b><span>PayPal: COMPLETED (sandbox)</span></a></li>
+            </ol>
             <p className="hero-fine">The customers are simulated. Payments run in the PayPal sandbox.</p>
           </div>
           <div className="hero-stage">
@@ -50,11 +56,11 @@ export default function Landing({ meta }) {
       <section className="s-white proof" aria-label="Results in numbers">
         <div className="wrap">
           <Reveal as="ul" className="proof-grid" stagger>
-            <li><span className="pv"><CountUp value={total} /></span><span className="pl">checkout defects in the demo shop</span><a href="#/defects">See them</a></li>
-            <li><span className="pv"><CountUp value={axe} /><span className="of"> of {total}</span></span><span className="pl">flagged by axe-core</span><a href="#/defects">Scanner results</a></li>
-            <li><span className="pv"><CountUp value={3} /></span><span className="pl">kinds of simulated customer</span><a href="#/customers">Meet them</a></li>
-            <li><span className="pv">{orders == null ? '—' : <CountUp value={orders} />}</span><span className="pl">PayPal sandbox orders COMPLETED</span><a href="#/runs">All runs</a></li>
-            <li><span className="pv"><CountUp value={3} /></span><span className="pl">open-source storefront demos tested</span><a href="#real-sites">Findings</a></li>
+            <li><span className="pv"><CountUp value={total} /></span><span className="pl">checkout defects in the demo shop</span><a href="#/method">How it works</a></li>
+            <li><span className="pv"><CountUp value={axe} /><span className="of"> of {total}</span></span><span className="pl">flagged by axe-core</span><a href="#/analytics">Scanner results</a></li>
+            <li><span className="pv">{orders == null ? '—' : <CountUp value={orders} />}</span><span className="pl">orders confirmed by PayPal (sandbox)</span><a href="#/analytics">Analytics</a></li>
+            {shops ? <li><span className="pv"><CountUp value={shops} /></span><span className="pl">real shops tested by all three customers</span><a href="#/results">Results</a></li>
+              : <li><span className="pv"><CountUp value={3} /></span><span className="pl">kinds of simulated customer</span><a href="#/customers">Meet them</a></li>}
           </Reveal>
           <div className="built" aria-label="Built on">
             <span>Built on</span><b>PayPal Orders v2</b><b>Claude</b><b>Playwright</b><b>axe-core</b><b>AG Grid</b>
@@ -74,15 +80,14 @@ export default function Landing({ meta }) {
       {/* 4. Who it is for */}
       <section className="s-white sec" aria-labelledby="who-t">
         <div className="wrap">
-          <SectionHead eyebrow="Who it is for" id="who-t" title="One checkout. Four people who need it to work." />
+          <SectionHead eyebrow="Who it is for" id="who-t" title="One checkout. Four groups who need it to work." />
           <Reveal className="who" stagger>
             <article className="who-card who-people">
               <BrandImg name="02-keyboard.png" art="keyboard" alt="Blank keyboard keys, with the Tab key outlined in green light." ratio="16 / 9" />
               <div className="who-body">
                 <p className="who-k">People with disabilities</p>
                 <h3>Customers who navigate without a mouse or without seeing the screen.</h3>
-                <p>Our simulated keyboard-only customer was trapped by a promo popup on the cart page while axe-core reported 0 violations. After a 7-patch AI fix, the same customer bought in 49 steps, and PayPal confirmed the payment.</p>
-                <p className="who-also">Also: a broken trackpad, a tremor, a temporary injury, people who simply prefer the keyboard.</p>
+                <p>A promo popup trapped our keyboard{'\u2011'}only customer on the cart page while axe{'\u2011'}core reported no problem. After the AI fix, the same customer paid, and PayPal confirmed it.</p>
                 <a className="lp-link" href="#/customers">The simulated customers <Arrow /></a>
               </div>
             </article>
@@ -91,7 +96,7 @@ export default function Landing({ meta }) {
               <div className="who-body">
                 <p className="who-k">AI shopping agents</p>
                 <h3>Agents read your page the way screen readers do.</h3>
-                <p>Our agent could not find a Pay button that was a <code>&lt;div&gt;</code>. After the AI turned it into a real button, the agent bought in 19 steps, and PayPal confirmed the payment.</p>
+                <p>Our agent could not find a Pay button that was a <code>&lt;div&gt;</code>. After the AI turned it into a real button, the agent paid, and PayPal confirmed it.</p>
                 <a className="lp-link" href="#agents">How agents shop <Arrow /></a>
               </div>
             </article>
@@ -118,7 +123,7 @@ export default function Landing({ meta }) {
             <p className="eyebrow-lp light">Agentic commerce</p>
             <h2 id="agent-t">A checkout a blind customer cannot finish is a checkout an AI agent cannot finish either.</h2>
             <p className="lead-lp light">AccessiPay tests both, and checks that the agent bought what the person actually asked for.</p>
-            <pre className="codeblock on-navy" aria-label="The line of the fix that let the agent pay"><span className="c-meta">The fix that unblocked the agent</span>{'\n'}<span className="del">- {PAY_FIX.before}</span>{'\n'}<span className="add">+ {PAY_FIX.after}</span></pre>
+            <pre className="codeblock on-navy" tabIndex={0} aria-label="The line of the fix that let the agent pay"><span className="c-meta">The fix that unblocked the agent (pay.html)</span>{'\n'}<span className="del">- {'<div class="btn primary">Pay $54.00</div>'}</span>{'\n'}<span className="add">+ {'<button type="submit" class="btn primary">'}</span>{'\n'}<span className="add">+ {'  Pay $54.00</button>'}</span></pre>
           </Reveal>
           <Reveal className="chat" role="group" aria-label="A recorded agentic buyer run">
             <div className="bubble user">Get me something that keeps me dry on hikes, under $100, and I need it fast.</div>
@@ -127,7 +132,6 @@ export default function Landing({ meta }) {
             <div className="receipt-dark">
               <div><span>Total</span><b className="mono">$94.00</b></div>
               <div><span>PayPal</span><b>Payment confirmed</b></div>
-              <div><span>Status</span><b><span className="status-fill">COMPLETED</span></b></div>
               <div><span>Right item</span><b>Yes: rain jacket, express</b></div>
             </div>
             <a className="lp-link light" href={`#/runs/${RUNS.agentClean}`}>Replay the agent’s run <Arrow /></a>
@@ -138,7 +142,7 @@ export default function Landing({ meta }) {
       {/* 6. Method strip */}
       <section className="s-light sec" aria-labelledby="method-t">
         <div className="wrap">
-          <SectionHead eyebrow="The method" id="method-t" title="Nine stages, from a scan to a paid order."
+          <SectionHead eyebrow="The method" id="method-t" title="Nine stages, from the first visit to a fix you can ship."
             lead="We measure the path, not just the rules: whether a simulated customer can finish, where it gets stuck, and how that changes after the fix." />
           <MethodStrip />
           <p className="more"><a className="lp-link" href="#/method">See every stage with its real artifact <Arrow /></a></p>
@@ -149,7 +153,7 @@ export default function Landing({ meta }) {
       <section className="s-white sec" aria-labelledby="jm-t">
         <div className="wrap">
           <SectionHead eyebrow="Can they finish?" id="jm-t" title="Where each customer stopped, and what changed after the fix."
-            lead="Blocked to paid is not “faster”. It is impossible becoming possible. After the fix, the same agent paid in 19 steps." />
+            lead="Blocked to paid is not “faster”: it is impossible becoming possible. Switch between before and after the fix." />
           <JourneyMap />
         </div>
       </section>
@@ -157,37 +161,27 @@ export default function Landing({ meta }) {
       {/* 8. PayPal confirms */}
       <section className="s-light sec" aria-labelledby="effort-t">
         <div className="wrap">
-          <SectionHead eyebrow="Faster, not only possible" id="effort-t" title="Not blocked, just slower. Measured."
+          <SectionHead eyebrow="Slower, not blocked" id="effort-t" title="Not blocked, just slower. Measured."
             lead="Some problems never stop a customer; they make every page longer. We send the same customer before and after the fix and count what it took." />
           <EffortBlock />
         </div>
       </section>
-      <section className="s-light sec" aria-labelledby="ppc-t">
-        <div className="wrap">
-          <SectionHead eyebrow="Proof of purchase, not proof of compliance" id="ppc-t" title="The test passes only when PayPal confirms the order." />
-          <PayPalConfirms />
-        </div>
-      </section>
-
       {/* 9. Outputs for the owner */}
       <section className="s-white sec" id="owner" aria-labelledby="owner-t">
         <div className="wrap">
-          <SectionHead eyebrow="What the owner gets" id="owner-t" title="Not a dashboard. A fix you can ship."
+          <SectionHead eyebrow="What the owner gets" id="owner-t" title="Not a list of rule IDs. A fix you can ship."
             lead="Four outputs from every test. The examples below come from the recorded runs." />
           <OwnerOutputs />
         </div>
       </section>
 
-      {/* 10. Real open-source storefronts */}
+      {/* 10. Real shops */}
       <section className="s-light sec" id="real-sites" aria-labelledby="real-t">
         <div className="wrap">
-          <SectionHead eyebrow="Outside our demo shop" id="real-t" title="We sent our customers to real shops."
-            lead="Public demo stores of open-source commerce platforms, and large retailers. Shops are built from these templates, so a barrier in the template ships to every shop that copies it. Every customer stops at the payment step: no order, no card data." />
-          <SweepMatrix />
-          <p className="sweep-own">Many shops turn automated browsers away, and AccessiPay never tries to get past that. <a className="lp-link" href="#/own-site">Test your own site: verify it, let the checker through, and see whether AI assistants can shop there <Arrow /></a></p>
-          <h3 className="sweep-h">Three findings, checked by hand</h3>
-          <RealSites />
-          <p className="foot-note">axe-core counts are rule violations per page, summed. Most of them are colour contrast and landmark rules; what stopped or slowed the agent was mostly something else.</p>
+          <SectionHead eyebrow="Outside our demo shop" id="real-t" title="Real shops, three customers each."
+            lead="Every shop gets the same three customers. Nobody pays on a real shop, so the pass mark there is different: a customer passes when it reaches the payment step. No order, no card data. Large retailers are shown without their names." />
+          <RealShops />
+          <p className="sweep-own">Many shops turn automated browsers away, and AccessiPay never tries to get past that. <a className="lp-link" href="#/own-site">Connect your own site and let the test in <Arrow /></a></p>
         </div>
       </section>
 
@@ -195,20 +189,11 @@ export default function Landing({ meta }) {
       <section className="s-navy sec" aria-labelledby="chain-t">
         <div className="wrap">
           <SectionHead eyebrow="For PayPal" id="chain-t" light title="From a fixed checkout to PayPal volume."
-            lead="One link in this chain is measured by AccessiPay. The rest is your arithmetic, with your numbers.">
+            lead="The second link comes from recorded runs. The rest is your arithmetic, with your numbers.">
             <KindLegend />
           </SectionHead>
           <Chain />
-          <Calculator />
-        </div>
-      </section>
-
-      {/* 12. Ledger */}
-      <section className="s-white sec" aria-labelledby="ledger-t">
-        <div className="wrap">
-          <SectionHead eyebrow="Results" id="ledger-t" title="Every run settles as a payment, or it doesn’t."
-            lead="Recorded runs against the PayPal sandbox. Open any row to replay it step by step." />
-          <Ledger meta={meta} />
+          <p className="more"><a className="lp-link light" href="#/paypal">Put in your own numbers <Arrow /></a></p>
         </div>
       </section>
 
@@ -219,11 +204,11 @@ export default function Landing({ meta }) {
           <Reveal as="ul" className="limits-list" stagger>
             <li><b>Simulated customers.</b> Our screen reader and keyboard customers are models of how assistive technology exposes a page, not people with disabilities. They do not replace testing with disabled users.</li>
             <li><b>Not a certificate.</b> Not a WCAG audit and not proof of compliance.</li>
-            <li><b>Our own defects.</b> The twelve demo-shop defects were written by us. That is why we also test public storefront demos.</li>
+            <li><b>Our own defects.</b> The {total} demo-shop defects were written by us. That is why we also send the same customers to real shops.</li>
             <li><b>Steps, not seconds.</b> Run time is mostly the model thinking, so we never show it as a customer’s time.</li>
             <li><b>Sandbox only.</b> Every payment runs in the PayPal sandbox with test cards.</li>
           </Reveal>
-          <p className="more"><a className="lp-link" href="#/honesty">Everything we measure and do not measure <Arrow /></a></p>
+          <p className="more"><a className="lp-link" href="#/method">Everything we measure and do not measure <Arrow /></a></p>
         </div>
       </section>
 
@@ -235,11 +220,10 @@ export default function Landing({ meta }) {
           <div className="cta-row center">
             <a className="btn-lp primary" href="#/test">Run a test</a>
             <a className="btn-lp ghost-light" href="#/own-site">Connect your site</a>
-            <a className="btn-lp ghost-light" href="#/analytics">See the analytics</a>
+            <a className="btn-lp ghost-light" href="#/results">See the results</a>
           </div>
         </div>
       </section>
-      <SiteFooter />
     </div>
   );
 }

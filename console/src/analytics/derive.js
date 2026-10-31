@@ -17,21 +17,25 @@ export const range = (xs) => {
   const v = xs.filter((x) => x != null);
   return v.length ? [Math.min(...v), Math.max(...v)] : null;
 };
-export const fmtRange = (r) => (!r ? '—' : r[0] === r[1] ? `${r[0]}` : `${r[0]}–${r[1]}`);
+// Word joiners around the dash keep a range on one line ("18–19" never breaks after the dash).
+export const fmtRange = (r) => (!r ? '—' : r[0] === r[1] ? `${r[0]}` : `${r[0]}\u2060–\u2060${r[1]}`);
+export const fmtInt = (n) => (n == null ? '—' : Number(n).toLocaleString('en-US'));
 export const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
 
+// One format everywhere, so 120 s and 116 s read alike: "2:00 min" and "1:56 min".
 export function fmtSeconds(s) {
   if (s == null) return '—';
-  if (s < 60) return `${s} s`;
-  const m = Math.floor(s / 60);
-  const r = Math.round(s - m * 60);
-  return r ? `${m} min ${r} s` : `${m} min`;
+  const v = Math.round(s);
+  if (v < 60) return `${v}\u00a0s`;
+  const m = Math.floor(v / 60);
+  return `${m}:${String(v - m * 60).padStart(2, '0')}\u00a0min`;
 }
 
 export const personaLabel = (meta, p) => meta?.personas?.[p]?.label || p;
 export const defectLabel = (meta, id) => (id ? meta?.defects?.find((d) => d.id === id)?.short || id : null);
-export const outcomeLabel = (o) => (o === 'reached-payment' ? 'Reached payment' : OUTCOME[o]?.label || o || '—');
-export const outcomeTone = (o) => OUTCOME[o]?.tone || 'muted';
+export const outcomeLabel = (o) => (o === 'reached-payment' ? 'Reached payment' : o === 'purchased' ? 'Paid' : OUTCOME[o]?.label || o || '—');
+// "Reached payment" is never shown as a purchase: neutral, not green.
+export const outcomeTone = (o) => (o === 'reached-payment' ? 'muted' : OUTCOME[o]?.tone || 'muted');
 export const shortId = (id) => String(id).split('-').pop();
 export const shopLabel = (r) => r.site || 'Demo shop';
 export const words = (n) => ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'][n] ?? String(n);
@@ -110,4 +114,94 @@ export function outcomeShape(o) {
   if (o === 'reached-payment') return 'reached';
   if (o === 'wrong-item') return 'wrong';
   return 'blocked';
+}
+
+// Problem themes, the same patterns as server/analytics.mjs, applied to demo-shop findings only.
+export const THEMES = [
+  ['Popups and dialogs', /popup|dialog|modal|newsletter|overlay/i],
+  ['Unnamed or mislabelled controls', /unnamed|no name|accessible name|not named|label|named only|"button"/i],
+  ['Keyboard and focus', /focus|keyboard|tab |tab,|shift\+tab|trap|escape/i],
+  ['No feedback after an action', /feedback|announce|status|silent|confirmation|loading|nothing happen|no change/i],
+  ['Payment fields and buttons', /card|iframe|pay button|payment field|pay \$|cvc|expiry/i],
+];
+
+// Everything on the analytics page comes from the demo shop. Real shops live on the Results page.
+// Counted runs: demo shop, at least one step, and (when paid) paid through the PayPal sandbox.
+// Runs paid with the early mock payment and runs that never started are listed but left out of every figure.
+export function demoAnalytics(a, list, meta) {
+  const byId = new Map((list || []).map((r) => [r.id, r]));
+  const all = a.runRows.filter((r) => !r.site).map((r) => {
+    const x = byId.get(r.id) || {};
+    return { ...r, createdAt: x.createdAt || null, payment: x.payment || null, findings: x.findings || [], mock: x.payment?.mode === 'mock', notStarted: !r.steps };
+  });
+  const rows = all.filter((r) => !r.mock && !r.notStarted);
+  const ids = new Set(rows.map((r) => r.id));
+  const ok = (r) => r.outcome === 'purchased' || r.outcome === 'reached-payment';
+  const order = Object.keys(meta?.personas || {});
+  const personaList = [...new Set(rows.map((r) => r.persona))].sort((x, y) => order.indexOf(x) - order.indexOf(y));
+
+  const paid = rows.filter((r) => r.outcome === 'purchased');
+  const effort = personaList.map((p) => {
+    const runs = paid.filter((r) => r.persona === p);
+    return { persona: p, runs: runs.length, medianSteps: median(runs.map((r) => r.steps)), medianKeys: median(runs.map((r) => r.keys)), medianKlm: median(runs.map((r) => r.klmSeconds)) };
+  });
+
+  const matrix = { cleanBought: 0, cleanBlocked: 0, flaggedBought: 0, flaggedBlocked: 0 };
+  for (const r of rows) matrix[`${(r.scanner ?? 0) === 0 ? 'clean' : 'flagged'}${ok(r) ? 'Bought' : 'Blocked'}`] += 1;
+
+  const funnel = STAGE_ORDER.map((stage, i) => ({ stage, runs: rows.filter((r) => STAGE_ORDER.indexOf(r.furthestStage) >= i).length }));
+
+  const personas = personaList.map((p) => {
+    const runs = rows.filter((r) => r.persona === p);
+    const good = runs.filter(ok);
+    return { persona: p, runs: runs.length, success: good.length, blocked: runs.length - good.length, medianSteps: median(good.map((r) => r.steps)) };
+  });
+
+  const texts = rows.flatMap((r) => r.findings.map((f) => `${f.page || ''} ${f.problem || ''}`));
+  const themes = THEMES.map(([theme, re]) => ({ theme, count: texts.filter((t) => re.test(t)).length }));
+
+  // One fixed pair per customer type and defect: the latest re-run after the fix and the run it fixed.
+  // Repeats of the same condition are summarised on the card, never shown as extra cards.
+  const when = new Map(all.map((r) => [r.id, r.createdAt || '']));
+  const best = new Map();
+  for (const p of a.pairs.filter((x) => ids.has(x.before) && ids.has(x.after))) {
+    const k = `${p.persona}|${p.defect}`;
+    if (!best.has(k) || when.get(p.after) > when.get(best.get(k).after)) best.set(k, p);
+  }
+  const pairs = [...best.values()].sort((x, y) => (x.kind === 'unblocked' ? 0 : 1) - (y.kind === 'unblocked' ? 0 : 1) || order.indexOf(x.persona) - order.indexOf(y.persona));
+  // Unblocked defects with the repeat runs behind them: blocked as built, paid after the fix.
+  const unblocked = pairs.filter((p) => p.kind === 'unblocked').map((p) => {
+    const same = (fixed) => rows.filter((r) => r.persona === p.persona && r.defect === p.defect && r.fixed === fixed);
+    return { ...p, beforeRuns: same(false), afterRuns: same(true) };
+  });
+  const sandbox = paid.filter((r) => r.payment?.mode === 'sandbox' && r.payment.status === 'COMPLETED');
+
+  return {
+    all,
+    runRows: rows,
+    excluded: { mock: all.filter((r) => r.mock).length, notStarted: all.filter((r) => r.notStarted).length },
+    effort,
+    matrix,
+    funnel,
+    personas,
+    themes,
+    pairs,
+    unblocked,
+    totals: {
+      runs: rows.length,
+      paid: paid.length,
+      sandboxOrders: sandbox.length,
+      medianStepsToBuy: median(paid.map((r) => r.steps)),
+      unblockedByFix: unblocked.length,
+      unblockedAfterRuns: sum(unblocked.map((u) => u.afterRuns.length)),
+      unblockedAfterPaid: sum(unblocked.map((u) => u.afterRuns.filter((r) => r.outcome === 'purchased').length)),
+      unblockedBeforeRuns: sum(unblocked.map((u) => u.beforeRuns.length)),
+      unblockedBeforeBlocked: sum(unblocked.map((u) => u.beforeRuns.filter((r) => r.outcome !== 'purchased').length)),
+      blockedWhileClean: matrix.cleanBlocked,
+      steps: sum(rows.map((r) => r.steps)),
+      keys: sum(rows.map((r) => r.keys)),
+      deadEnds: sum(rows.map((r) => r.deadEnds)),
+      findings: texts.length,
+    },
+  };
 }

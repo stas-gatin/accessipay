@@ -8,9 +8,17 @@ const urls = process.argv.slice(2);
 if (!urls.length) { console.log('usage: node tools/preflight.mjs <url> [url ...]'); process.exit(1); }
 
 const browser = await chromium.launch();
+// A site that hangs (a robots.txt that never answers, a page that never settles) is given up after a minute.
+const limit = (p, ms) => Promise.race([p, new Promise((_, no) => setTimeout(() => no(new Error(`no answer in ${ms / 1000} s`)), ms))]);
 for (const url of urls) {
+  try { await limit(check(url), 60000); } catch (e) { console.log(`UNREACHABLE   ${url}  ${e.message}`); }
+}
+await browser.close();
+process.exit(0);
+
+async function check(url) {
   const robots = await checkRobots(url);
-  if (!robots.ok) { console.log(`NOT TESTABLE  ${url}  ${robots.reason}`); continue; }
+  if (!robots.ok) { console.log(`NOT TESTABLE  ${url}  ${robots.reason}`); return; }
   const context = await browser.newContext({ viewport: { width: 1280, height: 860 } });
   const page = await context.newPage();
   let status = null;
@@ -25,7 +33,6 @@ for (const url of urls) {
   } catch (e) {
     console.log(`UNREACHABLE   ${url}  ${e.message.split('\n')[0]}`);
   } finally {
-    await context.close();
+    await context.close().catch(() => {});
   }
 }
-await browser.close();

@@ -1,20 +1,54 @@
 // Report pages as server-rendered HTML (template strings, no React), so the page and the PDF print
 // the same. Light palette only; print CSS turns each blocker into its own page.
 
-import { annotatedFigureHtml, ANNOTATE_CSS } from '../../shared/annotate.js';
+import { annotatedFigureHtml, ANNOTATE_CSS, cleanText } from '../../shared/annotate.js';
 import { PERSONAS } from '../engine/session.mjs';
-import { customer } from './model.mjs';
+import { customer, wcagList } from './model.mjs';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const date = (iso) => (iso ? new Date(iso).toLocaleString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) + ' UTC' : '');
 const personaName = (p) => PERSONAS[p]?.label || p;
 const args = (a) => Object.entries(a || {}).map(([k, v]) => `${k}: ${typeof v === 'string' ? `"${v}"` : JSON.stringify(v)}`).join(', ');
 
+// The headline without the PayPal order id (the same wording as the console's Report.jsx): the id is
+// evidence, shown on a small line under it.
+function headline(r) {
+  const h = r.verdict.headline || '';
+  const m = h.match(/^(.*?)[:,]?\s*PayPal (sandbox|mock) order (\S+) is (\w+)\.?$/);
+  if (!m) return { text: h, order: null };
+  const sandbox = m[2] === 'sandbox';
+  return {
+    text: `${m[1].replace(/[\s:,]+$/, '')}${m[4] === 'COMPLETED' ? (sandbox ? ', and PayPal confirmed the order (sandbox).' : ' with a mock payment.') : '.'}`,
+    order: { id: m[3], mode: m[2], status: m[4] },
+  };
+}
+
+// The scanner result as a plain sentence.
+function scannerLine(r) {
+  const m = (r.verdict.sub || '').match(/axe-core [\d.]+ reported (\d+) violations? (?:on|across) the (\d+) /);
+  if (!m) return r.verdict.sub;
+  const n = Number(m[1]);
+  const where = m[2] === '1' ? 'on this page' : `on these ${m[2]} pages`;
+  return n === 0
+    ? `An automated accessibility scanner (axe-core) found nothing wrong ${where}.`
+    : `An automated accessibility scanner (axe-core) found ${n} problem${n === 1 ? '' : 's'} ${where}.`;
+}
+
+// "Verified by a re-run" in the console's words.
+function verifiedText(v) {
+  if (!v) return '';
+  const paid = v.outcome === 'purchased';
+  const pp = paid && v.paypalStatus === 'COMPLETED' ? (v.paypalMode === 'mock' ? ', with a mock payment' : ', and PayPal confirmed the order (sandbox)') : '';
+  const steps = v.steps != null ? ` in ${esc(v.steps)} steps` : '';
+  return `Verified by a re-run (${esc(v.runId)}): the same customer tried again${paid ? ` and paid${steps}` : `: ${esc(v.outcome)}`}${pp}.`;
+}
+
 const CSS = `
 @font-face{font-family:Inter;font-weight:400;font-display:swap;src:url(/report/assets/fonts/inter-latin-400-normal.woff2) format('woff2')}
 @font-face{font-family:Inter;font-weight:600;font-display:swap;src:url(/report/assets/fonts/inter-latin-600-normal.woff2) format('woff2')}
 @font-face{font-family:Inter;font-weight:700;font-display:swap;src:url(/report/assets/fonts/inter-latin-700-normal.woff2) format('woff2')}
 @font-face{font-family:'JetBrains Mono';font-weight:400;font-display:swap;src:url(/report/assets/fonts/jetbrains-mono-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-weight:700;font-display:swap;src:url(/report/assets/fonts/jetbrains-mono-latin-700-normal.woff2) format('woff2')}
 :root{--ink:#0b1b33;--muted:#4a586b;--line:#d5dce6;--soft:#f6f8fb;--ok:#05664c;--ok-soft:#e7f5ef;--bad:#a82a1f;--bad-soft:#fdecea;--blue:#1d4ed8;--warn:#7a4e00;--warn-soft:#fff4dc}
 *{box-sizing:border-box}
 html{background:#ffffff}
@@ -38,6 +72,7 @@ p{margin:0 0 12px}
 .verdict.bad{color:var(--bad)}
 .verdict.ok{color:var(--ok)}
 .sub{color:var(--muted)}
+.order{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;margin:-6px 0 10px}
 dl.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:18px 0 0}
 dl.facts div{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
 dl.facts dt{font-size:13px;color:var(--muted);margin:0}
@@ -63,11 +98,19 @@ table.log td:nth-child(2),table.log th:nth-child(2){width:9em;overflow-wrap:norm
 .label.ok{color:var(--ok);border-color:#9fd3c0;background:var(--ok-soft)}
 .label.warn{color:var(--warn);border-color:#e8c98a;background:var(--warn-soft)}
 .honest{border-left:4px solid var(--blue);background:#eef3fd;padding:10px 14px;border-radius:0 8px 8px 0;font-size:14px}
+ol.changes{list-style:none;padding:0;margin:14px 0 0}
 .change{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 14px;break-inside:avoid}
 .change h3{margin:0 0 6px;font-size:16px}
+.change h3 .note{font-weight:400}
 .code-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
 .code-pair figure{margin:0;min-width:0}
 .code-pair figcaption{font-size:13px;font-weight:700;margin:0 0 4px}
+/* One code font everywhere. <code> would otherwise fall back to the browser's monospace (Courier). */
+code,pre,kbd,samp{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0}
+code{font-size:.92em}
+pre code{font-size:inherit}
+.common{margin:0 0 14px}
+.common p{margin:0 0 6px}
 pre{margin:0;font:13px/1.5 'JetBrains Mono',ui-monospace,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--soft)}
 pre.before{background:var(--bad-soft);border-color:#efb7b0}
 pre.after{background:var(--ok-soft);border-color:#9fd3c0}
@@ -101,9 +144,7 @@ const LOGO = '<svg width="40" height="24" viewBox="0 0 40 24" aria-hidden="true"
 function page({ title, body, links, print }) {
   const tools = links ? [
     links.pdf && `<li><a class="primary" href="${esc(links.pdf)}">Download PDF</a></li>`,
-    links.patch && `<li><a href="${esc(links.patch)}" download>fix.patch</a></li>`,
-    links.json && `<li><a href="${esc(links.json)}" download>changes.json</a></li>`,
-    links.md && `<li><a href="${esc(links.md)}" download>changes.md</a></li>`,
+    links.patch && `<li><a href="${esc(links.patch)}" download>Download fix.patch</a></li>`,
     links.case && links.case !== links.self && `<li><a href="${esc(links.case)}">Case report</a></li>`,
     links.runView && `<li><a href="${esc(links.runView)}">Open the run</a></li>`,
   ].filter(Boolean).join('') : '';
@@ -149,26 +190,48 @@ function codePair(before, after, n) {
 </div>`;
 }
 
-function wcagHtml(list) {
+function wcagHtml(list, lead = '') {
   if (!list?.length) return 'Not mapped';
-  return list.map((w) => `may not meet <a href="${esc(w.url)}">${esc(w.sc)} ${esc(w.name)}</a>${w.level ? ` (Level ${esc(w.level)})` : ''}`).join('; ') + '; confirm with manual testing';
+  return lead + list.map((w) => `may not meet <a href="${esc(w.url)}">${esc(w.sc)} ${esc(w.name)}</a>${w.level ? ` (Level ${esc(w.level)})` : ''}`).join('; ') + '; confirm with manual testing';
 }
+
+const same = (list, key) => list.length > 0 && list.every((x) => key(x) === key(list[0]));
 
 function changesHtml(r) {
   if (!r.changes?.length) {
     return `<section id="changes" aria-labelledby="changes-h"><h2 id="changes-h">Changes to make</h2><p>No fix has been made for this run yet. ${r.verdict.blocked ? 'Open the run in the console and press "Propose a fix".' : ''}</p></section>`;
   }
-  const items = r.changes.map((c) => `<article class="change" aria-labelledby="c${c.n}">
-<h3 id="c${c.n}">${c.n}. ${c.element.selector ? `<code>${esc(c.element.selector)}</code>` : 'Script change'} in <code>${esc(c.file)}</code>${c.line ? `, line ${esc(c.line)}` : ''}</h3>
+  // What every change shares (the WCAG criterion, the re-run that verified it, the customers) is said
+  // once, above the list, as on the console page.
+  const wcagOf = (c) => (c.wcag ? wcagList(c.wcag) : r.blockers[0]?.wcag || []);
+  const wcagKey = (c) => wcagOf(c).map((w) => w.sc).join(',');
+  const verKey = (c) => (c.verifiedBy ? `${c.verifiedBy.runId}|${c.verifiedBy.outcome}|${c.verifiedBy.paypalStatus || ''}` : '');
+  const custText = (c) => `Blocked in a run: ${c.personas.observed.map(personaName).join(', ') || 'none'}. Expected, not tested: ${c.personas.expected.map(personaName).join(', ') || 'none'}.`;
+  const oneWcag = same(r.changes, wcagKey) && wcagOf(r.changes[0]).length ? wcagOf(r.changes[0]) : null;
+  const oneVer = same(r.changes, verKey) ? r.changes[0].verifiedBy : null;
+  const oneCust = same(r.changes, custText) ? custText(r.changes[0]) : null;
+  const common = `<div class="common">
+${oneVer ? `<p>${verifiedText(oneVer)}</p>` : ''}
+${oneWcag ? `<p class="note">WCAG 2.2: ${wcagHtml(oneWcag, 'the page as built ')}.</p>` : ''}
+${oneCust ? `<p class="note">Customers ${esc(oneCust.replace(/^Blocked/, 'blocked').replace('Expected, not tested', 'Expected to be blocked too, not tested'))}</p>` : ''}
+</div>`;
+  const items = r.changes.map((c) => {
+    const kv = [
+      !oneWcag && `<dt>WCAG 2.2</dt><dd>${wcagHtml(wcagOf(c))}</dd>`,
+      !oneCust && `<dt>Customers</dt><dd>${esc(custText(c))}</dd>`,
+      !oneVer && c.verifiedBy && `<dt>Verified by</dt><dd>${verifiedText(c.verifiedBy)}</dd>`,
+    ].filter(Boolean).join('');
+    return `<li class="change" aria-labelledby="c${c.n}">
+<h3 id="c${c.n}">${c.n}. ${c.element.selector ? `<code>${esc(c.element.selector)}</code>` : 'Script change'} <span class="note">in ${esc(c.file)}${c.line ? `, line ${esc(c.line)}` : ''}</span></h3>
 <p>${esc(c.why)}</p>
-<dl class="kv"><dt>WCAG 2.2</dt><dd>${wcagHtml(r.blockers[0]?.wcag?.length ? r.blockers[0].wcag : [])}</dd>
-<dt>Customers</dt><dd>Blocked in a run: ${esc(c.personas.observed.map(personaName).join(', ') || 'none')}. Expected, not tested: ${esc(c.personas.expected.map(personaName).join(', ') || 'none')}.</dd>
-${c.verifiedBy ? `<dt>Verified by</dt><dd>Re-run ${esc(c.verifiedBy.runId)}: ${esc(c.verifiedBy.outcome)}${c.verifiedBy.paypalOrderId ? `, PayPal ${esc(c.verifiedBy.paypalMode)} order ${esc(c.verifiedBy.paypalOrderId)} ${esc(c.verifiedBy.paypalStatus)}` : ''}</dd>` : ''}</dl>
+${kv ? `<dl class="kv">${kv}</dl>` : ''}
 ${codePair(c.before, c.after, `c${c.n}`)}
-</article>`).join('');
+</li>`;
+  }).join('');
   return `<section id="changes" aria-labelledby="changes-h"><h2 id="changes-h">Changes to make</h2>
-<p class="honest">${esc(r.honesty)} The demo shop's pages are template strings, so each change is shown on the HTML the customer received. ${r.changesSource ? `Source of the code below: ${esc(r.changesSource)}.` : ''}</p>
-${items}</section>`;
+${common}
+<p class="honest">${esc(r.honesty)} The demo shop's pages are template strings, so each change is shown on the HTML the customer received.${r.changesSource ? ` Source of the code below: ${esc(r.changesSource)}.` : ''}</p>
+<ol class="changes">${items}</ol></section>`;
 }
 
 function blockerHtml(b, r) {
@@ -176,17 +239,17 @@ function blockerHtml(b, r) {
   const tried = b.tried.length ? `<table><caption>Steps ${esc(b.steps[0])} to ${esc(b.steps.at(-1))}, on this page</caption><thead><tr><th scope="col">Step</th><th scope="col">What it tried</th><th scope="col">What happened</th></tr></thead><tbody>${b.tried.map((t) => `<tr><td class="num">${esc(t.step)}</td><td>${esc(t.action)}${Object.keys(t.args).length ? ` (${esc(args(t.args))})` : ''}</td><td>${esc(t.result || '(no action)')}</td></tr>`).join('')}</tbody></table>` : '';
   const v = b.verification;
   const verification = v
-    ? `<p class="${v.outcome === 'purchased' ? 'ok-text' : 'bad-text'}">Re-run ${esc(v.runId)}: ${v.outcome === 'purchased' ? 'the same customer paid' : `ended "${esc(v.outcome)}"`}${v.steps != null ? ` in ${esc(v.steps)} steps` : ''}.</p>${v.payment ? `<p>PayPal ${esc(v.payment.mode)} order <strong>${esc(v.payment.orderId)}</strong>: ${esc(v.payment.status)}${v.payment.amount != null ? `, $${esc(Number(v.payment.amount).toFixed(2))}` : ''}.</p>` : ''}`
+    ? `<p class="${v.outcome === 'purchased' ? 'ok-text' : 'bad-text'}">${verifiedText({ runId: v.runId, outcome: v.outcome, steps: v.steps, paypalStatus: v.payment?.status, paypalMode: v.payment?.mode })}</p>${v.payment ? `<p class="order">PayPal ${esc(v.payment.mode)} order ${esc(v.payment.orderId)}: ${esc(v.payment.status)}${v.payment.amount != null ? `, $${esc(Number(v.payment.amount).toFixed(2))}` : ''}</p>` : ''}`
     : '<p>Not verified yet: no re-run after a fix.</p>';
   return `<section class="blocker" id="blocker-${b.n}" aria-labelledby="blocker-${b.n}-h">
-<h2 id="blocker-${b.n}-h">Blocker ${b.n}: ${esc(b.title)}</h2>
+<h2 id="blocker-${b.n}-h">Blocker ${b.n}: ${esc(cleanText(b.title))}</h2>
 <p><span class="label bad">${esc(b.impact)}</span> <span class="label ${b.confidence === 'Confirmed in DOM' ? 'ok' : 'warn'}">${esc(b.confidence)}</span></p>
 <dl class="kv">
 <dt>Customers</dt><dd>Observed blocked in a run: ${esc(b.customers.observed.map(personaName).join(', '))}. Expected, not tested: ${esc(b.customers.expected.map(personaName).join(', ') || 'none')}.</dd>
 <dt>WCAG 2.2</dt><dd>${wcagHtml(b.wcag)}</dd>
 <dt>Where</dt><dd>${b.where.url ? esc(b.where.url) : `Page <code>${esc(b.where.path || b.where.page)}</code>`}${b.where.selector ? `, element <code>${esc(b.where.selector)}</code>` : ''}</dd>
-${b.where.role != null ? `<dt>As the customer got it</dt><dd>Role: ${esc(b.where.role)}; name: ${esc(b.where.name)}; ${b.where.focusable ? 'reachable with Tab' : 'not reachable with Tab'}</dd>` : ''}
-${b.where.outer ? `<dt>Markup</dt><dd><pre><code>${esc(b.where.outer)}</code></pre></dd>` : ''}
+${b.where.role != null ? `<dt>As the customer got it</dt><dd>Role: ${esc(b.where.role)}; name: ${esc(cleanText(b.where.name))}; ${b.where.focusable ? 'reachable with Tab' : 'not reachable with Tab'}</dd>` : ''}
+${b.where.outer ? `<dt>Markup</dt><dd><pre><code>${esc(b.where.outer.replace(/\s*data-ap-culprit="[^"]*"/g, ''))}</code></pre></dd>` : ''}
 <dt>Evidence</dt><dd>Run ${esc(r.run.id)}, steps ${esc(b.steps[0])} to ${esc(b.steps.at(-1))}. ${esc(b.metricEvidence)}</dd>
 </dl>
 ${fig}
@@ -214,7 +277,9 @@ function scannerHtml(r) {
   const rows = s.pages.map((p) => `<tr><th scope="row">${esc(p.page || p.url)}</th><td class="num">${esc(p.violations ?? 'not scanned')}</td><td>${esc((p.rules || []).join(', ') || '—')}</td>${r.kind === 'site' ? `<td>${esc(p.frameNote || '')}</td>` : `<td>${p.page && p.page === stuck ? '<span class="bad-text">The customer was blocked here</span>' : ''}</td>`}</tr>`).join('');
   const matched = (r.blockers || []).some((b) => /^Flagged/.test(b.scanner));
   return `<section id="scanner" aria-labelledby="scanner-h"><h2 id="scanner-h">Scanner vs reality</h2>
-<p>axe-core ${esc(s.version)} reported ${esc(s.total ?? 'no')} violation${s.total === 1 ? '' : 's'} in total. ${r.kind === 'site' ? '' : r.blockers?.length ? (matched ? 'It flagged the element that blocked the customer.' : 'None of them is the element that blocked the customer.') : ''}</p>
+<p>${s.total === 0
+    ? `axe-core ${esc(s.version)} reported no violations${r.kind !== 'site' && r.blockers?.length ? ', so it did not flag the element that blocked the customer' : ''}.`
+    : `axe-core ${esc(s.version)} reported ${esc(s.total ?? 'no')} violation${s.total === 1 ? '' : 's'} in total. ${r.kind === 'site' ? '' : r.blockers?.length ? (matched ? 'It flagged the element that blocked the customer.' : 'None of them is the element that blocked the customer.') : ''}`}</p>
 <table><caption>axe-core results per page</caption><thead><tr><th scope="col">Page</th><th scope="col">Violations</th><th scope="col">Rules</th><th scope="col">${r.kind === 'site' ? 'Note' : 'What happened there'}</th></tr></thead><tbody>${rows}</tbody></table></section>`;
 }
 
@@ -234,10 +299,11 @@ ${rows.map((s) => `<tr><td class="num">${esc(s.step)}</td><td>${esc(s.where)}</t
 export function reportHtml(r, { print = false } = {}) {
   if (r.kind === 'site') return siteHtml(r, { print });
   const isCase = r.kind === 'case';
+  const head = headline(r);
   const toc = [
     ['scorecard', 'Scorecard'],
     ['changes', 'Changes to make'],
-    ...r.blockers.map((b) => [`blocker-${b.n}`, `Blocker ${b.n}: ${b.short}`]),
+    ...r.blockers.map((b) => [`blocker-${b.n}`, `Blocker ${b.n}: ${cleanText(b.short)}`]),
     r.friction.length && ['friction', 'What the customer reported'],
     r.otherFindings.length && ['other', 'Other things the customer reported'],
     ['scanner', 'Scanner vs reality'],
@@ -248,8 +314,9 @@ export function reportHtml(r, { print = false } = {}) {
 <section class="cover" aria-labelledby="title">
 <p class="eyebrow">Owner report · ${isCase ? 'blocked run, fix and re-run' : 'single run'}</p>
 <h1 id="title">${esc(r.title)}: ${esc(customer(r.run.persona))} on the demo shop</h1>
-<p class="verdict ${r.verdict.paidAfter || r.run.outcome?.status === 'purchased' ? 'ok' : 'bad'}">${esc(r.verdict.headline)}</p>
-<p class="sub">${esc(r.verdict.sub)}</p>
+<p class="verdict ${r.verdict.paidAfter || r.run.outcome?.status === 'purchased' ? 'ok' : 'bad'}">${esc(head.text)}</p>
+${head.order ? `<p class="order">PayPal ${esc(head.order.mode)} order ${esc(head.order.id)}</p>` : ''}
+<p class="sub">${esc(scannerLine(r))}</p>
 ${facts([
     ['Target', esc(r.target.label)],
     ['Defects switched on', esc(r.target.defects.map((d) => d.short).join(', ') || 'none')],
@@ -257,7 +324,6 @@ ${facts([
     ['Run date', esc(date(r.date))],
     ['Runs', `${esc(r.run.id)}${r.rerun ? ` → re-run ${esc(r.rerun.id)}` : ''}`],
     r.fix && ['Fix', `${esc(r.fix.id)}: ${esc(r.fix.accepted)} change${r.fix.accepted === 1 ? '' : 's'} on the ${esc(r.fix.page)} page`],
-    r.rerun?.payment && ['PayPal order after the fix', `${esc(r.rerun.payment.orderId)} (${esc(r.rerun.payment.mode)}, ${esc(r.rerun.payment.status)})`],
   ])}
 </section>
 <nav class="toc" aria-labelledby="toc-h"><h2 id="toc-h">Contents</h2><ol>${toc.map(([id, t]) => `<li><a href="#${id}">${esc(t)}</a></li>`).join('')}</ol></nav>
@@ -291,7 +357,7 @@ ${f.figure ? annotatedFigureHtml({ ...f.figure, idPrefix: `f${f.n}`, stuckLabel:
 <p class="eyebrow">Owner report · real site</p>
 <h1 id="title">${esc(r.title)}: ${esc(r.target.host)}</h1>
 <p class="verdict ${r.verdict.blocked ? 'bad' : 'ok'}">${esc(r.verdict.headline)}</p>
-<p class="sub">${esc(r.verdict.sub)}</p>
+<p class="sub">${esc(scannerLine(r))}</p>
 ${facts([
     ['Site', `<a href="${esc(r.target.url)}">${esc(r.target.host)}</a>`],
     ['Customer tested', esc(personaName(r.run.persona))],

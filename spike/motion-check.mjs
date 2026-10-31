@@ -7,7 +7,7 @@ const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
 const errors = [];
 p.on('pageerror', (e) => errors.push(e.message));
 p.on('console', (m) => { if (m.type() === 'error' && !/AG Grid|License|\*{5}/.test(m.text())) errors.push(m.text()); });
-await p.goto('http://127.0.0.1:4300/#' + route, { waitUntil: 'networkidle' });
+await p.goto((process.env.ACCESSIPAY_URL || 'http://127.0.0.1:4300') + '/#' + route, { waitUntil: 'networkidle' });
 const el = p.locator(sel).first();
 await el.evaluate((n) => n.scrollIntoView({ block: 'center' }));
 for (let i = 0; i < Number(frames); i++) {

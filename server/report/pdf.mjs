@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { annotationSvg } from '../../shared/annotate.js';
+import { annotationSvg, reportMarks } from '../../shared/annotate.js';
 
 let queue = Promise.resolve();
 function oneAtATime(fn) {
@@ -44,7 +44,9 @@ export function renderPdf({ browser, origin, kind, id, file }) {
 }
 
 // The screenshot with its marks drawn in, as one PNG (for downloads, the PDF gallery, Devpost).
-export function bakePng({ browser, imageFile, width, height, marks, file }) {
+// Drawn like the report page and the console: title-only callout, ellipse round the whole element.
+export function bakePng({ browser, imageFile, width, height, marks: given, file }) {
+  const { onPicture: marks } = reportMarks({ width, height, marks: given });
   return oneAtATime(async () => {
     if (fs.existsSync(file)) return file;
     const mime = /\.png$/i.test(imageFile) ? 'image/png' : 'image/jpeg';

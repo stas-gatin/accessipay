@@ -23,7 +23,7 @@
   --bad-line: rgba(194, 54, 42, .35);
   --warn: #8a5800;
   --warn-soft: rgba(138, 88, 0, .08);
-  --header-bg: rgba(255, 255, 255, .88);
+  --header-bg: #ffffff;
   --code-bg: #0d1117;
   --code-ink: #d6e2ee;
   --shadow: 0 1px 2px rgba(16, 24, 40, .04), 0 1px 3px rgba(16, 24, 40, .06);
@@ -54,7 +54,7 @@
   --bad-line: rgba(255, 122, 107, .35);
   --warn: #ffc861;
   --warn-soft: rgba(255, 200, 97, .1);
-  --header-bg: rgba(11, 13, 16, .85);
+  --header-bg: #0b0d10;
   --code-bg: #07090b;
   --shadow: none;
 }
@@ -447,7 +447,9 @@ a.rv-step-link { text-decoration: none; }
 .check-badge.ok { color: var(--ok); background: var(--accent-soft); border-color: var(--accent-line); }
 .check-badge.warn { color: var(--warn); background: var(--warn-soft); border-color: currentColor; }
 .check-badge.muted { color: var(--muted); background: var(--surface-2); border-color: var(--line-2); }
-.check-line { display: block; margin-top: 3px; font-size: 13px; color: var(--muted); font-family: var(--mono); overflow-wrap: anywhere; }
+.check-line { display: block; margin-top: 3px; font-size: 13.5px; line-height: 1.45; color: var(--muted); font-family: var(--sans); overflow-wrap: anywhere; }
+.check-legend { margin: 0 0 10px; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.check-legend b { font-weight: 600; color: var(--ink); }
 .sr-checks { margin: 10px 0 0; padding: 10px 14px; border-radius: 10px; background: var(--accent-soft); border: 1px solid var(--accent-line); font-size: 14.5px; line-height: 1.5; }
 @media (prefers-reduced-motion: no-preference) {
   .arv-in .check-badge, .rv-banner .check-badge { animation: pop 420ms cubic-bezier(.2, .8, .2, 1) 300ms backwards; }
@@ -461,3 +463,75 @@ a.rv-step-link { text-decoration: none; }
   .runs-where button:hover { transform: translateY(-2px); }
 }
 @media (max-width: 560px) { .runs-where { grid-template-columns: 1fr; } }
+.res-group span { font-weight: 500; }
+.res-note { font-size: 12.5px; color: var(--muted); margin: 0 6px 6px; line-height: 1.45; }
+/* Findings read the same everywhere: what (one line), the problem, the check. */
+.sr-col-head { display: grid; gap: 6px; justify-items: start; margin: 4px 0 12px; }
+.sr-col-head .note { margin: 0; font-size: 14px; }
+.sr-finding { display: grid; gap: 3px; min-width: 0; font-size: 14.5px; line-height: 1.5; color: var(--ink); }
+.sr-finding > b { font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); }
+.sr-finding > span:not(.sr-finding-check):not(.check-line) { color: var(--ink-2, var(--ink)); }
+.sr-finding-check .check-badge { margin-left: 0; }
+.sr-cols .card { display: flex; flex-direction: column; min-width: 0; }
+.sr-cols ol.findings li, .rv-found li { grid-template-columns: 64px minmax(0, 1fr); }
+.rv-step-link { justify-self: start; }
+
+/* ---------- Results: every shop in one AG Grid table, the chosen shop's analysis below ---------- */
+.res-stats { list-style: none; margin: 8px 0 20px; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.res-stats li { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; display: grid; gap: 4px; }
+.res-stats b { font-family: var(--head); font-size: 28px; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.res-stats span { font-size: 14px; color: var(--muted); line-height: 1.35; }
+.res-table { margin-bottom: 10px; }
+.res-table .ag-row { cursor: pointer; }
+.res-table .res-row-on { background: var(--accent-soft) !important; }
+.res-shop-cell { font-weight: 600; }
+.res-cell { display: inline-flex; align-items: center; gap: 9px; font-size: 14px; line-height: 1.25; height: 100%; }
+.res-cell-t { display: grid; }
+.res-cell-t span { font-size: 13px; }
+.res-table.grid-box { height: auto; }
+.res-cell i { width: 9px; height: 9px; border-radius: 50%; background: var(--line-2); flex: none; }
+.res-cell.ok i { background: var(--ok); }
+.res-cell.bad i { background: var(--bad); }
+.res-cell.run i { background: var(--accent); animation: res-pulse 1.4s ease-in-out infinite; }
+.res-cell.muted i { background: var(--muted); opacity: .55; }
+.res-cell b { font-weight: 600; }
+.res-cell span { color: var(--muted); }
+.res-cell.none { color: var(--muted); }
+@keyframes res-pulse { 50% { opacity: .35; } }
+.results .res-detail { margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--line); scroll-margin-top: 90px; }
+.sr-away p { max-width: 70ch; }
+.sr-col { display: grid; gap: 10px; align-content: start; border-top: 4px solid var(--line-2); }
+.sr-col.ok { border-top-color: var(--ok); }
+.sr-col.bad { border-top-color: var(--bad); }
+.sr-col h4 { margin: 0; font-size: 17px; }
+.sr-col-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.sr-col-nums { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.sr-col-why { margin: 0; font-size: 14.5px; line-height: 1.45; color: var(--ink-2, var(--ink)); font-style: italic; }
+.sr-col-open { font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: none; margin-top: 4px; }
+.sr-col-open:hover { text-decoration: underline; }
+.sr-col .findings { margin: 0; }
+@media (max-width: 720px) {
+  .res-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .res-stats li { padding: 10px; }
+  .res-stats b { font-size: 21px; }
+  .res-stats span { font-size: 12.5px; }
+}
+
+/* Your site: the four steps in one column, later steps shown locked until the one before is done. */
+.own-steps { display: grid; gap: 16px; }
+.own-locked { border-style: dashed; background: transparent; }
+.own-locked .section-title { color: var(--muted); }
+.own-locked .section-title { margin-bottom: 4px; }
+.own-locked p { margin: 0; }
+.btn:disabled, .btn.primary:disabled { opacity: 1; background: var(--surface-2); color: var(--muted); border-color: var(--line-2); cursor: not-allowed; }
+.recent-runs { list-style: none; margin: 0; padding: 0; display: grid; }
+.recent-runs li { display: grid; grid-template-columns: minmax(0, 1fr) auto 118px; gap: 12px; align-items: center; padding: 9px 0; border-top: 1px solid var(--line); }
+.recent-runs li:first-child { border-top: 0; }
+.recent-runs .note { margin: 0; text-align: right; font-size: 13px; }
+@media (max-width: 560px) { .recent-runs li { grid-template-columns: minmax(0, 1fr) auto; } .recent-runs .note { display: none; } }
+/* Long accessible names (a whole product card read out) wrap to at most two lines. */
+.sr-finding-what { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .sr-examples li { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .sr-examples .rv-step-link { justify-self: start; }
+}

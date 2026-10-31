@@ -22,6 +22,8 @@ const hash = (s) => crypto.createHash('sha1').update(String(s)).digest('hex').sl
 const words = (s) => (String(s).match(/[A-Za-z0-9$£€]+/g) || []).length;
 
 export function runMetrics(run) {
+  // A withheld shop's run keeps the metrics measured before its page text was removed.
+  if (run.metricsKept) return run.metricsKept;
   const ev = run.events || [];
   const decides = ev.filter((e) => e.type === 'decide' && !e.final && e.action !== 'done' && e.action !== 'give_up');
   const acts = ev.filter((e) => e.type === 'act');

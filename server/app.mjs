@@ -20,13 +20,16 @@ import { checkAgentAccess } from './agent-access.mjs';
 import { createSiteAnalysis } from './site-analysis.mjs';
 import { verifyFindings } from './verify.mjs';
 import { detectBotWall } from './engine/preflight.mjs';
+import { createMask } from './anonymize.mjs';
 
 export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, env = process.env, extend }) {
   const paypal = createPayPal(env);
   const shop = createShop({ paypal, dataDir });
   const owners = createOwnerSites({ dataDir });
   const runs = createRuns({ browser, shop, paypal, dataDir, origin, brains, owners });
-  const sites = createSiteAnalysis({ runs, dataDir });
+  // Live runs on large retailers are shown under their label, like the recorded ones.
+  const mask = createMask(dataDir);
+  const sites = createSiteAnalysis({ runs: { list: () => runs.list().map(mask), get: (id) => mask(runs.get(id)) }, dataDir });
   const fixes = createFixes({ shop, runs, origin, fixers, dataDir });
   const app = express();
   app.disable('x-powered-by');
@@ -58,7 +61,7 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
       res.json({ id: rec.id, instanceId: rec.instanceId, shopUrl: rec.site ? rec.site.url : `/s/${rec.instanceId}/` });
     } catch (e) { res.status(400).json({ error: e.message }); }
   });
-  app.get('/api/runs', (req, res) => res.json(runs.list()));
+  app.get('/api/runs', (req, res) => res.json(runs.list().map(mask)));
 
   // One analysis per site, across every customer type.
   app.get('/api/sites', (req, res) => res.json(sites.list()));
@@ -124,7 +127,7 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
   app.get('/api/runs/:id', (req, res) => {
     const r = runs.get(req.params.id);
     if (!r) return res.status(404).json({ error: 'not found' });
-    const plain = r.brain ? runs.plain(r) : r;
+    const plain = mask(r.brain ? runs.plain(r) : r);
     // Each finding is checked against the record of the run (page snapshot, focus, axe-core), not by AI.
     res.json(plain.status === 'finished' ? { ...plain, checks: verifyFindings(plain) } : plain);
   });
@@ -198,7 +201,7 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
   });
 
   app.get('/api/analytics', (req, res) => {
-    const all = runs.list().map((r) => runs.get(r.id)).map((r) => (r && r.brain ? runs.plain(r) : r));
+    const all = runs.list().map((r) => runs.get(r.id)).map((r) => mask(r && r.brain ? runs.plain(r) : r));
     res.json(analytics(all));
   });
 

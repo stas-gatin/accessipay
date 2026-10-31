@@ -6,7 +6,7 @@ export async function api(path, body) {
 }
 
 export const OUTCOME = {
-  purchased: { label: 'Purchased', tone: 'ok' },
+  purchased: { label: 'Paid', tone: 'ok' },
   blocked: { label: 'Blocked', tone: 'bad' },
   stopped: { label: 'Stopped', tone: 'muted' },
   error: { label: 'Error', tone: 'bad' },

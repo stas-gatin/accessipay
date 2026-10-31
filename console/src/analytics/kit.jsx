@@ -6,6 +6,7 @@ export const reduced = () => typeof matchMedia === 'function' && matchMedia('(pr
 
 // Counts up to the value once, unless the reader asked for reduced motion.
 export function CountUp({ value, suffix = '' }) {
+  const fmt = (v) => (typeof v === 'number' ? v.toLocaleString('en-US') : v);
   const [shown, setShown] = useState(reduced() ? value : 0);
   useEffect(() => {
     if (value == null || reduced()) { setShown(value); return undefined; }
@@ -19,7 +20,7 @@ export function CountUp({ value, suffix = '' }) {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [value]);
-  return <>{shown == null ? '—' : shown}{suffix}</>;
+  return <>{shown == null ? '—' : fmt(shown)}{suffix}</>;
 }
 
 // True once the element has scrolled into view; true at once under reduced motion.
@@ -151,7 +152,7 @@ export function Card({ title, takeaway, note, children, wide, className = '' }) 
   return (
     <figure className={`ax-card ${wide ? 'wide' : ''} ${className}`}>
       <figcaption>
-        <h3>{title}</h3>
+        {title && <h3>{title}</h3>}
         {takeaway && <p className="ax-takeaway">{takeaway}</p>}
         {note && <p className="ax-note">{note}</p>}
       </figcaption>
@@ -185,4 +186,18 @@ export function GlyphKey({ shape }) {
       <OutcomeGlyph shape={shape} r={5} />
     </svg>
   );
+}
+
+// True while the media query matches (follows resizes and rotation).
+export function useMedia(query) {
+  const get = () => typeof matchMedia === 'function' && matchMedia(query).matches;
+  const [on, setOn] = useState(get);
+  useEffect(() => {
+    if (typeof matchMedia !== 'function') return undefined;
+    const m = matchMedia(query);
+    const f = () => setOn(m.matches);
+    m.addEventListener?.('change', f);
+    return () => m.removeEventListener?.('change', f);
+  }, [query]);
+  return on;
 }

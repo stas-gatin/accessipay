@@ -9,7 +9,7 @@ import { useInView, usePageVisible, useReducedMotion } from './motion.jsx';
 // (GET /api/runs/:id), so a ring always sits on the element in the screenshot it is drawn on.
 const W = 1280;
 const H = 860;
-const STAGES = ['Browse', 'Cart', 'Details', 'Payment', 'PayPal confirmed'];
+const STAGES = ['Browse', 'Cart', 'Checkout', 'Payment', 'Paid'];
 
 function describe(d) {
   if (!d) return '';

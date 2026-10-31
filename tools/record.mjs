@@ -6,6 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { anonymize } from '../server/anonymize.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const runsDir = path.join(root, 'data', 'runs');
@@ -13,28 +14,7 @@ const out = path.join(root, 'data', 'recorded');
 fs.mkdirSync(path.join(out, 'fixes'), { recursive: true });
 const fixes = fs.existsSync(path.join(root, 'data', 'fixes')) ? fs.readdirSync(path.join(root, 'data', 'fixes')).map((f) => JSON.parse(fs.readFileSync(path.join(root, 'data', 'fixes', f), 'utf8'))) : [];
 
-// Replaces the site's host (with or without www) and any brand words given, in every string value
-// of a recorded run. Keys are left alone, so the record stays readable by the console.
-export function anonymize(run, label, brands = []) {
-  const host = run.site?.host;
-  if (!host) return run;
-  const bare = host.replace(/^www\./, '');
-  const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const fake = `${label.toLowerCase().replace(/\s+/g, '-')}.example`;
-  const swap = (s) => brands.reduce(
-    // Long brand words are replaced anywhere, so hashtags and handles (#AcmeOnYou, @acmeusa) are covered.
-    // Short ones ("Zest", "KORA", "Tok") only at the start of a word, any capitals, so "ZestLOOP" and "Kora" go
-    // but "opera" keeps its "pera". Words under 3 letters ("On") are ordinary words, not identifying, and stay.
-    (acc, b) => (b.length < 3 ? acc : b.length >= 5 ? acc.replace(new RegExp(esc(b), 'gi'), label) : acc.replace(new RegExp(`\\b${esc(b)}`, 'gi'), label)),
-    s.replace(new RegExp(`(www\\.)?${esc(bare)}`, 'gi'), fake),
-  );
-  const walk = (v) => (typeof v === 'string' ? swap(v) : Array.isArray(v) ? v.map(walk)
-    : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)])) : v);
-  const out = walk(run);
-  out.site = { url: null, host: label, anonymized: true };
-  for (const e of out.events || []) delete e.image;
-  return out;
-}
+export { anonymize };
 
 const args = process.argv.slice(2);
 let anon = null;

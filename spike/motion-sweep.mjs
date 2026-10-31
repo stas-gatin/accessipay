@@ -7,7 +7,7 @@ for (const width of [1440, 390]) {
   const errors = [];
   p.on('pageerror', (e) => errors.push(e.message));
   for (const r of routes) {
-    await p.goto('http://127.0.0.1:4300/#' + r, { waitUntil: 'networkidle' });
+    await p.goto((process.env.ACCESSIPAY_URL || 'http://127.0.0.1:4300') + '/#' + r, { waitUntil: 'networkidle' });
     await p.waitForTimeout(600);
     const h = await p.evaluate(() => document.body.scrollHeight);
     for (let y = 0; y < h; y += 500) { await p.evaluate((v) => window.scrollTo(0, v), y); await p.waitForTimeout(90); }

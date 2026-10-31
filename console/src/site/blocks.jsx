@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { api } from '../api.js';
 import Logo, { LogoMark } from '../Logo.jsx';
-import { RUNS, ORDERS, PAY_FIX, SKIP_FIX, REAL_SITES, PLATFORMS, REPORT_HREF, METHOD } from './facts.js';
+import { RUNS, ORDERS, PAY_FIX, SKIP_FIX, REPORT_HREF, METHOD } from './facts.js';
 import { useInView, useReducedMotion, Reveal } from './motion.jsx';
 
 export function SectionHead({ eyebrow, title, id, lead, light = false, center = false, children }) {
@@ -80,15 +80,15 @@ const LANES = [
   {
     name: 'Keyboard-only customer', shop: 'Popup that traps focus',
     before: { stop: 1, text: 'Blocked at Cart: the promo popup traps focus and Escape does nothing', run: RUNS.keyboardBlocked },
-    after: { stop: 4, paid: true, text: 'Paid in 49 steps after 7 patches', run: RUNS.keyboardFixed },
+    after: { stop: 4, paid: true, text: 'Paid in 49 steps after the AI fix (7 changes)', run: RUNS.keyboardFixed },
   },
   {
-    name: 'AI shopping agent', shop: 'Pay button is a <div>',
+    name: 'AI shopping agent', shop: 'A Pay button that is not a real button',
     before: { stop: 3, text: 'Blocked at Payment: no Pay button in the accessibility tree', run: RUNS.agentBlocked },
-    after: { stop: 4, paid: true, text: 'Paid in 19 steps after 5 patches', run: RUNS.agentFixed },
+    after: { stop: 4, paid: true, text: 'Paid in 19 steps after the AI fix (5 changes)', run: RUNS.agentFixed },
   },
 ];
-const STAGES = ['Browse', 'Cart', 'Details', 'Payment', 'PayPal confirmed'];
+const STAGES = ['Browse', 'Cart', 'Checkout', 'Payment', 'Paid'];
 
 export function JourneyMap() {
   const [after, setAfter] = useState(false);
@@ -108,7 +108,7 @@ export function JourneyMap() {
             <li key={l.name} className="jm-lane" style={{ '--d': `${li * 150}ms` }}>
               <div className="jm-who">
                 <strong>{l.name}</strong>
-                <span>{l.shop} · axe-core: 0 violations</span>
+                <span>{l.shop} · <span className="nw">axe{'\u2011'}core: 0{'\u00a0'}violations</span></span>
               </div>
               <div className="jm-track" aria-hidden="true">
                 <span className="jm-rail" />
@@ -118,8 +118,7 @@ export function JourneyMap() {
                 ))}
               </div>
               <p className={`jm-out ${r.paid ? 'ok' : 'bad'}`}>
-                <span className="dot-word">{r.paid ? 'Paid' : 'Blocked'}</span>
-                {' '}{r.text}{r.paid && '; PayPal confirmed the payment'}.{' '}
+                <span className="dot-word" aria-hidden="true" />{r.text}{r.paid && '; PayPal confirmed the payment'}.{' '}
                 <a href={`#/runs/${r.run}`}>Replay<span className="sr-only"> the {l.name.toLowerCase()} run</span></a>
               </p>
             </li>
@@ -208,15 +207,15 @@ export function EffortBlock() {
           );
         })}
         <p className="effort-note">
-          Medians of {m.n[0]} runs before and {m.n[1]} after; before ranged {m.steps.range[0].join(' and ')} steps. The time is an estimate with the
-          keystroke-level model (0.28 s per key, 1.35 s per decision), not a stopwatch. axe-core found no problem on the shop’s own code before or after.
+          The middle value of {m.n[0]} runs before and {m.n[1]} after the fix; before it, the runs took {m.steps.range[0].join(' and ')} steps. The time is
+          estimated from the keys pressed and the choices made ({'0.28\u00a0s'} per key, {'1.35\u00a0s'} per decision), not measured with a stopwatch. axe{'\u2011'}core found no problem on the shop’s own code before or after.
           {' '}<a href={`#/runs/${RUNS.frictionBefore[0]}`}>Before</a> · <a href={`#/runs/${RUNS.frictionAfter[0]}`}>After</a> · <a href="#/analytics">All runs</a>
         </p>
       </div>
       <div className="effort-fix">
         <p className="effort-k">The whole fix, on every page</p>
-        <pre className="codeblock" aria-label="The patch that added a skip link"><span className="c-meta">layout, all pages</span>{'\n'}<span className="del">- {SKIP_FIX.before}</span>{'\n'}<span className="add">+ {SKIP_FIX.after}</span></pre>
-        <p>The keyboard-only customer could always pay. Before the fix it had to Tab past 25 category links on every page; after it, one link takes it to the content.</p>
+        <pre className="codeblock" tabIndex={0} aria-label="The patch that added a skip link"><span className="c-meta">layout, all pages</span>{'\n'}<span className="del">- {SKIP_FIX.before}</span>{'\n'}<span className="add">+ {SKIP_FIX.after}</span></pre>
+        <p>A second demo shop, without the popup: here the keyboard{'\u2011'}only customer could always pay. Before the fix it had to Tab past 25 category links on every page; after it, one “Skip to content” link takes it straight to the products.</p>
       </div>
     </div>
   );
@@ -260,8 +259,8 @@ export function CopyCode({ text, label = 'Copy patch' }) {
 }
 
 const FIX_ROWS = [
-  { title: 'Promo popup traps the keyboard', page: 'Cart', who: 'Keyboard-only customer', run: RUNS.keyboardBlocked, wcag: '2.1.2 No Keyboard Trap', after: 'Paid in 49 steps after 7 patches' },
-  { title: 'Pay button is a <div>', page: 'Payment', who: 'AI shopping agent', run: RUNS.agentBlocked, wcag: '4.1.2 Name, Role, Value', after: 'Paid in 19 steps after 5 patches' },
+  { title: 'Promo popup traps the keyboard', page: 'Cart', who: 'Keyboard-only customer', run: RUNS.keyboardBlocked, wcag: '2.1.2 No Keyboard Trap', after: 'Paid in 49 steps after the AI fix (7 changes)' },
+  { title: 'Pay button is not a real button', page: 'Payment', who: 'AI shopping agent', run: RUNS.agentBlocked, wcag: '4.1.2 Name, Role, Value', after: 'Paid in 19 steps after the AI fix (5 changes)' },
 ];
 
 export function OwnerOutputs() {
@@ -275,7 +274,7 @@ export function OwnerOutputs() {
           {FIX_ROWS.map((r) => (
             <li key={r.title}>
               <div className="fl-top"><span className="dot-word bad">Blocker</span><strong>{r.title}</strong></div>
-              <p>{r.page} page · blocked: {r.who} (<a href={`#/runs/${r.run}`}>run {r.run.slice(-6)}</a>)</p>
+              <p>{r.page} page · blocked: {r.who} · <a href={`#/runs/${r.run}`}>Replay</a></p>
               <p>WCAG {r.wcag} · axe-core: not flagged</p>
               <p className="fl-after"><span className="dot-word ok">Retest</span> {r.after}</p>
             </li>
@@ -285,7 +284,7 @@ export function OwnerOutputs() {
       <article className="bt bt-code">
         <header><span className="bt-n">2</span><h3>Ready code</h3><CopyCode text={patch} /></header>
         <p>The exact change for the page, written by the AI fixer and checked by a rerun.</p>
-        <pre className="codeblock" aria-label="Patch for the payment page"><span className="c-meta">pay.html</span>{'\n'}<span className="del">- {PAY_FIX.before}</span>{'\n'}<span className="add">+ {PAY_FIX.after}</span></pre>
+        <pre className="codeblock" tabIndex={0} aria-label="Patch for the payment page"><span className="c-meta">pay.html</span>{'\n'}<span className="del">- {PAY_FIX.before}</span>{'\n'}<span className="add">+ {PAY_FIX.after}</span></pre>
         <p className="bt-why">Why: {PAY_FIX.why}</p>
         <ul className="bt-checks">
           <li><span>Matched the page</span><b>exactly once</b></li>
@@ -317,80 +316,47 @@ export function OwnerOutputs() {
   );
 }
 
-export function RealSites() {
+// Real shops on the home page: every complete analysis, three customers each, from /api/sites.
+const RS_PERSONAS = [['screenreader', 'Screen reader'], ['keyboard', 'Keyboard'], ['agent', 'AI agent']];
+export function RealShops() {
+  const [list, setList] = useState(null);
+  useEffect(() => { api('/api/sites').then(setList).catch(() => setList([])); }, []);
+  if (!list) return null;
+  const analysed = list.filter((s) => s.complete && !s.notTestable && !s.running);
+  const away = list.filter((s) => s.notTestable && !s.running);
+  const testing = list.filter((s) => s.running);
+  const runs = analysed.reduce((t, s) => t + s.tested, 0);
+  const reached = analysed.reduce((t, s) => t + s.reached, 0);
+  const word = (o) => (o === 'reached-payment' ? 'Reached payment' : o === 'not-testable' ? 'Not counted' : o === 'blocked' ? 'Stopped' : 'Testing');
+  const tone = (o) => (o === 'reached-payment' ? 'ok' : o === 'blocked' ? 'bad' : 'muted');
   return (
-    <Reveal className="sites" stagger>
-      {REAL_SITES.map((s) => (
-        <article key={s.platform} className={`site-card ${s.tone}`}>
-          <div className="site-shot">
-            <img src={`/runs-data/${s.run}/${s.image}`} alt={`The ${s.platform} demo checkout at step ${parseInt(s.image.slice(5), 10)} of the run.`} loading="lazy" />
-          </div>
-          <div className="site-body">
-            <span className={`dot-chip ${s.tone === 'config' ? 'muted' : 'warn'}`}>{s.tone === 'config' ? 'Stopped by demo configuration' : 'Barrier found'}</span>
-            <h3>{s.platform} demo</h3>
-            <p className="site-host mono">{s.host}</p>
-            <p className="site-reached">{s.reached}</p>
-            <p>{s.finding}</p>
-            <p className="site-ev">{s.evidence}</p>
-            <p className="site-axe"><b>axe-core</b> {s.axe}</p>
-            <a className="lp-link" href={`#/runs/${s.run}`}>Replay the run<span className="sr-only"> on the {s.platform} demo</span> <Arrow /></a>
-          </div>
-        </article>
-      ))}
-    </Reveal>
-  );
-}
-
-// Every customer on every real site, from the recorded runs. Grows as the sweep runs.
-const SWEEP_PERSONAS = [['screenreader', 'Screen reader'], ['keyboard', 'Keyboard only'], ['agent', 'AI agent']];
-const isRetailer = (host) => /^Retailer /.test(host);
-const cellText = (r) => (r.outcome === 'reached-payment' ? `${r.steps} steps` : `at ${r.stage} · ${r.steps} steps`);
-
-export function SweepMatrix() {
-  const [a, setA] = useState(null);
-  useEffect(() => { api('/api/analytics').then(setA).catch(() => setA(null)); }, []);
-  if (!a) return null;
-  const latest = (host, persona) => a.sites.filter((s) => s.host === host && s.persona === persona).sort((x, y) => (x.id < y.id ? 1 : -1))[0];
-  const hosts = Object.keys(PLATFORMS).filter((h) => a.sites.some((s) => s.host === h));
-  const shops = a.sites.filter((s) => isRetailer(s.host));
-  const untested = [...new Set((a.untested || []).filter((u) => isRetailer(u.host)).map((u) => u.host))];
-  const tested = new Set(shops.map((s) => s.host));
-  return (
-    <div className="sweep">
-      <div className="sweep-table" role="table" aria-label="Open-source platform demos, by customer type">
-        <div className="sweep-row sweep-head" role="row">
-          <span role="columnheader">Platform demo</span>
-          {SWEEP_PERSONAS.map(([, l]) => <span role="columnheader" key={l}>{l}</span>)}
-        </div>
-        {hosts.map((h) => (
-          <div className="sweep-row" role="row" key={h}>
-            <span role="rowheader"><b>{PLATFORMS[h]}</b><i className="mono">{h}</i></span>
-            {SWEEP_PERSONAS.map(([p, l]) => {
-              const r = latest(h, p);
-              return (
-                <span role="cell" key={p} className={r ? (r.outcome === 'reached-payment' ? 'ok' : 'bad') : 'none'}>
-                  <em className="sweep-pl" aria-hidden="true">{l}</em>
-                  {r ? <a href={`#/runs/${r.id}`}><span className="dot-word">{r.outcome === 'reached-payment' ? 'Reached payment' : 'Stopped'}</span> {cellText(r)}<span className="sr-only">, {l}, {PLATFORMS[h]}</span></a> : <span className="sweep-wait">not run yet</span>}
+    <div className="rshops">
+      <ul className="rshops-stats">
+        <li><b>{analysed.length}</b><span>shops tested by all three customers</span></li>
+        <li><b>{runs ? `${reached} of ${runs}` : '—'}</b><span>customer runs reached the payment step</span></li>
+        <li><b>{away.length}</b><span>shops turned our browser away</span></li>
+        {testing.length > 0 && <li><b>{testing.length}</b><span>being tested right now</span></li>}
+      </ul>
+      {analysed.length > 0 && (
+        <ul className="rshops-grid">
+          {analysed.slice(0, 3).map((s) => (
+            <li key={s.key}>
+              <a className="rshop" href={`#/sites/${encodeURIComponent(s.key)}`}>
+                <span className="rshop-name">{s.key}</span>
+                <span className="rshop-v">{s.reached} of {s.tested} reached payment</span>
+                <span className="rshop-rows">
+                  {RS_PERSONAS.map(([p, l]) => {
+                    const c = s.customers[p];
+                    return <span key={p} className="rshop-row"><span>{l}</span><span className={`dot-word ${tone(c?.outcome)}`}>{word(c?.outcome)}{c?.steps != null ? `, ${c.steps} steps` : ''}</span></span>;
+                  })}
                 </span>
-              );
-            })}
-          </div>
-        ))}
-      </div>
-      <div className="sweep-shops">
-        <h3>Large retailers, names withheld</h3>
-        <ul className="sweep-stats">
-          <li><b>{tested.size + untested.length}</b><span>checked</span></li>
-          <li><b>{untested.length}</b><span>not testable: bot protection or a maintenance page</span></li>
-          {SWEEP_PERSONAS.map(([p, l]) => {
-            const runs = shops.filter((s) => s.persona === p);
-            if (!runs.length) return null;
-            const ok = runs.filter((s) => s.outcome === 'reached-payment').length;
-            return <li key={p}><b>{ok} of {runs.length}</b><span>{l}: reached the payment form</span></li>;
-          })}
+                <span className="rshop-open">Open the analysis <Arrow /></span>
+              </a>
+            </li>
+          ))}
         </ul>
-        <p className="sweep-note">Each retailer is visited at most once a day, by one customer type. No purchase is made: the customer stops when the payment form is on screen.</p>
-      </div>
+      )}
+      <p className="rshops-more"><a className="lp-link" href="#/results">Every shop, with its whole analysis <Arrow /></a></p>
     </div>
   );
 }
@@ -456,22 +422,21 @@ export function SiteFooter() {
         </div>
         <nav aria-label="Footer">
           <ul>
+            <li><a href="#/">Overview</a></li>
             <li><a href="#/method">Method</a></li>
             <li><a href="#/customers">Customers</a></li>
             <li><a href="#/paypal">For PayPal</a></li>
-            <li><a href="#/honesty">What we claim</a></li>
           </ul>
           <ul>
-            <li><a href="#/test">Run a test</a></li>
-            <li><a href="#/results">Results by site</a></li>
-            <li><a href="#/runs">Every run</a></li>
+            <li><a href="#/results">Results</a></li>
             <li><a href="#/analytics">Analytics</a></li>
-            <li><a href="#/defects">Defects and results</a></li>
+            <li><a href="#/own-site">Your site</a></li>
+            <li><a href="#/test">Run a test</a></li>
           </ul>
         </nav>
       </div>
       <div className="wrap sfoot-fine">
-        <span>The demo shop and every payment run in the PayPal sandbox. No real money moves.</span>
+        <span>The demo shop and all payments run in the PayPal sandbox. No real money moves.</span>
         <span>Customers are simulated. Not a WCAG certificate.</span>
       </div>
     </footer>
