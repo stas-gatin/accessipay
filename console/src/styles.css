@@ -572,3 +572,49 @@ a.rv-step-link { text-decoration: none; }
 .sr-card-more { margin: 0; font-size: 13.5px; color: var(--muted); }
 .sr-card-shot.none { aspect-ratio: auto; }
 .sr-card-shot.none .sr-card-noshot { padding: 12px 14px; font-size: 13px; }
+
+/* Results: our test shop, planted problems with a before and after each */
+.ts { margin: 8px 0 40px; }
+.ts h2, .res-h2 { font-size: clamp(22px, 2.4vw, 28px); margin: 0 0 8px; }
+.ts .lead { font-size: 16.5px; margin-bottom: 18px; }
+.ts-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 820px) { .ts-grid { grid-template-columns: minmax(0, 1fr); } }
+.ts-case { display: grid; gap: 8px; height: 100%; padding: 16px; text-decoration: none; color: var(--ink); transition: border-color .15s, transform .2s; }
+.ts-case:hover { border-color: var(--accent-line); transform: translateY(-2px); }
+.ts-pics { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 8px; margin-bottom: 4px; }
+.ts-pic { position: relative; aspect-ratio: 16 / 10; border-radius: 9px; overflow: hidden; border: 1px solid var(--line); background: var(--surface-2); }
+.ts-pic img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+.ts-tag { position: absolute; left: 6px; bottom: 6px; padding: 2px 7px; border-radius: 6px; font-size: 11.5px; font-weight: 700; color: #fff; background: rgba(11, 27, 51, .85); }
+.ts-tag.bad::before, .ts-tag.ok::before, .ts-tag.slow::before { content: ''; display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; vertical-align: 0; }
+.ts-tag.bad::before { background: #ff8a80; }
+.ts-tag.slow::before { background: #ffd166; }
+.ts-tag.ok::before { background: #5ef1c2; }
+.ts-who { font-size: 13px; font-weight: 600; color: var(--accent); }
+.ts-title { font-size: 18px; line-height: 1.3; }
+.ts-line { font-size: 14.5px; font-variant-numeric: tabular-nums; }
+.ts-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--muted); }
+.ts-open { margin-top: auto; font-size: 14px; font-weight: 600; color: var(--accent); }
+.res-h2 { margin-top: 8px; }
+
+/* A test-shop case page */
+.ts-flow { list-style: none; margin: 0 0 22px; padding: 0; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 10px; }
+@media (max-width: 720px) { .ts-flow { grid-auto-flow: row; } }
+.ts-flow li { display: grid; gap: 3px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); border-left: 4px solid var(--line-2); font-size: 14px; }
+.ts-flow li b { font-size: 15px; }
+.ts-flow li span { color: var(--muted); }
+.ts-flow li.bad { border-left-color: var(--bad); }
+.ts-flow li.slow { border-left-color: var(--warn); }
+.ts-flow li.fix { border-left-color: var(--ink); }
+.ts-flow li.ok { border-left-color: var(--ok); }
+.ts-sides { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.ts-sides.one { grid-template-columns: minmax(0, 560px); }
+@media (max-width: 820px) { .ts-sides { grid-template-columns: minmax(0, 1fr); } }
+.ts-side-h { margin: 0; font-size: 17px; }
+.ts-fix { margin-top: 24px; }
+.ts-fix h2 { font-size: 22px; margin: 0 0 8px; }
+.ts-changes { margin: 12px 0; padding-left: 20px; display: grid; gap: 14px; }
+.ts-why { margin: 0 0 6px; font-size: 14.5px; }
+.ts-code { margin: 0; padding: 10px 12px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--line); font-family: var(--mono); font-size: 12.5px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+.ts-code .del { color: var(--bad); }
+.ts-code .add { color: var(--ok); }
+.ts-pic-none { display: grid; place-items: center; padding: 12px; text-align: center; font-size: 13px; color: var(--muted); }

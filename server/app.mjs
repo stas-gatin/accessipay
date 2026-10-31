@@ -18,6 +18,7 @@ import { mountReports } from './report/routes.mjs';
 import { createOwnerSites, KEY_HEADER, keyGoesTo } from './owners.mjs';
 import { checkAgentAccess } from './agent-access.mjs';
 import { createSiteAnalysis } from './site-analysis.mjs';
+import { createTestShop } from './test-shop.mjs';
 import { verifyFindings } from './verify.mjs';
 import { detectBotWall } from './engine/preflight.mjs';
 import { createMask } from './anonymize.mjs';
@@ -32,6 +33,7 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
   // Live runs on large retailers are shown under their label, like the recorded ones.
   const mask = privateView ? (r) => r : createMask(dataDir);
   const sites = createSiteAnalysis({ runs: { list: () => runs.list().map(mask), get: (id) => mask(runs.get(id)) }, dataDir });
+  const testShop = createTestShop({ runs: { get: (id) => mask(runs.get(id)) }, dataDir });
   const fixes = createFixes({ shop, runs, origin, fixers, dataDir });
   const app = express();
   app.disable('x-powered-by');
@@ -70,6 +72,12 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
   app.get('/api/sites/:key', (req, res) => {
     const s = sites.get(req.params.key);
     return s ? res.json(s) : res.status(404).json({ error: 'No runs on this site yet' });
+  });
+  // Our own test shop: planted problems, the AI fix, and the same customer paying through PayPal afterwards.
+  app.get('/api/test-shop', (req, res) => res.json(testShop.list()));
+  app.get('/api/test-shop/:key', (req, res) => {
+    const c = testShop.get(req.params.key);
+    return c ? res.json(c) : res.status(404).json({ error: 'No such case' });
   });
   // Test a site with all three customer types at once; the site report shows them together.
   app.post('/api/site-tests', (req, res) => {

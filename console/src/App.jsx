@@ -5,6 +5,7 @@ import { ThemeContext, initialTheme, applyTheme } from './theme.js';
 import NewTest from './NewTest.jsx';
 import OwnSite from './OwnSite.jsx';
 import Results, { SitePage } from './SiteReport.jsx';
+import { CasePage } from './TestShop.jsx';
 import RunView from './RunView.jsx';
 import Landing from './Landing.jsx';
 import Analytics from './Analytics.jsx';
@@ -56,7 +57,7 @@ export default function App() {
     ['#/customers', 'Customers', route === '/customers'],
     ['#/paypal', 'For PayPal', route === '/paypal'],
     // Results holds every real-shop analysis. A single run or report opens from Results or Analytics; its breadcrumb says which.
-    ['#/results', 'Results', route.startsWith('/sites') || route === '/results' || route === '/runs' || section === 'results'],
+    ['#/results', 'Results', route.startsWith('/sites') || route.startsWith('/cases') || route === '/results' || route === '/runs' || section === 'results'],
     ['#/analytics', 'Analytics', route === '/analytics' || section === 'analytics'],
     ['#/own-site', 'Your site', route === '/own-site'],
   ];
@@ -74,6 +75,7 @@ export default function App() {
   else if (route === '/test') page = <NewTest meta={meta} />;
   else if (route === '/own-site') page = <OwnSite meta={meta} />;
   else if (route === '/sites' || route === '/results') page = <Results />;
+  else if (/^\/cases\/[\w-]+$/.test(route)) page = <CasePage caseKey={route.slice(7)} />;
   else if (/^\/sites\/.+/.test(route)) page = <SitePage siteKey={decodeURIComponent(route.slice(7))} />;
   else if (route === '/analytics') page = <Analytics meta={meta} />;
   else page = <Landing meta={meta} />;

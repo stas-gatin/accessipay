@@ -3,6 +3,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { gridTheme, useTheme } from './theme.js';
 import { api, OUTCOME, shortDate } from './api.js';
 import CheckBadge, { CheckLine } from './CheckBadge.jsx';
+import { TestShopCases } from './TestShop.jsx';
 
 // One analysis per site: every customer type that tried to buy there, as one report.
 
@@ -17,7 +18,7 @@ const outcomeWord = (o) => (o === 'reached-payment' ? 'Reached payment' : o === 
 const tone = (o) => (o === 'reached-payment' || o === 'purchased' ? 'ok' : o === 'not-testable' || !o ? 'muted' : 'bad');
 const siteHref = (key) => `#/sites/${encodeURIComponent(key)}`;
 
-function Pill({ outcome }) {
+export function Pill({ outcome }) {
   return <span className={`pill ${tone(outcome)}`}>{outcomeWord(outcome)}</span>;
 }
 
@@ -98,7 +99,9 @@ export default function Results() {
   return (
     <div className="page results">
       <p className="eyebrow">Results</p>
-      <h1>Real shops, three customers each</h1>
+      <h1>What the customers met</h1>
+      <TestShopCases />
+      <h2 className="res-h2">Real shops, three customers each</h2>
       <p className="lead">Every shop is tested by a screen reader user, a keyboard-only user and an AI shopping agent, in one visit. Nobody pays on a real shop: a customer passes when it reaches the payment step. Large retailers are shown without their names.</p>
       {list && (
         <ul className="res-stats" aria-label="Summary">
@@ -131,7 +134,7 @@ export default function Results() {
 
 const STAGES = ['Browse', 'Cart', 'Checkout', 'Payment', 'Paid'];
 // How far one customer got: the five checkout stages, filled up to the furthest one it reached.
-function StageRail({ run, metrics }) {
+export function StageRail({ run, metrics }) {
   const o = run.outcome?.status;
   if (run.status === 'running' || ['not-testable', 'error'].includes(o)) return null;
   const at = o === 'reached-payment' ? 3 : o === 'purchased' ? 4 : Math.max(0, STAGES.indexOf(metrics?.furthestStage));
