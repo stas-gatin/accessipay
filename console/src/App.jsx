@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useAutoReveal } from './autoreveal.js';
 import { api } from './api.js';
 import { ThemeContext, initialTheme, applyTheme } from './theme.js';
 import NewTest from './NewTest.jsx';
@@ -43,6 +44,8 @@ export default function App() {
   useEffect(() => { setMenuOpen(false); }, [hash]);
 
   const route = hash.replace(/^#/, '') || '/';
+  const mainRef = useRef(null);
+  useAutoReveal(mainRef, route);
   const runMatch = route.match(/^\/runs\/([\w-]+)/);
   const nav = [
     ['#/', 'Overview', route === '/'],
@@ -91,7 +94,7 @@ export default function App() {
           <a className={`header-cta${route === '/test' ? ' active' : ''}`} href="#/test" aria-current={route === '/test' ? 'page' : undefined}>Run a test</a>
         </div>
       </header>
-      <main id="main" tabIndex={-1}>{page}</main>
+      <main id="main" tabIndex={-1} ref={mainRef}><div key={route} className="route-in">{page}</div></main>
     </ThemeContext.Provider>
   );
 }

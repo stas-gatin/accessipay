@@ -35,18 +35,53 @@ function useReducedMotion() {
   return r;
 }
 
-function OutcomeBanner({ run, steps, metrics }) {
+// What the customer found, short: the element, the problem, and a link to the step it happened on.
+function FoundList({ findings, onStep, max = 4 }) {
+  if (!findings?.length) return null;
+  const shown = findings.slice(0, max);
+  return (
+    <div className="rv-found">
+      <p className="rv-found-h">What the customer found ({findings.length})</p>
+      <ol>
+        {shown.map((f, i) => (
+          <li key={i}>
+            {f.step != null && <button type="button" className="rv-step-link" onClick={() => onStep(f.step)}>Step {f.step}<span className="sr-only">: show it in the replay</span></button>}
+            <span><b>{f.element?.name ? `${f.element.role || 'element'} “${f.element.name}”` : f.page}</b>: {f.problem}</span>
+          </li>
+        ))}
+      </ol>
+      {findings.length > max && <a className="rv-found-all" href="#found" onClick={(e) => { e.preventDefault(); document.getElementById('found')?.scrollIntoView({ behavior: 'smooth' }); }}>All {findings.length} findings</a>}
+    </div>
+  );
+}
+
+// Plain words for the run checks behind an outcome.
+function checkText(run) {
+  const o = run.outcome || {};
+  if (o.status === 'blocked' && o.claimedDone && run.site) return 'The customer said it had reached payment, but no payment form, card field or enabled Pay button was on screen, so the run does not count as reaching payment.';
+  if (o.status === 'blocked' && o.claimedDone) return 'The customer said it was done, but PayPal has no paid order, so the run does not count as a purchase.';
+  if (/^The agent gave up\.?$/.test(o.reason || '')) return null;
+  return o.reason;
+}
+
+function OutcomeBanner({ run, steps, metrics, onStep }) {
   const o = run.outcome?.status;
   if (!o || run.status === 'running') return null;
   const last = steps.filter((s) => !s.final).at(-1);
   const stage = STAGES[steps.at(-1)?.prevStage ?? last?.stage ?? 0];
   const n = metrics?.steps ?? steps.filter((s) => !s.final).length;
+  const final = [...(run.events || [])].reverse().find((e) => e.type === 'decide' && (e.action === 'give_up' || e.action === 'done'));
+  const why = final?.thought;
+  const scan = run.scan?.totalViolations;
   const effort = metrics && (
     <p className="rv-banner-effort">
       {n} steps · {run.persona === 'agent' ? `${metrics.steps} actions` : `${metrics.keys} keys pressed (${metrics.tabs} Tab)`} · {metrics.deadEnds} dead end{metrics.deadEnds === 1 ? '' : 's'} · {metrics.noEffect} move{metrics.noEffect === 1 ? '' : 's'} that changed nothing
       {metrics.klmSeconds != null && <> · about {metrics.klmSeconds} s for a person (keystroke-level model estimate)</>}
+      {scan != null && <> · scanner: {scan} violation{scan === 1 ? '' : 's'}</>}
     </p>
   );
+  const relabel = run.outcome?.reclassified && <p className="rv-banner-sub">Relabelled by hand after checking the screenshots: {run.outcome.reclassified.why}</p>;
+  const found = <FoundList findings={run.findings} onStep={onStep} />;
   if (o === 'purchased') {
     const p = run.payment;
     return (
@@ -54,6 +89,7 @@ function OutcomeBanner({ run, steps, metrics }) {
         <p className="rv-banner-title"><span aria-hidden="true">✓ </span>Paid in {n} steps.{p ? ` ${p.mode === 'mock' ? 'Mock payment' : 'PayPal confirmed the payment'}${p.amount != null ? ` of $${Number(p.amount).toFixed(2)}` : ''}.` : ''}</p>
         {p && p.mode !== 'mock' && <p className="rv-banner-sub">Verified with PayPal Orders v2: the test counts only because PayPal confirms the order.</p>}
         {effort}
+        {found}
       </section>
     );
   }
@@ -62,16 +98,29 @@ function OutcomeBanner({ run, steps, metrics }) {
       <section className="rv-banner ok" role="status" aria-label="Outcome">
         <p className="rv-banner-title"><span aria-hidden="true">✓ </span>Reached the payment step of {run.site?.host || 'the shop'} in {n} steps.</p>
         <p className="rv-banner-sub">Stopped there on purpose: AccessiPay never pays, signs in or types card data on a real site.</p>
+        {relabel}
         {effort}
+        {found}
       </section>
     );
   }
-  const scan = run.scan?.totalViolations;
+  if (o === 'not-testable') {
+    return (
+      <section className="rv-banner muted" role="status" aria-label="Outcome">
+        <p className="rv-banner-title">Not counted: {run.outcome?.reason}</p>
+        <p className="rv-banner-sub">A run that a bot check, a broken demo or our own tooling stopped says nothing about accessibility, so it is left out of the results.</p>
+        {relabel}
+        {found}
+      </section>
+    );
+  }
   return (
     <section className={`rv-banner ${o === 'wrong-item' ? 'warn' : 'bad'}`} role="status" aria-label="Outcome">
-      <p className="rv-banner-title"><span aria-hidden="true">✕ </span>{o === 'wrong-item' ? 'Paid for the wrong thing' : o === 'stopped' ? 'Stopped' : `Blocked at ${stage}`}: {run.outcome?.reason}{scan != null ? ` Scanner: ${scan} violation${scan === 1 ? '' : 's'}.` : ''}</p>
-      {run.findings?.[0] && <p className="rv-banner-sub">In the customer's words: “{run.findings[0].problem}”</p>}
+      <p className="rv-banner-title"><span aria-hidden="true">✕ </span>{o === 'wrong-item' ? 'Paid for the wrong thing' : o === 'stopped' ? 'Stopped' : `Stopped at ${stage}`}{why ? <>: “{why}”</> : ''}</p>
+      {checkText(run) && <p className="rv-banner-sub">Check: {checkText(run)}</p>}
+      {relabel}
       {effort}
+      {found}
       {!run.site && o === 'blocked' && <p className="rv-banner-actions"><a className="btn small primary" href="#fix" onClick={(e) => { e.preventDefault(); const f = document.getElementById('fix'); f?.scrollIntoView(); f?.focus({ preventScroll: true }); }}>{run.outcome?.status === 'blocked' ? 'Fix it' : 'See the fix'}</a></p>}
     </section>
   );
@@ -132,6 +181,14 @@ export default function RunView({ id, meta }) {
     const j = Math.max(0, Math.min(steps.length - 1, i));
     setSel(running && j === steps.length - 1 ? null : steps[j].n);
   }, [steps, running]);
+
+  // Jump the replay to a step a finding points at.
+  const goStep = useCallback((n) => {
+    if (!steps.some((s) => s.n === n)) return;
+    setPlaying(false);
+    setSel(n);
+    window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+  }, [steps, reduced]);
 
   // Playback: one step every 1.8 s at 1x.
   useEffect(() => {
@@ -287,7 +344,7 @@ export default function RunView({ id, meta }) {
 
       <div aria-live="polite" aria-atomic="true" className="sr-only">{said}</div>
 
-      <OutcomeBanner run={run} steps={steps} metrics={metrics} />
+      <OutcomeBanner run={run} steps={steps} metrics={metrics} onStep={goStep} />
 
       {run.goalId === 'agentic' && (
         <p className="callout note" style={{ margin: '16px 0' }}>Agentic buyer task: {run.goal.split('"')[1]} {run.goalCheck && <strong>{run.goalCheck.met ? 'It bought the right item.' : `It bought ${run.goalCheck.bought.join(', ')} with ${run.goalCheck.delivery} delivery, which is not what was asked.`}</strong>}</p>
@@ -311,7 +368,12 @@ export default function RunView({ id, meta }) {
         <section className="card" aria-labelledby="found">
           <h2 className="section-title" id="found">What the customer reported</h2>
           {run.findings?.length ? (
-            <ul className="findings">{run.findings.map((f, i) => <li key={i}><strong>{f.page}:</strong> {f.problem}</li>)}</ul>
+            <ol className="findings">{run.findings.map((f, i) => (
+              <li key={i}>
+                {f.step != null && <button type="button" className="rv-step-link" onClick={() => goStep(f.step)}>Step {f.step}<span className="sr-only">: show it in the replay</span></button>}
+                <strong>{f.page}{f.element?.name ? `, ${f.element.role || 'element'} “${f.element.name}”` : ''}:</strong> {f.problem}
+              </li>
+            ))}</ol>
           ) : <p className="note">{running ? 'Reported at the end of the run.' : 'Nothing reported.'}</p>}
           {run.usage && <p className="note">Claude API: {run.usage.requests} requests, {Math.round((run.usage.input + run.usage.cacheRead + run.usage.cacheWrite) / 1000)}k input tokens, about ${run.usage.costUsd?.toFixed(3)}.</p>}
         </section>

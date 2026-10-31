@@ -262,3 +262,53 @@ table.data thead th { font-size: 12px; text-transform: uppercase; letter-spacing
 table.data tbody tr:hover { background: var(--surface-2); }
 details { border-top: 1px solid var(--line); padding: 10px 0; }
 details summary { cursor: pointer; }
+
+/* ---------- Motion across the console (all off with reduced motion) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  /* Every page enters softly on navigation. */
+  .route-in { animation: route-in 360ms cubic-bezier(.2, .8, .2, 1) both; }
+  @keyframes route-in { from { opacity: 0; transform: translateY(10px); } }
+
+  /* Blocks below the fold rise in as they scroll into view (see autoreveal.js). */
+  .arv { opacity: 0; transform: translateY(16px); transition: opacity 520ms cubic-bezier(.2, .8, .2, 1) var(--arv-d, 0ms), transform 520ms cubic-bezier(.2, .8, .2, 1) var(--arv-d, 0ms); }
+  .arv.arv-in { opacity: 1; transform: none; }
+
+  /* Buttons lift on hover and press in on click. */
+  .btn, .header-cta, .theme-toggle, .copy-btn, .menu-btn, .an-chip, .pill-btn, button.choice {
+    transition: transform 160ms cubic-bezier(.2, .8, .2, 1), box-shadow 160ms, background-color 160ms, border-color 160ms, color 160ms;
+  }
+  .btn:hover:not(:disabled), .header-cta:hover, .theme-toggle:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(11, 27, 51, .14); }
+  .btn:active:not(:disabled), .header-cta:active, .theme-toggle:active, .copy-btn:active { transform: translateY(0) scale(.97); box-shadow: none; }
+
+  /* Choices lift a little, and pop when picked. */
+  .choice:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(11, 27, 51, .10); }
+  .choice[aria-pressed='true'], .choice[aria-checked='true'] { animation: choice-pop 260ms cubic-bezier(.2, .8, .2, 1); }
+  @keyframes choice-pop { 40% { transform: scale(1.015); } }
+  .choice::after { transition: background 200ms, border-color 200ms; }
+
+  /* Menu: the active tab slides its underline in. */
+  .app-header nav a { transition: color 160ms, background-color 160ms, box-shadow 220ms cubic-bezier(.2, .8, .2, 1); }
+  .app-header nav a:hover:not(.active) { box-shadow: inset 0 -2px 0 var(--line-2); }
+
+  /* Fields glow softly when they take focus. */
+  input, select, textarea { transition: border-color 160ms, box-shadow 200ms; }
+  input:focus-visible, select:focus-visible, textarea:focus-visible { box-shadow: 0 0 0 4px var(--accent-soft); border-color: var(--accent); }
+
+  /* Cards answer the pointer. */
+  .card { transition: border-color 220ms, box-shadow 220ms; }
+  .card:hover { border-color: var(--accent-line); box-shadow: 0 10px 26px rgba(11, 27, 51, .08); }
+  :root[data-theme='dark'] .card:hover { box-shadow: 0 12px 30px rgba(0, 0, 0, .45); }
+
+  /* Table rows light up under the pointer. */
+  table tbody tr { transition: background-color 140ms; }
+  .ag-row { transition: background-color 140ms; }
+
+  /* Details open with a short slide. */
+  details[open] > *:not(summary) { animation: route-in 260ms cubic-bezier(.2, .8, .2, 1) both; }
+  details summary { transition: color 160ms; }
+  details summary:hover { color: var(--accent); }
+
+  /* Live things breathe. */
+  .pill.live, .chip.live, [class*="live"] > .dot { animation: live-pulse 1.6s ease-in-out infinite; }
+  @keyframes live-pulse { 50% { opacity: .55; } }
+}
