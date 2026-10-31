@@ -16,5 +16,7 @@ const browser = await chromium.launch({ args: ['--disable-dev-shm-usage'] });
 const brains = { anthropic: (opts) => anthropicBrain({ model: opts.model }) };
 const { app, paypal } = createApp({ browser, dataDir: path.join(root, 'data'), origin, brains, fixers: { anthropic: () => anthropicFixer() } });
 
-app.listen(port, '0.0.0.0', () => console.log(`AccessiPay on port ${port} (PayPal: ${paypal.mode}, Claude API: ${process.env.ANTHROPIC_API_KEY ? 'on' : 'off'})`));
+// The private view shows real shop names and screenshots: it only listens on this computer.
+const host = process.env.ACCESSIPAY_PRIVATE_VIEW === '1' ? '127.0.0.1' : '0.0.0.0';
+app.listen(port, host, () => console.log(`AccessiPay on port ${port} (PayPal: ${paypal.mode}, Claude API: ${process.env.ANTHROPIC_API_KEY ? 'on' : 'off'})`));
 for (const sig of ['SIGINT', 'SIGTERM']) process.on(sig, async () => { await browser.close(); process.exit(0); });

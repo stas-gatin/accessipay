@@ -535,3 +535,4 @@ a.rv-step-link { text-decoration: none; }
   .sr-examples li { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .sr-examples .rv-step-link { justify-self: start; }
 }
+.private-view { margin: 0; padding: 8px 32px; background: #ffc861; color: #2a1d00; font-size: 14px; font-weight: 600; text-align: center; }

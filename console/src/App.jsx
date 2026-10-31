@@ -99,6 +99,7 @@ export default function App() {
           <a className={`header-cta${route === '/test' ? ' active' : ''}`} href="#/test" aria-current={route === '/test' ? 'page' : undefined}>Run a test</a>
         </div>
       </header>
+      {meta?.privateView && <p className="private-view" role="note">Private view on this computer: real shop names, page text and screenshots. The public site shows them as Retailer A, B and so on.</p>}
       <main id="main" tabIndex={-1} ref={mainRef}><div key={route} className="route-in">{page}</div></main>
       <div className="lp"><SiteFooter /></div>
     </ThemeContext.Provider>

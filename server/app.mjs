@@ -26,9 +26,11 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
   const paypal = createPayPal(env);
   const shop = createShop({ paypal, dataDir });
   const owners = createOwnerSites({ dataDir });
-  const runs = createRuns({ browser, shop, paypal, dataDir, origin, brains, owners });
+  // Private view (ACCESSIPAY_PRIVATE_VIEW=1, this computer only): real shop names, page text and screenshots.
+  const privateView = env.ACCESSIPAY_PRIVATE_VIEW === '1';
+  const runs = createRuns({ browser, shop, paypal, dataDir, origin, brains, owners, privateView });
   // Live runs on large retailers are shown under their label, like the recorded ones.
-  const mask = createMask(dataDir);
+  const mask = privateView ? (r) => r : createMask(dataDir);
   const sites = createSiteAnalysis({ runs: { list: () => runs.list().map(mask), get: (id) => mask(runs.get(id)) }, dataDir });
   const fixes = createFixes({ shop, runs, origin, fixers, dataDir });
   const app = express();
@@ -41,7 +43,7 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
 
   const claudeReady = () => !!(env.ANTHROPIC_API_KEY || env.ANTHROPIC_AUTH_TOKEN);
   app.get('/api/health', (req, res) => res.json({ ok: true, paypal: paypal.mode, claude: claudeReady(), brains: ['external', 'scripted', ...Object.keys(brains)] }));
-  app.get('/api/meta', (req, res) => res.json({ defects: DEFECTS, personas: PERSONAS, goal: DEFAULT_GOAL, goals: Object.fromEntries(Object.entries(GOALS).map(([k, g]) => [k, { label: g.label, text: g.text || DEFAULT_GOAL }])), paypal: paypal.mode, claude: claudeReady(), brains: ['external', 'scripted', ...Object.keys(brains)] }));
+  app.get('/api/meta', (req, res) => res.json({ privateView, defects: DEFECTS, personas: PERSONAS, goal: DEFAULT_GOAL, goals: Object.fromEntries(Object.entries(GOALS).map(([k, g]) => [k, { label: g.label, text: g.text || DEFAULT_GOAL }])), paypal: paypal.mode, claude: claudeReady(), brains: ['external', 'scripted', ...Object.keys(brains)] }));
 
   app.post('/api/instances', (req, res) => {
     try {

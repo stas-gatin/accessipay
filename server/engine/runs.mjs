@@ -36,6 +36,14 @@ export async function reachedPayment(page) {
       const labelOf = (el) => `${el.getAttribute('aria-label') || ''} ${el.labels?.[0]?.innerText || ''} ${el.closest('label')?.innerText || ''} ${el.innerText || ''}`;
       const methods = [...document.querySelectorAll('input[type="radio"], [role="radio"]')]
         .filter((el) => METHOD.test(labelOf(el)) && [el, el.labels?.[0], el.closest('label')].some((x) => x && shown(x)));
+      // Some checkouts (Global-e among them) offer the methods as a row of buttons: Card, PayPal, Klarna, Google Pay.
+      // Only under a visible "Payment" heading, so express-checkout buttons at the top of a checkout do not count.
+      const name = (el) => (el.getAttribute('aria-label') || el.innerText || '').trim().toLowerCase();
+      const payHeading = [...document.querySelectorAll('h1, h2, h3, h4, [role="heading"]')]
+        .some((h) => shown(h) && /^\s*(payment|payment method|pago|método de pago|paiement|zahlung|zahlungsart|pagamento|betaling)\s*$/i.test(h.innerText || ''));
+      const methodButtons = payHeading ? [...document.querySelectorAll('button, [role="button"], [role="tab"]')]
+        .filter((el) => shown(el) && /^(card|credit card|debit card|tarjeta|paypal|klarna\w*|google pay|apple ?pay|afterpay|affirm|clearpay)$/i.test(name(el))) : [];
+      if (new Set(methodButtons.map(name)).size >= 2) methods.push(...methodButtons);
       return { cc, frames, finalButton, methodChoice: methods.length >= 2, url: location.href };
     }, FINAL_ACTION.source);
     const atCheckout = /checkout|payment|pay\b/i.test(h.url);
@@ -51,7 +59,7 @@ function checkExternalUrl(raw) {
   return u;
 }
 
-export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}, owners = null }) {
+export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}, owners = null, privateView = false }) {
   const runs = new Map();
   const listeners = new Map();
   const runsDir = path.join(dataDir, 'runs');
@@ -179,8 +187,9 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
   const recordedDir = path.join(dataDir, 'recorded');
   function get(id) {
     if (runs.has(id)) return runs.get(id);
-    // The recorded copy is the published one (anonymized for real retailers), so it wins.
-    for (const dir of [recordedDir, runsDir]) {
+    // The recorded copy is the published one (anonymized for real retailers), so it wins,
+    // except in the founder's private view, which shows the originals with names and screenshots.
+    for (const dir of privateView ? [runsDir, recordedDir] : [recordedDir, runsDir]) {
       const file = path.join(dir, `${id}.json`);
       if (fs.existsSync(file)) return { ...JSON.parse(fs.readFileSync(file, 'utf8')), recorded: dir === recordedDir };
     }
