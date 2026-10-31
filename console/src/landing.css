@@ -854,3 +854,130 @@ main:focus { outline: none; }
 .sweep-pl { display: none; font-style: normal; font-size: 12px; font-weight: 700; color: var(--mut); text-transform: uppercase; letter-spacing: .03em; }
 @media (max-width: 1000px) { .sweep-pl { display: block; margin-bottom: 2px; } }
 .sweep-own { margin: -16px 0 36px !important; font-size: 15.5px; color: var(--ink-2); }
+
+/* ---------- Business chain: links appear in order, then a purchase travels the chain ---------- */
+.chain-wire { height: 3px; border-radius: 2px; }
+.chain-n { display: inline-grid; place-items: center; min-width: 24px; height: 24px; border-radius: 12px; top: 12px; right: 10px; }
+@media (prefers-reduced-motion: no-preference) {
+  .chain:not(.seen) .chain-node { opacity: 0; }
+  .chain.seen .chain-node { animation: chain-in 640ms cubic-bezier(.2, .8, .2, 1) backwards; animation-delay: calc(var(--i) * 120ms); }
+  @keyframes chain-in { from { opacity: 0; transform: translateY(22px) scale(.97); } }
+  .chain-wire { transform: scaleX(0); transform-origin: left center; }
+  .chain.seen .chain-wire { transform: scaleX(1); transition: transform 520ms cubic-bezier(.2, .8, .2, 1) calc(var(--i) * 120ms + 380ms); }
+  .chain-wire::after { content: ''; position: absolute; inset: 0; background: #18c48f; transform: scaleX(0); transform-origin: left center; transition: transform 700ms cubic-bezier(.65, 0, .35, 1); }
+  .chain-node.past .chain-wire::after { transform: scaleX(1); }
+  .chain-node { transition: transform 420ms cubic-bezier(.2, .8, .2, 1), box-shadow 420ms, border-color 420ms, background-color 420ms; }
+  .chain-node.past { border-color: rgba(24, 196, 143, .75); }
+  .chain-node.lit { transform: translateY(-8px); background: rgba(24, 196, 143, .12); border-color: #18c48f; box-shadow: 0 0 0 1px #18c48f, 0 20px 44px rgba(24, 196, 143, .28); }
+  .chain-n { transition: background-color 300ms, color 300ms; }
+  .chain-node.lit .chain-n, .chain-node.past .chain-n { background: #18c48f; color: #0b1b33; }
+  .chain-node.lit h3 { color: #ffffff; }
+  .chain-node:hover { transform: translateY(-6px); border-color: rgba(255, 255, 255, .4); }
+}
+@media (max-width: 720px) and (prefers-reduced-motion: no-preference) {
+  .chain-wire { transform: scaleY(0); transform-origin: center top; }
+  .chain.seen .chain-wire { transform: scaleY(1); }
+  .chain-wire::after { transform: scaleY(0); transform-origin: center top; }
+  .chain-node.past .chain-wire::after { transform: scaleY(1); }
+}
+
+/* ---------- Agentic buyer chat: the request, the agent typing, its answer, then the receipt line by line ---------- */
+.bubble.typing { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .bubble.typing { display: inline-flex; gap: 5px; align-items: center; justify-self: start; align-self: start; background: rgba(24, 196, 143, .18); padding: 14px 16px; opacity: 0; }
+  /* The dots sit in the same cell as the answer that replaces them. */
+  .chat > .bubble.user { grid-row: 1; }
+  .chat > .bubble.typing, .chat > .bubble.agent { grid-row: 2; grid-column: 1; }
+  .chat > .receipt-dark { grid-row: 3; }
+  .chat > .lp-link { grid-row: 4; }
+  .bubble.typing i { width: 7px; height: 7px; border-radius: 50%; background: #18c48f; animation: typing 900ms ease-in-out infinite; }
+  .bubble.typing i:nth-child(2) { animation-delay: 150ms; }
+  .bubble.typing i:nth-child(3) { animation-delay: 300ms; }
+  @keyframes typing { 50% { transform: translateY(-4px); opacity: .5; } }
+  .chat.rv { opacity: 1; transform: none; }
+  .chat .bubble.user, .chat .bubble.agent, .chat .receipt-dark > div, .chat .lp-link { opacity: 0; }
+  .chat.in .bubble.user { animation: bubble-in 420ms cubic-bezier(.2, .8, .2, 1) 150ms both; }
+  .chat.in .bubble.typing { animation: typing-show 1100ms ease 650ms both; }
+  @keyframes typing-show { 0% { opacity: 0; } 15%, 85% { opacity: 1; } 100% { opacity: 0; } }
+  .chat.in .bubble.agent { animation: bubble-in 420ms cubic-bezier(.2, .8, .2, 1) 1650ms both; }
+  .chat.in .receipt-dark > div { animation: bubble-in 360ms cubic-bezier(.2, .8, .2, 1) both; }
+  .chat.in .receipt-dark > div:nth-child(1) { animation-delay: 2150ms; }
+  .chat.in .receipt-dark > div:nth-child(2) { animation-delay: 2300ms; }
+  .chat.in .receipt-dark > div:nth-child(3) { animation-delay: 2450ms; }
+  .chat.in .receipt-dark > div:nth-child(4) { animation-delay: 2600ms; }
+  .chat.in .receipt-dark .status-fill { animation: stamp 520ms cubic-bezier(.2, .8, .2, 1) 2600ms both; }
+  .chat.in .lp-link { animation: bubble-in 360ms ease 2900ms both; }
+  @keyframes bubble-in { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+  @keyframes stamp { 0% { transform: scale(1.8) rotate(-8deg); opacity: 0; } 60% { transform: scale(.94) rotate(0); opacity: 1; } 100% { transform: none; opacity: 1; } }
+
+  /* PayPal confirms: the three links light up in turn, then COMPLETED is stamped. */
+  .ppc-flow.in .ppc-node { animation: ppc-glow 900ms ease both; }
+  .ppc-flow.in .ppc-node:nth-child(1) { animation-delay: 300ms; }
+  .ppc-flow.in .ppc-node:nth-child(2) { animation-delay: 900ms; }
+  .ppc-flow.in .ppc-node:nth-child(3) { animation-delay: 1500ms; }
+  @keyframes ppc-glow { 40% { border-color: #18c48f; box-shadow: 0 0 0 1px #18c48f, 0 16px 36px rgba(24, 196, 143, .22); } }
+  .ppc-flow.in .ppc-k { animation: k-pop 500ms cubic-bezier(.2, .8, .2, 1) both; }
+  .ppc-flow.in .ppc-node:nth-child(1) .ppc-k { animation-delay: 300ms; }
+  .ppc-flow.in .ppc-node:nth-child(2) .ppc-k { animation-delay: 900ms; }
+  .ppc-flow.in .ppc-node:nth-child(3) .ppc-k { animation-delay: 1500ms; }
+  @keyframes k-pop { 50% { transform: scale(1.25); } }
+  .ppc-flow.in .ppc-receipt .status-fill { animation: stamp 560ms cubic-bezier(.2, .8, .2, 1) 1900ms both; }
+
+  /* Calculator: a result flips in each time an input changes. */
+  .calc-out-v { animation: num-tick 380ms cubic-bezier(.2, .8, .2, 1); }
+  @keyframes num-tick { from { opacity: .2; transform: translateY(6px); } }
+
+  /* Final call to action: the main button breathes. */
+  .final .btn-lp.primary { animation: cta-breathe 2.8s ease-in-out infinite; }
+  @keyframes cta-breathe { 50% { box-shadow: 0 0 0 10px rgba(24, 196, 143, .14); } }
+  .final-mark { animation: float 5s ease-in-out infinite; }
+  @keyframes float { 50% { transform: translateY(-6px); } }
+
+  /* Every button on the brand pages lifts and presses. */
+  .btn-lp, .ghost-btn, .rp-btn { transition: transform 160ms cubic-bezier(.2, .8, .2, 1), box-shadow 160ms, background-color 160ms, border-color 160ms; }
+  .btn-lp:hover, .ghost-btn:hover, .rp-btn:hover { transform: translateY(-2px); }
+  .btn-lp:active, .ghost-btn:active, .rp-btn:active { transform: scale(.97); }
+  .lp-link .arr { transition: transform 200ms cubic-bezier(.2, .8, .2, 1); }
+}
+
+/* ---------- Brand pages (Method, Customers, For PayPal, Honesty): heads, pictures, cards ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .phero-grid > div > * { animation: rise-lp 640ms cubic-bezier(.2, .8, .2, 1) backwards; }
+  .phero-grid > div > :nth-child(2) { animation-delay: 90ms; }
+  .phero-grid > div > :nth-child(3) { animation-delay: 180ms; }
+  .phero-grid > div > :nth-child(4) { animation-delay: 270ms; }
+  @keyframes rise-lp { from { opacity: 0; transform: translateY(18px); } }
+  .phero-img { animation: hero-img 1100ms cubic-bezier(.2, .8, .2, 1) 120ms backwards; }
+  @keyframes hero-img { from { opacity: 0; transform: translateY(16px) scale(.97); } }
+  .phero-img img { animation: ken 18s ease-in-out infinite alternate; }
+  @keyframes ken { to { transform: scale(1.06) translate(-1%, -1%); } }
+
+  /* Pictures in the customer sections settle in as they appear. */
+  .cust-img.rv .bimg img { transform: scale(1.08); transition: opacity var(--d3), transform 1200ms cubic-bezier(.2, .8, .2, 1); }
+  .cust-img.rv.in .bimg img { transform: none; }
+  .cust-img .bimg { transition: transform 400ms cubic-bezier(.2, .8, .2, 1), box-shadow 400ms; }
+  .cust-img:hover .bimg { transform: translateY(-4px) rotate(-.4deg); box-shadow: 0 24px 50px rgba(11, 27, 51, .22); }
+
+  /* Method stages: the stage label slides in, the active index item glows. */
+  .stage { transition: transform 260ms cubic-bezier(.2, .8, .2, 1), box-shadow 260ms, border-color 260ms; }
+  .stage:hover { transform: translateY(-4px); border-color: var(--card-hover-line); box-shadow: var(--card-hover-sh); }
+  .stage.rv.in .stage-n { animation: rise-lp 520ms cubic-bezier(.2, .8, .2, 1) 120ms backwards; }
+  .m-index a { transition: color 160ms, transform 160ms; display: inline-block; }
+  .m-index a:hover { transform: translateX(3px); }
+
+  /* For PayPal points and honesty cards lift. */
+  .pp-points article { transition: transform 240ms cubic-bezier(.2, .8, .2, 1), box-shadow 240ms, border-color 240ms; }
+  .pp-points article:hover { transform: translateY(-5px); box-shadow: var(--card-hover-sh); }
+  .pp-n { display: inline-block; transition: transform 240ms; }
+  .pp-points article:hover .pp-n { transform: scale(1.15); }
+  .limits-list > li { transition: transform 220ms cubic-bezier(.2, .8, .2, 1); }
+  .limits-list > li:hover { transform: translateX(4px); }
+
+  /* Proof numbers and method strip numbers get a soft glow under the pointer. */
+  .mstrip > li { transition: transform 220ms cubic-bezier(.2, .8, .2, 1); }
+  .mstrip > li:hover { transform: translateY(-4px); }
+  .mstrip > li:hover .ms-n { background: #18c48f; color: #0b1b33; }
+  .ms-n { transition: background-color 200ms, color 200ms; }
+  .proof-grid > li { transition: transform 220ms cubic-bezier(.2, .8, .2, 1); }
+  .proof-grid > li:hover { transform: translateY(-4px); }
+}

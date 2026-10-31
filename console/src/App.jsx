@@ -55,6 +55,7 @@ export default function App() {
     ['#/paypal', 'For PayPal', route === '/paypal'],
     ['#/analytics', 'Analytics', route === '/analytics'],
     ['#/sites', 'Sites', route.startsWith('/sites')],
+    ['#/own-site', 'Your site', route === '/own-site'],
     ['#/runs', 'Runs', route.startsWith('/runs')],
     ['#/defects', 'Defects', route === '/defects'],
     ['#/honesty', 'Honesty', route === '/honesty'],

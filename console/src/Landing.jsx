@@ -35,6 +35,7 @@ export default function Landing({ meta }) {
             </p>
             <div className="cta-row">
               <a className="btn-lp primary" href="#/test">Run a test</a>
+              <a className="btn-lp ghost-light" href="#/own-site">Connect your site</a>
               <a className="btn-lp ghost-light" href={`#/runs/${RUNS.agentBlocked}`}>Open the recorded run</a>
             </div>
             <p className="hero-fine">The customers are simulated. Payments run in the PayPal sandbox.</p>
@@ -121,6 +122,7 @@ export default function Landing({ meta }) {
           </Reveal>
           <Reveal className="chat" role="group" aria-label="A recorded agentic buyer run">
             <div className="bubble user">Get me something that keeps me dry on hikes, under $100, and I need it fast.</div>
+            <div className="bubble typing" aria-hidden="true"><i /><i /><i /></div>
             <div className="bubble agent">Rain Jacket, $79.00, with express delivery. The backpack and the bottle do not keep you dry.</div>
             <div className="receipt-dark">
               <div><span>Total</span><b className="mono">$94.00</b></div>
@@ -232,6 +234,7 @@ export default function Landing({ meta }) {
           <h2 id="final-t">See your checkout through your customers.</h2>
           <div className="cta-row center">
             <a className="btn-lp primary" href="#/test">Run a test</a>
+            <a className="btn-lp ghost-light" href="#/own-site">Connect your site</a>
             <a className="btn-lp ghost-light" href="#/analytics">See the analytics</a>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { api } from './api.js';
 
 const KEEP = 'accessipay-own-site';
 const PERSONAS = [
+  ['all', 'All three customers, one site analysis'],
   ['screenreader', 'Screen reader customer'],
   ['keyboard', 'Keyboard-only customer'],
   ['agent', 'AI shopping agent'],
@@ -41,7 +42,7 @@ export default function OwnSite({ meta }) {
   const [showKey, setShowKey] = useState(false);
   const [busy, setBusy] = useState('');
   const [error, setError] = useState('');
-  const [persona, setPersona] = useState('screenreader');
+  const [persona, setPersona] = useState('all');
 
   useEffect(() => {
     let id = null;
@@ -62,7 +63,13 @@ export default function OwnSite({ meta }) {
   const verify = () => run('verify', async () => { const r = await api(`/api/owner-sites/${site.id}/verify`, {}); setVerifyResult(r); setSite(r.site); });
   const checkAccess = () => run('check', async () => setCheck(await api(`/api/owner-sites/${site.id}/check`, {})));
   const startRun = () => run('run', async () => {
-    const r = await api('/api/runs', { persona, brain: meta.claude ? 'anthropic' : 'external', url: site.url, ownerSiteId: site.id });
+    const brain = meta.claude ? 'anthropic' : 'external';
+    if (persona === 'all') {
+      const t = await api('/api/site-tests', { url: site.url, brain, ownerSiteId: site.id });
+      location.hash = `#/sites/${encodeURIComponent(t.key)}`;
+      return;
+    }
+    const r = await api('/api/runs', { persona, brain, url: site.url, ownerSiteId: site.id });
     location.hash = `#/runs/${r.id}`;
   });
 
@@ -160,7 +167,7 @@ export default function OwnSite({ meta }) {
 
         {site?.verified && (
           <section className="card" aria-labelledby="o4">
-            <h2 className="section-title" id="o4"><span className="step-no">4</span>Send a customer</h2>
+            <h2 className="section-title" id="o4"><span className="step-no">4</span>Send the customers</h2>
             <div style={{ display: 'grid', gap: 8, marginBottom: 12 }}>
               {PERSONAS.map(([id, l]) => (
                 <button key={id} type="button" className="choice" aria-pressed={persona === id} onClick={() => setPersona(id)}><strong>{l}</strong></button>

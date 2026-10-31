@@ -1,4 +1,4 @@
-import React, { useId, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { RUNS, ORDERS } from './facts.js';
 import { useInView, usePageVisible, useReducedMotion } from './motion.jsx';
 
@@ -37,11 +37,19 @@ export function Chain() {
   const reduced = useReducedMotion();
   const [paused, setPaused] = useState(false);
   const running = !paused && inView && visible && !reduced;
+  const seen = useInView(ref, { threshold: 0.2 });
+  // A purchase travels the chain: each link lights up in turn, from the merchant's test to PayPal revenue.
+  const [lit, setLit] = useState(-1);
+  useEffect(() => {
+    if (!running) return undefined;
+    const t = setTimeout(() => setLit((n) => (n >= NODES.length + 1 ? -1 : n + 1)), lit < 0 ? 900 : lit >= NODES.length - 1 ? 1600 : 1100);
+    return () => clearTimeout(t);
+  }, [running, lit]);
   return (
-    <div className={`chain ${running ? 'running' : ''}`} ref={ref}>
+    <div className={`chain ${running ? 'running' : ''} ${seen || reduced ? 'seen' : ''}`} ref={ref}>
       <ol className="chain-list">
         {NODES.map((n, i) => (
-          <li key={n.title} className={`chain-node k-${n.k}`}>
+          <li key={n.title} className={`chain-node k-${n.k}${i <= lit && lit < NODES.length ? ' past' : ''}${i === lit ? ' lit' : ''}`} style={{ '--i': i }}>
             <span className="chain-n" aria-hidden="true">{i + 1}</span>
             <Kind k={n.k} />
             <h3>{n.title}</h3>
@@ -161,7 +169,7 @@ export function Calculator() {
           {results.map((r) => (
             <li key={r.label} className={r.strong ? 'strong' : ''}>
               <div className="calc-out-top"><Kind k="calc" /><span className="calc-out-label">{r.label}</span></div>
-              <p className="calc-out-v tnum">{r.value}{r.unit && r.value !== '—' ? <small> {r.unit}</small> : null}</p>
+              <p className="calc-out-v tnum" key={r.value}>{r.value}{r.unit && r.value !== '—' ? <small> {r.unit}</small> : null}</p>
               <p className="calc-formula">{r.formula}</p>
             </li>
           ))}
