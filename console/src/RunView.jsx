@@ -1,3 +1,4 @@
+import CheckBadge, { CheckLine } from './CheckBadge.jsx';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { api, OUTCOME, shortDate } from './api.js';
 import { buildSteps, altFor, STAGES } from './run/model.js';
@@ -36,7 +37,7 @@ function useReducedMotion() {
 }
 
 // What the customer found, short: the element, the problem, and a link to the step it happened on.
-function FoundList({ findings, onStep, max = 4 }) {
+function FoundList({ findings, checks = [], onStep, max = 4 }) {
   if (!findings?.length) return null;
   const shown = findings.slice(0, max);
   return (
@@ -46,7 +47,7 @@ function FoundList({ findings, onStep, max = 4 }) {
         {shown.map((f, i) => (
           <li key={i}>
             {f.step != null && <button type="button" className="rv-step-link" onClick={() => onStep(f.step)}>Step {f.step}<span className="sr-only">: show it in the replay</span></button>}
-            <span><b>{f.element?.name ? `${f.element.role || 'element'} “${f.element.name}”` : f.page}</b>: {f.problem}</span>
+            <span><b>{f.element?.name ? `${f.element.role || 'element'} “${f.element.name}”` : f.page}</b>: {f.problem} <CheckBadge check={checks[i]} /><CheckLine check={checks[i]} /></span>
           </li>
         ))}
       </ol>
@@ -81,7 +82,7 @@ function OutcomeBanner({ run, steps, metrics, onStep }) {
     </p>
   );
   const relabel = run.outcome?.reclassified && <p className="rv-banner-sub">Relabelled by hand after checking the screenshots: {run.outcome.reclassified.why}</p>;
-  const found = <FoundList findings={run.findings} onStep={onStep} />;
+  const found = <FoundList findings={run.findings} checks={run.checks} onStep={onStep} />;
   if (o === 'purchased') {
     const p = run.payment;
     return (
@@ -371,7 +372,7 @@ export default function RunView({ id, meta }) {
             <ol className="findings">{run.findings.map((f, i) => (
               <li key={i}>
                 {f.step != null && <button type="button" className="rv-step-link" onClick={() => goStep(f.step)}>Step {f.step}<span className="sr-only">: show it in the replay</span></button>}
-                <strong>{f.page}{f.element?.name ? `, ${f.element.role || 'element'} “${f.element.name}”` : ''}:</strong> {f.problem}
+                <span><strong>{f.page}{f.element?.name ? `, ${f.element.role || 'element'} “${f.element.name}”` : ''}:</strong> {f.problem} <CheckBadge check={run.checks?.[i]} /><CheckLine check={run.checks?.[i]} /></span>
               </li>
             ))}</ol>
           ) : <p className="note">{running ? 'Reported at the end of the run.' : 'Nothing reported.'}</p>}

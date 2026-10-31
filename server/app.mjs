@@ -18,6 +18,7 @@ import { mountReports } from './report/routes.mjs';
 import { createOwnerSites, KEY_HEADER, keyGoesTo } from './owners.mjs';
 import { checkAgentAccess } from './agent-access.mjs';
 import { createSiteAnalysis } from './site-analysis.mjs';
+import { verifyFindings } from './verify.mjs';
 import { detectBotWall } from './engine/preflight.mjs';
 
 export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, env = process.env, extend }) {
@@ -123,7 +124,9 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
   app.get('/api/runs/:id', (req, res) => {
     const r = runs.get(req.params.id);
     if (!r) return res.status(404).json({ error: 'not found' });
-    res.json(r.brain ? runs.plain(r) : r);
+    const plain = r.brain ? runs.plain(r) : r;
+    // Each finding is checked against the record of the run (page snapshot, focus, axe-core), not by AI.
+    res.json(plain.status === 'finished' ? { ...plain, checks: verifyFindings(plain) } : plain);
   });
   app.get('/api/runs/:id/metrics', (req, res) => {
     const r = runs.get(req.params.id);

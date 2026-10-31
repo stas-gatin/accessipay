@@ -68,12 +68,18 @@ test('detectBotWall sees a challenge page and leaves a normal shop alone', async
 });
 
 test('anonymize replaces the host and brand words in values, never in keys', () => {
-  const run = { site: { host: 'www.acme.com', url: 'https://www.acme.com/' }, events: [{ type: 'target', url: 'https://acme.com/cart', text: 'Acme bag (2) #AcmeOnYou @acmeusa', image: 's.jpg' }] };
-  const out = anonymize(run, 'Retailer A', ['Acme']);
+  const run = { site: { host: 'www.acmeco.com', url: 'https://www.acmeco.com/' }, events: [{ type: 'target', url: 'https://acmeco.com/cart', text: 'Acmeco bag (2) #AcmecoOnYou @acmecousa', image: 's.jpg' }] };
+  const out = anonymize(run, 'Retailer A', ['Acmeco']);
   assert.deepEqual(out.site, { url: null, host: 'Retailer A', anonymized: true });
   assert.equal(out.events[0].type, 'target');
   assert.equal(out.events[0].url, 'https://retailer-a.example/cart');
   assert.equal(out.events[0].text, 'Retailer A bag (2) #Retailer AOnYou @Retailer Ausa');
   assert.equal(out.events[0].image, undefined);
-  assert.doesNotMatch(JSON.stringify(out), /acme/i);
+  assert.doesNotMatch(JSON.stringify(out), /acmeco/i);
+});
+
+test('short brand words are replaced at the start of a word, any capitals; two-letter words stay', () => {
+  const run = { site: { host: 'www.acme-run.example', url: 'https://www.acme-run.example/' }, events: [{ type: 'act', result: 'Continue to Acme Running checkout, confirm on the next page; ZestLOOP and Kora pens; opera stays' }] };
+  const out = anonymize(run, 'Retailer R', ['Acme Running', 'On', 'on', 'Zest', 'KORA', 'PERA']);
+  assert.equal(out.events[0].result, 'Continue to Retailer R checkout, confirm on the next page; Retailer RSKIMS and Retailer R pens; opera stays');
 });

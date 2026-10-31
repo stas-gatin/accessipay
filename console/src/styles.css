@@ -441,3 +441,14 @@ a.rv-step-link { text-decoration: none; }
   .res-list ul a:hover { transform: translateX(3px); }
   .res-detail .site-report { animation: rise 420ms cubic-bezier(.2, .8, .2, 1) backwards; }
 }
+
+/* ---------- Finding checks (record-based, not AI) ---------- */
+.check-badge { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; vertical-align: 1px; border: 1px solid; cursor: help; }
+.check-badge.ok { color: var(--ok); background: var(--accent-soft); border-color: var(--accent-line); }
+.check-badge.warn { color: var(--warn); background: var(--warn-soft); border-color: currentColor; }
+.check-badge.muted { color: var(--muted); background: var(--surface-2); border-color: var(--line-2); }
+.check-line { display: block; margin-top: 3px; font-size: 13px; color: var(--muted); font-family: var(--mono); overflow-wrap: anywhere; }
+.sr-checks { margin: 10px 0 0; padding: 10px 14px; border-radius: 10px; background: var(--accent-soft); border: 1px solid var(--accent-line); font-size: 14.5px; line-height: 1.5; }
+@media (prefers-reduced-motion: no-preference) {
+  .arv-in .check-badge, .rv-banner .check-badge { animation: pop 420ms cubic-bezier(.2, .8, .2, 1) 300ms backwards; }
+}

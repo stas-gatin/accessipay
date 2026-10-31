@@ -65,6 +65,12 @@ Most axe-core issues on these sites are colour contrast and landmark rules; the 
 
 These runs, the demo shop runs and their fixes are in `data/recorded/` and can be replayed in the console. The full evaluation (every defect, every persona, Claude API, holdout set) is `eval/run-eval.mjs`; its results appear under *Defects and results* once it has run.
 
+## Are the findings real?
+
+The customers' findings are written by AI, so every finding is checked again without AI against the record of its run (`server/verify.mjs`, `node tools/verify-findings.mjs`): the page as the customer perceived it at that step (accessibility tree, or visible text and focus for the keyboard customer), where keyboard focus actually went, the status messages on the page after an action, and axe-core on the same page in the same state. A claim about a named control that the record shows with a name is marked as not confirmed.
+
+On the real sites so far: 218 findings; 116 are of a kind that can be checked automatically (controls without a name, identical names, vague names, lost focus, no announcement after an action, empty pages while loading, no skip link, pre-ticked marketing boxes, raw template text); 104 of them (90%) are confirmed by the record and 12 are not. The other 102 (for example "the price in the cart is higher than on the product card") need a person to judge from the replay. Each finding shows its result in the run view and in the site analysis.
+
 ## Test your own site
 
 Bot protection turns automated browsers away, and AccessiPay never tries to get past it. On their own shop an owner can let it in (console: *Test your own site*):

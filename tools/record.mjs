@@ -22,8 +22,10 @@ export function anonymize(run, label, brands = []) {
   const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const fake = `${label.toLowerCase().replace(/\s+/g, '-')}.example`;
   const swap = (s) => brands.reduce(
-    // Anywhere in a word too, so hashtags and handles (#AcmeOnYou, @acmeusa) are covered.
-    (acc, b) => acc.replace(new RegExp(esc(b), 'gi'), label),
+    // Long brand words are replaced anywhere, so hashtags and handles (#AcmeOnYou, @acmeusa) are covered.
+    // Short ones ("Zest", "KORA", "Tok") only at the start of a word, any capitals, so "ZestLOOP" and "Kora" go
+    // but "opera" keeps its "pera". Words under 3 letters ("On") are ordinary words, not identifying, and stay.
+    (acc, b) => (b.length < 3 ? acc : b.length >= 5 ? acc.replace(new RegExp(esc(b), 'gi'), label) : acc.replace(new RegExp(`\\b${esc(b)}`, 'gi'), label)),
     s.replace(new RegExp(`(www\\.)?${esc(bare)}`, 'gi'), fake),
   );
   const walk = (v) => (typeof v === 'string' ? swap(v) : Array.isArray(v) ? v.map(walk)

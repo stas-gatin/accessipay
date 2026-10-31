@@ -6,6 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { runMetrics } from './metrics.mjs';
 import { THEMES } from './analytics.mjs';
+import { verifyFindings, verificationSummary } from './verify.mjs';
 
 const PERSONAS = ['screenreader', 'keyboard', 'agent'];
 const counted = (r) => r.outcome && !['error', 'stopped'].includes(r.outcome.status);
@@ -81,7 +82,7 @@ export function createSiteAnalysis({ runs, dataDir }) {
         run: { id: run.id, status: run.status, createdAt: run.createdAt, outcome: run.outcome, reason: final?.thought || null },
         metrics: m && { steps: m.steps, keys: m.keys, tabs: m.tabs, deadEnds: m.deadEnds, noEffect: m.noEffect, klmSeconds: m.klmSeconds, furthestStage: m.furthestStage, stepsPerStage: m.stepsPerStage },
         scan: run.scan ? { violations: run.scan.totalViolations, pages: run.scan.pages?.length || 0, rules: [...new Set((run.scan.pages || []).flatMap((pg) => pg.rules || []))] } : null,
-        findings: (run.findings || []).map((f) => ({ ...f, runId: run.id })),
+        findings: (() => { const checks = run.status === 'finished' ? verifyFindings(run) : []; return (run.findings || []).map((f, i) => ({ ...f, runId: run.id, check: checks[i] || null })); })(),
         earlier: l.filter((r) => r.persona === p && r.id !== run.id).map((r) => ({ id: r.id, outcome: r.outcome?.status || r.status })),
       };
     });
@@ -99,6 +100,7 @@ export function createSiteAnalysis({ runs, dataDir }) {
       themes,
       scanner: scans.length ? { violations: Math.max(...scans.map((s) => s.violations ?? 0)), pages: Math.max(...scans.map((s) => s.pages)), rules: [...new Set(scans.flatMap((s) => s.rules))] } : null,
       findings: customers.reduce((t, c) => t + c.findings.length, 0),
+      checks: verificationSummary(customers.flatMap((c) => c.findings.map((f) => f.check).filter(Boolean))),
       agentAccess: agentAccess(key),
     };
   }

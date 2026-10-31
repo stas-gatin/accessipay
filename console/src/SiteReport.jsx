@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { api, OUTCOME, shortDate } from './api.js';
+import CheckBadge, { CheckLine } from './CheckBadge.jsx';
 
 // One analysis per site: every customer type that tried to buy there, as one report.
 
@@ -138,6 +139,11 @@ function SiteAnalysis({ siteKey }) {
           ))}
         </div>
         <p className="note sr-totals">{s.findings} problems reported in total{s.scanner ? ` · axe-core: up to ${s.scanner.violations} rule violations on ${s.scanner.pages} pages` : ''}.</p>
+        {s.checks?.total > 0 && (
+          <p className="sr-checks">
+            <b>Checked without AI:</b> {s.checks.confirmed} of {s.checks.checked} checkable findings are confirmed by the record of the run (the page snapshot at that step, where focus went, axe-core){s.checks.notConfirmed ? `; ${s.checks.notConfirmed} not confirmed` : ''}. {s.checks.manual} need a person to judge from the replay.
+          </p>
+        )}
       </section>
 
       {s.themes.length > 0 && (
@@ -174,7 +180,7 @@ function SiteAnalysis({ siteKey }) {
                       {c.findings.map((f, i) => (
                         <li key={i}>
                           <a className="rv-step-link" href={`#/runs/${c.run.id}`}>{f.step != null ? `Step ${f.step}` : 'Run'}</a>
-                          <span><b>{f.element?.name ? `${f.element.role || 'element'} “${f.element.name}”` : f.page}</b>: {f.problem}</span>
+                          <span><b>{f.element?.name ? `${f.element.role || 'element'} “${f.element.name}”` : f.page}</b>: {f.problem} <CheckBadge check={f.check} /><CheckLine check={f.check} /></span>
                         </li>
                       ))}
                     </ol>
