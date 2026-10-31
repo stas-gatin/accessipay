@@ -29,6 +29,12 @@ function Verdict({ s }) {
 
 const cellWord = (c) => (!c ? 'Not run' : c.status === 'running' ? 'Testing now' : outcomeWord(c.outcome));
 
+// The shop's name opens its analysis page (a real link, so it also works from the keyboard).
+function ShopLink({ value, node }) {
+  if (node?.group) return <span>{value}</span>;
+  return <a className="res-shop-link" href={siteHref(value)}>{value} <span aria-hidden="true">→</span></a>;
+}
+
 // One cell per customer: the outcome as a coloured word, then the steps it took.
 function CustomerCell({ value, node }) {
   if (node?.group) return null;
@@ -46,11 +52,10 @@ function CustomerCell({ value, node }) {
   );
 }
 
-let jumpTo = null;
 const groupOf = (s) => (s.running ? 'Testing now' : s.notTestable ? 'Turned away' : 'Tested');
 
 // Every shop in one table (AG Grid): click a row and its whole analysis opens below.
-export default function Results({ siteKey }) {
+export default function Results() {
   const t = useTheme();
   const narrow = typeof window !== 'undefined' && window.matchMedia('(max-width: 720px)').matches;
   const [list, setList] = useState(null);
@@ -65,7 +70,6 @@ export default function Results({ siteKey }) {
   const tested = all.filter((s) => s.tested && !s.running);
   const testing = all.filter((s) => s.running);
   const away = all.filter((s) => s.notTestable && !s.running);
-  const selected = siteKey || tested[0]?.key || testing[0]?.key || away[0]?.key || null;
   const runsTested = tested.reduce((n, s) => n + s.tested, 0);
   const runsReached = tested.reduce((n, s) => n + s.reached, 0);
 
@@ -111,20 +115,40 @@ export default function Results({ siteKey }) {
             rowData={rows}
             columnDefs={cols}
             defaultColDef={{ resizable: true, suppressHeaderMenuButton: true, sortable: true }}
-            autoGroupColumnDef={{ headerName: 'Shop', field: 'key', minWidth: narrow ? 170 : 230, flex: 1.1, cellClass: 'res-shop-cell', cellRendererParams: { suppressCount: false } }}
+            autoGroupColumnDef={{ headerName: 'Shop', field: 'key', minWidth: narrow ? 170 : 230, flex: 1.1, cellClass: 'res-shop-cell', cellRendererParams: { suppressCount: false, innerRenderer: ShopLink } }}
             groupDefaultExpanded={1}
             domLayout="autoHeight"
             rowHeight={narrow ? 48 : 58}
             getRowId={(p) => p.data.key}
-            rowClassRules={{ 'res-row-on': (p) => p.data?.key === selected }}
-            onRowClicked={(e) => { if (!e.data) return; jumpTo = e.data.key; location.hash = siteHref(e.data.key); }}
+            onRowClicked={(e) => { if (e.data) location.hash = siteHref(e.data.key); }}
           />
         )}
       </div>
-      <p className="note">Click a shop to open its whole analysis below. Shops behind bot protection are listed too: AccessiPay never gets past it, and an AI shopping agent may meet the same wall. Their owners can <a href="#/own-site">let the test in</a>. Retailer letters follow the order the shops were added; a missing letter is a shop still waiting for its test.</p>
-      <div className="res-detail" id="analysis" tabIndex={-1}>
-        {selected && <SiteAnalysis key={selected} siteKey={selected} />}
-      </div>
+      <p className="note">Click a shop to open its whole analysis: each customer, the stage it reached, its findings and its run step by step. Shops behind bot protection are listed too: AccessiPay never gets past it, and an AI shopping agent may meet the same wall. Their owners can <a href="#/own-site">let the test in</a>. Retailer letters follow the order the shops were added; a missing letter is a shop still waiting for its test.</p>
+    </div>
+  );
+}
+
+const STAGES = ['Browse', 'Cart', 'Checkout', 'Payment', 'Paid'];
+// How far one customer got: the five checkout stages, filled up to the furthest one it reached.
+function StageRail({ run, metrics }) {
+  const o = run.outcome?.status;
+  if (run.status === 'running' || ['not-testable', 'error'].includes(o)) return null;
+  const at = o === 'reached-payment' ? 3 : o === 'purchased' ? 4 : Math.max(0, STAGES.indexOf(metrics?.furthestStage));
+  const ok = o === 'reached-payment' || o === 'purchased';
+  return (
+    <ol className={`sr-rail ${ok ? 'ok' : 'bad'}`} aria-label={`Got as far as ${STAGES[at]}`}>
+      {STAGES.map((st, i) => <li key={st} className={i < at ? 'done' : i === at ? 'here' : ''}><i aria-hidden="true" /><span>{st}</span></li>)}
+    </ol>
+  );
+}
+
+// A shop's own page: the whole analysis, with a way back to the list of shops.
+export function SitePage({ siteKey }) {
+  return (
+    <div className="page results">
+      <p className="note sr-back"><a href="#/results">← All shops</a></p>
+      <SiteAnalysis siteKey={siteKey} />
     </div>
   );
 }
@@ -141,21 +165,13 @@ function SiteAnalysis({ siteKey }) {
     load();
     return () => { live = false; clearTimeout(t); };
   }, [siteKey]);
-  // A click on a shop scrolls to its analysis, which sits below the whole table. The page remounts on the
-  // new address, so the wish is kept outside the component until the analysis has loaded and the table is laid out.
-  useEffect(() => {
-    if (!s || jumpTo !== siteKey) return;
-    jumpTo = null;
-    const t = setTimeout(() => document.getElementById('analysis')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }), 250);
-    return () => clearTimeout(t);
-  }, [s, siteKey]);
   if (error) return <p className="note">{error}</p>;
   if (!s) return <p className="note">Loading the analysis…</p>;
 
   const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
   const head = (
     <>
-      <p className="eyebrow">{s.anonymized ? 'Large retailer, name withheld' : 'Real shop'} · <a href="#/results" onClick={(e) => { e.preventDefault(); document.querySelector('.res-table')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}>↑ All shops</a></p>
+      <p className="eyebrow">{s.anonymized ? 'Large retailer, name withheld' : 'Real shop'}</p>
       <h2 className="sr-name" id="site-name">{s.key}</h2>
       <p className="lead">
         {s.url && !s.anonymized ? <a href={s.url} rel="noreferrer noopener" target="_blank">{s.url}</a> : 'Recorded without the name, the address or screenshots.'}
@@ -218,6 +234,7 @@ function SiteAnalysis({ siteKey }) {
               <h4>{label(c.persona)}</h4>
               {!c.run ? <p className="note">Not run on this site yet.</p> : (
                 <>
+                  <StageRail run={c.run} metrics={c.metrics} />
                   <div className="sr-col-head">
                     <Pill outcome={c.run.status === 'running' ? null : c.run.outcome?.status} />
                     {c.metrics && <span className="sr-col-nums">{c.metrics.steps} steps{c.persona !== 'agent' ? ` · ${c.metrics.keys} keys` : ''}{c.metrics.furthestStage ? ` · got to ${c.metrics.furthestStage}` : ''}</span>}

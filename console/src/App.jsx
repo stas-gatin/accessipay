@@ -4,7 +4,7 @@ import { api } from './api.js';
 import { ThemeContext, initialTheme, applyTheme } from './theme.js';
 import NewTest from './NewTest.jsx';
 import OwnSite from './OwnSite.jsx';
-import Results from './SiteReport.jsx';
+import Results, { SitePage } from './SiteReport.jsx';
 import RunView from './RunView.jsx';
 import Landing from './Landing.jsx';
 import Analytics from './Analytics.jsx';
@@ -20,13 +20,10 @@ function useHash() {
   const read = () => (location.hash.startsWith('#/') ? location.hash : '#/');
   const [hash, setHash] = useState(read);
   useEffect(() => {
-    const on = (e) => {
+    const on = () => {
       if (location.hash && !location.hash.startsWith('#/')) return;
-      // Picking another shop on Results keeps the page where it is; the shop's analysis scrolls itself into view.
-      const family = (h) => /^#\/(results|sites)(\/|$)/.test(h);
-      const from = e?.oldURL ? new URL(e.oldURL).hash : '';
       setHash(read());
-      if (!(family(from) && family(read()))) window.scrollTo(0, 0);
+      window.scrollTo(0, 0);
     };
     window.addEventListener('hashchange', on);
     return () => window.removeEventListener('hashchange', on);
@@ -77,7 +74,7 @@ export default function App() {
   else if (route === '/test') page = <NewTest meta={meta} />;
   else if (route === '/own-site') page = <OwnSite meta={meta} />;
   else if (route === '/sites' || route === '/results') page = <Results />;
-  else if (/^\/sites\/.+/.test(route)) page = <Results siteKey={decodeURIComponent(route.slice(7))} />;
+  else if (/^\/sites\/.+/.test(route)) page = <SitePage siteKey={decodeURIComponent(route.slice(7))} />;
   else if (route === '/analytics') page = <Analytics meta={meta} />;
   else page = <Landing meta={meta} />;
 
@@ -103,7 +100,7 @@ export default function App() {
         </div>
       </header>
       {meta?.privateView && <p className="private-view" role="note">Private view on this computer: real shop names, page text and screenshots. The public site shows them as Retailer A, B and so on.</p>}
-      <main id="main" tabIndex={-1} ref={mainRef}><div key={/^\/(results|sites)(\/|$)/.test(route) ? '/results' : route} className="route-in">{page}</div></main>
+      <main id="main" tabIndex={-1} ref={mainRef}><div key={route} className="route-in">{page}</div></main>
       <div className="lp"><SiteFooter /></div>
     </ThemeContext.Provider>
   );

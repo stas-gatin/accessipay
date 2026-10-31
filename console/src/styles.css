@@ -536,3 +536,18 @@ a.rv-step-link { text-decoration: none; }
   .sr-examples .rv-step-link { justify-self: start; }
 }
 .private-view { margin: 0; padding: 8px 32px; background: #ffc861; color: #2a1d00; font-size: 14px; font-weight: 600; text-align: center; }
+/* A shop's page: back link, and per customer the stages it reached. */
+.sr-back { margin: 0 0 12px; }
+.sr-back a { font-weight: 600; text-decoration: none; }
+.res-shop-link { font-weight: 600; color: var(--accent); text-decoration: none; }
+.res-shop-link:hover { text-decoration: underline; }
+.sr-rail { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); position: relative; }
+.sr-rail li { display: grid; justify-items: center; gap: 4px; position: relative; font-size: 11.5px; color: var(--muted); text-align: center; }
+.sr-rail li::before { content: ''; position: absolute; top: 6px; left: -50%; right: 50%; height: 2px; background: var(--line-2); }
+.sr-rail li:first-child::before { display: none; }
+.sr-rail i { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--line-2); background: var(--surface); position: relative; z-index: 1; }
+.sr-rail li.done i { background: var(--ink); border-color: var(--ink); }
+.sr-rail li.done::before, .sr-rail li.here::before { background: var(--ink); }
+.sr-rail.ok li.here i { background: var(--ok); border-color: var(--ok); }
+.sr-rail.bad li.here i { background: var(--bad); border-color: var(--bad); }
+.sr-rail li.here span { color: var(--ink); font-weight: 700; }

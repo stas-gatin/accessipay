@@ -15,7 +15,7 @@ const BLOCKS = [
 const SKIP = '.rv, .rv-stagger, .rp, .lp .hero-lp, .chain-list, [data-no-reveal]';
 
 // Plain whole numbers in a block count up from zero the first time the block is seen.
-const COUNT = '.sr-verdict-n, .sr-tile-nums b, .proof-grid .pv, .stat b, .kpi b, .sweep-stats b, .rv-banner-effort, td.num, .ledger .num';
+const COUNT = '.sr-tile-nums b, .proof-grid .pv, .stat b, .kpi b, .sweep-stats b, .rv-banner-effort, td.num, .ledger .num';
 function countUp(root) {
   for (const el of root.querySelectorAll(COUNT)) {
     if (el.dataset.counted) continue;
