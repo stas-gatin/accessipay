@@ -87,6 +87,8 @@ export function createSiteAnalysis({ runs, dataDir }) {
       return {
         persona: p,
         run: { id: run.id, status: run.status, createdAt: run.createdAt, outcome: run.outcome, reason: final?.thought || null },
+        // The screen where the customer stopped (paid, reached payment, or got stuck). Withheld shops keep no screenshots.
+        shot: (() => { const e = [...(run.events || [])].reverse().find((x) => x.image && (x.type === 'end' || x.type === 'observe')); return e ? `/runs-data/${run.id}/${e.image}` : null; })(),
         metrics: m && { steps: m.steps, keys: m.keys, tabs: m.tabs, deadEnds: m.deadEnds, noEffect: m.noEffect, klmSeconds: m.klmSeconds, furthestStage: m.furthestStage, stepsPerStage: m.stepsPerStage },
         scan: run.scan ? { violations: run.scan.totalViolations, pages: run.scan.pages?.length || 0, rules: [...new Set((run.scan.pages || []).flatMap((pg) => pg.rules || []))] } : null,
         findings: (() => { const checks = run.status === 'finished' ? verifyFindings(run) : []; return (run.findings || []).map((f, i) => ({ ...f, runId: run.id, check: checks[i] || null })); })(),

@@ -153,6 +153,43 @@ export function SitePage({ siteKey }) {
   );
 }
 
+// One customer on one shop, as a card: the screen where it stopped, a button to the full run, a short summary.
+const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+const clip = (t, n) => (t && t.length > n ? `${t.slice(0, n - 1).trimEnd()}…` : t);
+function CustomerCard({ c, withheld }) {
+  const o = c.run?.status === 'running' ? null : c.run?.outcome?.status;
+  const skipped = ['not-testable', 'error'].includes(o);
+  const top = [...c.findings].sort((a, b) => (a.step ?? 1e9) - (b.step ?? 1e9)).slice(0, 2);
+  return (
+    <article className={`card sr-card ${tone(o)}`}>
+      <header className="sr-card-head">
+        <h4>{label(c.persona)}</h4>
+        {c.run && <Pill outcome={o} />}
+      </header>
+      {!c.run ? <p className="note">Not run on this shop yet.</p> : (
+        <>
+          <a className={`sr-card-shot${c.shot ? '' : ' none'}`} href={`#/runs/${c.run.id}`} aria-label={`${label(c.persona)}: open the detailed analysis of the run`}>
+            {c.shot ? <img src={c.shot} alt="" loading="lazy" /> : (
+              <span className="sr-card-noshot">{withheld ? 'No screenshots are kept for a shop whose name is withheld.' : c.run.status === 'running' ? 'Shopping now…' : 'No screenshot for this run.'}</span>
+            )}
+            {c.shot && <span className="sr-card-cap">{o === 'reached-payment' ? 'The payment step it reached' : o === 'purchased' ? 'Paid' : skipped ? 'Where the run ended' : 'Where it got stuck'}</span>}
+          </a>
+          <a className="btn primary sr-card-btn" href={`#/runs/${c.run.id}`}>See the detailed analysis</a>
+          <StageRail run={c.run} metrics={c.metrics} />
+          {c.metrics && !skipped && <p className="sr-card-nums">{c.metrics.steps} steps{c.persona !== 'agent' ? ` · ${c.metrics.keys} keys` : ''} · {plural(c.findings.length, 'problem')}</p>}
+          {skipped ? <p className="note">{c.run.outcome.reason}</p> : c.run.reason && <p className="sr-col-why">“{clip(c.run.reason, 150)}”</p>}
+          {!skipped && top.length > 0 && (
+            <ul className="sr-card-top">
+              {top.map((f, i) => <li key={i}><span className="sr-card-step">Step {f.step ?? '–'}</span> {clip(f.problem, 120)}</li>)}
+            </ul>
+          )}
+          {!skipped && c.findings.length > top.length && <p className="sr-card-more">and {c.findings.length - top.length} more in the detailed analysis</p>}
+        </>
+      )}
+    </article>
+  );
+}
+
 function SiteAnalysis({ siteKey }) {
   const [s, setS] = useState(null);
   const [error, setError] = useState('');
@@ -168,7 +205,6 @@ function SiteAnalysis({ siteKey }) {
   if (error) return <p className="note">{error}</p>;
   if (!s) return <p className="note">Loading the analysis…</p>;
 
-  const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
   const head = (
     <>
       <p className="eyebrow">{s.anonymized ? 'Large retailer, name withheld' : 'Real shop'}</p>
@@ -207,6 +243,13 @@ function SiteAnalysis({ siteKey }) {
         )}
       </section>
 
+      <section aria-labelledby="sc" style={{ marginTop: 24 }}>
+        <h3 className="section-title" id="sc">The three customers</h3>
+        <div className="sr-cards">
+          {s.customers.map((c) => <CustomerCard key={c.persona} c={c} withheld={s.anonymized} />)}
+        </div>
+      </section>
+
       {s.themes.length > 0 && (
         <section className="card" aria-labelledby="st" style={{ marginTop: 16 }}>
           <h3 className="section-title" id="st">Problems across customers</h3>
@@ -226,38 +269,6 @@ function SiteAnalysis({ siteKey }) {
         </section>
       )}
 
-      <section aria-labelledby="sc" style={{ marginTop: 24 }}>
-        <h3 className="section-title" id="sc">Each customer</h3>
-        <div className="sr-cols">
-          {s.customers.map((c) => (
-            <article key={c.persona} className={`card sr-col ${tone(c.run?.status === 'running' ? null : c.run?.outcome?.status)}`}>
-              <h4>{label(c.persona)}</h4>
-              {!c.run ? <p className="note">Not run on this site yet.</p> : (
-                <>
-                  <StageRail run={c.run} metrics={c.metrics} />
-                  <div className="sr-col-head">
-                    <Pill outcome={c.run.status === 'running' ? null : c.run.outcome?.status} />
-                    {c.metrics && <span className="sr-col-nums">{c.metrics.steps} steps{c.persona !== 'agent' ? ` · ${c.metrics.keys} keys` : ''}{c.metrics.furthestStage ? ` · got to ${c.metrics.furthestStage}` : ''}</span>}
-                  </div>
-                  {['not-testable', 'error'].includes(c.run.outcome?.status) && <p className="note">{c.run.outcome.reason}</p>}
-                  {c.run.reason && !['not-testable', 'error'].includes(c.run.outcome?.status) && <p className="sr-col-why">“{c.run.reason}”</p>}
-                  {c.findings.length ? (
-                    <ol className="findings">
-                      {[...c.findings].sort((a, b) => (a.step ?? 1e9) - (b.step ?? 1e9)).map((f, i) => (
-                        <li key={i}>
-                          <a className="rv-step-link" href={`#/runs/${c.run.id}`}>{f.step != null ? `Step ${f.step}` : 'Run'}</a>
-                          <span className="sr-finding"><b className="sr-finding-what">{f.element?.name ? `${f.element.role || 'element'} “${f.element.name}”` : f.page}</b><span>{f.problem}</span><span className="sr-finding-check"><CheckBadge check={f.check} /></span><CheckLine check={f.check} /></span>
-                        </li>
-                      ))}
-                    </ol>
-                  ) : <p className="note">{c.run.status === 'running' ? 'Problems are reported at the end of the run.' : 'No problems reported.'}</p>}
-                  <a className="sr-col-open" href={`#/runs/${c.run.id}`}>Replay the run step by step →</a>
-                </>
-              )}
-            </article>
-          ))}
-        </div>
-      </section>
 
       {s.scanner && (
         <section className="card" aria-labelledby="ss" style={{ marginTop: 16 }}>

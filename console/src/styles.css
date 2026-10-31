@@ -551,3 +551,24 @@ a.rv-step-link { text-decoration: none; }
 .sr-rail.ok li.here i { background: var(--ok); border-color: var(--ok); }
 .sr-rail.bad li.here i { background: var(--bad); border-color: var(--bad); }
 .sr-rail li.here span { color: var(--ink); font-weight: 700; }
+
+/* The three customers of a shop, as cards: the screen where it stopped, the button, a short summary. */
+.sr-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+@media (max-width: 1000px) { .sr-cards { grid-template-columns: minmax(0, 1fr); } }
+.sr-card { display: grid; gap: 12px; align-content: start; border-top: 4px solid var(--line-2); }
+.sr-card.ok { border-top-color: var(--ok); }
+.sr-card.bad { border-top-color: var(--bad); }
+.sr-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.sr-card-head h4 { margin: 0; font-size: 17px; }
+.sr-card-shot { position: relative; display: block; aspect-ratio: 16 / 10; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: var(--surface-2); text-decoration: none; }
+.sr-card-shot img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; transition: transform 300ms cubic-bezier(.2, .8, .2, 1); }
+.sr-card-shot:hover img { transform: scale(1.03); }
+.sr-card-noshot { display: grid; place-items: center; height: 100%; padding: 16px; text-align: center; font-size: 13.5px; color: var(--muted); }
+.sr-card-cap { position: absolute; left: 8px; bottom: 8px; padding: 3px 8px; border-radius: 6px; background: rgba(11, 27, 51, .82); color: #fff; font-size: 12px; font-weight: 600; }
+.sr-card-btn { justify-self: stretch; text-align: center; text-decoration: none; }
+.sr-card-nums { margin: 0; font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.sr-card-top { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 14px; line-height: 1.45; }
+.sr-card-step { display: inline-block; font-size: 12px; font-weight: 700; color: var(--muted); margin-right: 4px; }
+.sr-card-more { margin: 0; font-size: 13.5px; color: var(--muted); }
+.sr-card-shot.none { aspect-ratio: auto; }
+.sr-card-shot.none .sr-card-noshot { padding: 12px 14px; font-size: 13px; }
