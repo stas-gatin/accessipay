@@ -27,16 +27,18 @@ The same thing blocks AI shopping agents: they read pages through the accessibil
 
 Measured, not estimated. Runs below used the real PayPal sandbox; the shopper's decisions came from Claude Code agents driving `tools/agent.mjs` (the built-in Claude API brain is implemented but has not been run yet).
 
+Steps are the customer's decisions; the final "give up" or "done" is not counted, the same way the console counts them.
+
 | What | Result |
 |---|---|
 | axe-core on the 13 defects, one defect per shop | flags 2 (`link-name`, `label`), passes 11 |
 | Clean shop, every page | 0 axe-core violations in the shop's own code (axe also reports 4 best-practice notices inside PayPal's hosted card fields; we list those separately) |
 | Screen reader shopper, clean shop, paying through PayPal Card Fields | bought it in 36 steps, PayPal sandbox order `COMPLETED` |
-| Keyboard-only shopper, promo popup that traps focus (scanner: 0) | blocked on the cart page after 15 steps |
+| Keyboard-only shopper, promo popup that traps focus (scanner: 0) | blocked on the cart page, gave up after 14 steps |
 | Same shopper after the AI fix (7 patches to the cart page) | bought it in 49 steps, order `COMPLETED` |
-| AI shopping agent, Pay button made of a `<div>` (scanner: 0) | blocked on the payment page after 22 steps |
+| AI shopping agent, Pay button made of a `<div>` (scanner: 0) | blocked on the payment page, gave up after 21 steps |
 | Same agent after the AI fix (the `<div>` became a `<button>`, plus 4 group names) | bought it in 19 steps, order `COMPLETED` |
-| Keyboard-only shopper, 25 category links and no skip link (scanner: 0), 2 runs | paid in 62 and 82 steps, 165 and 198 keypresses |
+| Keyboard-only shopper, 24 category links and no skip link (scanner: 0), 2 runs | paid in 62 and 82 steps, 165 and 198 keypresses |
 | Same shopper after the AI fix (one skip link on every page), 2 runs | paid in 52 steps both times, 155 keypresses: medians 28% fewer steps, 15% fewer keys, an estimated 23% less time (keystroke-level model) |
 | AI shopping agent, task stated as a need ("keep me dry on hikes, under $100, fast") | chose the Rain Jacket with express delivery, $94.00, order `COMPLETED` |
 
@@ -126,8 +128,8 @@ node tools/agent.mjs fix-reply <fix id> reply.json
 
 ## How PayPal and AI are used
 
-- **PayPal Orders v2** (sandbox): the card payment on the shop's payment page, and the read-back of the order that decides whether a run succeeded. Verified against the live sandbox: create with a card payment source, capture, read back as `COMPLETED`, refund (`npm test` includes this when sandbox keys are present). Calls go through a token bucket because the sandbox blocks an IP after about 50 requests a minute.
-- The demo shop posts test card numbers to its own server and on to PayPal. That is fine for sandbox test cards only; a production checkout would use PayPal's hosted card fields so card data never touches the merchant server.
+- **PayPal JavaScript SDK** (sandbox): the shop's payment page uses PayPal Buttons and PayPal Card Fields (`components=buttons,card-fields`), so card data goes straight to PayPal and the shop's server never sees it. The keyboard and screen reader customers fill those fields inside PayPal's iframes, as real users do.
+- **PayPal Orders v2** (sandbox): the shop's server creates and captures the order, and the read-back of the order decides whether a run succeeded: only `COMPLETED` counts. Verified against the live sandbox: create, capture, read back as `COMPLETED`, refund (`npm test` includes this when sandbox keys are present). Calls go through a token bucket because the sandbox blocks an IP after about 50 requests a minute.
 - **Claude**: the shopper's decision at each step (one request per step with a cached persona prompt) and the fixer's patch proposal. Prompts live in `server/engine/prompts.mjs` and `server/fixer/fixer.mjs`.
 - **Playwright** drives a real Chromium; **axe-core** is the scanner it is compared with; **AG Grid** powers the runs and defects tables.
 
