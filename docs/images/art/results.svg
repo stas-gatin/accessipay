@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400" role="img"
+  aria-label="Real shops, three customers each, 31 October 2026: 41 shops tested; the screen reader customer reached the payment step on 37 of 38, the AI shopping agent on 30 of 34, the keyboard-only customer on 19 of 41; 14 more shops turned an automated browser away.">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a1a33"/><stop offset="1" stop-color="#0d2a4f"/></linearGradient>
+    <style>
+      .t { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
+      .m { font-family: SFMono-Regular, Menlo, Consolas, monospace; }
+      .bar { transform-box: fill-box; transform-origin: left center; transform: scaleX(0); animation: grow 10s cubic-bezier(.2,.8,.2,1) infinite; }
+      @keyframes grow { 0% { transform: scaleX(0); } 12% { transform: scaleX(1); } 90% { transform: scaleX(1); opacity: 1; } 97%, 100% { transform: scaleX(1); opacity: 0; } }
+      .lab { opacity: 0; animation: lab 10s ease-out infinite; }
+      @keyframes lab { 0%, 10% { opacity: 0; } 14% { opacity: 1; } 90% { opacity: 1; } 97%, 100% { opacity: 0; } }
+      .big { opacity: 0; animation: lab 10s ease-out infinite; }
+    </style>
+  </defs>
+  <rect width="1280" height="400" rx="24" fill="url(#bg)"/>
+  <g class="t">
+    <text x="56" y="58" class="m" font-size="14" letter-spacing="3" fill="#5ef1c2">REAL SHOPS · THREE CUSTOMERS EACH · NAMES WITHHELD</text>
+    <text x="56" y="88" font-size="17" fill="#a9bdd4">Customer runs that reached the payment step (where the test stops: nothing is paid on a shop tested without its owner)</text>
+
+    <text x="56" y="152" font-size="18" font-weight="700" fill="#ffffff">Screen reader</text>
+    <rect x="300" y="128" width="700" height="34" rx="8" fill="#ffffff" fill-opacity="0.07"/>
+    <rect class="bar" style="animation-delay:0.2s" x="300" y="128" width="682" height="34" rx="8" fill="#5ef1c2"/>
+    <text class="lab" style="animation-delay:0.2s" x="1016" y="152" font-size="20" font-weight="800" fill="#5ef1c2">37 of 38</text>
+
+    <text x="56" y="212" font-size="18" font-weight="700" fill="#ffffff">AI shopping agent</text>
+    <rect x="300" y="188" width="700" height="34" rx="8" fill="#ffffff" fill-opacity="0.07"/>
+    <rect class="bar" style="animation-delay:0.5s" x="300" y="188" width="618" height="34" rx="8" fill="#5ef1c2"/>
+    <text class="lab" style="animation-delay:0.5s" x="1016" y="212" font-size="20" font-weight="800" fill="#5ef1c2">30 of 34</text>
+
+    <text x="56" y="272" font-size="18" font-weight="700" fill="#ffffff">Keyboard-only</text>
+    <rect x="300" y="248" width="700" height="34" rx="8" fill="#ffffff" fill-opacity="0.07"/>
+    <rect class="bar" style="animation-delay:0.8s" x="300" y="248" width="324" height="34" rx="8" fill="#ff4f45"/>
+    <text class="lab" style="animation-delay:0.8s" x="1016" y="272" font-size="20" font-weight="800" fill="#ff8a83">19 of 41</text>
+
+    <g class="big" style="animation-delay:1.6s">
+      <text x="56" y="338" font-size="16" fill="#cfdbe8">41 shops tested by all three customers · 14 more turned an automated browser away (never bypassed)</text>
+      <text x="56" y="364" font-size="16" fill="#cfdbe8">Most common blockers: unnamed controls, focus lost or far away, pop-ups that take over the page, no feedback after Add to cart</text>
+    </g>
+  </g>
+</svg>

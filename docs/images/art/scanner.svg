@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 560" width="1280" height="560" role="img"
+  aria-label="Scanner versus reality: thirteen checkout defects in the demo shop; axe-core with default rules flags two of them (the Checkout link with no name and the City field with no label) and misses eleven, including a Pay button made of a div and a popup that traps the keyboard.">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a1a33"/><stop offset="1" stop-color="#140f24"/></linearGradient>
+    <style>
+      .t { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
+      .m { font-family: SFMono-Regular, Menlo, Consolas, monospace; }
+      .row { opacity: 0; animation: rin 12s ease-out infinite; }
+      @keyframes rin { 0% { opacity: 0; transform: translateY(10px); } 3% { opacity: 1; transform: translateY(0); } 92% { opacity: 1; } 97%, 100% { opacity: 0; } }
+      .verdict { opacity: 0; animation: vin 12s ease-out infinite; }
+      @keyframes vin { 0% { opacity: 0; transform: translateX(14px); } 2% { opacity: 1; transform: translateX(0); } 70% { opacity: 1; } 75%, 100% { opacity: 0; } }
+      .sum { opacity: 0; animation: sum 12s ease-out infinite; animation-delay: 4.8s; }
+      @keyframes sum { 0% { opacity: 0; transform: scale(0.9); } 3% { opacity: 1; transform: scale(1); } 50% { opacity: 1; } 55%, 100% { opacity: 0; } }
+    </style>
+  </defs>
+  <rect width="1280" height="560" rx="24" fill="url(#bg)"/>
+  <g class="t">
+  <text x="56" y="58" class="m" font-size="14" letter-spacing="3" fill="#5ef1c2">SCANNER VERSUS REALITY · THE 13 DEFECTS WE BUILT INTO THE DEMO SHOP</text>
+  <text x="56" y="88" font-size="17" fill="#a9bdd4">axe-core, default rules, every page of the checkout. Each defect alone can stop a purchase.</text>
+  <g class="row" style="animation-delay:0.30s"><rect x="56" y="110" width="560" height="44" rx="10" fill="#ffffff" fill-opacity="0.06"/>
+    <text x="74" y="138" font-size="15" fill="#e8eef5"><tspan fill="#7f93ab" class="m">01</tspan>  No skip link past a 24-link menu</text></g>
+  <g class="verdict" style="animation-delay:3.00s"><rect x="508" y="119" width="96" height="26" rx="13" fill="#ff4f45" fill-opacity="0.2" stroke="#ff4f45"/><text x="556" y="136" text-anchor="middle" font-size="12" font-weight="800" fill="#ff8a83">MISSED</text></g>
+  <g class="row" style="animation-delay:0.48s"><rect x="56" y="162" width="560" height="44" rx="10" fill="#ffffff" fill-opacity="0.06"/>
+    <text x="74" y="190" font-size="15" fill="#e8eef5"><tspan fill="#7f93ab" class="m">02</tspan>  Add-to-cart buttons all named “button”</text></g>
+  <g class="verdict" style="animation-delay:3.12s"><rect x="508" y="171" width="96" height="26" rx="13" fill="#ff4f45" fill-opacity="0.2" stroke="#ff4f45"/><text x="556" y="188" text-anchor="middle" font-size="12" font-weight="800" fill="#ff8a83">MISSED</text></g>
+  <g class="row" style="animation-delay:0.66s"><rect x="56" y="214" width="560" height="44" rx="10" fill="#ffffff" fill-opacity="0.06"/>
+    <text x="74" y="242" font-size="15" fill="#e8eef5"><tspan fill="#7f93ab" class="m">03</tspan>  The Pay button is a &lt;div&gt;</text></g>
+  <g class="verdict" style="animation-delay:3.24s"><rect x="508" y="223" width="96" height="26" rx="13" fill="#ff4f45" fill-opacity="0.2" stroke="#ff4f45"/><text x="556" y="240" text-anchor="middle" font-size="12" font-weight="800" fill="#ff8a83">MISSED</text></g>
+  <g class="row" style="animation-delay:0.84s"><rect x="56" y="266" width="560" height="44" rx="10" fill="#ffffff" fill-opacity="0.06"/>
+    <text x="74" y="294" font-size="15" fill="#e8eef5"><tspan fill="#7f93ab" class="m">04</tspan>  A promo popup traps the keyboard</text></g>
+  <g class="verdict" style="animation-delay:3.36s"><rect x="508" y="275" width="96" height="26" rx="13" fill="#ff4f45" fill-opacity="0.2" stroke="#ff4f45"/><text x="556" y="292" text-anchor="middle" font-size="12" font-weight="800" fill="#ff8a83">MISSED</text></g>
+  <g class="row" style="animation-delay:1.02s"><rect x="56" y="318" width="560" height="44" rx="10" fill="#ffffff" fill-opacity="0.06"/>
+    <text x="74" y="346" font-size="15" fill="#e8eef5"><tspan fill="#7f93ab" class="m">05</tspan>  Form errors hidden from screen readers</text></g>
+  <g class="verdict" style="animation-delay:3.48s"><rect x="508" y="327" width="96" height="26" rx="13" fill="#ff4f45" fill-opacity="0.2" stroke="#ff4f45"/><text x="556" y="344" text-anchor="middle" font-size="12" font-weight="800" fill="#ff8a83">MISSED</text></g>
+  <g class="row" style="animation-delay:1.20s"><rect x="56" y="370" width="560" height="44" rx="10" fill="#ffffff" fill-opacity="0.06"/>
+    <text x="74" y="398" font-size="15" fill="#e8eef5"><tspan fill="#7f93ab" class="m">06</tspan>  The Checkout link has no name</text></g>
+  <g class="verdict" style="animation-delay:3.60s"><rect x="508" y="379" width="96" height="26" rx="13" fill="#5ef1c2"/><text x="556" y="396" text-anchor="middle" font-size="12" font-weight="800" fill="#06231a">FLAGGED</text></g>
+  <g class="row" style="animation-delay:1.38s"><rect x="56" y="422" width="560" height="44" rx="10" fill="#ffffff" fill-opacity="0.06"/>
+    <text x="74" y="450" font-size="15" fill="#e8eef5"><tspan fill="#7f93ab" class="m">07</tspan>  Country dropdown works by mouse only</text></g>
+  <g class="verdict" style="animation-delay:3.72s"><rect x="508" y="431" width="96" height="26" rx="13" fill="#ff4f45" fill-opacity="0.2" stroke="#ff4f45"/><text x="556" y="448" text-anchor="middle" font-size="12" font-weight="800" fill="#ff8a83">MISSED</text></g>
+  <g class="row" style="animation-delay:1.56s"><rect x="656" y="110" width="560" height="44" rx="10" fill="#ffffff" fill-opacity="0.06"/>
+    <text x="674" y="138" font-size="15" fill="#e8eef5"><tspan fill="#7f93ab" class="m">08</tspan>  “Full name” and “Email” labels swapped</text></g>
+  <g class="verdict" style="animation-delay:3.84s"><rect x="1108" y="119" width="96" height="26" rx="13" fill="#ff4f45" fill-opacity="0.2" stroke="#ff4f45"/><text x="1156" y="136" text-anchor="middle" font-size="12" font-weight="800" fill="#ff8a83">MISSED</text></g>
+  <g class="row" style="animation-delay:1.74s"><rect x="656" y="162" width="560" height="44" rx="10" fill="#ffffff" fill-opacity="0.06"/>
+    <text x="674" y="190" font-size="15" fill="#e8eef5"><tspan fill="#7f93ab" class="m">09</tspan>  Terms checkbox is a styled &lt;div&gt;</text></g>
+  <g class="verdict" style="animation-delay:3.96s"><rect x="1108" y="171" width="96" height="26" rx="13" fill="#ff4f45" fill-opacity="0.2" stroke="#ff4f45"/><text x="1156" y="188" text-anchor="middle" font-size="12" font-weight="800" fill="#ff8a83">MISSED</text></g>
+  <g class="row" style="animation-delay:1.92s"><rect x="656" y="214" width="560" height="44" rx="10" fill="#ffffff" fill-opacity="0.06"/>
+    <text x="674" y="242" font-size="15" fill="#e8eef5"><tspan fill="#7f93ab" class="m">10</tspan>  Card fields labelled by placeholder only</text></g>
+  <g class="verdict" style="animation-delay:4.08s"><rect x="1108" y="223" width="96" height="26" rx="13" fill="#ff4f45" fill-opacity="0.2" stroke="#ff4f45"/><text x="1156" y="240" text-anchor="middle" font-size="12" font-weight="800" fill="#ff8a83">MISSED</text></g>
+  <g class="row" style="animation-delay:2.10s"><rect x="656" y="266" width="560" height="44" rx="10" fill="#ffffff" fill-opacity="0.06"/>
+    <text x="674" y="294" font-size="15" fill="#e8eef5"><tspan fill="#7f93ab" class="m">11</tspan>  Add to cart reacts to mouse down only</text></g>
+  <g class="verdict" style="animation-delay:4.20s"><rect x="1108" y="275" width="96" height="26" rx="13" fill="#ff4f45" fill-opacity="0.2" stroke="#ff4f45"/><text x="1156" y="292" text-anchor="middle" font-size="12" font-weight="800" fill="#ff8a83">MISSED</text></g>
+  <g class="row" style="animation-delay:2.28s"><rect x="656" y="318" width="560" height="44" rx="10" fill="#ffffff" fill-opacity="0.06"/>
+    <text x="674" y="346" font-size="15" fill="#e8eef5"><tspan fill="#7f93ab" class="m">12</tspan>  The City field has no label</text></g>
+  <g class="verdict" style="animation-delay:4.32s"><rect x="1108" y="327" width="96" height="26" rx="13" fill="#5ef1c2"/><text x="1156" y="344" text-anchor="middle" font-size="12" font-weight="800" fill="#06231a">FLAGGED</text></g>
+  <g class="row" style="animation-delay:2.46s"><rect x="656" y="370" width="560" height="44" rx="10" fill="#ffffff" fill-opacity="0.06"/>
+    <text x="674" y="398" font-size="15" fill="#e8eef5"><tspan fill="#7f93ab" class="m">13</tspan>  Focus lost when the cart updates</text></g>
+  <g class="verdict" style="animation-delay:4.44s"><rect x="1108" y="379" width="96" height="26" rx="13" fill="#ff4f45" fill-opacity="0.2" stroke="#ff4f45"/><text x="1156" y="396" text-anchor="middle" font-size="12" font-weight="800" fill="#ff8a83">MISSED</text></g>
+  <g class="sum" style="transform-origin: 956px 494px"><rect x="656" y="474" width="560" height="56" rx="14" fill="#ffffff"/>
+    <text x="936" y="510" text-anchor="middle" font-size="22" font-weight="800" fill="#0b1b33">axe-core flags <tspan fill="#0a8a5f">2</tspan> of 13. Misses <tspan fill="#d93a30">11</tspan>.</text></g>
+  </g>
+</svg>
