@@ -11,7 +11,7 @@ import { stuckPage } from '../fixer/fixer.mjs';
 import { findCulprit, siteCulprits, stuckEvidence, AXE_VERSION } from './culprit.mjs';
 import { verifyFindings } from '../verify.mjs';
 
-export const REPORT_VERSION = 8;
+export const REPORT_VERSION = 9;
 
 // WCAG 2.2 success criteria used by the catalog and the suggestions.
 export const WCAG = {
@@ -146,7 +146,7 @@ function scorecard(run, rerun, baseline) {
   const recordedBrowser = cols.some((c) => (c.run.events || []).some((e) => e.type === 'act' && e.actMs));
   const outcome = (r) => {
     const s = r.outcome?.status;
-    if (s === 'purchased') return r.payment ? `Paid (PayPal ${r.payment.mode} ${r.payment.status})` : 'Paid';
+    if (s === 'purchased') return r.payment ? (r.payment.mode === 'owner-sandbox' ? `Paid (the shop's PayPal sandbox: ${r.payment.status})` : `Paid (PayPal ${r.payment.mode} ${r.payment.status})`) : 'Paid';
     if (s === 'reached-payment') return 'Reached payment (stopped, nothing paid)';
     if (s === 'not-testable') return 'Not testable (bot protection or robots.txt)';
     if (s === 'blocked') return r.outcome?.claimedDone ? 'Could not pay (claimed done, no order)' : 'Could not pay (gave up)';
@@ -374,10 +374,13 @@ function buildSite({ run, ctx }) {
     };
   });
   const m = runMetrics(run);
-  const reached = run.outcome?.status === 'reached-payment';
+  const paid = run.outcome?.status === 'purchased' && run.payment?.status === 'COMPLETED';
+  const reached = run.outcome?.status === 'reached-payment' || paid;
   const host = run.site.host;
   const who = customer(run.persona);
-  const headline = reached
+  const headline = paid
+    ? `Our simulated ${who} bought on ${host} in ${plural(m.steps, 'step')} and paid with a PayPal test card; the shop's own PayPal sandbox reports order ${run.payment.orderId} as COMPLETED.`
+    : reached
     ? `Our simulated ${who} reached the payment step of ${host} in ${plural(m.steps, 'step')} and stopped there; nothing was paid.`
     : `Our simulated ${who} did not reach a payment form on ${host}: ${lower1(run.outcome?.reason || '').replace(/^the agent /, 'it ')}`;
   return {

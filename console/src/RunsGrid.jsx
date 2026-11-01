@@ -16,7 +16,7 @@ function RunDetail({ data }) {
   return (
     <div style={{ padding: '12px 20px', lineHeight: 1.5 }}>
       <p style={{ margin: '0 0 6px' }}><strong>Why:</strong> {data.outcome?.reason || '—'}</p>
-      {data.payment && <p style={{ margin: '0 0 6px' }}><strong>PayPal {data.payment.mode === 'mock' ? '(mock)' : 'sandbox'}:</strong> order {data.payment.orderId}, {data.payment.status}</p>}
+      {data.payment && <p style={{ margin: '0 0 6px' }}><strong>PayPal {data.payment.mode === 'mock' ? '(mock)' : data.payment.mode === 'owner-sandbox' ? 'sandbox of the shop' : 'sandbox'}:</strong> order {data.payment.orderId}, {data.payment.status}</p>}
       {data.findings?.length ? (
         <ul className="findings">{data.findings.map((f, i) => <li key={i}><strong>{f.page}:</strong> {f.problem}</li>)}</ul>
       ) : <p className="note" style={{ margin: 0 }}>No findings reported.</p>}

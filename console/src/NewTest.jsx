@@ -7,7 +7,7 @@ import { OwnShopSteps, AgentAccessResult } from './OwnSite.jsx';
 // A real shop's address is entered once: it is checked first, then either the customers go, or its owner connects it.
 const WHERE = [
   { id: 'demo', title: 'Our demo shop', note: 'Clean, or with the checkout defects we built. Payment runs in the PayPal sandbox and passes only when PayPal reports COMPLETED.' },
-  { id: 'real', title: 'A real shop', note: 'Any shop by its address. All three customers go as far as the payment step and stop. A shop behind bot protection can be connected by its owner.' },
+  { id: 'real', title: 'A real shop', note: 'Any shop by its address. All three customers go as far as the payment step and stop. The owner can connect the shop: to let the test past bot protection, and to have the customers pay in the shop’s PayPal sandbox.' },
 ];
 const URL_OK = /^https?:\/\/[^/\s]+\.\S*$/;
 

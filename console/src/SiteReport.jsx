@@ -25,6 +25,7 @@ export function Pill({ outcome }) {
 function Verdict({ s }) {
   if (!s.tested && s.notTestable) return <>Not testable: the site turned our browser away</>;
   if (!s.tested) return <>Running</>;
+  if (s.sandbox) return <>{s.paid} of {s.tested} customer type{s.tested === 1 ? '' : 's'} paid, confirmed by the shop’s PayPal sandbox</>;
   return <>{s.reached} of {s.tested} customer type{s.tested === 1 ? '' : 's'} reached the payment step</>;
 }
 
@@ -76,7 +77,7 @@ export default function Results() {
 
   const rows = useMemo(() => all.map((s) => ({
     key: s.key, group: groupOf(s), order: s.running ? 1 : s.notTestable ? 2 : 0,
-    verdict: s.running ? 'Testing now' : s.notTestable ? 'Turned away' : `${s.reached} of ${s.tested} reached payment`,
+    verdict: s.running ? 'Testing now' : s.notTestable ? 'Turned away' : s.sandbox ? `${s.paid} of ${s.tested} paid (PayPal sandbox)` : `${s.reached} of ${s.tested} reached payment`,
     reached: s.reached, tested: s.tested, problems: s.notTestable ? null : s.problems,
     screenreader: s.customers.screenreader, keyboard: s.customers.keyboard, agent: s.customers.agent,
     lastRun: s.lastRun,
@@ -102,7 +103,7 @@ export default function Results() {
       <h1>What the customers met</h1>
       <TestShopCases />
       <h2 className="res-h2">Real shops, three customers each</h2>
-      <p className="lead">Every shop is tested by a screen reader user, a keyboard-only user and an AI shopping agent, in one visit. Nobody pays on a real shop: a customer passes when it reaches the payment step. Shops are shown without their names.</p>
+      <p className="lead">Every shop is tested by a screen reader user, a keyboard-only user and an AI shopping agent, in one visit. Nobody pays on a shop tested without its owner: a customer passes when it reaches the payment step. On a staging shop its owner connected to their PayPal sandbox, a customer passes only when that sandbox confirms the order. Shops are shown without their names.</p>
       {list && (
         <ul className="res-stats" aria-label="Summary">
           <li><b>{tested.length}</b><span>shops tested by all three customers</span></li>

@@ -12,13 +12,14 @@ export const VERIFY_PATH = '/.well-known/accessipay.txt';
 export const KEY_HEADER = 'x-accessipay-key';
 export const DNS_PREFIX = 'accessipay-verification=';
 
-const PRIVATE_HOST = /^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|0\.0\.0\.0|\[?::1\]?|169\.254\.)|\.local$|\.internal$/i;
+export const PRIVATE_HOST = /^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|0\.0\.0\.0|\[?::1\]?|169\.254\.)|\.local$|\.localhost$|\.internal$/i;
 
-export function siteFromUrl(raw) {
+// allowLocal: only for tests and local development (ACCESSIPAY_LOCAL_SITES=1), where the shop runs on this computer.
+export function siteFromUrl(raw, { allowLocal = false } = {}) {
   let u;
   try { u = new URL(String(raw || '').trim()); } catch { throw new Error('Enter the full address of your shop, starting with https://'); }
   if (!/^https?:$/.test(u.protocol)) throw new Error('Only http and https sites can be tested');
-  if (PRIVATE_HOST.test(u.hostname)) throw new Error('This address is not reachable from the internet');
+  if (!allowLocal && PRIVATE_HOST.test(u.hostname)) throw new Error('This address is not reachable from the internet');
   return u;
 }
 
@@ -28,7 +29,7 @@ export function keyGoesTo(siteHost, requestHost) {
   return requestHost === siteHost || requestHost === base || requestHost.endsWith(`.${base}`);
 }
 
-export function createOwnerSites({ dataDir, fetchImpl = fetch, resolveTxt = dns.resolveTxt }) {
+export function createOwnerSites({ dataDir, fetchImpl = fetch, resolveTxt = dns.resolveTxt, allowLocal = false, sandboxKeys = null }) {
   const dir = path.join(dataDir, 'owners');
   fs.mkdirSync(dir, { recursive: true });
   const sites = new Map();
@@ -46,11 +47,13 @@ export function createOwnerSites({ dataDir, fetchImpl = fetch, resolveTxt = dns.
       dns: { name: s.host.replace(/^www\./, ''), type: 'TXT', value: `${DNS_PREFIX}${s.token}` },
       access: { header: KEY_HEADER, key: s.key },
       lastCheck: s.lastCheck || null,
+      // The secret never leaves the server.
+      sandbox: s.sandbox ? { url: s.sandbox.url, clientId: s.sandbox.clientId, connectedAt: s.sandbox.connectedAt } : null,
     };
   }
 
   function add(rawUrl) {
-    const u = siteFromUrl(rawUrl);
+    const u = siteFromUrl(rawUrl, { allowLocal });
     const existing = [...sites.values()].find((s) => s.host === u.hostname);
     if (existing) return view(existing);
     const s = {
@@ -101,5 +104,33 @@ export function createOwnerSites({ dataDir, fetchImpl = fetch, resolveTxt = dns.
   function raw(id) { return sites.get(id) || null; }
   function recordCheck(id, check) { const s = sites.get(id); if (s) { s.lastCheck = check; save(s); } }
 
-  return { add, verify, get, raw, recordCheck };
+  // The owner's PayPal sandbox: the keys of a sandbox REST app, and the staging checkout that uses it.
+  // Runs on that checkout pay with a PayPal test card, and only an order this sandbox reports as
+  // COMPLETED counts. The keys are used for one thing: reading orders back. Live keys are refused.
+  async function connectSandbox(id, { url, clientId, secret } = {}) {
+    const s = sites.get(id);
+    if (!s) throw new Error('Site not found');
+    if (!s.verified) throw new Error('Verify the site first');
+    const u = siteFromUrl(url || s.url, { allowLocal });
+    if (!keyGoesTo(s.host, u.hostname)) throw new Error(`The staging checkout must be on ${s.host.replace(/^www\./, '')} or one of its subdomains`);
+    clientId = String(clientId || '').trim();
+    secret = String(secret || '').trim();
+    if (!clientId || !secret) throw new Error('Enter the Client ID and the Secret of your PayPal sandbox app');
+    if (!sandboxKeys) throw new Error('Sandbox connection is not available on this server');
+    let ok = false;
+    try { ok = await sandboxKeys({ clientId, secret }).check(); } catch { ok = false; }
+    if (!ok) throw new Error('PayPal did not accept these keys in the sandbox. Use the keys of a sandbox app (developer.paypal.com, Apps & Credentials, Sandbox). Live keys are refused.');
+    s.sandbox = { url: u.href, clientId, secret, connectedAt: new Date().toISOString() };
+    save(s);
+    return view(s);
+  }
+  function disconnectSandbox(id) {
+    const s = sites.get(id);
+    if (!s) throw new Error('Site not found');
+    delete s.sandbox;
+    save(s);
+    return view(s);
+  }
+
+  return { add, verify, get, raw, recordCheck, connectSandbox, disconnectSandbox };
 }

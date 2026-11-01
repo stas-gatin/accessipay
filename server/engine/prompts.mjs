@@ -25,6 +25,16 @@ export const EXTERNAL_GOAL = [
   'finish with done and your findings. If you cannot get that far, give up with honest findings.',
 ].join(' ');
 
+// An owner's staging copy on their PayPal sandbox: buy something and pay with a PayPal test card.
+export const SANDBOX_GOAL = [
+  'This is a staging copy of an online shop, connected to the PayPal sandbox: no real money moves.',
+  'Buy any one in-stock product with the cheapest delivery. Do not create an account or sign in; check out as a guest.',
+  'Your details: full name Alex Morgan, email alex.morgan@example.com, street address 100 Example Avenue,',
+  'city New York, state New York, ZIP 10001, country United States, phone (212) 555-0142.',
+  'Pay by card: name on card Alex Morgan, card number 4111 1111 1111 1111, expiry 12/30, security code 123.',
+  'Decline newsletters and promotions. When the shop confirms the order, finish with done and your findings.',
+].join(' ');
+
 export const GOALS = {
   checkout: { label: 'Buy a known item', text: undefined, expect: { sku: 'bp-01', delivery: 'standard' } },
   agentic: { label: 'Agentic buyer: find what the customer needs', text: AGENTIC_GOAL, expect: { sku: 'rj-03', delivery: 'express' } },

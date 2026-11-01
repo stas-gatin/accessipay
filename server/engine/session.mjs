@@ -86,11 +86,13 @@ export const ACCOUNT_ACTION = /\b(sign\s*in|log\s*in|sign\s*up|register|create\s
 export const CARD_FIELD = /card\s*number|cardholder|name on card|\bcvv\b|\bcvc\b|security code|expir|\biban\b|account number|routing/i;
 
 export class Session {
-  constructor(page, persona, { external = false } = {}) {
+  constructor(page, persona, { external = false, sandboxPay = false } = {}) {
     if (!PERSONAS[persona]) throw new Error(`Unknown persona ${persona}`);
     this.page = page;
     this.persona = persona;
     this.external = external;
+    // An owner's staging shop on their PayPal sandbox: paying with a test card is the point of the run.
+    this.sandboxPay = sandboxPay;
   }
 
   // Visible iframes in document order with their frames. Screen readers and browser agents read inside
@@ -149,12 +151,14 @@ export class Session {
     if (!this.external) return null;
     const a = d.args || {};
     const stop = 'Not allowed on a real site: AccessiPay never pays or places orders. You have reached the payment step; finish with done and your findings.';
-    if (['click', 'check'].includes(d.action) && FINAL_ACTION.test(a.name || '')) return stop;
-    if (d.action === 'fill' && CARD_FIELD.test(a.name || '')) return 'Not allowed on a real site: AccessiPay never types card data. Finish with done and your findings.';
-    if (d.action === 'activate' || (d.action === 'press' && (a.key === 'Enter' || a.key === 'Space'))) {
-      if (FINAL_ACTION.test(await this.focusedName())) return stop;
+    if (!this.sandboxPay) {
+      if (['click', 'check'].includes(d.action) && FINAL_ACTION.test(a.name || '')) return stop;
+      if (d.action === 'fill' && CARD_FIELD.test(a.name || '')) return 'Not allowed on a real site: AccessiPay never types card data. Finish with done and your findings.';
+      if (d.action === 'activate' || (d.action === 'press' && (a.key === 'Enter' || a.key === 'Space'))) {
+        if (FINAL_ACTION.test(await this.focusedName())) return stop;
+      }
+      if (d.action === 'type' && CARD_FIELD.test(await this.focusedName())) return 'Not allowed on a real site: AccessiPay never types card data. Finish with done and your findings.';
     }
-    if (d.action === 'type' && CARD_FIELD.test(await this.focusedName())) return 'Not allowed on a real site: AccessiPay never types card data. Finish with done and your findings.';
     const account = 'Not allowed on a real site: AccessiPay never signs in, signs up or types passwords. Continue as a guest, or finish with your findings.';
     // "Guest checkout, you can sign in later" is the way around an account, not into one.
     const guest = (n) => /\bguest\b/i.test(n || '');

@@ -416,7 +416,7 @@ export default function RunView({ id, meta, from, onSection }) {
         <div>
           <p className="label">What really happened</p>
           <p className={`value ${o === 'reached-payment' ? 'neutral' : outcome?.tone || 'neutral'}`}>{running ? `Step ${total}` : o === 'reached-payment' ? 'Reached payment' : o === 'purchased' ? 'Bought it' : outcome?.tone === 'bad' ? 'Could not buy' : outcome?.label || '—'}</p>
-          <p className="sub">{/^The agent gave up\.?$/.test(run.outcome?.reason || '') ? 'The customer gave up.' : /payment oracle/.test(run.outcome?.reason || '') ? 'PayPal confirmed the order (sandbox).' : run.outcome?.reason}{run.payment?.status === 'COMPLETED' && !/payment oracle/.test(run.outcome?.reason || '') ? (run.payment.mode === 'mock' ? ' Mock payment.' : ' PayPal confirmed the order (sandbox).') : ''}</p>
+          <p className="sub">{/^The agent gave up\.?$/.test(run.outcome?.reason || '') ? 'The customer gave up.' : /payment oracle/.test(run.outcome?.reason || '') ? 'PayPal confirmed the order (sandbox).' : run.outcome?.reason}{run.payment?.status === 'COMPLETED' && !/payment oracle/.test(run.outcome?.reason || '') ? (run.payment.mode === 'mock' ? ' Mock payment.' : run.payment.mode === 'owner-sandbox' ? ` PayPal order ${run.payment.orderId}${run.payment.amount != null ? `, $${run.payment.amount.toFixed(2)}` : ''}.` : ' PayPal confirmed the order (sandbox).') : ''}</p>
         </div>
       </div>
       {external && <p className="note" style={{ marginTop: 8 }}>Real shop{run.site.url ? <>: <a href={run.site.url} target="_blank" rel="noreferrer">{run.site.host}<span className="sr-only"> (opens in a new tab)</span></a></> : ''}. The customer goes as far as the payment step; nothing is paid.</p>}

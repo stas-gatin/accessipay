@@ -228,7 +228,7 @@ export function PayPalPage() {
   return (
     <div className="lp lp-brand">
       <PageHero eyebrow="For PayPal" title="The test passes only when PayPal confirms the order" visual={<ProofCard />}
-        lead="Proof of purchase, not proof of compliance. In our demo shop, every pass is an order the PayPal sandbox confirmed. On real shops nobody pays: the customer stops at the payment step." />
+        lead="Proof of purchase, not proof of compliance. In our demo shop, and on a staging shop its owner connects with their PayPal sandbox, every pass is an order the PayPal sandbox confirmed. On a real shop tested without its owner, nobody pays: the customer stops at the payment step." />
       <section className="s-light sec" aria-labelledby="pp-role">
         <div className="wrap">
           <SectionHead eyebrow="PayPal’s role" id="pp-role" title="Without PayPal, a pass would be only the customer’s word" />
@@ -309,6 +309,7 @@ export function Limits() {
           <h3>Real shops</h3>
           <ul>
             <li>Every shop is tested by all three customers. They stop at the payment step: no order is placed and no card data is typed. The name, email and address they enter are fictional.</li>
+            <li>An owner can let them go further: on a staging copy of the shop connected to the owner’s PayPal sandbox, the customers pay with a PayPal test card, and a run passes only when that sandbox reports the order as COMPLETED. Payments may go only to a PayPal checkout loaded with the connected sandbox app; everything else is blocked.</li>
             <li>For privacy, our published results do not name the real shops we tested: no names, addresses or screenshots.</li>
             <li>A shop that turns our browser away is listed as such. AccessiPay never gets past bot protection on its own: only the shop’s owner can let the test in: on <a href="#/own-site">Run a test</a>, enter the shop’s address and choose “This is my shop”.</li>
             <li>Every finding is checked again without AI against the record of its run; each one shows whether the record confirms it.</li>

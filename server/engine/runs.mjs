@@ -5,11 +5,13 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { runShopper } from './run.mjs';
 import { PERSONAS, FINAL_ACTION } from './session.mjs';
-import { DEFAULT_GOAL, GOALS, EXTERNAL_GOAL } from './prompts.mjs';
+import { DEFAULT_GOAL, GOALS, EXTERNAL_GOAL, SANDBOX_GOAL } from './prompts.mjs';
 import { scriptedBrain } from './brains/scripted.mjs';
 import { externalBrain } from './brains/external.mjs';
 import { scanShop } from '../scan/axe.mjs';
 import { checkRobots } from './preflight.mjs';
+import { createPayPal } from '../paypal/client.mjs';
+import { keyGoesTo, PRIVATE_HOST } from '../owners.mjs';
 
 // Real sites: the run ends successfully when a payment form is on screen.
 export async function reachedPayment(page) {
@@ -51,15 +53,49 @@ export async function reachedPayment(page) {
   } catch { return false; }
 }
 
-function checkExternalUrl(raw) {
+function checkExternalUrl(raw, allowLocal) {
   let u;
   try { u = new URL(raw); } catch { throw new Error('That is not a valid URL'); }
   if (!/^https?:$/.test(u.protocol)) throw new Error('Only http and https sites can be tested');
-  if (/^(localhost|127\.|0\.0\.0\.0|10\.|192\.168\.|169\.254\.|\[?::1)/.test(u.hostname)) throw new Error('Local and private addresses cannot be tested');
+  if (!allowLocal && PRIVATE_HOST.test(u.hostname)) throw new Error('Local and private addresses cannot be tested');
   return u;
 }
 
-export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}, owners = null, privateView = false }) {
+// Reads orders back from an owner's PayPal sandbox. An order counts only when it is COMPLETED and was
+// created during this run: the owner's keys see only their own orders, so it is theirs too.
+export function sandboxOracle({ keys, startedAt, orderIds, paypalFor = (k) => createPayPal({ PAYPAL_CLIENT_ID: k.clientId, PAYPAL_CLIENT_SECRET: k.secret }) }) {
+  const pp = paypalFor(keys);
+  const seen = new Map();
+  const fresh = (o) => !o.create_time || Date.parse(o.create_time) >= startedAt - 60000;
+  const found = () => [...seen.values()].find((o) => o.status === 'COMPLETED' && fresh(o)) || null;
+  async function look() {
+    for (const id of orderIds) {
+      if (seen.get(id)?.status === 'COMPLETED') continue;
+      try { seen.set(id, await pp.getOrder(id)); } catch { seen.set(id, { id, status: 'NOT FOUND' }); }
+    }
+    return found();
+  }
+  return {
+    async check(page, opts = {}) {
+      // When the customer says it is done, give a capture that is still on its way a few seconds.
+      for (let i = 0; i < (opts.final ? 8 : 1); i++) {
+        if (await look()) return true;
+        if (opts.final) await new Promise((r) => setTimeout(r, 1000));
+      }
+      return false;
+    },
+    // What the run record keeps: the completed order, or the last one PayPal knew about.
+    payment() {
+      const o = found() || [...seen.values()].filter((x) => x.status !== 'NOT FOUND').at(-1);
+      if (!o) return { mode: 'owner-sandbox', orderId: null, status: orderIds.size ? 'NOT FOUND' : 'NO ORDER' };
+      const unit = o.purchase_units?.[0];
+      const amount = unit?.payments?.captures?.[0]?.amount || unit?.amount;
+      return { mode: 'owner-sandbox', orderId: o.id, status: o.status, amount: amount ? Number(amount.value) : null, currency: amount?.currency_code || null, createdAt: o.create_time || null };
+    },
+  };
+}
+
+export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}, owners = null, privateView = false, allowLocal = false, paypalFor }) {
   const runs = new Map();
   const listeners = new Map();
   const runsDir = path.join(dataDir, 'runs');
@@ -85,10 +121,14 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
   function start(opts) {
     const persona = opts.persona || 'screenreader';
     if (!PERSONAS[persona]) throw new Error(`Unknown persona "${persona}"`);
-    const site = opts.url ? checkExternalUrl(opts.url) : null;
+    const site = opts.url ? checkExternalUrl(opts.url, allowLocal) : null;
     // A site its owner verified: their access key opens their bot protection for this run.
     const owner = site && opts.ownerSiteId && owners ? owners.raw(opts.ownerSiteId) : null;
-    if (owner && (!owner.verified || owner.host !== site.hostname)) throw new Error('This site is not verified for this address yet');
+    if (owner && (!owner.verified || !keyGoesTo(owner.host, site.hostname))) throw new Error('This site is not verified for this address yet');
+    // Paying in the owner's PayPal sandbox: only on the staging checkout they connected.
+    const sandbox = opts.payInSandbox ? owner?.sandbox : null;
+    if (opts.payInSandbox && !sandbox) throw new Error('Connect your PayPal sandbox first');
+    if (sandbox && new URL(sandbox.url).host !== site.host) throw new Error('Paying in the sandbox works only on the staging checkout you connected');
     const inst = site ? null : opts.instanceId ? shop.get(opts.instanceId) : shop.create({ defects: opts.defects || [] });
     if (!site && !inst) throw new Error('Shop instance not found');
     if (inst && opts.instanceId && opts.resetCart !== false) { inst.cart = []; inst.coupon = ''; inst.shipping = null; inst.order = null; shop.save(inst); }
@@ -101,13 +141,15 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
       id, createdAt: new Date().toISOString(), label: opts.label || '',
       persona, brainKind: brain.kind, model: brain.model || null,
       instanceId: inst?.id || null, defects: inst ? [...inst.defects] : [], patches: inst ? inst.patches.map((p) => p.id || p.find.slice(0, 40)) : [],
-      site: site ? { url: site.href, host: site.hostname, ownerVerified: !!owner } : null,
-      paypalMode: paypal.mode, goalId, goal: opts.goal || (site ? EXTERNAL_GOAL : GOALS[goalId].text || DEFAULT_GOAL), maxSteps: opts.maxSteps || PERSONAS[persona].maxSteps || 40,
+      site: site ? { url: site.href, host: site.hostname, ownerVerified: !!owner, sandbox: !!sandbox } : null,
+      paypalMode: sandbox ? 'owner-sandbox' : paypal.mode, goalId, goal: opts.goal || (sandbox ? SANDBOX_GOAL : site ? EXTERNAL_GOAL : GOALS[goalId].text || DEFAULT_GOAL), maxSteps: opts.maxSteps || PERSONAS[persona].maxSteps || 40,
       status: 'running', outcome: null, findings: [], events: [], brain, abort,
     };
     runs.set(id, rec);
 
     const startUrl = site ? site.href : `${origin}/s/${inst.id}${opts.startPath || '/'}`;
+    const orderIds = new Set();
+    const sandboxCheck = sandbox ? sandboxOracle({ keys: sandbox, startedAt: Date.now(), orderIds, paypalFor }) : null;
     // Real sites: robots.txt first. A site that asks not to be visited is not visited.
     // robots.txt speaks to crawlers; on a site its owner verified, the owner's consent covers the run.
     (site && !owner ? checkRobots(site.href) : Promise.resolve(null)).then((robots) => {
@@ -119,7 +161,7 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
       return runShopper({
       browser, startUrl, persona, brain, goal: rec.goal, maxSteps: rec.maxSteps,
       // A payment can still be in flight (the sandbox takes a few seconds): wait for it before judging.
-      oracle: site ? reachedPayment : async (page, opts = {}) => {
+      oracle: sandboxCheck ? sandboxCheck.check : site ? reachedPayment : async (page, opts = {}) => {
         // When the customer says it is done, give a payment that is still on its way to PayPal a moment.
         const rounds = opts.final ? 20 : 60;
         for (let i = 0; i < rounds; i++) {
@@ -134,6 +176,7 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
       shotsDir: path.join(runsDir, id),
       signal: abort.signal,
       siteAccess: owner ? { host: owner.host, key: owner.key } : null,
+      sandboxPay: sandbox ? { clientId: sandbox.clientId, orderIds } : null,
     });
     })
       .then(async (r) => {
@@ -141,6 +184,14 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
         rec.findings = r.findings;
         rec.steps = r.steps;
         if (site) rec.scan = { totalViolations: r.pageScans.reduce((s, p) => s + (p.violations || 0), 0), pages: r.pageScans, inRun: true };
+        if (sandboxCheck) {
+          rec.payment = sandboxCheck.payment();
+          rec.payment.sdkClientIds = r.sdkClientIds;
+          publish(rec, { t: new Date().toISOString(), type: 'oracle', payment: rec.payment });
+          if (rec.outcome.status === 'purchased' && rec.payment.status !== 'COMPLETED') {
+            rec.outcome = { status: 'blocked', reason: `The shop's PayPal sandbox reports the order as ${rec.payment.status}.` };
+          }
+        }
         if (inst && inst.order) {
           try {
             const o = await paypal.getOrder(inst.order.paypalOrderId);

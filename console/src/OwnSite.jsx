@@ -50,6 +50,8 @@ export function OwnShopSteps({ meta, fixedUrl = null, first = 2 }) {
   const [showKey, setShowKey] = useState(false);
   const [busy, setBusy] = useState('');
   const [error, setError] = useState('');
+  const [sbx, setSbx] = useState({ url: '', clientId: '', secret: '' });
+  const [pay, setPay] = useState(false);
 
   useEffect(() => {
     if (fixedUrl) return;
@@ -71,10 +73,23 @@ export function OwnShopSteps({ meta, fixedUrl = null, first = 2 }) {
   useEffect(() => { if (fixedUrl) { setUrl(fixedUrl); add(); } }, [fixedUrl]);
   const verify = () => run('verify', async () => { const r = await api(`/api/owner-sites/${site.id}/verify`, {}); setVerifyResult(r); setSite(r.site); });
   const checkAccess = () => run('check', async () => setCheck(await api(`/api/owner-sites/${site.id}/check`, {})));
+  const connect = () => run('sandbox', async () => {
+    const s = await api(`/api/owner-sites/${site.id}/sandbox`, { url: sbx.url || site.url, clientId: sbx.clientId, secret: sbx.secret });
+    setSite(s); setSbx({ url: '', clientId: '', secret: '' }); setPay(true);
+  });
+  const disconnect = () => run('sandbox', async () => {
+    const r = await fetch(`/api/owner-sites/${site.id}/sandbox`, { method: 'DELETE' });
+    setSite(await r.json()); setPay(false);
+  });
+  // With a sandbox connected, paying is the default: that is what the owner connected it for.
+  useEffect(() => { setPay(!!site?.sandbox); }, [!!site?.sandbox]);
+  const paying = pay && !!site?.sandbox;
   const startRun = () => run('run', async () => {
     const brain = meta.claude ? 'anthropic' : 'external';
     // Every shop is always tested by all three customers, as one site analysis.
-    const t = await api('/api/site-tests', { url: site.url, brain, ownerSiteId: site.id });
+    const t = await api('/api/site-tests', paying
+      ? { url: site.sandbox.url, brain, ownerSiteId: site.id, payInSandbox: true }
+      : { url: site.url, brain, ownerSiteId: site.id });
     location.hash = `#/sites/${encodeURIComponent(t.key)}`;
   });
 
@@ -169,12 +184,46 @@ export function OwnShopSteps({ meta, fixedUrl = null, first = 2 }) {
           </section>
         )}
 
-        {!site?.verified && <Locked n={at + 3} title="Send the three customers" after={at + 2} />}
+        {!site?.verified && <Locked n={at + 3} title="Optional: pay in your PayPal sandbox" after={at + 1} />}
+        {site?.verified && (
+          <section className="card" aria-labelledby="o-sbx">
+            <h2 className="section-title" id="o-sbx"><span className="step-no">{at + 3}</span>Optional: pay in your PayPal sandbox</h2>
+            <p>Reaching the payment page does not prove a customer can pay. Connect a staging copy of your shop that takes payments in the PayPal sandbox, and the customers go all the way: they pay with a PayPal test card, and a test passes only when <b>your own sandbox</b> reports the order as COMPLETED.</p>
+            {site.sandbox ? (
+              <>
+                <p className="note" aria-live="polite"><Mark ok yes="Connected" />: sandbox app <span className="mono">…{site.sandbox.clientId.slice(-6)}</span>, checkout <span className="mono">{site.sandbox.url}</span>.</p>
+                <button type="button" className="btn" onClick={disconnect} disabled={busy === 'sandbox'}>Disconnect</button>
+              </>
+            ) : (
+              <>
+                <label htmlFor="sbx-url" className="note" style={{ display: 'block', margin: '8px 0 4px' }}>Staging checkout address, on {site.host.replace(/^www\./, '')} or a subdomain</label>
+                <input id="sbx-url" type="url" value={sbx.url} placeholder={site.url} onChange={(e) => setSbx({ ...sbx, url: e.target.value })} style={field} />
+                <label htmlFor="sbx-id" className="note" style={{ display: 'block', margin: '10px 0 4px' }}>Sandbox app Client ID</label>
+                <input id="sbx-id" value={sbx.clientId} autoComplete="off" spellCheck={false} onChange={(e) => setSbx({ ...sbx, clientId: e.target.value })} style={field} />
+                <label htmlFor="sbx-secret" className="note" style={{ display: 'block', margin: '10px 0 4px' }}>Sandbox app Secret</label>
+                <input id="sbx-secret" type="password" value={sbx.secret} autoComplete="off" onChange={(e) => setSbx({ ...sbx, secret: e.target.value })} style={field} />
+                <p className="note">From developer.paypal.com, Apps &amp; Credentials, Sandbox. Live keys are refused. The keys are used only to read your orders back, and the Secret is never shown again. During the test, the browser may send a payment only to a PayPal checkout loaded with this Client ID; every other payment request is blocked.</p>
+                <button type="button" className="btn primary" onClick={connect} disabled={busy === 'sandbox' || !sbx.clientId || !sbx.secret}>{busy === 'sandbox' ? 'Asking PayPal…' : 'Connect sandbox'}</button>
+              </>
+            )}
+          </section>
+        )}
+
+        {!site?.verified && <Locked n={at + 4} title="Send the three customers" after={at + 2} />}
         {site?.verified && (
           <section className="card" aria-labelledby="o4">
-            <h2 className="section-title" id="o4"><span className="step-no">{at + 3}</span>Send the three customers</h2>
+            <h2 className="section-title" id="o4"><span className="step-no">{at + 4}</span>Send the three customers</h2>
             <p>A screen reader user, a keyboard-only user and an AI shopping agent shop at the same time. Their results come together as one analysis of your shop.</p>
-            <p className="note">Each customer goes as far as the payment step and stops: no order is placed and no card data is typed. On your verified site the rules meant for search crawlers (robots.txt) are not applied, because you asked for the test.</p>
+            {site.sandbox && (
+              <div role="radiogroup" aria-label="How far the customers go" style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+                {[[false, 'Stop at the payment step', site.url], [true, 'Pay in my PayPal sandbox', site.sandbox.url]].map(([v, l, u]) => (
+                  <button key={l} type="button" className="choice" role="radio" aria-checked={pay === v} aria-pressed={pay === v} onClick={() => setPay(v)} style={{ flex: 1 }}><strong>{l}</strong><span className="note mono" style={{ display: 'block' }}>{u}</span></button>
+                ))}
+              </div>
+            )}
+            <p className="note">{paying
+              ? 'Each customer buys one product and pays with a PayPal test card on your staging checkout. No real money moves. A run counts as paid only when your PayPal sandbox reports the order as COMPLETED.'
+              : 'Each customer goes as far as the payment step and stops: no order is placed and no card data is typed.'} On your verified site the rules meant for search crawlers (robots.txt) are not applied, because you asked for the test.</p>
             {!live && <p className="note">Starting new tests is turned off in this public demo: each run has an AI model decide every step, and that has a cost.</p>}
             <button type="button" className="btn primary" onClick={startRun} disabled={busy === 'run' || !live}>{busy === 'run' ? 'Starting…' : 'Start the test'}</button>
           </section>

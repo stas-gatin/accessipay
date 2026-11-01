@@ -11,6 +11,8 @@ import { verifyFindings, verificationSummary } from './verify.mjs';
 const PERSONAS = ['screenreader', 'keyboard', 'agent'];
 const counted = (r) => r.outcome && !['error', 'stopped'].includes(r.outcome.status);
 const ok = (r) => ['purchased', 'reached-payment'].includes(r.outcome?.status);
+// Purchases in an owner's PayPal sandbox are their own analysis, apart from the runs that stop at payment.
+export const siteKey = (site) => (site.sandbox ? `${site.host} (PayPal sandbox)` : site.host);
 
 export function createSiteAnalysis({ runs, dataDir }) {
   // Real-site runs grouped by host (anonymized retailers carry their label as host).
@@ -18,7 +20,7 @@ export function createSiteAnalysis({ runs, dataDir }) {
     const by = new Map();
     for (const r of runs.list()) {
       if (!r.site || r.brainKind === 'scripted') continue;
-      const key = r.site.host;
+      const key = siteKey(r.site);
       if (!by.has(key)) by.set(key, []);
       by.get(key).push(r);
     }
@@ -44,6 +46,8 @@ export function createSiteAnalysis({ runs, dataDir }) {
       key,
       kind: /^Retailer /.test(key) ? 'retailer' : 'platform',
       anonymized: list.some((r) => r.site?.anonymized),
+      sandbox: list.some((r) => r.site?.sandbox),
+      paid: testable.filter((r) => r.outcome.status === 'purchased' && r.payment?.status === 'COMPLETED').length,
       url: list.find((r) => r.site?.url)?.site.url || null,
       lastRun: list.map((r) => r.createdAt).sort().at(-1),
       running: list.filter((r) => r.status === 'running').length,

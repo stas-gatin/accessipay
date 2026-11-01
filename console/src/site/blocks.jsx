@@ -157,12 +157,13 @@ export function PayPalConfirms() {
         <p>
           In our demo shop, we use PayPal as the confirmation that the customer or agent really completed a purchase. If they did not,
           AI finds the cause, fixes the page and sends the same customer again. If they could already buy,
-          we show how much easier the path became. On real shops nobody pays: the customer stops at the payment step,
-          and that is where the test ends.
+          we show how much easier the path became. On a real shop tested without its owner, nobody pays: the customer
+          stops at the payment step, and that is where the test ends.
         </p>
         <p>
-          <strong>Next, not built yet:</strong> the same PayPal-confirmed pass on a real shop, run on the merchant’s own
-          staging copy of the shop with their PayPal sandbox keys.
+          <strong>On the owner’s own shop, all the way to PayPal:</strong> the owner connects a staging copy of the shop
+          and its PayPal sandbox app. The customers pay there with a PayPal test card, and a run passes only when the
+          owner’s own sandbox reports the order as COMPLETED.
         </p>
       </Reveal>
     </div>

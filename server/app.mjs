@@ -17,7 +17,7 @@ import { runMetrics } from './metrics.mjs';
 import { mountReports } from './report/routes.mjs';
 import { createOwnerSites, KEY_HEADER, keyGoesTo } from './owners.mjs';
 import { checkAgentAccess } from './agent-access.mjs';
-import { createSiteAnalysis } from './site-analysis.mjs';
+import { createSiteAnalysis, siteKey } from './site-analysis.mjs';
 import { createTestShop } from './test-shop.mjs';
 import { verifyFindings } from './verify.mjs';
 import { detectBotWall } from './engine/preflight.mjs';
@@ -26,10 +26,15 @@ import { createMask } from './anonymize.mjs';
 export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, env = process.env, extend }) {
   const paypal = createPayPal(env);
   const shop = createShop({ paypal, dataDir });
-  const owners = createOwnerSites({ dataDir });
+  // Shops on this computer (localhost) can be tested only in local development and tests.
+  const allowLocal = env.ACCESSIPAY_LOCAL_SITES === '1';
+  // Chromium sends *.localhost to this computer by itself; Node's fetch needs to be told.
+  const fetchImpl = allowLocal ? (url, o) => fetch(String(url).replace(/^(https?:\/\/)[^/:]+\.localhost(?=[:/])/i, '$1127.0.0.1'), o) : fetch;
+  const sandboxKeys = ({ clientId, secret }) => createPayPal({ PAYPAL_CLIENT_ID: clientId, PAYPAL_CLIENT_SECRET: secret });
+  const owners = createOwnerSites({ dataDir, allowLocal, sandboxKeys, fetchImpl });
   // Private view (ACCESSIPAY_PRIVATE_VIEW=1, this computer only): real shop names, page text and screenshots.
   const privateView = env.ACCESSIPAY_PRIVATE_VIEW === '1';
-  const runs = createRuns({ browser, shop, paypal, dataDir, origin, brains, owners, privateView });
+  const runs = createRuns({ browser, shop, paypal, dataDir, origin, brains, owners, privateView, allowLocal });
   // Live runs on large retailers are shown under their label, like the recorded ones.
   const mask = privateView ? (r) => r : createMask(dataDir);
   const sites = createSiteAnalysis({ runs: { list: () => runs.list().map(mask), get: (id) => mask(runs.get(id)) }, dataDir });
@@ -84,8 +89,8 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
     try {
       const b = req.body || {};
       const personas = (b.personas?.length ? b.personas : ['screenreader', 'keyboard', 'agent']).filter((p) => ['screenreader', 'keyboard', 'agent'].includes(p));
-      const started = personas.map((persona) => runs.start({ persona, url: b.url, brain: b.brain || 'external', ownerSiteId: b.ownerSiteId, label: 'site test' }));
-      res.json({ key: started[0].site.host, runs: started.map((r) => ({ id: r.id, persona: r.persona })) });
+      const started = personas.map((persona) => runs.start({ persona, url: b.url, brain: b.brain || 'external', ownerSiteId: b.ownerSiteId, payInSandbox: !!b.payInSandbox, label: b.payInSandbox ? 'sandbox purchase' : 'site test' }));
+      res.json({ key: siteKey(started[0].site), runs: started.map((r) => ({ id: r.id, persona: r.persona })) });
     } catch (e) { res.status(400).json({ error: e.message }); }
   });
 
@@ -99,6 +104,13 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
   });
   app.post('/api/owner-sites/:id/verify', async (req, res) => {
     try { res.json(await owners.verify(req.params.id)); } catch (e) { res.status(400).json({ error: e.message }); }
+  });
+  // The owner's PayPal sandbox: runs on their staging checkout pay with a test card, and PayPal confirms.
+  app.post('/api/owner-sites/:id/sandbox', async (req, res) => {
+    try { res.json(await owners.connectSandbox(req.params.id, req.body || {})); } catch (e) { res.status(400).json({ error: e.message }); }
+  });
+  app.delete('/api/owner-sites/:id/sandbox', (req, res) => {
+    try { res.json(owners.disconnectSandbox(req.params.id)); } catch (e) { res.status(400).json({ error: e.message }); }
   });
   // One page load without the key and one with it: does the owner's rule let the browser in?
   app.post('/api/owner-sites/:id/check', async (req, res) => {
@@ -132,7 +144,7 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
 
   // Can AI assistants shop here? Reads the site's own rules and loads its home page once.
   app.get('/api/agent-access', async (req, res) => {
-    try { res.json(await checkAgentAccess(req.query.url, { browser })); } catch (e) { res.status(400).json({ error: e.message }); }
+    try { res.json(await checkAgentAccess(req.query.url, { browser, allowLocal, fetchImpl })); } catch (e) { res.status(400).json({ error: e.message }); }
   });
   app.get('/api/runs/:id', (req, res) => {
     const r = runs.get(req.params.id);

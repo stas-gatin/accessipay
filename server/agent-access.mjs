@@ -73,8 +73,8 @@ export function structuredData(html) {
   };
 }
 
-export async function checkAgentAccess(rawUrl, { browser, fetchImpl = fetch } = {}) {
-  const u = siteFromUrl(rawUrl);
+export async function checkAgentAccess(rawUrl, { browser, fetchImpl = fetch, allowLocal = false } = {}) {
+  const u = siteFromUrl(rawUrl, { allowLocal });
   const robots = await text(fetchImpl, `${u.origin}/robots.txt`);
   const llms = await text(fetchImpl, `${u.origin}/llms.txt`);
   const llmsFound = llms.ok && !/html/i.test(llms.type) && llms.body.trim().length > 0;

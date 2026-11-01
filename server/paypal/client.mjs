@@ -107,6 +107,13 @@ export function createPayPal(env = process.env) {
     mode,
     clientId: mode === 'sandbox' ? env.PAYPAL_CLIENT_ID : null,
 
+    // Do these keys open the sandbox? Live keys do not: PayPal refuses them at the sandbox address.
+    async check() {
+      if (mode === 'mock') return false;
+      await accessToken();
+      return true;
+    },
+
     // JS SDK flow (PayPal buttons and Card Fields): the browser sends card data to PayPal, never to the shop.
     async createOrder({ amount, currency = 'USD', invoiceId, description }) {
       const value = Number(amount).toFixed(2);

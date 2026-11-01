@@ -80,7 +80,10 @@ Bot protection turns automated browsers away, and AccessiPay never tries to get 
 
 1. **Prove the site is yours**: publish `/.well-known/accessipay.txt` with a code, or add a DNS TXT record `accessipay-verification=<code>`.
 2. **Let the checker through**: AccessiPay's browser sends the header `x-accessipay-key: <your key>` on requests to your host and its subdomains, and to no other host. One allow rule in your bot protection (Cloudflare WAF custom rule with the Skip action, Akamai Bot Manager exception, or any firewall) lets those requests in; the protection stays on for everyone else. *Check access* loads your home page with and without the key to confirm.
-3. **Send the customers**: all three, screen reader, keyboard-only and AI agent, go to the payment step and stop. On a verified site the robots.txt rules meant for crawlers are not applied, because the owner asked for the test.
+3. **Optional: pay in your PayPal sandbox**: enter the address of a staging copy of the shop (on the verified domain or a subdomain) that takes payments with a PayPal sandbox app, and that app's Client ID and Secret. AccessiPay asks PayPal's sandbox for a token first, so live keys are refused, and the Secret is never sent back to the browser. The keys are used for one thing: reading orders back.
+4. **Send the customers**: all three, screen reader, keyboard-only and AI agent. Without a sandbox they go to the payment step and stop. With it they pay with a PayPal test card, and a run passes only when the owner's sandbox reports an order created during the run as `COMPLETED` (Orders v2 read-back with the owner's keys, so it is their order). During such a run the browser may send a payment only to a PayPal checkout whose JS SDK was loaded with the connected Client ID; any other payment request is blocked. On a verified site the robots.txt rules meant for crawlers are not applied, because the owner asked for the test.
+
+`examples/sandbox-shop` is a separate small shop built to test this flow: its own server, PayPal Buttons and Card Fields on its own sandbox app, and bot protection that turns automated browsers away unless they carry the owner's key. `test/owner-sandbox.test.mjs` runs the whole flow against it (verify, check access, connect the sandbox, pay, read the order back, refund), and checks that a checkout loading PayPal with another Client ID cannot send a payment. Shops on this computer can be tested only with `ACCESSIPAY_LOCAL_SITES=1`.
 
 ## Can AI assistants shop here?
 
@@ -93,7 +96,7 @@ The check runs on its own for any address (console: *Run a test*, "A real shop":
 - It is not a WCAG audit or certificate, and it does not replace testing with real people who use assistive technology.
 - The personas are models. The screen reader persona models focus navigation plus an elements list; it does not model browse-mode activation of elements that cannot take focus.
 - The thirteen defects were written by us. The holdout set was not used while writing the shopper prompts.
-- On real sites the agent stops before paying, so "reached payment" means a payment form or an enabled pay or place-order button was on screen, not that a payment would have succeeded. On one-page checkouts the payment form is on the same page as the address form.
+- On real sites tested without their owner the agent stops before paying, so "reached payment" means a payment form or an enabled pay or place-order button was on screen, not that a payment would have succeeded. On one-page checkouts the payment form is on the same page as the address form.
 - Shopper decisions in the recorded runs came from Claude models through the engine's agent interface; a different model, or a person, may take more or fewer steps.
 - In mock mode no PayPal call is made, and the console says so on every page.
 
@@ -115,6 +118,7 @@ Environment (`.env` in the project root, never committed):
 | `ANTHROPIC_API_KEY` | Claude API for the live shopper and fixer. Without it, runs can be driven by a Claude Code agent. |
 | `ACCESSIPAY_MODEL`, `ACCESSIPAY_FIX_MODEL` | Model ids for the shopper and the fixer (default `claude-opus-5-5`). |
 | `PORT` | Port of the server (default 4300). |
+| `ACCESSIPAY_LOCAL_SITES` | `1` lets owners connect shops on this computer (`localhost`, `*.localhost`): local development and tests only. |
 
 Drive a run with a Claude Code agent or by hand:
 
@@ -129,7 +133,7 @@ node tools/agent.mjs fix-reply <fix id> reply.json
 ## How PayPal and AI are used
 
 - **PayPal JavaScript SDK** (sandbox): the shop's payment page uses PayPal Buttons and PayPal Card Fields (`components=buttons,card-fields`), so card data goes straight to PayPal and the shop's server never sees it. The keyboard and screen reader customers fill those fields inside PayPal's iframes, as real users do.
-- **PayPal Orders v2** (sandbox): the shop's server creates and captures the order, and the read-back of the order decides whether a run succeeded: only `COMPLETED` counts. Verified against the live sandbox: create, capture, read back as `COMPLETED`, refund (`npm test` includes this when sandbox keys are present). Calls go through a token bucket because the sandbox blocks an IP after about 50 requests a minute.
+- **PayPal Orders v2** (sandbox): the shop's server creates and captures the order, and the read-back of the order decides whether a run succeeded: only `COMPLETED` counts. On an owner's staging shop the read-back uses the owner's own sandbox keys. Verified against the live sandbox: create, capture, read back as `COMPLETED`, refund (`npm test` includes this when sandbox keys are present). Calls go through a token bucket because the sandbox blocks an IP after about 50 requests a minute.
 - **Claude**: the shopper's decision at each step (one request per step with a cached persona prompt) and the fixer's patch proposal. Prompts live in `server/engine/prompts.mjs` and `server/fixer/fixer.mjs`.
 - **Playwright** drives a real Chromium; **axe-core** is the scanner it is compared with; **AG Grid** powers the runs and defects tables.
 
