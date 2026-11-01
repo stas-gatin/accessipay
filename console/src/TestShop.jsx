@@ -34,7 +34,7 @@ export function TestShopCases() {
             <li key={c.key}>
               <a className="card ts-case" href={caseHref(c.key)}>
                 <span className="ts-pics">
-                  {!c.before && <span className="ts-pic ts-pic-none">No planted problem: the check is the PayPal card fields</span>}
+                  {!c.before && <span className="ts-pic ts-pic-none">No planted problem: can a screen reader user get through PayPal’s card fields?</span>}
                   {c.before && (
                     <span className="ts-pic">
                       {c.before.shot && <img src={c.before.shot} alt="" loading="lazy" />}

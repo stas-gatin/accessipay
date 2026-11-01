@@ -1110,8 +1110,6 @@ main:focus { outline: none; }
 .calc-measured .calc-help { margin-top: 10px !important; }
 .calc-field.off label { color: var(--mut); }
 .calc-field.off input { opacity: .55; cursor: not-allowed; border-style: solid; }
-#calculator.sec { padding-bottom: 0; }
-#calculator .calc { border-radius: 22px 22px 0 0; }
 .calc-grid { gap: 14px 20px; }
 .calc-field label { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .calc-input input { padding: 9px 72px 9px 12px; }

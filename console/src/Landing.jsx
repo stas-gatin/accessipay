@@ -36,7 +36,7 @@ export default function Landing({ meta }) {
             </p>
             <div className="cta-row">
               <a className="btn-lp primary" href="#/test">Run a test</a>
-              <a className="btn-lp ghost-light" href="#/own-site">Connect your site</a>
+              <a className="btn-lp ghost-light" href="#/own-site">Test your shop</a>
             </div>
             <ol className="hero-proof" aria-label="One recorded case, before and after the fix">
               <li className="bad"><a href={`#/runs/${RUNS.agentBlocked}`}><b>Blocked</b><span>AI agent at Payment. The scanner saw no problem.</span></a></li>
@@ -104,7 +104,7 @@ export default function Landing({ meta }) {
               <div className="who-body">
                 <p className="who-k">Merchants</p>
                 <h3>Find the payments you lose before your customers do.</h3>
-                <p>Get the fix as code, not a list of rule IDs, and proof from a PayPal-confirmed order. The European Accessibility Act has applied to online shops in the EU since {EAA_DATE}.</p>
+                <p>Get the fix as code, not a list of rule IDs, with a step-by-step replay of where each customer got stuck. The European Accessibility Act has applied to online shops in the EU since {EAA_DATE}.</p>
                 <a className="lp-link" href="#owner">What you get <Arrow /></a>
               </div>
             </article>
@@ -133,7 +133,7 @@ export default function Landing({ meta }) {
           <Reveal className="chat" role="group" aria-label="A recorded agentic buyer run">
             <div className="bubble user">Get me something that keeps me dry on hikes, under $100, and I need it fast.</div>
             <div className="bubble typing" aria-hidden="true"><i /><i /><i /></div>
-            <div className="bubble agent">Rain Jacket, $79.00, with express delivery. The backpack and the bottle do not keep you dry.</div>
+            <div className="bubble agent">Found it: the Rain Jacket keeps you dry and costs $79, under $100. You need it fast, so I chose express delivery: $94.00 in total.</div>
             <div className="receipt-dark">
               <div><span>Total</span><b className="mono">$94.00</b></div>
               <div><span>PayPal</span><b>Payment confirmed</b></div>
@@ -168,7 +168,7 @@ export default function Landing({ meta }) {
       <section className="s-light sec" aria-labelledby="effort-t">
         <div className="wrap">
           <SectionHead eyebrow="Slower, not blocked" id="effort-t" title="Not blocked, just slower. Measured."
-            lead="Some problems never stop a customer; they make every page longer. We send the same customer before and after the fix and count what it took." />
+            lead="Some problems never stop a customer; they make every page take longer. We send the same customer before and after the fix and count what it took." />
           <EffortBlock />
         </div>
       </section>
@@ -196,7 +196,7 @@ export default function Landing({ meta }) {
       <section className="s-navy sec" aria-labelledby="chain-t">
         <div className="wrap">
           <SectionHead eyebrow="For PayPal" id="chain-t" light title="From a fixed checkout to PayPal volume."
-            lead="The second link comes from recorded runs. The rest is your arithmetic, with your numbers.">
+            lead="Step 2 comes from our recorded runs. Everything after it is arithmetic on your own numbers.">
             <KindLegend />
           </SectionHead>
           <Chain />
@@ -226,7 +226,7 @@ export default function Landing({ meta }) {
           <h2 id="final-t">See your checkout through your customers.</h2>
           <div className="cta-row center">
             <a className="btn-lp primary" href="#/test">Run a test</a>
-            <a className="btn-lp ghost-light" href="#/own-site">Connect your site</a>
+            <a className="btn-lp ghost-light" href="#/own-site">Test your shop</a>
             <a className="btn-lp ghost-light" href="#/results">See the results</a>
           </div>
         </div>

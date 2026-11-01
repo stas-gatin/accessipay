@@ -9,8 +9,9 @@ import { runMetrics, compareRuns, KLM } from '../metrics.mjs';
 import { exportFix, HONESTY_LABEL } from '../fixer/export.mjs';
 import { stuckPage } from '../fixer/fixer.mjs';
 import { findCulprit, siteCulprits, stuckEvidence, AXE_VERSION } from './culprit.mjs';
+import { verifyFindings } from '../verify.mjs';
 
-export const REPORT_VERSION = 6;
+export const REPORT_VERSION = 8;
 
 // WCAG 2.2 success criteria used by the catalog and the suggestions.
 export const WCAG = {
@@ -39,6 +40,14 @@ export function wcagList(text) {
     return w ? { sc, name: w[0], level: w[1], url: `https://www.w3.org/WAI/WCAG22/Understanding/${w[2]}.html` } : { sc, name: '', level: '', url: 'https://www.w3.org/TR/WCAG22/' };
   });
 }
+
+// What the check without AI found for a finding (server/verify.mjs), in the words the console uses.
+const CHECK_LABEL = {
+  confirmed: 'Confirmed by the record of the run',
+  partly: 'axe-core flags this kind of problem on this page',
+  'not-confirmed': 'Not confirmed by the record of the run',
+  manual: 'Needs a person to check it in the replay',
+};
 
 export const CUSTOMER = {
   keyboard: 'keyboard-only customer',
@@ -340,6 +349,8 @@ function buildSite({ run, ctx }) {
   const places = siteCulprits({ run, dataDir: ctx.dataDir });
   const scanPages = (run.scan?.pages || []).map((p) => ({ url: cleanUrl(p.url), rawStage: p.url, violations: p.violations, rules: p.rules || [], frameNote: p.violations === 0 && /checkout|payment/i.test(p.url) ? 'Payment fields on this page are in third-party frames; axe-core does not look inside cross-origin frames, so 0 may mean "not scanned", not "clean".' : null }));
   const ev = run.events || [];
+  // The same check without AI that the shop's analysis page shows, so the report and the page agree.
+  const checks = run.status === 'finished' ? verifyFindings(run) : [];
   const findings = (run.findings || []).map((f, i) => {
     const pl = places[i];
     const obs = ev.find((e) => e.type === 'observe' && e.step === pl.step);
@@ -355,8 +366,9 @@ function buildSite({ run, ctx }) {
       element: f.element || null,
       figure: pl.image ? { src: pl.image.url, width: pl.image.width, height: pl.image.height, marks: [{ n: i + 1, kind: notDefect ? 'friction' : 'blocker', box: pl.box, title: f.page.split('|')[0].trim().slice(0, 34), note: f.problem }], scannerRecorded: false, caption: `Screenshot of step ${pl.step}, ${f.page}.${pl.box ? '' : ' This run did not record element positions, so the finding is placed on the page, not circled.'}` } : null,
       perceived: perceivedExcerpt(obs?.text, f.element?.name),
-      confidence: pl.confidence,
-      scanner: pageScan ? (pageScan.violations === null ? 'This page could not be scanned.' : `axe-core reported ${plural(pageScan.violations, 'violation')} on this page${pageScan.rules?.length ? ` (${pageScan.rules.join(', ')})` : ''}.`) : 'This page was not scanned (the scan covers the first 8 pages).',
+      confidence: CHECK_LABEL[checks[i]?.status] || CHECK_LABEL.manual,
+      check: checks[i] ? { status: checks[i].status, by: checks[i].by, evidence: checks[i].evidence } : null,
+      scanner: pageScan ? (pageScan.violations === null ? 'This page could not be scanned.' : `axe-core reported ${plural(pageScan.violations, 'violation')} on this page${pageScan.rules?.length ? ` (${pageScan.rules.join(', ')})` : ''}.`) : 'axe-core did not scan this page in this run.',
       suggestion,
       notDefect,
     };
@@ -364,9 +376,10 @@ function buildSite({ run, ctx }) {
   const m = runMetrics(run);
   const reached = run.outcome?.status === 'reached-payment';
   const host = run.site.host;
+  const who = customer(run.persona);
   const headline = reached
-    ? `Our simulated AI shopping agent reached the payment step of ${host} in ${plural(m.steps, 'step')} and stopped there; nothing was paid.`
-    : `Our simulated AI shopping agent did not reach a payment form on ${host}: ${lower1(run.outcome?.reason || '')}`;
+    ? `Our simulated ${who} reached the payment step of ${host} in ${plural(m.steps, 'step')} and stopped there; nothing was paid.`
+    : `Our simulated ${who} did not reach a payment form on ${host}: ${lower1(run.outcome?.reason || '').replace(/^the agent /, 'it ')}`;
   return {
     version: REPORT_VERSION,
     kind: 'site',
@@ -378,14 +391,14 @@ function buildSite({ run, ctx }) {
     customers: [run.persona],
     who: customer(run.persona),
     run: { id: run.id, persona: run.persona, outcome: run.outcome, steps: run.steps, brainKind: run.brainKind, model: run.model, recorded: !!run.recorded, label: run.label, createdAt: run.createdAt },
-    verdict: { headline, sub: run.scan ? `axe-core ${AXE_VERSION} reported ${plural(run.scan.totalViolations, 'violation')} across the ${plural(run.scan.pages?.length || 0, 'page')} the agent saw, scanned in the state it saw them.` : 'No scan was recorded.', blocked: !reached },
+    verdict: { headline, sub: run.scan ? `axe-core ${AXE_VERSION} reported ${plural(run.scan.totalViolations, 'violation')} across the ${plural(run.scan.pages?.length || 0, 'page')} the customer saw, scanned in the state it saw them.` : 'No scan was recorded.', blocked: !reached },
     scorecard: scorecard(run, null, null),
     findings,
     scanner: { version: AXE_VERSION, total: run.scan?.totalViolations ?? null, pages: scanPages },
     method: methodNotes(run, null),
     limits: [
       ...LIMITS,
-      'Findings on a real site are reported by the AI customer and have not been confirmed in the page code by us yet. Suggested changes are not verified on the site.',
+      'Findings on a real site are reported by the AI customer. Each one is checked again without AI against the record of its run, and its label says what that check found. Suggested changes are not verified on the site.',
       'A stop is not always an accessibility defect: a demo store can be missing a payment method or stock.',
     ],
     steps: stepLog(run),

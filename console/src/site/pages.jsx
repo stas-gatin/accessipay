@@ -192,7 +192,7 @@ export function CustomersPage() {
       <section className="s-navy cta-band" aria-label="Test your own checkout">
         <div className="wrap cta-band-row">
           <p>Want to know how your own checkout does with these three customers?</p>
-          <a className="btn-lp primary" href="#/own-site">Connect your site</a>
+          <a className="btn-lp primary" href="#/own-site">Test your shop</a>
         </div>
       </section>
       <section className="s-white sec" aria-labelledby="c-next">
@@ -213,7 +213,7 @@ const PP_POINTS = [
   { t: 'More completed payments', b: 'Every checkout a customer can finish is a payment that can reach PayPal. AccessiPay finds the ones that cannot and fixes them.' },
   { t: 'Merchants ready for agentic commerce', b: 'AI agents read pages through the accessibility tree. The fixes that let screen reader users pay also let agents complete PayPal checkouts.' },
   { t: `The law, since ${EAA_DATE}`, b: 'The European Accessibility Act applies to online shops in the EU. Merchants have a reason to test their checkout now.' },
-  { t: 'A check next to the integration guide', b: 'Run it before go-live and see which customers could not pay. Success is a COMPLETED PayPal order, not a compliance score.' },
+  { t: 'A check next to the integration guide', b: 'Run it before go-live and see which customers could not pay. In our demo shop, success is a COMPLETED PayPal order, not a compliance score.' },
 ];
 
 // Orders PayPal confirmed in the sandbox, each with its run.
@@ -259,7 +259,7 @@ export function PayPalPage() {
       <section className="s-navy sec" id="calculator" aria-labelledby="pp-chain">
         <div className="wrap">
           <SectionHead eyebrow="The business chain" id="pp-chain" light title="From a fixed checkout to PayPal volume"
-            lead="The second link comes from recorded runs. Everything after it is the merchant’s own numbers and arithmetic on them.">
+            lead="Step 2 comes from our recorded runs. Everything after it is arithmetic on the merchant’s own numbers.">
             <KindLegend />
           </SectionHead>
           <Chain />
@@ -308,9 +308,9 @@ export function Limits() {
         <Reveal as="article" className="h-card">
           <h3>Real shops</h3>
           <ul>
-            <li>Every shop is tested by all three customers. They stop at the payment step: no order is placed, no card data is typed, the details are made up.</li>
-            <li>Real shops are published without their names, addresses or screenshots, and each is visited at most once a day.</li>
-            <li>A shop that turns our browser away is listed as such; AccessiPay never gets past bot protection.</li>
+            <li>Every shop is tested by all three customers. They stop at the payment step: no order is placed and no card data is typed. The name, email and address they enter are fictional.</li>
+            <li>For privacy, our published results do not name the real shops we tested: no names, addresses or screenshots.</li>
+            <li>A shop that turns our browser away is listed as such. AccessiPay never gets past bot protection on its own: only the shop’s owner can let the test in: on <a href="#/own-site">Run a test</a>, enter the shop’s address and choose “This is my shop”.</li>
             <li>Every finding is checked again without AI against the record of its run; each one shows whether the record confirms it.</li>
           </ul>
         </Reveal>

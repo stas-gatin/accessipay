@@ -12,7 +12,7 @@ export function Kind({ k }) {
 export function KindLegend() {
   return (
     <ul className="kind-legend" aria-label="How to read the numbers">
-      <li><Kind k="measured" /> came from a recorded run</li>
+      <li><Kind k="measured" /> comes from a recorded run</li>
       <li><Kind k="yours" /> you type it; we never fill it in</li>
       <li><Kind k="calc" /> arithmetic on the two, formula shown</li>
     </ul>
@@ -60,7 +60,7 @@ export function Chain() {
         ))}
       </ol>
       <div className="chain-foot">
-        <p>The return path: checkouts that assistive technology can finish are checkouts AI agents can finish, so agent purchases can reach PayPal too. No number is claimed for it.</p>
+        <p>One more effect: a checkout that assistive technology can finish is one that AI agents can finish too, so purchases made by agents can reach PayPal as well. We put no number on it.</p>
         {!reduced && (
           <button type="button" className="ghost-btn on-navy" onClick={() => setPaused(!paused)}>
             {paused ? 'Play the flow' : 'Pause the flow'}

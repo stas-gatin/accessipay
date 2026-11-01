@@ -144,7 +144,7 @@ function OutcomeBanner({ run, steps, metrics, onStep, hasFix }) {
   );
 }
 
-export default function RunView({ id, meta, onSection }) {
+export default function RunView({ id, meta, from, onSection }) {
   const [run, setRun] = useState(null);
   const [events, setEvents] = useState([]);
   const [sel, setSel] = useState(null);
@@ -325,7 +325,9 @@ export default function RunView({ id, meta, onSection }) {
       <nav className="note rv-crumbs" aria-label="Breadcrumb">
         {external
           ? <><a href="#/results">Results</a><span aria-hidden="true"> › </span><a href={`#/sites/${encodeURIComponent(run.site.host)}`}>{run.site.host}</a><span aria-hidden="true"> › </span>{persona?.label || run.persona}</>
-          : <><a href="#/analytics">Analytics</a><span aria-hidden="true"> › </span>{persona?.label || run.persona}, {shortDate(run.createdAt)}</>}
+          : from?.tab === 'results'
+            ? <><a href="#/results">Results</a><span aria-hidden="true"> › </span>{from.route.startsWith('/cases') && <><a href={`#${from.route}`}>Test shop case</a><span aria-hidden="true"> › </span></>}{persona?.label || run.persona}, {shortDate(run.createdAt)}</>
+            : <><a href="#/analytics">Analytics</a><span aria-hidden="true"> › </span>{persona?.label || run.persona}, {shortDate(run.createdAt)}</>}
       </nav>
 
       <header className="rv-head" ref={headRef}>

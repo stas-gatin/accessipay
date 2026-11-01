@@ -618,3 +618,27 @@ a.rv-step-link { text-decoration: none; }
 .ts-code .del { color: var(--bad); }
 .ts-code .add { color: var(--ok); }
 .ts-pic-none { display: grid; place-items: center; padding: 12px; text-align: center; font-size: 13px; color: var(--muted); }
+
+/* Real-site owner report: scorecard and findings, the same content as the PDF. */
+.report-score { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 10px 24px; margin: 0; }
+.report-score > div { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--line-2); }
+.report-score dt { color: var(--muted); }
+.report-score dd { margin: 0; font-weight: 600; text-align: right; white-space: nowrap; }
+.report-score dd.long { white-space: normal; max-width: 50%; }
+.report-finding { margin-bottom: 16px; }
+.report-finding .check-badge { margin-left: 0; white-space: normal; cursor: default; }
+.report-kv { margin: 12px 0 0; display: grid; gap: 10px; }
+.report-kv dt { font-size: 13px; font-weight: 700; color: var(--muted); }
+.report-kv dd { margin: 2px 0 0; }
+.report-kv blockquote { margin: 0; padding-left: 12px; border-left: 3px solid var(--line-2); }
+
+/* Run a test: where the customers shop */
+.test-where { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 10px; }
+.test-where .choice { display: flex; flex-direction: column; justify-content: flex-start; }
+.test-where .choice strong { display: block; font-family: var(--head); font-size: 18px; margin-bottom: 4px; }
+.linklike { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); text-decoration: underline; cursor: pointer; }
+.test-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 8px; }
+.test-options .choice { display: flex; flex-direction: column; justify-content: flex-start; }
+.test-defects { border: 0; padding: 12px 0 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 4px 16px; }
+.test-defects legend { grid-column: 1 / -1; }
+.test-defects label { display: flex; gap: 8px; margin: 4px 0; }

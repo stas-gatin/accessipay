@@ -3,7 +3,6 @@ import { useAutoReveal } from './autoreveal.js';
 import { api } from './api.js';
 import { ThemeContext, initialTheme, applyTheme } from './theme.js';
 import NewTest from './NewTest.jsx';
-import OwnSite from './OwnSite.jsx';
 import Results, { SitePage } from './SiteReport.jsx';
 import { CasePage } from './TestShop.jsx';
 import RunView from './RunView.jsx';
@@ -51,15 +50,25 @@ export default function App() {
   // A run or a report belongs to Results (a real shop) or to Analytics (the demo shop); the page says which once it has loaded.
   const [section, setSection] = useState(null);
   useEffect(() => { setSection(null); }, [route]);
+  // A run or report keeps the tab it was opened from, so a demo-shop run opened from Results stays in Results.
+  // Opened directly, it falls back to the section the page reports.
+  const isDetail = /^\/(runs|report)\//.test(route);
+  const origin = useRef({ route: null, tab: null });
+  if (!isDetail) {
+    const tab = route === '/analytics' ? 'analytics'
+      : route === '/results' || route.startsWith('/sites') || route.startsWith('/cases') ? 'results' : null;
+    origin.current = { route, tab };
+  }
+  const from = isDetail ? origin.current : null;
+  const tab = from?.tab || section;
   const nav = [
     ['#/', 'Overview', route === '/'],
     ['#/method', 'Method', route === '/method' || route === '/honesty' || route === '/defects'],
     ['#/customers', 'Customers', route === '/customers'],
     ['#/paypal', 'For PayPal', route === '/paypal'],
     // Results holds every real-shop analysis. A single run or report opens from Results or Analytics; its breadcrumb says which.
-    ['#/results', 'Results', route.startsWith('/sites') || route.startsWith('/cases') || route === '/results' || route === '/runs' || section === 'results'],
-    ['#/analytics', 'Analytics', route === '/analytics' || section === 'analytics'],
-    ['#/own-site', 'Your site', route === '/own-site'],
+    ['#/results', 'Results', route.startsWith('/sites') || route.startsWith('/cases') || route === '/results' || route === '/runs' || tab === 'results'],
+    ['#/analytics', 'Analytics', route === '/analytics' || tab === 'analytics'],
   ];
 
   let page;
@@ -68,12 +77,13 @@ export default function App() {
   else if (route === '/paypal') page = <PayPalPage />;
   else if (route === '/honesty') page = <MethodPage />; // the limits are the last section of the Method page
   else if (!meta) page = <div className="page"><p className="empty">{error || 'Loading…'}</p></div>;
-  else if (runMatch) page = <RunView id={runMatch[1]} meta={meta} onSection={setSection} />;
-  else if (/^\/report\/(run|case|site)\/[\w-]+$/.test(route)) page = <Report route={route} meta={meta} onSection={setSection} />;
+  else if (runMatch) page = <RunView id={runMatch[1]} meta={meta} from={from} onSection={setSection} />;
+  else if (/^\/report\/(run|case|site)\/[\w-]+$/.test(route)) page = <Report route={route} meta={meta} from={from} onSection={setSection} />;
   else if (route === '/runs') page = <Results />;
   else if (route === '/defects') page = <MethodPage />;
   else if (route === '/test') page = <NewTest meta={meta} />;
-  else if (route === '/own-site') page = <OwnSite meta={meta} />;
+  // Your site was merged into Run a test; its old address opens the test page on "Your own shop".
+  else if (route === '/own-site') page = <NewTest meta={meta} initialWhere="own" />;
   else if (route === '/sites' || route === '/results') page = <Results />;
   else if (/^\/cases\/[\w-]+$/.test(route)) page = <CasePage caseKey={route.slice(7)} />;
   else if (/^\/sites\/.+/.test(route)) page = <SitePage siteKey={decodeURIComponent(route.slice(7))} />;
@@ -92,13 +102,13 @@ export default function App() {
         </button>
         <nav id="main-nav" aria-label="Main">
           {nav.map(([href, label, active]) => <a key={href} href={href} className={active ? 'active' : ''} aria-current={active ? 'page' : undefined}>{label}</a>)}
-          <a href="#/test" className={`nav-mobile-only${route === '/test' ? ' active' : ''}`} aria-current={route === '/test' ? 'page' : undefined}>Run a test</a>
+          <a href="#/test" className={`nav-mobile-only${['/test', '/own-site'].includes(route) ? ' active' : ''}`} aria-current={['/test', '/own-site'].includes(route) ? 'page' : undefined}>Run a test</a>
         </nav>
         <div className="header-right">
           <button type="button" className="theme-toggle" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? 'Switch to the light theme' : 'Switch to the dark theme'}>
             <span aria-hidden="true">{theme === 'dark' ? '☀' : '☾'}</span><span className="tt-label" aria-hidden="true">{theme === 'dark' ? 'Light theme' : 'Dark theme'}</span>
           </button>
-          <a className={`header-cta${route === '/test' ? ' active' : ''}`} href="#/test" aria-current={route === '/test' ? 'page' : undefined}>Run a test</a>
+          <a className={`header-cta${['/test', '/own-site'].includes(route) ? ' active' : ''}`} href="#/test" aria-current={['/test', '/own-site'].includes(route) ? 'page' : undefined}>Run a test</a>
         </div>
       </header>
       {meta?.privateView && <p className="private-view" role="note">Private view on this computer: real shop names, page text and screenshots. The public site shows them as Retailer A, B and so on.</p>}

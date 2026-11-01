@@ -44,7 +44,7 @@ Steps are the customer's decisions; the final "give up" or "done" is not counted
 
 ### Real sites
 
-On real sites the shopper goes as far as the payment step and stops: the engine refuses to pay, place an order, type card data, sign in or type passwords, and a network guard blocks anything but reading to payment providers. Before a run it reads robots.txt; a bot check, a maintenance page or HTTP 403/429 ends the run as *not testable*: AccessiPay never tries to get past bot protection. There are at least 3 seconds between actions, and each large retailer is visited at most once a day.
+On real sites the shopper goes as far as the payment step and stops: the engine refuses to pay, place an order, type card data, sign in or type passwords, and a network guard blocks anything but reading to payment providers. Before a run it reads robots.txt; a bot check, a maintenance page or HTTP 403/429 ends the run as *not testable*: AccessiPay never tries to get past bot protection. There are at least 3 seconds between actions.
 
 **Every shop gets all three customers, in one visit.** A screen reader user, a keyboard-only user and an AI shopping agent shop at the same time, and their runs are kept together as one analysis of the shop (console: *Results*). A shop is never tested by one customer alone, and each large retailer gets at most one such visit a day. Large retailers are published only as *Retailer A*, *Retailer B* and so on: their names, addresses, brand words, screenshots, page text and page addresses are removed from the recorded runs, and capitalised words that are not ordinary English (coined product names such as a jewelry line) are replaced with "[name]" (`server/anonymize.mjs`). The API applies the same mask to runs that are still in progress.
 
@@ -76,7 +76,7 @@ On the real shops so far: 686 findings; 365 are of a kind that can be checked au
 
 ## Test your own site
 
-Bot protection turns automated browsers away, and AccessiPay never tries to get past it. On their own shop an owner can let it in (console: *Your site*):
+Bot protection turns automated browsers away, and AccessiPay never tries to get past it. On their own shop an owner can let it in (console: *Run a test*, "A real shop": after the check, "This is my shop"):
 
 1. **Prove the site is yours**: publish `/.well-known/accessipay.txt` with a code, or add a DNS TXT record `accessipay-verification=<code>`.
 2. **Let the checker through**: AccessiPay's browser sends the header `x-accessipay-key: <your key>` on requests to your host and its subdomains, and to no other host. One allow rule in your bot protection (Cloudflare WAF custom rule with the Skip action, Akamai Bot Manager exception, or any firewall) lets those requests in; the protection stays on for everyone else. *Check access* loads your home page with and without the key to confirm.
@@ -86,7 +86,7 @@ Bot protection turns automated browsers away, and AccessiPay never tries to get 
 
 A lighter check for any shop: it reads what the shop publishes for AI agents (robots.txt rules for ChatGPT-User, Claude-User, Perplexity-User, GPTBot, ClaudeBot and others; llms.txt; schema.org Product and Offer data) and loads the home page once in an ordinary automated browser. It never sends another company's user agent. Only a rule that names an agent counts as turning it away; a `User-agent: *` rule that keeps the checkout out of search results is reported separately.
 
-The check runs on its own for any address (console: *Your site*), and its result is shown in the shop's analysis when one exists.
+The check runs on its own for any address (console: *Run a test*, "A real shop": it runs first when a shop's address is entered), and its result is shown in the shop's analysis when one exists.
 
 ## What it does not claim
 

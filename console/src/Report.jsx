@@ -67,8 +67,12 @@ function scannerLine(sub) {
 
 // #/report/:kind/:id: the owner report inside the console: verdict, downloads, the annotated
 // screenshots and the ready code.
-export default function Report({ route, onSection }) {
+export default function Report({ route, from, onSection }) {
   const [, kind, id] = route.match(/^\/report\/(run|case|site)\/([\w-]+)/) || [];
+  // The breadcrumb leads back where the report was opened from: a test-shop case or a shop's analysis.
+  const top = from?.tab || (kind === 'site' ? 'results' : 'analytics');
+  const back = from?.route?.startsWith('/cases') ? { href: `#${from.route}`, label: 'Test shop case' }
+    : from?.route?.startsWith('/sites') ? { href: `#${from.route}`, label: 'Shop analysis' } : null;
   const [r, setR] = useState(null);
   const [error, setError] = useState('');
   useEffect(() => { onSection?.(kind === 'site' ? 'results' : 'analytics'); }, [kind]);
@@ -87,7 +91,12 @@ export default function Report({ route, onSection }) {
   return (
     <div className="page report-view">
       <style>{ANNOTATE_CSS}</style>
-      <p className="note report-crumbs"><a href={`#/runs/${r.id}`}>Back to the run</a>{r.rerun && <> · <a href={`#/runs/${r.rerun.id}`}>Re-run after the fix</a></>}</p>
+      <nav className="note report-crumbs" aria-label="Breadcrumb">
+        <a href={`#/${top}`}>{top === 'results' ? 'Results' : 'Analytics'}</a><span aria-hidden="true"> › </span>
+        {back && <><a href={back.href}>{back.label}</a><span aria-hidden="true"> › </span></>}
+        Owner report
+      </nav>
+      <p className="note"><a href={`#/runs/${r.id}`}>Back to the run</a>{r.rerun && <> · <a href={`#/runs/${r.rerun.id}`}>Re-run after the fix</a></>}</p>
       <p className="eyebrow">Owner report</p>
       <h1>{r.title}</h1>
       <p className="lead report-verdict">{head.text}</p>
@@ -129,12 +138,31 @@ export default function Report({ route, onSection }) {
       )}
 
       {r.kind === 'site' && (
-        <section aria-labelledby="rv-suggest" style={{ marginTop: 24 }}>
-          <h2 className="section-title" id="rv-suggest">Suggested changes (not verified on the site)</h2>
-          <ol>
-            {r.findings.map((f) => <li key={f.n}><strong>{f.page}</strong>: {f.suggestion.map((s) => s.text).join(' ')}</li>)}
-          </ol>
-        </section>
+        <>
+          <section className="card" aria-labelledby="rv-score" style={{ marginTop: 24 }}>
+            <h2 className="section-title" id="rv-score">Scorecard</h2>
+            <dl className="report-score">
+              {r.scorecard.rows.map((row) => <div key={row.label}><dt>{row.label}</dt><dd className={String(row.values[0] ?? '').length > 14 ? 'long' : undefined}>{String(row.values[0] ?? '—')}</dd></div>)}
+            </dl>
+          </section>
+          <section aria-labelledby="rv-findings" style={{ marginTop: 24 }}>
+            <h2 className="section-title" id="rv-findings">Findings and suggested changes</h2>
+            <p className="note">Reported by the AI customer, then checked again without AI against the record of its run. Nothing was paid and no order was placed.</p>
+            {r.findings.map((f) => (
+              <article key={f.n} className="card report-finding" aria-labelledby={`rv-f${f.n}`}>
+                <h3 className="section-title" id={`rv-f${f.n}`}>{f.n}. {f.page}</h3>
+                <p><span className={`check-badge ${f.notDefect ? 'muted' : ['confirmed', 'partly'].includes(f.check?.status) ? 'ok' : 'warn'}`}>{f.notDefect ? 'Not an accessibility defect' : f.confidence}</span>
+                  {f.check?.evidence && f.check.status !== 'manual' && <span className="note"> {f.check.evidence}</span>}</p>
+                <dl className="report-kv">
+                  <div><dt>Where</dt><dd>{f.url || f.page}{f.step ? `, step ${f.step}` : ''}</dd></div>
+                  <div><dt>In the customer’s words</dt><dd><blockquote>{f.problem}</blockquote></dd></div>
+                  <div><dt>Scanner</dt><dd>{f.scanner}</dd></div>
+                  <div><dt>Suggested change (not verified on the site)</dt><dd>{f.suggestion.map((s) => s.text).join(' ')}</dd></div>
+                </dl>
+              </article>
+            ))}
+          </section>
+        </>
       )}
     </div>
   );

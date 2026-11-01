@@ -343,7 +343,7 @@ function siteHtml(r, { print }) {
   const toc = [['scorecard', 'Scorecard'], ['findings', 'Findings and suggested changes'], ['scanner', 'Scanner vs reality'], ['method', 'Method and honest limits'], ['steps', 'Step log']];
   const findings = r.findings.map((f) => `<article class="finding" id="finding-${f.n}" aria-labelledby="finding-${f.n}-h">
 <h3 id="finding-${f.n}-h">${f.n}. ${esc(f.page)}</h3>
-<p><span class="label ${f.notDefect ? '' : 'warn'}">${f.notDefect ? 'Not an accessibility defect' : esc(f.confidence)}</span></p>
+<p><span class="label ${f.notDefect ? '' : ['confirmed', 'partly'].includes(f.check?.status) ? 'ok' : 'warn'}">${f.notDefect ? 'Not an accessibility defect' : esc(f.confidence)}</span>${f.check?.evidence && f.check.status !== 'manual' ? ` <span class="sub">${esc(f.check.evidence)}</span>` : ''}</p>
 <dl class="kv"><dt>Where</dt><dd>${esc(f.url || f.page)}${f.step ? `, step ${esc(f.step)}` : ''}</dd>
 <dt>In the customer's words</dt><dd><blockquote>${esc(f.problem)}</blockquote></dd>
 <dt>Scanner</dt><dd>${esc(f.scanner)}</dd></dl>

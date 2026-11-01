@@ -48,7 +48,7 @@ export function TwoVerdicts() {
         <header><span className="vd-tag">Scanner report</span><span className="dot-chip ok">Passed</span></header>
         <p className="vd-big">0 violations</p>
         <ul className="vd-rules">
-          {['Buttons have accessible names', 'Form fields have labels', 'Colour contrast meets AA', 'Page has a language and landmarks'].map((r) => (
+          {['Buttons have accessible names', 'Form fields have labels', 'Color contrast meets AA', 'Page has a language and landmarks'].map((r) => (
             <li key={r}><span>{r}</span><b>Pass</b></li>
           ))}
         </ul>
@@ -155,9 +155,14 @@ export function PayPalConfirms() {
       </Reveal>
       <Reveal className="ppc-copy">
         <p>
-          We use PayPal as the confirmation that the customer or agent really completed a purchase. If they did not,
+          In our demo shop, we use PayPal as the confirmation that the customer or agent really completed a purchase. If they did not,
           AI finds the cause, fixes the page and sends the same customer again. If they could already buy,
-          we show how much easier the path became.
+          we show how much easier the path became. On real shops nobody pays: the customer stops at the payment step,
+          and that is where the test ends.
+        </p>
+        <p>
+          <strong>Next, not built yet:</strong> the same PayPal-confirmed pass on a real shop, run on the merchant’s own
+          staging copy of the shop with their PayPal sandbox keys.
         </p>
       </Reveal>
     </div>
@@ -207,7 +212,7 @@ export function EffortBlock() {
           );
         })}
         <p className="effort-note">
-          The middle value of {m.n[0]} runs before and {m.n[1]} after the fix; before the fix the two runs took {m.steps.range[0].join(' and ')} steps. The time is
+          The median of {m.n[0]} runs before the fix ({m.steps.range[0].join(' and ')} steps) and {m.n[1]} runs after it. The time is
           estimated from the keys pressed and the choices made ({'0.28\u00a0s'} per key, {'1.35\u00a0s'} per decision), not measured with a stopwatch. axe{'\u2011'}core found no problem on the shop’s own code before or after.
           {' '}<a href={`#/runs/${RUNS.frictionBefore[0]}`}>Before</a> · <a href={`#/runs/${RUNS.frictionAfter[0]}`}>After</a> · <a href="#/analytics">All runs</a>
         </p>
@@ -430,7 +435,6 @@ export function SiteFooter() {
           <ul>
             <li><a href="#/results">Results</a></li>
             <li><a href="#/analytics">Analytics</a></li>
-            <li><a href="#/own-site">Your site</a></li>
             <li><a href="#/test">Run a test</a></li>
           </ul>
         </nav>

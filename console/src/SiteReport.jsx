@@ -89,7 +89,7 @@ export default function Results() {
   const cols = [
     { field: 'group', headerName: 'Group', rowGroup: true, hide: true },
     custCol('screenreader', 'Screen reader'),
-    custCol('keyboard', 'Keyboard only'),
+    custCol('keyboard', 'Keyboard-only'),
     custCol('agent', 'AI agent'),
     { field: 'verdict', headerName: 'Result', minWidth: 150, flex: 1, hide: !narrow, wrapText: true, autoHeight: true, cellClass: 'wrap-cell', valueFormatter: (p) => (p.node?.group ? '' : p.value) },
     { field: 'problems', headerName: 'Problems', width: 116, hide: narrow, type: 'numericColumn', valueFormatter: (p) => (p.node?.group ? '' : p.value == null ? '—' : p.value) },
