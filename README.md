@@ -1,16 +1,56 @@
+<p align="center">
+  <img src="docs/images/art/hero.svg" width="100%" alt="AccessiPay: accessibility, measured in completed payments. A recorded run: the scanner reports 0 violations, a keyboard-only customer is trapped by a promo popup and cannot pay; after 7 AI changes the same customer pays and PayPal reports the order as COMPLETED">
+</p>
+
 # AccessiPay
 
-**Zero violations. Zero purchases.** Accessibility scanners check rules. AccessiPay checks the outcome: it sends a shopper who cannot see the screen, a shopper who cannot use a mouse, or an AI shopping agent to buy through PayPal, and only a paid order counts as success. When the shopper gets stuck, AI patches the page and the same shopper tries again.
+**Zero violations. Zero purchases.** Accessibility scanners check rules. AccessiPay checks the outcome: it sends a shopper who cannot see the screen, a shopper who cannot use a mouse, and an AI shopping agent to buy, and only an order PayPal confirms counts as success. When a shopper gets stuck, AI patches the page and the same shopper tries again.
 
-Built for the PayPal AI Hackathon 2026.
+Built for the **PayPal AI Hackathon 2026** by Stanislav Gatin.
 
-## Why
+<p align="center">
+  <a href="https://youtu.be/5SXok5O-q2U"><img src="docs/images/buttons/video.svg" height="64" alt="Watch the demo: 2:34 on YouTube"></a>&nbsp;
+  <a href="#run-it"><img src="docs/images/buttons/run.svg" height="64" alt="Run it locally: npm install and npm start"></a>&nbsp;
+  <a href="#how-paypal-and-ai-are-used"><img src="docs/images/buttons/paypal.svg" height="64" alt="How PayPal is used: Orders v2, JS SDK, sandbox"></a>
+</p>
+
+<p align="center">
+  <a href="#run-it"><b>Run it</b></a> ·
+  <a href="#how-it-works">How it works</a> ·
+  <a href="#one-case-end-to-end">One case, end to end</a> ·
+  <a href="#results">Results</a> ·
+  <a href="#test-your-own-shop">Your own shop</a> ·
+  <a href="#are-the-findings-real">Are the findings real?</a> ·
+  <a href="#what-it-does-not-claim">Limits</a>
+</p>
+
+| | |
+|---|---|
+| **Who shops** | A screen reader user, a keyboard-only user and an AI shopping agent, simulated in a real Chromium |
+| **Pass mark** | An order that PayPal (Orders v2, sandbox) reports as `COMPLETED`, with the right item bought. Saying "done" is not enough |
+| **When stuck** | The AI fixer reads the page and the record of the visit, writes a patch, and the same customer tries again |
+| **The owner gets** | Fixes ranked by who they block, ready code, a replay of every step, a screenshot with the problem circled, an accessible PDF |
+| **Start** | `npm install && npx playwright install chromium && npm run build && npm start`, then open http://127.0.0.1:4300 ([Run it](#run-it)) |
+
+> Simulated customers, PayPal sandbox only: no real money moves. Not a WCAG audit or certificate.
+
+## The problem in one minute
 
 A checkout can pass an automated scan and still be impossible to complete. In the demo shop, axe-core (default rules, every page of the flow) flags 2 of 13 real checkout defects. The other 11 include a promo popup that traps the keyboard, a Pay button made of a `<div>`, and form errors hidden from assistive technology. Each of them can stop a purchase.
 
+<p align="center">
+  <img src="docs/images/art/scanner.svg" width="100%" alt="Scanner versus reality: of the 13 defects in the demo shop, axe-core flags 2 (the Checkout link with no name and the City field with no label) and misses 11">
+</p>
+
 The same thing blocks AI shopping agents: they read pages through the accessibility tree, just like screen readers. A checkout a blind customer cannot finish is a checkout an agent cannot finish either.
 
+![Same page, two verdicts: the scanner reports 0 violations, the keyboard-only customer could not pay](docs/images/two-verdicts.png)
+
 ## How it works
+
+<p align="center">
+  <img src="docs/images/art/flow.svg" width="100%" alt="How a test runs: three customers shop step by step in a real Chromium, axe-core scans the same pages, a stuck customer gets an AI fix and tries again, and PayPal Orders v2 must report the order as COMPLETED">
+</p>
 
 1. **Demo shop.** Five pages (catalog, cart, checkout, payment, confirmation) with thirteen switchable defects (`server/shop/defects.mjs`), split into a train set and a holdout set.
 2. **Shoppers.** Three personas, each with its own perception and actions (`server/engine/session.mjs`):
@@ -23,7 +63,24 @@ The same thing blocks AI shopping agents: they read pages through the accessibil
 6. **Fixer.** For a blocked run, the fixer reads the exact HTML of the page where the shopper stopped plus the transcript, and returns minimal text patches. Each patch must match the page exactly once; the diff is shown, and the same shopper runs again.
 7. **Console.** Live run view with the screenshot and the shopper's perception per step, replay, fix panel with diff, and AG Grid tables for runs and defects.
 
-## Results so far
+## One case, end to end
+
+The AI shopping agent fills in every card field and then looks for the Pay button, but the button is a `<div>`: it never appears in the accessibility tree. The fixer turns it into a real `<button>`, and the same agent pays.
+
+| | |
+|---|---|
+| ![Before and after: the agent gave up at the payment step, then paid in 19 steps after the AI fix](docs/images/case-blocked-paid.png) | ![What the AI changed: the div became a real button, plus group names for the card fields](docs/images/ai-fix.png) |
+| ![PayPal Orders v2 read-back: COMPLETED](docs/images/paypal-completed.png) | ![Impossible to possible: the runs that could not pay before the fix and paid after it](docs/images/impossible-possible.png) |
+
+Every run can be replayed step by step, with what the customer perceived at each step:
+
+![The replay of a recorded run: the page, the step, the customer's thought and the accessibility tree it read](docs/images/run-replay.png)
+
+And the owner gets a report with the problem circled on the page, ready code and an accessible PDF:
+
+![The owner report: where the customer got stuck, with the Pay button circled and the analysis next to it](docs/images/owner-report.png)
+
+## Results
 
 Measured, not estimated. Runs below used the real PayPal sandbox; the shopper's decisions came from Claude Code agents driving `tools/agent.mjs` (the built-in Claude API brain is implemented but has not been run yet).
 
@@ -42,11 +99,18 @@ Steps are the customer's decisions; the final "give up" or "done" is not counted
 | Same shopper after the AI fix (one skip link on every page), 2 runs | paid in 52 steps both times, 155 keypresses: medians 28% fewer steps, 15% fewer keys, an estimated 23% less time (keystroke-level model) |
 | AI shopping agent, task stated as a need ("keep me dry on hikes, under $100, fast") | chose the Rain Jacket with express delivery, $94.00, order `COMPLETED` |
 
-### Real sites
+### Real shops
+
+<p align="center">
+  <img src="docs/images/art/results.svg" width="100%" alt="Real shops, three customers each: the screen reader customer reached the payment step on 37 of 38 shops, the AI shopping agent on 30 of 34, the keyboard-only customer on 19 of 41; 14 more shops turned an automated browser away">
+</p>
+
+![The real shops on the Results page: one AG Grid row per shop, each customer's outcome, names withheld](docs/images/real-shops-grid.png)
+
 
 On real sites the shopper goes as far as the payment step and stops: the engine refuses to pay, place an order, type card data, sign in or type passwords, and a network guard blocks anything but reading to payment providers. Before a run it reads robots.txt; a bot check, a maintenance page or HTTP 403/429 ends the run as *not testable*: AccessiPay never tries to get past bot protection. There are at least 3 seconds between actions.
 
-**Every shop gets all three customers, in one visit.** A screen reader user, a keyboard-only user and an AI shopping agent shop at the same time, and their runs are kept together as one analysis of the shop (console: *Results*). A shop is never tested by one customer alone, and each large retailer gets at most one such visit a day. Large retailers are published only as *Retailer A*, *Retailer B* and so on: their names, addresses, brand words, screenshots, page text and page addresses are removed from the recorded runs, and capitalised words that are not ordinary English (coined product names such as a jewelry line) are replaced with "[name]" (`server/anonymize.mjs`). The API applies the same mask to runs that are still in progress.
+**Every shop gets all three customers, in one visit.** A screen reader user, a keyboard-only user and an AI shopping agent shop at the same time, and their runs are kept together as one analysis of the shop (console: *Results*). A shop is never tested by one customer alone, and the sweep tool (`tools/sweep.mjs`) visits each large retailer at most once a day. Large retailers are published only as *Retailer A*, *Retailer B* and so on: their names, addresses, brand words, screenshots, page text and page addresses are removed from the recorded runs, and capitalised words that are not ordinary English (coined product names such as a jewelry line) are replaced with "[name]" (`server/anonymize.mjs`). The API applies the same mask to runs that are still in progress.
 
 Results of two sweeps on 31 October 2026 (console: *Results*; `node tools/sweep.mjs status`):
 
@@ -74,7 +138,11 @@ The customers' findings are written by AI, so every finding is checked again wit
 
 On the real shops so far: 686 findings; 365 are of a kind that can be checked automatically (controls without a name, identical names, vague names, lost focus, no announcement after an action, empty pages while loading, no skip link, pre-ticked marketing boxes, raw template text); 301 of them (82%) are confirmed by the record (285 by the page record, 16 by axe-core alone) and 64 are not. The other 321 (for example "the price in the cart is higher than on the product card") need a person to judge from the replay. Each finding shows its result in the run view and in the shop's analysis. For a shop whose name is withheld, the check runs before its page text is removed from the record.
 
-## Test your own site
+## Test your own shop
+
+<p align="center">
+  <img src="docs/images/art/owner.svg" width="100%" alt="Test your own shop: prove it is yours, let the test in with one allow rule, connect a staging copy and its PayPal sandbox app, and the customers pay; a run passes only when your own sandbox reports the order as COMPLETED">
+</p>
 
 Bot protection turns automated browsers away, and AccessiPay never tries to get past it. On their own shop an owner can let it in (console: *Run a test*, "A real shop": after the check, "This is my shop"):
 
@@ -136,6 +204,22 @@ node tools/agent.mjs fix-reply <fix id> reply.json
 - **PayPal Orders v2** (sandbox): the shop's server creates and captures the order, and the read-back of the order decides whether a run succeeded: only `COMPLETED` counts. On an owner's staging shop the read-back uses the owner's own sandbox keys. Verified against the live sandbox: create, capture, read back as `COMPLETED`, refund (`npm test` includes this when sandbox keys are present). Calls go through a token bucket because the sandbox blocks an IP after about 50 requests a minute.
 - **Claude**: the shopper's decision at each step (one request per step with a cached persona prompt) and the fixer's patch proposal. Prompts live in `server/engine/prompts.mjs` and `server/fixer/fixer.mjs`.
 - **Playwright** drives a real Chromium; **axe-core** is the scanner it is compared with; **AG Grid** powers the runs and defects tables.
+
+## Repository
+
+| Path | What is there |
+|---|---|
+| `server/engine/` | The shopper engine: personas, sessions, the run loop, brains (Claude API, external agent, script) |
+| `server/shop/` | The demo shop and its 13 switchable defects |
+| `server/paypal/` | PayPal Orders v2 client (sandbox, or labelled mock mode) |
+| `server/fixer/` | The AI fixer and its patch checks |
+| `server/report/` | Owner reports: web, accessible PDF, annotated screenshots |
+| `server/owners.mjs` | Owner verification, the access key and the PayPal sandbox connection |
+| `console/` | The site and console (React, Vite, AG Grid) |
+| `examples/sandbox-shop/` | A separate staging shop on its own PayPal sandbox app, for the owner flow |
+| `data/recorded/` | Recorded runs and fixes shown on the site (real shops anonymized) |
+| `tools/` | Agent seat, sweeps, recording, findings check, leak check |
+| `test/` | `npm test`: 40 tests (the 4 that call the PayPal sandbox skip without keys) |
 
 ## License
 

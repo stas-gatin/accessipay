@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400" role="img"
+  aria-label="How it works: three simulated customers shop in a real Chromium; axe-core scans the same pages; if a customer gets stuck, the AI fixer reads the page and the record of the visit and writes a patch; the same customer tries again; a run passes only when PayPal Orders v2 reports the order as COMPLETED.">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a1a33"/><stop offset="1" stop-color="#0d2a4f"/></linearGradient>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#ffffff" fill-opacity="0.06"/></pattern>
+    <style>
+      .t { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
+      .m { font-family: SFMono-Regular, Menlo, Consolas, monospace; }
+      .wire { stroke-dasharray: 6 8; animation: flow 1.2s linear infinite; }
+      @keyframes flow { to { stroke-dashoffset: -28; } }
+      .node { animation: lit 10s ease-in-out infinite; }
+      @keyframes lit { 0%, 14%, 100% { stroke-opacity: 0.18; } 4%, 10% { stroke-opacity: 1; } }
+      .back { stroke-dasharray: 6 8; animation: flow 1.2s linear infinite reverse; }
+      .dot { animation: travel 10s ease-in-out infinite; }
+      @keyframes travel {
+        0% { transform: translate(122px, 190px); opacity: 0; } 3% { opacity: 1; }
+        16% { transform: translate(322px, 190px); } 32% { transform: translate(522px, 190px); }
+        44% { transform: translate(722px, 190px); } 56% { transform: translate(722px, 300px); }
+        66% { transform: translate(922px, 300px); } 76% { transform: translate(922px, 190px); }
+        90% { transform: translate(1150px, 190px); opacity: 1; } 96%, 100% { transform: translate(1150px, 190px); opacity: 0; }
+      }
+      .done { opacity: 0; animation: done 10s ease-out infinite; }
+      @keyframes done { 0%, 88% { opacity: 0; } 91% { opacity: 1; } 98% { opacity: 1; } 100% { opacity: 0; } }
+    </style>
+  </defs>
+  <rect width="1280" height="400" rx="24" fill="url(#bg)"/>
+  <rect width="1280" height="400" rx="24" fill="url(#dots)"/>
+  <text x="56" y="58" class="m" font-size="14" letter-spacing="3" fill="#5ef1c2">HOW A TEST RUNS</text>
+
+  <!-- wires -->
+  <g fill="none" stroke="#5ef1c2" stroke-opacity="0.55" stroke-width="3">
+    <path class="wire" d="M200 190 H250"/><path class="wire" d="M400 190 H450"/><path class="wire" d="M600 190 H650"/>
+    <path class="wire" d="M722 238 V262"/><path class="wire" d="M800 300 H850"/><path class="wire" d="M922 262 V238"/>
+    <path class="wire" d="M1000 190 H1060"/>
+  </g>
+
+  <g class="t">
+    <!-- 1 -->
+    <rect class="node" style="animation-delay:0s" x="56" y="142" width="144" height="96" rx="16" fill="#ffffff" fill-opacity="0.07" stroke="#5ef1c2" stroke-width="2"/>
+    <text x="128" y="176" text-anchor="middle" font-size="13" fill="#5ef1c2" font-weight="700">1</text>
+    <text x="128" y="198" text-anchor="middle" font-size="16" fill="#ffffff" font-weight="700">3 customers</text>
+    <text x="128" y="220" text-anchor="middle" font-size="12" fill="#a9bdd4">three kinds of shopper</text>
+    <!-- 2 -->
+    <rect class="node" style="animation-delay:1.6s" x="250" y="142" width="150" height="96" rx="16" fill="#ffffff" fill-opacity="0.07" stroke="#5ef1c2" stroke-width="2"/>
+    <text x="325" y="176" text-anchor="middle" font-size="13" fill="#5ef1c2" font-weight="700">2</text>
+    <text x="325" y="198" text-anchor="middle" font-size="16" fill="#ffffff" font-weight="700">Shop</text>
+    <text x="325" y="220" text-anchor="middle" font-size="12" fill="#a9bdd4">step by step, recorded</text>
+    <!-- 3 -->
+    <rect class="node" style="animation-delay:3.2s" x="450" y="142" width="150" height="96" rx="16" fill="#ffffff" fill-opacity="0.07" stroke="#5ef1c2" stroke-width="2"/>
+    <text x="525" y="176" text-anchor="middle" font-size="13" fill="#5ef1c2" font-weight="700">3</text>
+    <text x="525" y="198" text-anchor="middle" font-size="16" fill="#ffffff" font-weight="700">Scanner</text>
+    <text x="525" y="220" text-anchor="middle" font-size="12" fill="#a9bdd4">axe-core, same pages</text>
+    <!-- 4 -->
+    <rect class="node" style="animation-delay:4.4s" x="650" y="142" width="150" height="96" rx="16" fill="#ff4f45" fill-opacity="0.18" stroke="#ff4f45" stroke-width="2"/>
+    <text x="725" y="176" text-anchor="middle" font-size="13" fill="#ff8a83" font-weight="700">4</text>
+    <text x="725" y="198" text-anchor="middle" font-size="16" fill="#ffffff" font-weight="700">Stuck?</text>
+    <text x="725" y="220" text-anchor="middle" font-size="12" fill="#ffc9c5">where, and why</text>
+    <!-- 5 -->
+    <rect class="node" style="animation-delay:5.6s" x="650" y="262" width="150" height="80" rx="16" fill="#ffffff" fill-opacity="0.07" stroke="#5ef1c2" stroke-width="2"/>
+    <text x="725" y="294" text-anchor="middle" font-size="16" fill="#ffffff" font-weight="700">AI fix</text>
+    <text x="725" y="316" text-anchor="middle" font-size="12" fill="#a9bdd4">reads the page and the</text>
+    <text x="725" y="332" text-anchor="middle" font-size="12" fill="#a9bdd4">record, writes a patch</text>
+    <!-- 6 -->
+    <rect class="node" style="animation-delay:6.6s" x="850" y="262" width="150" height="80" rx="16" fill="#ffffff" fill-opacity="0.07" stroke="#5ef1c2" stroke-width="2"/>
+    <text x="925" y="294" text-anchor="middle" font-size="16" fill="#ffffff" font-weight="700">Same customer</text>
+    <text x="925" y="316" text-anchor="middle" font-size="12" fill="#a9bdd4">same task, tries again</text>
+    <!-- 7 -->
+    <rect class="node" style="animation-delay:7.6s" x="850" y="142" width="150" height="96" rx="16" fill="#ffffff" fill-opacity="0.07" stroke="#5ef1c2" stroke-width="2"/>
+    <text x="925" y="176" text-anchor="middle" font-size="13" fill="#5ef1c2" font-weight="700">5</text>
+    <text x="925" y="198" text-anchor="middle" font-size="16" fill="#ffffff" font-weight="700">Pays</text>
+    <text x="925" y="220" text-anchor="middle" font-size="12" fill="#a9bdd4">PayPal Card Fields</text>
+    <!-- PayPal -->
+    <rect x="1060" y="122" width="170" height="136" rx="18" fill="#0070e0"/>
+    <text x="1145" y="158" text-anchor="middle" font-size="12" fill="#d6e8ff" font-weight="700" letter-spacing="1">PAYPAL ORDERS V2</text>
+    <text x="1145" y="186" text-anchor="middle" font-size="16" fill="#ffffff" font-weight="700">read back</text>
+    <rect x="1080" y="204" width="130" height="36" rx="8" fill="#e6fbf3"/>
+    <text x="1145" y="228" text-anchor="middle" font-size="16" font-weight="800" fill="#0a8a5f">COMPLETED</text>
+    <text x="1145" y="292" text-anchor="middle" font-size="13" fill="#a9bdd4">the only pass mark</text>
+    <g class="done"><text x="1145" y="318" text-anchor="middle" font-size="15" font-weight="700" fill="#5ef1c2">✓ paid, and confirmed</text></g>
+  </g>
+    <text x="56" y="378" class="t" font-size="13" fill="#7f93ab">On a real shop tested without its owner the customers stop at the payment step and nothing is paid.</text>
+</svg>
