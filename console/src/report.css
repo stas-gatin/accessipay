@@ -1,0 +1,34 @@
+/* Owner report view in the console (Report.jsx, ReadyCode.jsx). */
+.report-view .report-verdict { font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.report-view .report-order { margin: 0 0 14px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.report-view .report-scanner { margin: 0 0 4px; }
+.report-view a.btn { text-decoration: none; display: inline-block; }
+.report-actions { list-style: none; padding: 0; margin: 16px 0; display: flex; flex-wrap: wrap; gap: 8px 12px; }
+.ready-common { margin: 0 0 14px; }
+.ready-common p { margin: 0 0 6px; }
+.ready-list { list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 14px; }
+.ready-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
+.ready-head .section-title { margin: 0; }
+.ready-card h3 code { font-family: var(--mono); font-size: 15px; }
+.ready-n { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #b3261e; color: #fff; font-size: 14px; margin-right: 8px; }
+.ready-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.ready-pair figure { margin: 0; min-width: 0; }
+.ready-pair figcaption { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+/* One code font everywhere: the site's mono. <code> would otherwise fall back to the browser's monospace. */
+.ready-pair pre, .ready-pair pre code { font-family: var(--mono); font-size: 13px; line-height: 1.55; }
+.ready-pair pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line); color: var(--ink); }
+.ready-before { background: var(--bad-soft); border-color: var(--bad-line) !important; }
+.ready-after { background: var(--accent-soft); border-color: var(--accent-line) !important; }
+.report-view .ap-annot { border-color: var(--line); }
+.report-view .ap-legend, .report-view .ap-figure figcaption { color: var(--muted); }
+@media (max-width: 720px) {
+  .ready-pair { grid-template-columns: 1fr; }
+  .report-actions { flex-direction: column; gap: 8px; }
+  .report-actions li, .report-actions .btn { width: 100%; text-align: center; }
+}
+/* Code is copied as typed: no ligatures (=== must not turn into one glyph). */
+.ready-pair pre, .ready-pair pre code, .ready-card h3 code { font-variant-ligatures: none; font-feature-settings: 'liga' 0, 'calt' 0; }
+/* File and line: a second line under the change title, small mono, never split mid-way. */
+.ready-head h3 { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 0; }
+.ready-head h3 .ready-n { grid-row: span 2; align-self: start; margin-top: 2px; }
+.ready-file { display: block; grid-column: 2; font-family: var(--mono); font-size: 12.5px; font-weight: 400; color: var(--muted); letter-spacing: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

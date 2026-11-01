@@ -1,0 +1,65 @@
+{
+  "id": "9cbe79de",
+  "runId": "20261030-003839",
+  "instanceId": "0011135fa3",
+  "page": "cart",
+  "fixer": "external",
+  "status": "applied",
+  "createdAt": "2026-10-30T15:59:46.837Z",
+  "summary": "The newsletter popup trapped keyboard focus between Email and Subscribe, with a close control that was a non-focusable span and Escape blocked. The close control is now a real labelled button inside the focus loop, Escape closes the popup, the popup is a labelled modal dialog, and focus returns to where the shopper was when it closes.",
+  "accepted": [
+    {
+      "id": "37ddaa",
+      "page": "cart",
+      "find": "<span class=\"x\" id=\"promo-close\">&times;</span>",
+      "replace": "<button type=\"button\" class=\"x\" id=\"promo-close\" aria-label=\"Close newsletter offer\">&times;</button>",
+      "why": "A native button can be reached and activated by keyboard and has an accessible name."
+    },
+    {
+      "id": "03855c",
+      "page": "cart",
+      "find": "<div class=\"modal\">",
+      "replace": "<div class=\"modal\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"promo-title\">",
+      "why": "Expose the popup as a named modal dialog to assistive technology."
+    },
+    {
+      "id": "5987d2",
+      "page": "cart",
+      "find": "<h2>Get 10% off your first order</h2>",
+      "replace": "<h2 id=\"promo-title\">Get 10% off your first order</h2>",
+      "why": "Gives the dialog its name."
+    },
+    {
+      "id": "44a7c2",
+      "page": "cart",
+      "find": "  if (e.key === 'Escape') { e.preventDefault(); return; }",
+      "replace": "  if (e.key === 'Escape') { e.preventDefault(); closePromo(); return; }",
+      "why": "Escape must close a modal dialog instead of being swallowed."
+    },
+    {
+      "id": "8863e6",
+      "page": "cart",
+      "find": "const items = [document.getElementById('promo-email'), document.getElementById('promo-sub')];",
+      "replace": "const items = [document.getElementById('promo-close'), document.getElementById('promo-email'), document.getElementById('promo-sub')];",
+      "why": "Include the close button in the dialog's Tab cycle so it can be reached."
+    },
+    {
+      "id": "cc5937",
+      "page": "cart",
+      "find": "function closePromo() { promo.hidden = true; document.removeEventListener('keydown', trap, true); sessionStorage.setItem(KEY, '1'); }",
+      "replace": "let lastFocus = null;\nfunction closePromo() { promo.hidden = true; document.removeEventListener('keydown', trap, true); sessionStorage.setItem(KEY, '1'); (lastFocus && document.contains(lastFocus) && lastFocus !== document.body ? lastFocus : document.querySelector('h1')).focus(); }",
+      "why": "Return focus to where the shopper was (or the page heading) after the dialog closes."
+    },
+    {
+      "id": "cb8219",
+      "page": "cart",
+      "find": "function openPromo() { promo.hidden = false;",
+      "replace": "function openPromo() { lastFocus = document.activeElement; promo.hidden = false;",
+      "why": "Remember the focused element so it can be restored on close."
+    }
+  ],
+  "rejected": [],
+  "changed": true,
+  "diff": "===================================================================\n--- cart.html (before)\n+++ cart.html (after)\n@@ -83,7 +83,7 @@\n </div>\n <div class=\"backdrop\" id=\"promo\" hidden>\n-  <div class=\"modal\">\n-    <span class=\"x\" id=\"promo-close\">&times;</span>\n-    <h2>Get 10% off your first order</h2>\n+  <div class=\"modal\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"promo-title\">\n+    <button type=\"button\" class=\"x\" id=\"promo-close\" aria-label=\"Close newsletter offer\">&times;</button>\n+    <h2 id=\"promo-title\">Get 10% off your first order</h2>\n     <p>Join our newsletter and we will email you a code.</p>\n     <label for=\"promo-email\">Email</label>\n@@ -106,13 +106,14 @@\n \n function trap(e) {\n-  if (e.key === 'Escape') { e.preventDefault(); return; }\n+  if (e.key === 'Escape') { e.preventDefault(); closePromo(); return; }\n   if (e.key !== 'Tab') return;\n   e.preventDefault();\n-  const items = [document.getElementById('promo-email'), document.getElementById('promo-sub')];\n+  const items = [document.getElementById('promo-close'), document.getElementById('promo-email'), document.getElementById('promo-sub')];\n   const i = items.indexOf(document.activeElement);\n   items[(i + (e.shiftKey ? items.length - 1 : 1)) % items.length].focus();\n }\n-function closePromo() { promo.hidden = true; document.removeEventListener('keydown', trap, true); sessionStorage.setItem(KEY, '1'); }\n-function openPromo() { promo.hidden = false; document.addEventListener('keydown', trap, true); document.getElementById('promo-email').focus(); }\n+let lastFocus = null;\n+function closePromo() { promo.hidden = true; document.removeEventListener('keydown', trap, true); sessionStorage.setItem(KEY, '1'); (lastFocus && document.contains(lastFocus) && lastFocus !== document.body ? lastFocus : document.querySelector('h1')).focus(); }\n+function openPromo() { lastFocus = document.activeElement; promo.hidden = false; document.addEventListener('keydown', trap, true); document.getElementById('promo-email').focus(); }\n document.getElementById('promo-close').addEventListener('click', closePromo);\n document.getElementById('promo-sub').addEventListener('click', function () {\n",
+  "note": "Rebuilt after a server restart from the fixer reply and the saved patches."
+}

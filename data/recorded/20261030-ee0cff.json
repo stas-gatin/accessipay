@@ -1,0 +1,652 @@
+{
+  "id": "20261030-ee0cff",
+  "createdAt": "2026-10-30T15:59:46.889Z",
+  "label": "",
+  "persona": "agent",
+  "brainKind": "external",
+  "model": null,
+  "instanceId": "865c46a671",
+  "defects": [
+    "div-pay-button"
+  ],
+  "patches": [],
+  "paypalMode": "sandbox",
+  "goal": "Buy one Trail Backpack with standard delivery. Your details: full name Alex Morgan, email alex.morgan@example.com, street address 12 Market Street, city Springfield, ZIP 62701, country United States. Pay by card: name on card Alex Morgan, card number 4111 1111 1111 1111, expiry 12/30, security code 123. Agree to the terms of sale. You do not want newsletters or promotions.",
+  "maxSteps": 40,
+  "status": "finished",
+  "outcome": {
+    "status": "blocked",
+    "reason": "The agent gave up.",
+    "claimedDone": false
+  },
+  "findings": [
+    {
+      "page": "Payment - Pine and Peak Outfitters",
+      "problem": "The Pay $54.00 control is plain text with no role or name, so it cannot be targeted as a button; Enter in the fields did nothing, so the order could not be placed."
+    },
+    {
+      "page": "Payment - Pine and Peak Outfitters",
+      "problem": "Empty paragraphs around the Pay text suggest the card fields and pay control are rendered in a way that exposes no status or error feedback."
+    },
+    {
+      "page": "Your cart - Pine and Peak Outfitters",
+      "problem": "A newsletter dialog popped up over the cart unasked and had to be closed before continuing."
+    },
+    {
+      "page": "Checkout - Pine and Peak Outfitters",
+      "problem": "Delivery radios have the label text repeated as separate plain text, and the group has no clear grouping beyond the name; terms checkbox has no link to the terms text."
+    },
+    {
+      "page": "Your cart - Pine and Peak Outfitters",
+      "problem": "Checkout and Continue shopping links are shown with empty colon in the tree, and add-to-cart on the shop page gave only a status message, with no focus move."
+    }
+  ],
+  "events": [
+    {
+      "t": "2026-10-30T15:59:47.418Z",
+      "type": "start",
+      "persona": "agent",
+      "startUrl": "http://127.0.0.1:4300/s/865c46a671/"
+    },
+    {
+      "t": "2026-10-30T15:59:47.474Z",
+      "type": "observe",
+      "step": 1,
+      "path": "/",
+      "title": "Shop - Pine and Peak Outfitters",
+      "text": "Page title: Shop - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (0)\"\n- main:\n  - heading \"Gear for the trail\" [level=1]\n  - list:\n    - listitem:\n      - heading \"Trail Backpack\" [level=2]\n      - paragraph: $49.00\n      - paragraph: 28 litres, padded laptop sleeve, rain cover included.\n      - button \"Add Trail Backpack to cart\"\n    - listitem:\n      - heading \"Steel Water Bottle\" [level=2]\n      - paragraph: $18.00\n      - paragraph: Keeps drinks cold for 24 hours. 750 ml.\n      - button \"Add Steel Water Bottle to cart\"\n    - listitem:\n      - heading \"Rain Jacket\" [level=2]\n      - paragraph: $79.00\n      - paragraph: Lightweight, packable, fully taped seams.\n      - button \"Add Rain Jacket to cart\"\n  - status\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-001.jpg"
+    },
+    {
+      "t": "2026-10-30T16:00:14.041Z",
+      "type": "decide",
+      "step": 1,
+      "action": "click",
+      "args": {
+        "role": "button",
+        "name": "Add Trail Backpack to cart"
+      },
+      "thought": "Add the backpack to the cart."
+    },
+    {
+      "t": "2026-10-30T16:00:14.560Z",
+      "type": "act",
+      "step": 1,
+      "result": "Clicked button \"Add Trail Backpack to cart\"."
+    },
+    {
+      "t": "2026-10-30T16:00:14.615Z",
+      "type": "observe",
+      "step": 2,
+      "path": "/",
+      "title": "Shop - Pine and Peak Outfitters",
+      "text": "Page title: Shop - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Gear for the trail\" [level=1]\n  - list:\n    - listitem:\n      - heading \"Trail Backpack\" [level=2]\n      - paragraph: $49.00\n      - paragraph: 28 litres, padded laptop sleeve, rain cover included.\n      - button \"Add Trail Backpack to cart\"\n    - listitem:\n      - heading \"Steel Water Bottle\" [level=2]\n      - paragraph: $18.00\n      - paragraph: Keeps drinks cold for 24 hours. 750 ml.\n      - button \"Add Steel Water Bottle to cart\"\n    - listitem:\n      - heading \"Rain Jacket\" [level=2]\n      - paragraph: $79.00\n      - paragraph: Lightweight, packable, fully taped seams.\n      - button \"Add Rain Jacket to cart\"\n  - status: Trail Backpack added to cart. 1 item(s) in your cart.\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-002.jpg"
+    },
+    {
+      "t": "2026-10-30T16:00:19.878Z",
+      "type": "decide",
+      "step": 2,
+      "action": "click",
+      "args": {
+        "role": "link",
+        "name": "Cart (1)"
+      },
+      "thought": "Open the cart."
+    },
+    {
+      "t": "2026-10-30T16:00:20.390Z",
+      "type": "act",
+      "step": 2,
+      "result": "Clicked link \"Cart (1)\"."
+    },
+    {
+      "t": "2026-10-30T16:00:20.430Z",
+      "type": "observe",
+      "step": 3,
+      "path": "/cart",
+      "title": "Your cart - Pine and Peak Outfitters",
+      "text": "Page title: Your cart - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Your cart\" [level=1]\n  - list:\n    - listitem:\n      - text: Trail Backpack, $49.00 each Quantity\n      - spinbutton \"Quantity\": \"1\"\n      - button \"Remove Trail Backpack\"\n  - text: Promo code\n  - textbox \"Promo code\"\n  - button \"Apply code\"\n  - status\n  - paragraph: Subtotal $49.00\n  - paragraph: Discount $0.00\n  - paragraph:\n    - strong: Total before delivery\n    - strong: $49.00\n  - paragraph:\n    - link \"Checkout\":\n    - link \"Continue shopping\":\n  - dialog \"Get 10% off your first order\":\n    - button \"Close\": ×\n    - heading \"Get 10% off your first order\" [level=2]\n    - paragraph: Join our newsletter and we will email you a code.\n    - text: Email\n    - textbox \"Email\"\n    - paragraph:\n      - button \"Subscribe\"\n    - status\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-003.jpg"
+    },
+    {
+      "t": "2026-10-30T16:00:31.122Z",
+      "type": "decide",
+      "step": 3,
+      "action": "click",
+      "args": {
+        "role": "button",
+        "name": "Close"
+      },
+      "thought": "Dismiss the newsletter popup that I do not want."
+    },
+    {
+      "t": "2026-10-30T16:00:31.642Z",
+      "type": "act",
+      "step": 3,
+      "result": "Clicked button \"Close\"."
+    },
+    {
+      "t": "2026-10-30T16:00:31.664Z",
+      "type": "observe",
+      "step": 4,
+      "path": "/cart",
+      "title": "Your cart - Pine and Peak Outfitters",
+      "text": "Page title: Your cart - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Your cart\" [level=1]\n  - list:\n    - listitem:\n      - text: Trail Backpack, $49.00 each Quantity\n      - spinbutton \"Quantity\": \"1\"\n      - button \"Remove Trail Backpack\"\n  - text: Promo code\n  - textbox \"Promo code\"\n  - button \"Apply code\"\n  - status\n  - paragraph: Subtotal $49.00\n  - paragraph: Discount $0.00\n  - paragraph:\n    - strong: Total before delivery\n    - strong: $49.00\n  - paragraph:\n    - link \"Checkout\":\n    - link \"Continue shopping\"\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-004.jpg"
+    },
+    {
+      "t": "2026-10-30T16:00:33.895Z",
+      "type": "decide",
+      "step": 4,
+      "action": "click",
+      "args": {
+        "role": "link",
+        "name": "Checkout"
+      },
+      "thought": "Go to checkout."
+    },
+    {
+      "t": "2026-10-30T16:00:34.413Z",
+      "type": "act",
+      "step": 4,
+      "result": "Clicked link \"Checkout\"."
+    },
+    {
+      "t": "2026-10-30T16:00:34.452Z",
+      "type": "observe",
+      "step": 5,
+      "path": "/checkout",
+      "title": "Checkout - Pine and Peak Outfitters",
+      "text": "Page title: Checkout - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - group \"Contact\":\n    - text: Contact Full name\n    - textbox \"Full name\"\n    - text: Email\n    - textbox \"Email\"\n  - group \"Shipping address\":\n    - text: Shipping address Street address\n    - textbox \"Street address\"\n    - text: City\n    - textbox \"City\"\n    - text: ZIP or postal code\n    - textbox \"ZIP or postal code\"\n    - text: Country\n    - combobox \"Country\":\n      - option \"Choose a country\" [selected]\n      - option \"United States\"\n      - option \"Canada\"\n      - option \"United Kingdom\"\n      - option \"Spain\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $5.00\"\n    - text: Standard delivery, 3 to 5 days, $5.00\n    - radio \"Express delivery, 1 to 2 days, $15.00\"\n    - text: Express delivery, 1 to 2 days, $15.00\n  - paragraph:\n    - checkbox \"I agree to the terms of sale\"\n    - text: I agree to the terms of sale\n  - paragraph:\n    - button \"Continue to payment\"\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-005.jpg"
+    },
+    {
+      "t": "2026-10-30T16:00:38.385Z",
+      "type": "decide",
+      "step": 5,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Full name",
+        "text": "Alex Morgan"
+      },
+      "thought": "Fill full name."
+    },
+    {
+      "t": "2026-10-30T16:00:38.388Z",
+      "type": "act",
+      "step": 5,
+      "result": "Filled textbox \"Full name\" with \"Alex Morgan\"."
+    },
+    {
+      "t": "2026-10-30T16:00:38.398Z",
+      "type": "observe",
+      "step": 6,
+      "path": "/checkout",
+      "title": "Checkout - Pine and Peak Outfitters",
+      "text": "Page title: Checkout - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - group \"Contact\":\n    - text: Contact Full name\n    - textbox \"Full name\": Alex Morgan\n    - text: Email\n    - textbox \"Email\"\n  - group \"Shipping address\":\n    - text: Shipping address Street address\n    - textbox \"Street address\"\n    - text: City\n    - textbox \"City\"\n    - text: ZIP or postal code\n    - textbox \"ZIP or postal code\"\n    - text: Country\n    - combobox \"Country\":\n      - option \"Choose a country\" [selected]\n      - option \"United States\"\n      - option \"Canada\"\n      - option \"United Kingdom\"\n      - option \"Spain\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $5.00\"\n    - text: Standard delivery, 3 to 5 days, $5.00\n    - radio \"Express delivery, 1 to 2 days, $15.00\"\n    - text: Express delivery, 1 to 2 days, $15.00\n  - paragraph:\n    - checkbox \"I agree to the terms of sale\"\n    - text: I agree to the terms of sale\n  - paragraph:\n    - button \"Continue to payment\"\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-006.jpg"
+    },
+    {
+      "t": "2026-10-30T16:00:49.555Z",
+      "type": "decide",
+      "step": 6,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Email",
+        "text": "alex.morgan@example.com"
+      },
+      "thought": "Fill email."
+    },
+    {
+      "t": "2026-10-30T16:00:49.558Z",
+      "type": "act",
+      "step": 6,
+      "result": "Filled textbox \"Email\" with \"alex.morgan@example.com\"."
+    },
+    {
+      "t": "2026-10-30T16:00:49.583Z",
+      "type": "observe",
+      "step": 7,
+      "path": "/checkout",
+      "title": "Checkout - Pine and Peak Outfitters",
+      "text": "Page title: Checkout - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - group \"Contact\":\n    - text: Contact Full name\n    - textbox \"Full name\": Alex Morgan\n    - text: Email\n    - textbox \"Email\": alex.morgan@example.com\n  - group \"Shipping address\":\n    - text: Shipping address Street address\n    - textbox \"Street address\"\n    - text: City\n    - textbox \"City\"\n    - text: ZIP or postal code\n    - textbox \"ZIP or postal code\"\n    - text: Country\n    - combobox \"Country\":\n      - option \"Choose a country\" [selected]\n      - option \"United States\"\n      - option \"Canada\"\n      - option \"United Kingdom\"\n      - option \"Spain\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $5.00\"\n    - text: Standard delivery, 3 to 5 days, $5.00\n    - radio \"Express delivery, 1 to 2 days, $15.00\"\n    - text: Express delivery, 1 to 2 days, $15.00\n  - paragraph:\n    - checkbox \"I agree to the terms of sale\"\n    - text: I agree to the terms of sale\n  - paragraph:\n    - button \"Continue to payment\"\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-007.jpg"
+    },
+    {
+      "t": "2026-10-30T16:00:53.726Z",
+      "type": "decide",
+      "step": 7,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Street address",
+        "text": "12 Market Street"
+      },
+      "thought": "Fill street."
+    },
+    {
+      "t": "2026-10-30T16:00:53.729Z",
+      "type": "act",
+      "step": 7,
+      "result": "Filled textbox \"Street address\" with \"12 Market Street\"."
+    },
+    {
+      "t": "2026-10-30T16:00:53.748Z",
+      "type": "observe",
+      "step": 8,
+      "path": "/checkout",
+      "title": "Checkout - Pine and Peak Outfitters",
+      "text": "Page title: Checkout - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - group \"Contact\":\n    - text: Contact Full name\n    - textbox \"Full name\": Alex Morgan\n    - text: Email\n    - textbox \"Email\": alex.morgan@example.com\n  - group \"Shipping address\":\n    - text: Shipping address Street address\n    - textbox \"Street address\": 12 Market Street\n    - text: City\n    - textbox \"City\"\n    - text: ZIP or postal code\n    - textbox \"ZIP or postal code\"\n    - text: Country\n    - combobox \"Country\":\n      - option \"Choose a country\" [selected]\n      - option \"United States\"\n      - option \"Canada\"\n      - option \"United Kingdom\"\n      - option \"Spain\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $5.00\"\n    - text: Standard delivery, 3 to 5 days, $5.00\n    - radio \"Express delivery, 1 to 2 days, $15.00\"\n    - text: Express delivery, 1 to 2 days, $15.00\n  - paragraph:\n    - checkbox \"I agree to the terms of sale\"\n    - text: I agree to the terms of sale\n  - paragraph:\n    - button \"Continue to payment\"\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-008.jpg"
+    },
+    {
+      "t": "2026-10-30T16:00:58.653Z",
+      "type": "decide",
+      "step": 8,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "City",
+        "text": "Springfield"
+      },
+      "thought": "Fill city."
+    },
+    {
+      "t": "2026-10-30T16:00:58.655Z",
+      "type": "act",
+      "step": 8,
+      "result": "Filled textbox \"City\" with \"Springfield\"."
+    },
+    {
+      "t": "2026-10-30T16:00:58.682Z",
+      "type": "observe",
+      "step": 9,
+      "path": "/checkout",
+      "title": "Checkout - Pine and Peak Outfitters",
+      "text": "Page title: Checkout - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - group \"Contact\":\n    - text: Contact Full name\n    - textbox \"Full name\": Alex Morgan\n    - text: Email\n    - textbox \"Email\": alex.morgan@example.com\n  - group \"Shipping address\":\n    - text: Shipping address Street address\n    - textbox \"Street address\": 12 Market Street\n    - text: City\n    - textbox \"City\": Springfield\n    - text: ZIP or postal code\n    - textbox \"ZIP or postal code\"\n    - text: Country\n    - combobox \"Country\":\n      - option \"Choose a country\" [selected]\n      - option \"United States\"\n      - option \"Canada\"\n      - option \"United Kingdom\"\n      - option \"Spain\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $5.00\"\n    - text: Standard delivery, 3 to 5 days, $5.00\n    - radio \"Express delivery, 1 to 2 days, $15.00\"\n    - text: Express delivery, 1 to 2 days, $15.00\n  - paragraph:\n    - checkbox \"I agree to the terms of sale\"\n    - text: I agree to the terms of sale\n  - paragraph:\n    - button \"Continue to payment\"\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-009.jpg"
+    },
+    {
+      "t": "2026-10-30T16:01:00.856Z",
+      "type": "decide",
+      "step": 9,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "ZIP or postal code",
+        "text": "62701"
+      },
+      "thought": "Fill ZIP."
+    },
+    {
+      "t": "2026-10-30T16:01:00.860Z",
+      "type": "act",
+      "step": 9,
+      "result": "Filled textbox \"ZIP or postal code\" with \"62701\"."
+    },
+    {
+      "t": "2026-10-30T16:01:00.883Z",
+      "type": "observe",
+      "step": 10,
+      "path": "/checkout",
+      "title": "Checkout - Pine and Peak Outfitters",
+      "text": "Page title: Checkout - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - group \"Contact\":\n    - text: Contact Full name\n    - textbox \"Full name\": Alex Morgan\n    - text: Email\n    - textbox \"Email\": alex.morgan@example.com\n  - group \"Shipping address\":\n    - text: Shipping address Street address\n    - textbox \"Street address\": 12 Market Street\n    - text: City\n    - textbox \"City\": Springfield\n    - text: ZIP or postal code\n    - textbox \"ZIP or postal code\": \"62701\"\n    - text: Country\n    - combobox \"Country\":\n      - option \"Choose a country\" [selected]\n      - option \"United States\"\n      - option \"Canada\"\n      - option \"United Kingdom\"\n      - option \"Spain\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $5.00\"\n    - text: Standard delivery, 3 to 5 days, $5.00\n    - radio \"Express delivery, 1 to 2 days, $15.00\"\n    - text: Express delivery, 1 to 2 days, $15.00\n  - paragraph:\n    - checkbox \"I agree to the terms of sale\"\n    - text: I agree to the terms of sale\n  - paragraph:\n    - button \"Continue to payment\"\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-010.jpg"
+    },
+    {
+      "t": "2026-10-30T16:01:03.043Z",
+      "type": "decide",
+      "step": 10,
+      "action": "select",
+      "args": {
+        "name": "Country",
+        "option": "United States"
+      },
+      "thought": "Choose country."
+    },
+    {
+      "t": "2026-10-30T16:01:03.551Z",
+      "type": "act",
+      "step": 10,
+      "result": "Selected \"United States\" in \"Country\"."
+    },
+    {
+      "t": "2026-10-30T16:01:03.587Z",
+      "type": "observe",
+      "step": 11,
+      "path": "/checkout",
+      "title": "Checkout - Pine and Peak Outfitters",
+      "text": "Page title: Checkout - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - group \"Contact\":\n    - text: Contact Full name\n    - textbox \"Full name\": Alex Morgan\n    - text: Email\n    - textbox \"Email\": alex.morgan@example.com\n  - group \"Shipping address\":\n    - text: Shipping address Street address\n    - textbox \"Street address\": 12 Market Street\n    - text: City\n    - textbox \"City\": Springfield\n    - text: ZIP or postal code\n    - textbox \"ZIP or postal code\": \"62701\"\n    - text: Country\n    - combobox \"Country\":\n      - option \"Choose a country\"\n      - option \"United States\" [selected]\n      - option \"Canada\"\n      - option \"United Kingdom\"\n      - option \"Spain\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $5.00\"\n    - text: Standard delivery, 3 to 5 days, $5.00\n    - radio \"Express delivery, 1 to 2 days, $15.00\"\n    - text: Express delivery, 1 to 2 days, $15.00\n  - paragraph:\n    - checkbox \"I agree to the terms of sale\"\n    - text: I agree to the terms of sale\n  - paragraph:\n    - button \"Continue to payment\"\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-011.jpg"
+    },
+    {
+      "t": "2026-10-30T16:01:06.986Z",
+      "type": "decide",
+      "step": 11,
+      "action": "check",
+      "args": {
+        "role": "radio",
+        "name": "Standard delivery, 3 to 5 days, $5.00"
+      },
+      "thought": "Choose standard delivery."
+    },
+    {
+      "t": "2026-10-30T16:01:07.497Z",
+      "type": "act",
+      "step": 11,
+      "result": "Checked radio \"Standard delivery, 3 to 5 days, $5.00\"."
+    },
+    {
+      "t": "2026-10-30T16:01:07.534Z",
+      "type": "observe",
+      "step": 12,
+      "path": "/checkout",
+      "title": "Checkout - Pine and Peak Outfitters",
+      "text": "Page title: Checkout - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - group \"Contact\":\n    - text: Contact Full name\n    - textbox \"Full name\": Alex Morgan\n    - text: Email\n    - textbox \"Email\": alex.morgan@example.com\n  - group \"Shipping address\":\n    - text: Shipping address Street address\n    - textbox \"Street address\": 12 Market Street\n    - text: City\n    - textbox \"City\": Springfield\n    - text: ZIP or postal code\n    - textbox \"ZIP or postal code\": \"62701\"\n    - text: Country\n    - combobox \"Country\":\n      - option \"Choose a country\"\n      - option \"United States\" [selected]\n      - option \"Canada\"\n      - option \"United Kingdom\"\n      - option \"Spain\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $5.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $5.00\n    - radio \"Express delivery, 1 to 2 days, $15.00\"\n    - text: Express delivery, 1 to 2 days, $15.00\n  - paragraph:\n    - checkbox \"I agree to the terms of sale\"\n    - text: I agree to the terms of sale\n  - paragraph:\n    - button \"Continue to payment\"\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-012.jpg"
+    },
+    {
+      "t": "2026-10-30T16:01:19.909Z",
+      "type": "decide",
+      "step": 12,
+      "action": "check",
+      "args": {
+        "role": "checkbox",
+        "name": "I agree to the terms of sale"
+      },
+      "thought": "Agree to terms."
+    },
+    {
+      "t": "2026-10-30T16:01:20.429Z",
+      "type": "act",
+      "step": 12,
+      "result": "Checked checkbox \"I agree to the terms of sale\"."
+    },
+    {
+      "t": "2026-10-30T16:01:20.455Z",
+      "type": "observe",
+      "step": 13,
+      "path": "/checkout",
+      "title": "Checkout - Pine and Peak Outfitters",
+      "text": "Page title: Checkout - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - group \"Contact\":\n    - text: Contact Full name\n    - textbox \"Full name\": Alex Morgan\n    - text: Email\n    - textbox \"Email\": alex.morgan@example.com\n  - group \"Shipping address\":\n    - text: Shipping address Street address\n    - textbox \"Street address\": 12 Market Street\n    - text: City\n    - textbox \"City\": Springfield\n    - text: ZIP or postal code\n    - textbox \"ZIP or postal code\": \"62701\"\n    - text: Country\n    - combobox \"Country\":\n      - option \"Choose a country\"\n      - option \"United States\" [selected]\n      - option \"Canada\"\n      - option \"United Kingdom\"\n      - option \"Spain\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $5.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $5.00\n    - radio \"Express delivery, 1 to 2 days, $15.00\"\n    - text: Express delivery, 1 to 2 days, $15.00\n  - paragraph:\n    - checkbox \"I agree to the terms of sale\" [checked]\n    - text: I agree to the terms of sale\n  - paragraph:\n    - button \"Continue to payment\"\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-013.jpg"
+    },
+    {
+      "t": "2026-10-30T16:01:24.147Z",
+      "type": "decide",
+      "step": 13,
+      "action": "click",
+      "args": {
+        "role": "button",
+        "name": "Continue to payment"
+      },
+      "thought": "Continue to payment."
+    },
+    {
+      "t": "2026-10-30T16:01:24.665Z",
+      "type": "act",
+      "step": 13,
+      "result": "Clicked button \"Continue to payment\"."
+    },
+    {
+      "t": "2026-10-30T16:01:24.711Z",
+      "type": "observe",
+      "step": 14,
+      "path": "/pay",
+      "title": "Payment - Pine and Peak Outfitters",
+      "text": "Page title: Payment - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - heading \"Order summary\" [level=2]\n  - paragraph: Items $49.00\n  - paragraph: Delivery $5.00\n  - paragraph:\n    - strong: Total\n    - strong: $54.00\n  - paragraph: Shipping to Alex Morgan, Springfield\n  - heading \"Pay by card with PayPal\" [level=2]\n  - paragraph: Processed in the PayPal sandbox. Use a test card.\n  - text: Name on card\n  - textbox \"Name on card\"\n  - text: Card number\n  - textbox \"Card number\"\n  - text: Expiry date (MM/YY)\n  - textbox \"Expiry date (MM/YY)\"\n  - text: Security code\n  - textbox \"Security code\"\n  - paragraph\n  - text: Pay $54.00\n  - paragraph\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-014.jpg"
+    },
+    {
+      "t": "2026-10-30T16:01:54.017Z",
+      "type": "decide",
+      "step": 14,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Name on card",
+        "text": "Alex Morgan"
+      },
+      "thought": "Fill name on card."
+    },
+    {
+      "t": "2026-10-30T16:01:54.022Z",
+      "type": "act",
+      "step": 14,
+      "result": "Filled textbox \"Name on card\" with \"Alex Morgan\"."
+    },
+    {
+      "t": "2026-10-30T16:01:54.041Z",
+      "type": "observe",
+      "step": 15,
+      "path": "/pay",
+      "title": "Payment - Pine and Peak Outfitters",
+      "text": "Page title: Payment - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - heading \"Order summary\" [level=2]\n  - paragraph: Items $49.00\n  - paragraph: Delivery $5.00\n  - paragraph:\n    - strong: Total\n    - strong: $54.00\n  - paragraph: Shipping to Alex Morgan, Springfield\n  - heading \"Pay by card with PayPal\" [level=2]\n  - paragraph: Processed in the PayPal sandbox. Use a test card.\n  - text: Name on card\n  - textbox \"Name on card\": Alex Morgan\n  - text: Card number\n  - textbox \"Card number\"\n  - text: Expiry date (MM/YY)\n  - textbox \"Expiry date (MM/YY)\"\n  - text: Security code\n  - textbox \"Security code\"\n  - paragraph\n  - text: Pay $54.00\n  - paragraph\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-015.jpg"
+    },
+    {
+      "t": "2026-10-30T16:01:54.114Z",
+      "type": "decide",
+      "step": 15,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Card number",
+        "text": "4111 1111 1111 1111"
+      },
+      "thought": "Fill card number."
+    },
+    {
+      "t": "2026-10-30T16:01:54.117Z",
+      "type": "act",
+      "step": 15,
+      "result": "Filled textbox \"Card number\" with \"4111 1111 1111 1111\"."
+    },
+    {
+      "t": "2026-10-30T16:01:54.142Z",
+      "type": "observe",
+      "step": 16,
+      "path": "/pay",
+      "title": "Payment - Pine and Peak Outfitters",
+      "text": "Page title: Payment - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - heading \"Order summary\" [level=2]\n  - paragraph: Items $49.00\n  - paragraph: Delivery $5.00\n  - paragraph:\n    - strong: Total\n    - strong: $54.00\n  - paragraph: Shipping to Alex Morgan, Springfield\n  - heading \"Pay by card with PayPal\" [level=2]\n  - paragraph: Processed in the PayPal sandbox. Use a test card.\n  - text: Name on card\n  - textbox \"Name on card\": Alex Morgan\n  - text: Card number\n  - textbox \"Card number\": 4111 1111 1111 1111\n  - text: Expiry date (MM/YY)\n  - textbox \"Expiry date (MM/YY)\"\n  - text: Security code\n  - textbox \"Security code\"\n  - paragraph\n  - text: Pay $54.00\n  - paragraph\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-016.jpg"
+    },
+    {
+      "t": "2026-10-30T16:01:59.156Z",
+      "type": "decide",
+      "step": 16,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Expiry date (MM/YY)",
+        "text": "12/30"
+      },
+      "thought": "Fill expiry."
+    },
+    {
+      "t": "2026-10-30T16:01:59.163Z",
+      "type": "act",
+      "step": 16,
+      "result": "Filled textbox \"Expiry date (MM/YY)\" with \"12/30\"."
+    },
+    {
+      "t": "2026-10-30T16:01:59.197Z",
+      "type": "observe",
+      "step": 17,
+      "path": "/pay",
+      "title": "Payment - Pine and Peak Outfitters",
+      "text": "Page title: Payment - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - heading \"Order summary\" [level=2]\n  - paragraph: Items $49.00\n  - paragraph: Delivery $5.00\n  - paragraph:\n    - strong: Total\n    - strong: $54.00\n  - paragraph: Shipping to Alex Morgan, Springfield\n  - heading \"Pay by card with PayPal\" [level=2]\n  - paragraph: Processed in the PayPal sandbox. Use a test card.\n  - text: Name on card\n  - textbox \"Name on card\": Alex Morgan\n  - text: Card number\n  - textbox \"Card number\": 4111 1111 1111 1111\n  - text: Expiry date (MM/YY)\n  - textbox \"Expiry date (MM/YY)\": 12/30\n  - text: Security code\n  - textbox \"Security code\"\n  - paragraph\n  - text: Pay $54.00\n  - paragraph\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-017.jpg"
+    },
+    {
+      "t": "2026-10-30T16:01:59.270Z",
+      "type": "decide",
+      "step": 17,
+      "action": "fill",
+      "args": {
+        "role": "textbox",
+        "name": "Security code",
+        "text": "123"
+      },
+      "thought": "Fill security code."
+    },
+    {
+      "t": "2026-10-30T16:01:59.272Z",
+      "type": "act",
+      "step": 17,
+      "result": "Filled textbox \"Security code\" with \"123\"."
+    },
+    {
+      "t": "2026-10-30T16:01:59.543Z",
+      "type": "observe",
+      "step": 18,
+      "path": "/pay",
+      "title": "Payment - Pine and Peak Outfitters",
+      "text": "Page title: Payment - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - heading \"Order summary\" [level=2]\n  - paragraph: Items $49.00\n  - paragraph: Delivery $5.00\n  - paragraph:\n    - strong: Total\n    - strong: $54.00\n  - paragraph: Shipping to Alex Morgan, Springfield\n  - heading \"Pay by card with PayPal\" [level=2]\n  - paragraph: Processed in the PayPal sandbox. Use a test card.\n  - text: Name on card\n  - textbox \"Name on card\": Alex Morgan\n  - text: Card number\n  - textbox \"Card number\": 4111 1111 1111 1111\n  - text: Expiry date (MM/YY)\n  - textbox \"Expiry date (MM/YY)\": 12/30\n  - text: Security code\n  - textbox \"Security code\": \"123\"\n  - paragraph\n  - text: Pay $54.00\n  - paragraph\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-018.jpg"
+    },
+    {
+      "t": "2026-10-30T16:02:04.244Z",
+      "type": "decide",
+      "step": 18,
+      "action": "press",
+      "args": {
+        "key": "Enter"
+      },
+      "thought": "The Pay text is not exposed as a button; try pressing Enter to submit the form."
+    },
+    {
+      "t": "2026-10-30T16:02:04.751Z",
+      "type": "act",
+      "step": 18,
+      "result": "Pressed Enter."
+    },
+    {
+      "t": "2026-10-30T16:02:04.773Z",
+      "type": "observe",
+      "step": 19,
+      "path": "/pay",
+      "title": "Payment - Pine and Peak Outfitters",
+      "text": "Page title: Payment - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - heading \"Order summary\" [level=2]\n  - paragraph: Items $49.00\n  - paragraph: Delivery $5.00\n  - paragraph:\n    - strong: Total\n    - strong: $54.00\n  - paragraph: Shipping to Alex Morgan, Springfield\n  - heading \"Pay by card with PayPal\" [level=2]\n  - paragraph: Processed in the PayPal sandbox. Use a test card.\n  - text: Name on card\n  - textbox \"Name on card\": Alex Morgan\n  - text: Card number\n  - textbox \"Card number\": 4111 1111 1111 1111\n  - text: Expiry date (MM/YY)\n  - textbox \"Expiry date (MM/YY)\": 12/30\n  - text: Security code\n  - textbox \"Security code\": \"123\"\n  - paragraph\n  - text: Pay $54.00\n  - paragraph\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-019.jpg"
+    },
+    {
+      "t": "2026-10-30T16:02:11.027Z",
+      "type": "decide",
+      "step": 19,
+      "action": "read",
+      "args": {},
+      "thought": "Re-read in case the pay control loads late."
+    },
+    {
+      "t": "2026-10-30T16:02:11.027Z",
+      "type": "act",
+      "step": 19,
+      "result": "You read the page again."
+    },
+    {
+      "t": "2026-10-30T16:02:11.062Z",
+      "type": "observe",
+      "step": 20,
+      "path": "/pay",
+      "title": "Payment - Pine and Peak Outfitters",
+      "text": "Page title: Payment - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - heading \"Order summary\" [level=2]\n  - paragraph: Items $49.00\n  - paragraph: Delivery $5.00\n  - paragraph:\n    - strong: Total\n    - strong: $54.00\n  - paragraph: Shipping to Alex Morgan, Springfield\n  - heading \"Pay by card with PayPal\" [level=2]\n  - paragraph: Processed in the PayPal sandbox. Use a test card.\n  - text: Name on card\n  - textbox \"Name on card\": Alex Morgan\n  - text: Card number\n  - textbox \"Card number\": 4111 1111 1111 1111\n  - text: Expiry date (MM/YY)\n  - textbox \"Expiry date (MM/YY)\": 12/30\n  - text: Security code\n  - textbox \"Security code\": \"123\"\n  - paragraph\n  - text: Pay $54.00\n  - paragraph\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-020.jpg"
+    },
+    {
+      "t": "2026-10-30T16:02:16.097Z",
+      "type": "decide",
+      "step": 20,
+      "action": "give_up",
+      "args": {},
+      "thought": "No pay button exists in the tree, so I cannot place the order and will not claim success."
+    },
+    {
+      "t": "2026-10-30T16:02:16.123Z",
+      "type": "end",
+      "outcome": {
+        "status": "blocked",
+        "reason": "The agent gave up.",
+        "claimedDone": false
+      },
+      "findings": [
+        {
+          "page": "Payment - Pine and Peak Outfitters",
+          "problem": "The Pay $54.00 control is plain text with no role or name, so it cannot be targeted as a button; Enter in the fields did nothing, so the order could not be placed."
+        },
+        {
+          "page": "Payment - Pine and Peak Outfitters",
+          "problem": "Empty paragraphs around the Pay text suggest the card fields and pay control are rendered in a way that exposes no status or error feedback."
+        },
+        {
+          "page": "Your cart - Pine and Peak Outfitters",
+          "problem": "A newsletter dialog popped up over the cart unasked and had to be closed before continuing."
+        },
+        {
+          "page": "Checkout - Pine and Peak Outfitters",
+          "problem": "Delivery radios have the label text repeated as separate plain text, and the group has no clear grouping beyond the name; terms checkbox has no link to the terms text."
+        },
+        {
+          "page": "Your cart - Pine and Peak Outfitters",
+          "problem": "Checkout and Continue shopping links are shown with empty colon in the tree, and add-to-cart on the shop page gave only a status message, with no focus move."
+        }
+      ],
+      "steps": 20,
+      "path": "/pay",
+      "title": "Payment - Pine and Peak Outfitters",
+      "text": "Page title: Payment - Pine and Peak Outfitters\n\nPage as an accessibility tree:\n- link \"Skip to main content\"\n- banner:\n  - link \"Pine and Peak Outfitters\":\n  - navigation \"Main\":\n    - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - heading \"Order summary\" [level=2]\n  - paragraph: Items $49.00\n  - paragraph: Delivery $5.00\n  - paragraph:\n    - strong: Total\n    - strong: $54.00\n  - paragraph: Shipping to Alex Morgan, Springfield\n  - heading \"Pay by card with PayPal\" [level=2]\n  - paragraph: Processed in the PayPal sandbox. Use a test card.\n  - text: Name on card\n  - textbox \"Name on card\": Alex Morgan\n  - text: Card number\n  - textbox \"Card number\": 4111 1111 1111 1111\n  - text: Expiry date (MM/YY)\n  - textbox \"Expiry date (MM/YY)\": 12/30\n  - text: Security code\n  - textbox \"Security code\": \"123\"\n  - paragraph\n  - text: Pay $54.00\n  - paragraph\n- contentinfo:\n  - paragraph: Demo store built for AccessiPay. Payments run in the PayPal sandbox.",
+      "image": "step-999.jpg"
+    },
+    {
+      "t": "2026-10-30T16:02:19.831Z",
+      "type": "scan",
+      "totalViolations": 0
+    },
+    {
+      "t": "2026-10-30T16:02:19.831Z",
+      "type": "finished",
+      "outcome": {
+        "status": "blocked",
+        "reason": "The agent gave up.",
+        "claimedDone": false
+      }
+    }
+  ],
+  "steps": 20,
+  "scan": {
+    "engine": "axe-core",
+    "rules": "default (WCAG A/AA and best practices)",
+    "pages": [
+      {
+        "page": "catalog",
+        "violations": [],
+        "passes": 37,
+        "incomplete": []
+      },
+      {
+        "page": "cart",
+        "violations": [],
+        "passes": 42,
+        "incomplete": [
+          "label-content-name-mismatch"
+        ]
+      },
+      {
+        "page": "checkout",
+        "violations": [],
+        "passes": 37,
+        "incomplete": []
+      },
+      {
+        "page": "pay",
+        "violations": [],
+        "passes": 34,
+        "incomplete": []
+      }
+    ],
+    "totalViolations": 0
+  }
+}

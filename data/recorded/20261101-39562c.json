@@ -1,0 +1,1831 @@
+{
+  "id": "20261101-39562c",
+  "createdAt": "2026-11-01T16:58:43.984Z",
+  "label": "sandbox purchase",
+  "persona": "screenreader",
+  "brainKind": "external",
+  "model": null,
+  "instanceId": null,
+  "defects": [],
+  "patches": [],
+  "site": {
+    "url": "http://sandbox-outfitters.localhost:4401/",
+    "host": "sandbox-outfitters.localhost",
+    "ownerVerified": true,
+    "sandbox": true
+  },
+  "paypalMode": "owner-sandbox",
+  "goalId": "checkout",
+  "goal": "This is a staging copy of an online shop, connected to the PayPal sandbox: no real money moves. Buy any one in-stock product with the cheapest delivery. Do not create an account or sign in; check out as a guest. Your details: full name Alex Morgan, email alex.morgan@example.com, street address 100 Example Avenue, city New York, state New York, ZIP 10001, country United States, phone (212) 555-0142. Pay by card: name on card Alex Morgan, card number 4111 1111 1111 1111, expiry 12/30, security code 123. Decline newsletters and promotions. When the shop confirms the order, finish with done and your findings.",
+  "maxSteps": 70,
+  "status": "finished",
+  "outcome": {
+    "status": "purchased",
+    "reason": "The shop's own PayPal sandbox reports the order as COMPLETED."
+  },
+  "findings": [
+    {
+      "page": "Payment · Sandbox Outfitters",
+      "problem": "After pressing Pay nothing was announced: the alert region stayed empty, no processing or busy message, and focus stayed on the Pay button. I only learned the order went through by reading the page again.",
+      "step": 31,
+      "element": {
+        "role": "button",
+        "name": "Pay $24.00"
+      }
+    },
+    {
+      "page": "Payment · Sandbox Outfitters",
+      "problem": "Under Pay with PayPal there were two links with the same name PayPal inside unnamed frames, so I could not tell what each one does. Later one of them disappeared without notice.",
+      "step": 21,
+      "element": {
+        "role": "link",
+        "name": "PayPal"
+      }
+    }
+  ],
+  "events": [
+    {
+      "t": "2026-11-01T16:58:44.628Z",
+      "type": "start",
+      "persona": "screenreader",
+      "startUrl": "http://sandbox-outfitters.localhost:4401/"
+    },
+    {
+      "t": "2026-11-01T16:58:44.948Z",
+      "type": "scan-page",
+      "url": "http://sandbox-outfitters.localhost:4401/",
+      "violations": 1,
+      "rules": [
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-11-01T16:58:44.960Z",
+      "type": "observe",
+      "step": 1,
+      "path": "/",
+      "url": "http://sandbox-outfitters.localhost:4401/",
+      "title": "Shop · Sandbox Outfitters",
+      "text": "Page title: Shop · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (0)\"\n- main:\n  - heading \"Gear for wet trails\" [level=1]\n  - heading \"Rain Shell\" [level=2]\n  - paragraph: Waterproof, packs into its own pocket.\n  - paragraph:\n    - strong: $79.00\n  - button \"Add Rain Shell to cart\"\n  - heading \"Steel Flask\" [level=2]\n  - paragraph: Keeps drinks hot for 12 hours.\n  - paragraph:\n    - strong: $24.00\n  - button \"Add Steel Flask to cart\"\n  - heading \"Trail Cap\" [level=2]\n  - paragraph: Quick-dry, one size.\n  - paragraph:\n    - strong: $18.00\n  - button \"Add Trail Cap to cart\"\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-001.jpg",
+      "focus": null,
+      "stage": 0
+    },
+    {
+      "t": "2026-11-01T16:58:44.960Z",
+      "type": "thinking",
+      "step": 1
+    },
+    {
+      "t": "2026-11-01T16:59:18.676Z",
+      "type": "decide",
+      "step": 1,
+      "action": "jump",
+      "args": {
+        "role": "button",
+        "name": "Add Trail Cap to cart",
+        "nth": 0
+      },
+      "thought": "Trail Cap is cheapest, add it to the cart",
+      "thinkMs": 33716
+    },
+    {
+      "t": "2026-11-01T16:59:18.688Z",
+      "type": "target",
+      "step": 1,
+      "box": {
+        "x": 813,
+        "y": 381,
+        "width": 180,
+        "height": 44
+      },
+      "role": "button",
+      "name": "Add Trail Cap to cart",
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"submit\">Add Trail Cap to cart</button>"
+    },
+    {
+      "t": "2026-11-01T16:59:21.711Z",
+      "type": "act",
+      "step": 1,
+      "result": "Focus moved to: button \"Add Trail Cap to cart\"",
+      "actMs": 22,
+      "keys": 2,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T16:59:21.748Z",
+      "type": "observe",
+      "step": 2,
+      "path": "/",
+      "url": "http://sandbox-outfitters.localhost:4401/",
+      "title": "Shop · Sandbox Outfitters",
+      "text": "Page title: Shop · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (0)\"\n- main:\n  - heading \"Gear for wet trails\" [level=1]\n  - heading \"Rain Shell\" [level=2]\n  - paragraph: Waterproof, packs into its own pocket.\n  - paragraph:\n    - strong: $79.00\n  - button \"Add Rain Shell to cart\"\n  - heading \"Steel Flask\" [level=2]\n  - paragraph: Keeps drinks hot for 12 hours.\n  - paragraph:\n    - strong: $24.00\n  - button \"Add Steel Flask to cart\"\n  - heading \"Trail Cap\" [level=2]\n  - paragraph: Quick-dry, one size.\n  - paragraph:\n    - strong: $18.00\n  - button \"Add Trail Cap to cart\"\n\nKeyboard focus: button \"Add Trail Cap to cart\"",
+      "image": "step-002.jpg",
+      "focus": {
+        "x": 813,
+        "y": 381,
+        "width": 180,
+        "height": 44
+      },
+      "stage": 0
+    },
+    {
+      "t": "2026-11-01T16:59:21.748Z",
+      "type": "thinking",
+      "step": 2
+    },
+    {
+      "t": "2026-11-01T16:59:24.835Z",
+      "type": "decide",
+      "step": 2,
+      "action": "activate",
+      "args": {},
+      "thought": "Press the focused add to cart button",
+      "thinkMs": 3087
+    },
+    {
+      "t": "2026-11-01T16:59:24.837Z",
+      "type": "target",
+      "step": 2,
+      "box": {
+        "x": 813,
+        "y": 381,
+        "width": 180,
+        "height": 44
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"submit\">Add Trail Cap to cart</button>"
+    },
+    {
+      "t": "2026-11-01T16:59:28.348Z",
+      "type": "act",
+      "step": 2,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 509,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T16:59:28.514Z",
+      "type": "scan-page",
+      "url": "http://sandbox-outfitters.localhost:4401/cart",
+      "violations": 1,
+      "rules": [
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-11-01T16:59:28.524Z",
+      "type": "observe",
+      "step": 3,
+      "path": "/cart",
+      "url": "http://sandbox-outfitters.localhost:4401/cart",
+      "title": "Cart · Sandbox Outfitters",
+      "text": "Page title: Cart · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Your cart\" [level=1]\n  - paragraph: 1 × Trail Cap $18.00\n  - paragraph:\n    - strong: Items\n    - strong: $18.00\n  - paragraph:\n    - link \"Checkout\"\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-003.jpg",
+      "focus": null,
+      "stage": 1
+    },
+    {
+      "t": "2026-11-01T16:59:28.524Z",
+      "type": "thinking",
+      "step": 3
+    },
+    {
+      "t": "2026-11-01T16:59:31.678Z",
+      "type": "decide",
+      "step": 3,
+      "action": "jump",
+      "args": {
+        "role": "link",
+        "name": "Checkout",
+        "nth": 0
+      },
+      "thought": "Go to checkout",
+      "thinkMs": 3155
+    },
+    {
+      "t": "2026-11-01T16:59:31.690Z",
+      "type": "target",
+      "step": 3,
+      "box": {
+        "x": 229,
+        "y": 321,
+        "width": 101,
+        "height": 44
+      },
+      "role": "link",
+      "name": "Checkout",
+      "scrolled": false,
+      "tag": "a",
+      "outer": "<a class=\"btn\" href=\"/checkout\">Checkout</a>"
+    },
+    {
+      "t": "2026-11-01T16:59:34.698Z",
+      "type": "act",
+      "step": 3,
+      "result": "Focus moved to: link \"Checkout\"",
+      "actMs": 7,
+      "keys": 2,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T16:59:34.721Z",
+      "type": "observe",
+      "step": 4,
+      "path": "/cart",
+      "url": "http://sandbox-outfitters.localhost:4401/cart",
+      "title": "Cart · Sandbox Outfitters",
+      "text": "Page title: Cart · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Your cart\" [level=1]\n  - paragraph: 1 × Trail Cap $18.00\n  - paragraph:\n    - strong: Items\n    - strong: $18.00\n  - paragraph:\n    - link \"Checkout\"\n\nKeyboard focus: link \"Checkout\"",
+      "image": "step-004.jpg",
+      "focus": {
+        "x": 229,
+        "y": 321,
+        "width": 101,
+        "height": 44
+      },
+      "stage": 1
+    },
+    {
+      "t": "2026-11-01T16:59:34.721Z",
+      "type": "thinking",
+      "step": 4
+    },
+    {
+      "t": "2026-11-01T16:59:38.228Z",
+      "type": "decide",
+      "step": 4,
+      "action": "activate",
+      "args": {},
+      "thought": "Open checkout",
+      "thinkMs": 3507
+    },
+    {
+      "t": "2026-11-01T16:59:38.229Z",
+      "type": "target",
+      "step": 4,
+      "box": {
+        "x": 229,
+        "y": 321,
+        "width": 101,
+        "height": 44
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "a",
+      "outer": "<a class=\"btn\" href=\"/checkout\">Checkout</a>"
+    },
+    {
+      "t": "2026-11-01T16:59:41.740Z",
+      "type": "act",
+      "step": 4,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 509,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T16:59:41.943Z",
+      "type": "scan-page",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "violations": 1,
+      "rules": [
+        "region"
+      ],
+      "embedded": 0
+    },
+    {
+      "t": "2026-11-01T16:59:41.962Z",
+      "type": "observe",
+      "step": 5,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\"\n  - text: Email\n  - textbox \"Email\"\n  - text: Phone\n  - textbox \"Phone\"\n  - text: Street address\n  - textbox \"Street address\"\n  - text: City\n  - textbox \"City\"\n  - text: State\n  - textbox \"State\"\n  - text: ZIP code\n  - textbox \"ZIP code\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-005.jpg",
+      "focus": null,
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T16:59:41.962Z",
+      "type": "thinking",
+      "step": 5
+    },
+    {
+      "t": "2026-11-01T16:59:45.345Z",
+      "type": "decide",
+      "step": 5,
+      "action": "jump",
+      "args": {
+        "role": "textbox",
+        "name": "Full name",
+        "nth": 0
+      },
+      "thought": "Fill full name first",
+      "thinkMs": 3383
+    },
+    {
+      "t": "2026-11-01T16:59:45.357Z",
+      "type": "target",
+      "step": 5,
+      "box": {
+        "x": 229,
+        "y": 329,
+        "width": 420,
+        "height": 42
+      },
+      "role": "textbox",
+      "name": "Full name",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input id=\"name\" name=\"name\" type=\"text\" autocomplete=\"name\" required=\"\" style=\"\">"
+    },
+    {
+      "t": "2026-11-01T16:59:48.370Z",
+      "type": "act",
+      "step": 5,
+      "result": "Focus moved to: textbox \"Full name\"",
+      "actMs": 11,
+      "keys": 2,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T16:59:48.399Z",
+      "type": "observe",
+      "step": 6,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\"\n  - text: Email\n  - textbox \"Email\"\n  - text: Phone\n  - textbox \"Phone\"\n  - text: Street address\n  - textbox \"Street address\"\n  - text: City\n  - textbox \"City\"\n  - text: State\n  - textbox \"State\"\n  - text: ZIP code\n  - textbox \"ZIP code\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: textbox \"Full name\"",
+      "image": "step-006.jpg",
+      "focus": {
+        "x": 229,
+        "y": 329,
+        "width": 420,
+        "height": 42
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T16:59:48.399Z",
+      "type": "thinking",
+      "step": 6
+    },
+    {
+      "t": "2026-11-01T16:59:53.795Z",
+      "type": "decide",
+      "step": 6,
+      "action": "type",
+      "args": {
+        "text": "Alex Morgan"
+      },
+      "thought": "Type my full name",
+      "thinkMs": 5396
+    },
+    {
+      "t": "2026-11-01T16:59:53.796Z",
+      "type": "target",
+      "step": 6,
+      "box": {
+        "x": 229,
+        "y": 329,
+        "width": 420,
+        "height": 42
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input id=\"name\" name=\"name\" type=\"text\" autocomplete=\"name\" required=\"\" style=\"\">"
+    },
+    {
+      "t": "2026-11-01T16:59:56.895Z",
+      "type": "act",
+      "step": 6,
+      "result": "Typed \"Alex Morgan\".",
+      "actMs": 97,
+      "keys": 12,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T16:59:56.938Z",
+      "type": "observe",
+      "step": 7,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\": Alex Morgan\n  - text: Email\n  - textbox \"Email\"\n  - text: Phone\n  - textbox \"Phone\"\n  - text: Street address\n  - textbox \"Street address\"\n  - text: City\n  - textbox \"City\"\n  - text: State\n  - textbox \"State\"\n  - text: ZIP code\n  - textbox \"ZIP code\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: textbox \"Full name\": Alex Morgan",
+      "image": "step-007.jpg",
+      "focus": {
+        "x": 229,
+        "y": 329,
+        "width": 420,
+        "height": 42
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T16:59:56.938Z",
+      "type": "thinking",
+      "step": 7
+    },
+    {
+      "t": "2026-11-01T17:00:00.794Z",
+      "type": "decide",
+      "step": 7,
+      "action": "next",
+      "args": {},
+      "thought": "Move to the Email field",
+      "thinkMs": 3856
+    },
+    {
+      "t": "2026-11-01T17:00:03.893Z",
+      "type": "act",
+      "step": 7,
+      "result": "Focus moved to: textbox \"Email\"",
+      "actMs": 97,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:00:03.935Z",
+      "type": "observe",
+      "step": 8,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\": Alex Morgan\n  - text: Email\n  - textbox \"Email\"\n  - text: Phone\n  - textbox \"Phone\"\n  - text: Street address\n  - textbox \"Street address\"\n  - text: City\n  - textbox \"City\"\n  - text: State\n  - textbox \"State\"\n  - text: ZIP code\n  - textbox \"ZIP code\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: textbox \"Email\"",
+      "image": "step-008.jpg",
+      "focus": {
+        "x": 229,
+        "y": 409,
+        "width": 420,
+        "height": 42
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T17:00:03.935Z",
+      "type": "thinking",
+      "step": 8
+    },
+    {
+      "t": "2026-11-01T17:00:08.020Z",
+      "type": "decide",
+      "step": 8,
+      "action": "type",
+      "args": {
+        "text": "alex.morgan@example.com"
+      },
+      "thought": "Type my email",
+      "thinkMs": 4085
+    },
+    {
+      "t": "2026-11-01T17:00:08.021Z",
+      "type": "target",
+      "step": 8,
+      "box": {
+        "x": 229,
+        "y": 409,
+        "width": 420,
+        "height": 42
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input id=\"email\" name=\"email\" type=\"email\" autocomplete=\"email\" required=\"\" style=\"\">"
+    },
+    {
+      "t": "2026-11-01T17:00:11.195Z",
+      "type": "act",
+      "step": 8,
+      "result": "Typed \"alex.morgan@example.com\".",
+      "actMs": 171,
+      "keys": 24,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:00:11.237Z",
+      "type": "observe",
+      "step": 9,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\": Alex Morgan\n  - text: Email\n  - textbox \"Email\": alex.morgan@example.com\n  - text: Phone\n  - textbox \"Phone\"\n  - text: Street address\n  - textbox \"Street address\"\n  - text: City\n  - textbox \"City\"\n  - text: State\n  - textbox \"State\"\n  - text: ZIP code\n  - textbox \"ZIP code\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: textbox \"Email\": alex.morgan@example.com",
+      "image": "step-009.jpg",
+      "focus": {
+        "x": 229,
+        "y": 409,
+        "width": 420,
+        "height": 42
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T17:00:11.237Z",
+      "type": "thinking",
+      "step": 9
+    },
+    {
+      "t": "2026-11-01T17:00:11.317Z",
+      "type": "decide",
+      "step": 9,
+      "action": "next",
+      "args": {},
+      "thought": "Move to the Phone field",
+      "thinkMs": 80
+    },
+    {
+      "t": "2026-11-01T17:00:14.415Z",
+      "type": "act",
+      "step": 9,
+      "result": "Focus moved to: textbox \"Phone\"",
+      "actMs": 94,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:00:14.451Z",
+      "type": "observe",
+      "step": 10,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\": Alex Morgan\n  - text: Email\n  - textbox \"Email\": alex.morgan@example.com\n  - text: Phone\n  - textbox \"Phone\"\n  - text: Street address\n  - textbox \"Street address\"\n  - text: City\n  - textbox \"City\"\n  - text: State\n  - textbox \"State\"\n  - text: ZIP code\n  - textbox \"ZIP code\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: textbox \"Phone\"",
+      "image": "step-010.jpg",
+      "focus": {
+        "x": 229,
+        "y": 489,
+        "width": 420,
+        "height": 42
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T17:00:14.451Z",
+      "type": "thinking",
+      "step": 10
+    },
+    {
+      "t": "2026-11-01T17:00:18.424Z",
+      "type": "decide",
+      "step": 10,
+      "action": "type",
+      "args": {
+        "text": "(212) 555-0142"
+      },
+      "thought": "Type my phone",
+      "thinkMs": 3973
+    },
+    {
+      "t": "2026-11-01T17:00:18.425Z",
+      "type": "target",
+      "step": 10,
+      "box": {
+        "x": 229,
+        "y": 489,
+        "width": 420,
+        "height": 42
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input id=\"phone\" name=\"phone\" type=\"tel\" autocomplete=\"tel\" required=\"\" style=\"\">"
+    },
+    {
+      "t": "2026-11-01T17:00:21.538Z",
+      "type": "act",
+      "step": 10,
+      "result": "Typed \"(212) 555-0142\".",
+      "actMs": 112,
+      "keys": 15,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:00:21.566Z",
+      "type": "observe",
+      "step": 11,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\": Alex Morgan\n  - text: Email\n  - textbox \"Email\": alex.morgan@example.com\n  - text: Phone\n  - textbox \"Phone\": (212) 555-0142\n  - text: Street address\n  - textbox \"Street address\"\n  - text: City\n  - textbox \"City\"\n  - text: State\n  - textbox \"State\"\n  - text: ZIP code\n  - textbox \"ZIP code\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: textbox \"Phone\": (212) 555-0142",
+      "image": "step-011.jpg",
+      "focus": {
+        "x": 229,
+        "y": 489,
+        "width": 420,
+        "height": 42
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T17:00:21.566Z",
+      "type": "thinking",
+      "step": 11
+    },
+    {
+      "t": "2026-11-01T17:00:21.646Z",
+      "type": "decide",
+      "step": 11,
+      "action": "next",
+      "args": {},
+      "thought": "Move to Street address",
+      "thinkMs": 80
+    },
+    {
+      "t": "2026-11-01T17:00:24.740Z",
+      "type": "act",
+      "step": 11,
+      "result": "Focus moved to: textbox \"Street address\"",
+      "actMs": 93,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:00:24.784Z",
+      "type": "observe",
+      "step": 12,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\": Alex Morgan\n  - text: Email\n  - textbox \"Email\": alex.morgan@example.com\n  - text: Phone\n  - textbox \"Phone\": (212) 555-0142\n  - text: Street address\n  - textbox \"Street address\"\n  - text: City\n  - textbox \"City\"\n  - text: State\n  - textbox \"State\"\n  - text: ZIP code\n  - textbox \"ZIP code\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: textbox \"Street address\"",
+      "image": "step-012.jpg",
+      "focus": {
+        "x": 229,
+        "y": 569,
+        "width": 420,
+        "height": 42
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T17:00:24.784Z",
+      "type": "thinking",
+      "step": 12
+    },
+    {
+      "t": "2026-11-01T17:00:28.267Z",
+      "type": "decide",
+      "step": 12,
+      "action": "type",
+      "args": {
+        "text": "100 Example Avenue"
+      },
+      "thought": "Type street address",
+      "thinkMs": 3482
+    },
+    {
+      "t": "2026-11-01T17:00:28.268Z",
+      "type": "target",
+      "step": 12,
+      "box": {
+        "x": 229,
+        "y": 569,
+        "width": 420,
+        "height": 42
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input id=\"street\" name=\"street\" type=\"text\" autocomplete=\"street-address\" required=\"\" style=\"\">"
+    },
+    {
+      "t": "2026-11-01T17:00:31.408Z",
+      "type": "act",
+      "step": 12,
+      "result": "Typed \"100 Example Avenue\".",
+      "actMs": 140,
+      "keys": 19,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:00:31.452Z",
+      "type": "observe",
+      "step": 13,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\": Alex Morgan\n  - text: Email\n  - textbox \"Email\": alex.morgan@example.com\n  - text: Phone\n  - textbox \"Phone\": (212) 555-0142\n  - text: Street address\n  - textbox \"Street address\": 100 Example Avenue\n  - text: City\n  - textbox \"City\"\n  - text: State\n  - textbox \"State\"\n  - text: ZIP code\n  - textbox \"ZIP code\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: textbox \"Street address\": 100 Example Avenue",
+      "image": "step-013.jpg",
+      "focus": {
+        "x": 229,
+        "y": 569,
+        "width": 420,
+        "height": 42
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T17:00:31.452Z",
+      "type": "thinking",
+      "step": 13
+    },
+    {
+      "t": "2026-11-01T17:00:31.523Z",
+      "type": "decide",
+      "step": 13,
+      "action": "next",
+      "args": {},
+      "thought": "Move to City",
+      "thinkMs": 71
+    },
+    {
+      "t": "2026-11-01T17:00:34.620Z",
+      "type": "act",
+      "step": 13,
+      "result": "Focus moved to: textbox \"City\"",
+      "actMs": 93,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:00:34.651Z",
+      "type": "observe",
+      "step": 14,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\": Alex Morgan\n  - text: Email\n  - textbox \"Email\": alex.morgan@example.com\n  - text: Phone\n  - textbox \"Phone\": (212) 555-0142\n  - text: Street address\n  - textbox \"Street address\": 100 Example Avenue\n  - text: City\n  - textbox \"City\"\n  - text: State\n  - textbox \"State\"\n  - text: ZIP code\n  - textbox \"ZIP code\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: textbox \"City\"",
+      "image": "step-014.jpg",
+      "focus": {
+        "x": 229,
+        "y": 649,
+        "width": 420,
+        "height": 42
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T17:00:34.651Z",
+      "type": "thinking",
+      "step": 14
+    },
+    {
+      "t": "2026-11-01T17:00:37.884Z",
+      "type": "decide",
+      "step": 14,
+      "action": "type",
+      "args": {
+        "text": "New York"
+      },
+      "thought": "Type city",
+      "thinkMs": 3233
+    },
+    {
+      "t": "2026-11-01T17:00:37.886Z",
+      "type": "target",
+      "step": 14,
+      "box": {
+        "x": 229,
+        "y": 649,
+        "width": 420,
+        "height": 42
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input id=\"city\" name=\"city\" type=\"text\" autocomplete=\"address-level2\" required=\"\" style=\"\">"
+    },
+    {
+      "t": "2026-11-01T17:00:40.958Z",
+      "type": "act",
+      "step": 14,
+      "result": "Typed \"New York\".",
+      "actMs": 70,
+      "keys": 9,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:00:41.000Z",
+      "type": "observe",
+      "step": 15,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\": Alex Morgan\n  - text: Email\n  - textbox \"Email\": alex.morgan@example.com\n  - text: Phone\n  - textbox \"Phone\": (212) 555-0142\n  - text: Street address\n  - textbox \"Street address\": 100 Example Avenue\n  - text: City\n  - textbox \"City\": New York\n  - text: State\n  - textbox \"State\"\n  - text: ZIP code\n  - textbox \"ZIP code\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: textbox \"City\": New York",
+      "image": "step-015.jpg",
+      "focus": {
+        "x": 229,
+        "y": 649,
+        "width": 420,
+        "height": 42
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T17:00:41.000Z",
+      "type": "thinking",
+      "step": 15
+    },
+    {
+      "t": "2026-11-01T17:00:41.078Z",
+      "type": "decide",
+      "step": 15,
+      "action": "next",
+      "args": {},
+      "thought": "Move to State",
+      "thinkMs": 78
+    },
+    {
+      "t": "2026-11-01T17:00:44.173Z",
+      "type": "act",
+      "step": 15,
+      "result": "Focus moved to: textbox \"State\"",
+      "actMs": 92,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:00:44.200Z",
+      "type": "observe",
+      "step": 16,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\": Alex Morgan\n  - text: Email\n  - textbox \"Email\": alex.morgan@example.com\n  - text: Phone\n  - textbox \"Phone\": (212) 555-0142\n  - text: Street address\n  - textbox \"Street address\": 100 Example Avenue\n  - text: City\n  - textbox \"City\": New York\n  - text: State\n  - textbox \"State\"\n  - text: ZIP code\n  - textbox \"ZIP code\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: textbox \"State\"",
+      "image": "step-016.jpg",
+      "focus": {
+        "x": 229,
+        "y": 729,
+        "width": 420,
+        "height": 42
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T17:00:44.200Z",
+      "type": "thinking",
+      "step": 16
+    },
+    {
+      "t": "2026-11-01T17:00:47.319Z",
+      "type": "decide",
+      "step": 16,
+      "action": "type",
+      "args": {
+        "text": "New York"
+      },
+      "thought": "Type state",
+      "thinkMs": 3119
+    },
+    {
+      "t": "2026-11-01T17:00:47.321Z",
+      "type": "target",
+      "step": 16,
+      "box": {
+        "x": 229,
+        "y": 729,
+        "width": 420,
+        "height": 42
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input id=\"state\" name=\"state\" type=\"text\" autocomplete=\"address-level1\" required=\"\" style=\"\">"
+    },
+    {
+      "t": "2026-11-01T17:00:50.397Z",
+      "type": "act",
+      "step": 16,
+      "result": "Typed \"New York\".",
+      "actMs": 75,
+      "keys": 9,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:00:50.429Z",
+      "type": "observe",
+      "step": 17,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\": Alex Morgan\n  - text: Email\n  - textbox \"Email\": alex.morgan@example.com\n  - text: Phone\n  - textbox \"Phone\": (212) 555-0142\n  - text: Street address\n  - textbox \"Street address\": 100 Example Avenue\n  - text: City\n  - textbox \"City\": New York\n  - text: State\n  - textbox \"State\": New York\n  - text: ZIP code\n  - textbox \"ZIP code\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: textbox \"State\": New York",
+      "image": "step-017.jpg",
+      "focus": {
+        "x": 229,
+        "y": 729,
+        "width": 420,
+        "height": 42
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T17:00:50.429Z",
+      "type": "thinking",
+      "step": 17
+    },
+    {
+      "t": "2026-11-01T17:00:50.503Z",
+      "type": "decide",
+      "step": 17,
+      "action": "next",
+      "args": {},
+      "thought": "Move to ZIP code",
+      "thinkMs": 74
+    },
+    {
+      "t": "2026-11-01T17:00:53.611Z",
+      "type": "act",
+      "step": 17,
+      "result": "Focus moved to: textbox \"ZIP code\"",
+      "actMs": 105,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:00:53.648Z",
+      "type": "observe",
+      "step": 18,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\": Alex Morgan\n  - text: Email\n  - textbox \"Email\": alex.morgan@example.com\n  - text: Phone\n  - textbox \"Phone\": (212) 555-0142\n  - text: Street address\n  - textbox \"Street address\": 100 Example Avenue\n  - text: City\n  - textbox \"City\": New York\n  - text: State\n  - textbox \"State\": New York\n  - text: ZIP code\n  - textbox \"ZIP code\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: textbox \"ZIP code\"",
+      "image": "step-018.jpg",
+      "focus": {
+        "x": 229,
+        "y": 809,
+        "width": 420,
+        "height": 42
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T17:00:53.648Z",
+      "type": "thinking",
+      "step": 18
+    },
+    {
+      "t": "2026-11-01T17:00:57.948Z",
+      "type": "decide",
+      "step": 18,
+      "action": "type",
+      "args": {
+        "text": "10001"
+      },
+      "thought": "Type ZIP",
+      "thinkMs": 4301
+    },
+    {
+      "t": "2026-11-01T17:00:57.950Z",
+      "type": "target",
+      "step": 18,
+      "box": {
+        "x": 229,
+        "y": 809,
+        "width": 420,
+        "height": 42
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input id=\"zip\" name=\"zip\" type=\"text\" autocomplete=\"postal-code\" required=\"\" style=\"\">"
+    },
+    {
+      "t": "2026-11-01T17:01:00.988Z",
+      "type": "act",
+      "step": 18,
+      "result": "Typed \"10001\".",
+      "actMs": 37,
+      "keys": 6,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:01:01.014Z",
+      "type": "observe",
+      "step": 19,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\": Alex Morgan\n  - text: Email\n  - textbox \"Email\": alex.morgan@example.com\n  - text: Phone\n  - textbox \"Phone\": (212) 555-0142\n  - text: Street address\n  - textbox \"Street address\": 100 Example Avenue\n  - text: City\n  - textbox \"City\": New York\n  - text: State\n  - textbox \"State\": New York\n  - text: ZIP code\n  - textbox \"ZIP code\": \"10001\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: textbox \"ZIP code\": \"10001\"",
+      "image": "step-019.jpg",
+      "focus": {
+        "x": 229,
+        "y": 809,
+        "width": 420,
+        "height": 42
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T17:01:01.014Z",
+      "type": "thinking",
+      "step": 19
+    },
+    {
+      "t": "2026-11-01T17:01:01.087Z",
+      "type": "decide",
+      "step": 19,
+      "action": "jump",
+      "args": {
+        "role": "button",
+        "name": "Continue to payment",
+        "nth": 0
+      },
+      "thought": "Standard delivery is already the cheapest and checked, country is United States; continue to payment",
+      "thinkMs": 73
+    },
+    {
+      "t": "2026-11-01T17:01:01.128Z",
+      "type": "target",
+      "step": 19,
+      "box": {
+        "x": 229,
+        "y": 769,
+        "width": 183,
+        "height": 44
+      },
+      "role": "button",
+      "name": "Continue to payment",
+      "scrolled": true,
+      "tag": "button",
+      "outer": "<button type=\"submit\">Continue to payment</button>",
+      "image": "step-019-t.jpg"
+    },
+    {
+      "t": "2026-11-01T17:01:04.137Z",
+      "type": "act",
+      "step": 19,
+      "result": "Focus moved to: button \"Continue to payment\"",
+      "actMs": 6,
+      "keys": 2,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:01:04.160Z",
+      "type": "observe",
+      "step": 20,
+      "path": "/checkout",
+      "url": "http://sandbox-outfitters.localhost:4401/checkout",
+      "title": "Checkout · Sandbox Outfitters",
+      "text": "Page title: Checkout · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Checkout\" [level=1]\n  - heading \"Contact and delivery address\" [level=2]\n  - text: Full name\n  - textbox \"Full name\": Alex Morgan\n  - text: Email\n  - textbox \"Email\": alex.morgan@example.com\n  - text: Phone\n  - textbox \"Phone\": (212) 555-0142\n  - text: Street address\n  - textbox \"Street address\": 100 Example Avenue\n  - text: City\n  - textbox \"City\": New York\n  - text: State\n  - textbox \"State\": New York\n  - text: ZIP code\n  - textbox \"ZIP code\": \"10001\"\n  - text: Country\n  - combobox \"Country\":\n    - option \"United States\" [selected]\n    - option \"Canada\"\n    - option \"United Kingdom\"\n  - group \"Delivery\":\n    - text: Delivery\n    - radio \"Standard delivery, 3 to 5 days, $6.00\" [checked]\n    - text: Standard delivery, 3 to 5 days, $6.00\n    - radio \"Express delivery, next day, $15.00\"\n    - text: Express delivery, next day, $15.00\n  - button \"Continue to payment\"\n\nKeyboard focus: button \"Continue to payment\"",
+      "image": "step-020.jpg",
+      "focus": {
+        "x": 229,
+        "y": 769,
+        "width": 183,
+        "height": 44
+      },
+      "stage": 2
+    },
+    {
+      "t": "2026-11-01T17:01:04.160Z",
+      "type": "thinking",
+      "step": 20
+    },
+    {
+      "t": "2026-11-01T17:01:07.161Z",
+      "type": "decide",
+      "step": 20,
+      "action": "activate",
+      "args": {},
+      "thought": "Continue to payment",
+      "thinkMs": 3001
+    },
+    {
+      "t": "2026-11-01T17:01:07.162Z",
+      "type": "target",
+      "step": 20,
+      "box": {
+        "x": 229,
+        "y": 769,
+        "width": 183,
+        "height": 44
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"submit\">Continue to payment</button>"
+    },
+    {
+      "t": "2026-11-01T17:01:11.359Z",
+      "type": "act",
+      "step": 20,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 1197,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:01:11.966Z",
+      "type": "scan-page",
+      "url": "http://sandbox-outfitters.localhost:4401/pay",
+      "violations": 1,
+      "rules": [
+        "region"
+      ],
+      "embedded": 4
+    },
+    {
+      "t": "2026-11-01T17:01:11.987Z",
+      "type": "observe",
+      "step": 21,
+      "path": "/pay",
+      "url": "http://sandbox-outfitters.localhost:4401/pay",
+      "title": "Payment · Sandbox Outfitters",
+      "text": "Page title: Payment · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - paragraph: Items $18.00\n  - paragraph: Delivery $6.00\n  - paragraph:\n    - strong: Total\n    - strong: $24.00\n  - heading \"Pay with PayPal\" [level=2]\n  - iframe:\n    - link \"PayPal\"\n  - iframe:\n    - link \"PayPal\"\n  - heading \"Or pay by card\" [level=2]\n  - paragraph: Card details go to PayPal; this shop never sees them.\n  - iframe:\n    - textbox \"Cardholder Name (optional)\"\n  - iframe:\n    - img\n    - textbox \"Card number\"\n    - img\n  - iframe:\n    - textbox \"MM / YY\"\n  - iframe:\n    - textbox \"CVV\"\n  - alert\n  - paragraph:\n    - button \"Pay $24.00\"\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-021.jpg",
+      "focus": null,
+      "stage": 3
+    },
+    {
+      "t": "2026-11-01T17:01:11.987Z",
+      "type": "thinking",
+      "step": 21
+    },
+    {
+      "t": "2026-11-01T17:01:16.290Z",
+      "type": "decide",
+      "step": 21,
+      "action": "jump",
+      "args": {
+        "role": "textbox",
+        "name": "Cardholder Name (optional)",
+        "nth": 0
+      },
+      "thought": "Go to the cardholder name field",
+      "thinkMs": 4303
+    },
+    {
+      "t": "2026-11-01T17:01:16.316Z",
+      "type": "target",
+      "step": 21,
+      "box": {
+        "x": 235,
+        "y": 647,
+        "width": 407,
+        "height": 66
+      },
+      "role": "textbox",
+      "name": "Cardholder Name (optional)",
+      "scrolled": false,
+      "tag": "input",
+      "outer": "<input aria-describedby=\"card-name-field-description\" name=\"name\" inputmode=\"text\" type=\"text\" class=\"card-field-name\" maxlength=\"255\" placeholder=\"Cardholder Name (optional)\" style=\"\">"
+    },
+    {
+      "t": "2026-11-01T17:01:19.371Z",
+      "type": "act",
+      "step": 21,
+      "result": "Focus moved to: textbox \"Cardholder Name (optional)\" (inside an embedded payment field)",
+      "actMs": 53,
+      "keys": 2,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:01:19.458Z",
+      "type": "observe",
+      "step": 22,
+      "path": "/pay",
+      "url": "http://sandbox-outfitters.localhost:4401/pay",
+      "title": "Payment · Sandbox Outfitters",
+      "text": "Page title: Payment · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - paragraph: Items $18.00\n  - paragraph: Delivery $6.00\n  - paragraph:\n    - strong: Total\n    - strong: $24.00\n  - heading \"Pay with PayPal\" [level=2]\n  - iframe:\n    - link \"PayPal\"\n  - heading \"Or pay by card\" [level=2]\n  - paragraph: Card details go to PayPal; this shop never sees them.\n  - iframe:\n    - textbox \"Cardholder Name (optional)\"\n  - iframe:\n    - textbox \"Card number\"\n  - iframe:\n    - textbox \"MM / YY\"\n  - iframe:\n    - textbox \"CVV\"\n  - alert\n  - paragraph:\n    - button \"Pay $24.00\"\n\nKeyboard focus: textbox \"Cardholder Name (optional)\" (inside an embedded payment field)",
+      "image": "step-022.jpg",
+      "focus": {
+        "x": 229,
+        "y": 641,
+        "width": 420,
+        "height": 78
+      },
+      "stage": 3
+    },
+    {
+      "t": "2026-11-01T17:01:19.458Z",
+      "type": "thinking",
+      "step": 22
+    },
+    {
+      "t": "2026-11-01T17:01:23.449Z",
+      "type": "decide",
+      "step": 22,
+      "action": "type",
+      "args": {
+        "text": "Alex Morgan"
+      },
+      "thought": "Type name on card",
+      "thinkMs": 3991
+    },
+    {
+      "t": "2026-11-01T17:01:23.451Z",
+      "type": "target",
+      "step": 22,
+      "box": {
+        "x": 229,
+        "y": 641,
+        "width": 420,
+        "height": 78
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "iframe",
+      "outer": "<iframe allowtransparency=\"true\" name=\"__zoid__paypal_card_name_field__eyJzZW5kZXIiOnsiZG9tYWluIjoiaHR0cDovL3NhbmRib3gtb3V0Zml0dGVycy5sb2NhbGhvc3Q6NDQwMSJ9LCJtZXRhRGF0YSI6eyJ3aW5kb3dSZWYiOnsidHlwZSI6InBhcmVudCIsImRpc3RhbmNlIjowfX0sInJlZmVyZW5jZSI6eyJ0eXBlIjoicmF3IiwidmFsIjoie1widWlkXCI6XCJ6b2lkLXBheXBhbC1jYXJkLW5hbWUtZmllbGQtdWlkXzdiZjkzYTU0ZmJfbXRjNm1kZTZtdGFcIixcImNvbnRleHRcIjpcImlmcmFtZVwiLFwidGFnXCI6XCJwYXlwYWwtY2FyZC1uYW1lLWZpZWxkXCIsXCJjaGlsZERvbWFpbk1hdGNoXCI6XCJodHRwczovL3d3dy5zYW5kYm94LnBheXBhbC5jb21cIixcInZlcnNpb25cIjpcIjEwXzZfMVwiLFwicHJvcHNcIjp7XCJwYXJlbnRcIjp7XCJ1aWRcIjpcInpvaWQtc"
+    },
+    {
+      "t": "2026-11-01T17:01:26.559Z",
+      "type": "act",
+      "step": 22,
+      "result": "Typed \"Alex Morgan\".",
+      "actMs": 105,
+      "keys": 12,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:01:26.619Z",
+      "type": "observe",
+      "step": 23,
+      "path": "/pay",
+      "url": "http://sandbox-outfitters.localhost:4401/pay",
+      "title": "Payment · Sandbox Outfitters",
+      "text": "Page title: Payment · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - paragraph: Items $18.00\n  - paragraph: Delivery $6.00\n  - paragraph:\n    - strong: Total\n    - strong: $24.00\n  - heading \"Pay with PayPal\" [level=2]\n  - iframe:\n    - link \"PayPal\"\n  - heading \"Or pay by card\" [level=2]\n  - paragraph: Card details go to PayPal; this shop never sees them.\n  - iframe:\n    - textbox \"Cardholder Name (optional)\": Alex Morgan\n  - iframe:\n    - textbox \"Card number\"\n  - iframe:\n    - textbox \"MM / YY\"\n  - iframe:\n    - textbox \"CVV\"\n  - alert\n  - paragraph:\n    - button \"Pay $24.00\"\n\nKeyboard focus: textbox \"Cardholder Name (optional)\": Alex Morgan (inside an embedded payment field)",
+      "image": "step-023.jpg",
+      "focus": {
+        "x": 229,
+        "y": 641,
+        "width": 420,
+        "height": 78
+      },
+      "stage": 3
+    },
+    {
+      "t": "2026-11-01T17:01:26.619Z",
+      "type": "thinking",
+      "step": 23
+    },
+    {
+      "t": "2026-11-01T17:01:26.688Z",
+      "type": "decide",
+      "step": 23,
+      "action": "next",
+      "args": {},
+      "thought": "Move to card number",
+      "thinkMs": 69
+    },
+    {
+      "t": "2026-11-01T17:01:29.796Z",
+      "type": "act",
+      "step": 23,
+      "result": "Focus moved to: textbox \"Card number\" (inside an embedded payment field)",
+      "actMs": 105,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:01:29.867Z",
+      "type": "observe",
+      "step": 24,
+      "path": "/pay",
+      "url": "http://sandbox-outfitters.localhost:4401/pay",
+      "title": "Payment · Sandbox Outfitters",
+      "text": "Page title: Payment · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - paragraph: Items $18.00\n  - paragraph: Delivery $6.00\n  - paragraph:\n    - strong: Total\n    - strong: $24.00\n  - heading \"Pay with PayPal\" [level=2]\n  - iframe:\n    - link \"PayPal\"\n  - heading \"Or pay by card\" [level=2]\n  - paragraph: Card details go to PayPal; this shop never sees them.\n  - iframe:\n    - textbox \"Cardholder Name (optional)\": Alex Morgan\n  - iframe:\n    - textbox \"Card number\"\n    - img\n  - iframe:\n    - textbox \"MM / YY\"\n  - iframe:\n    - textbox \"CVV\"\n  - alert\n  - paragraph:\n    - button \"Pay $24.00\"\n\nKeyboard focus: textbox \"Card number\" (inside an embedded payment field)",
+      "image": "step-024.jpg",
+      "focus": {
+        "x": 229,
+        "y": 725,
+        "width": 420,
+        "height": 78
+      },
+      "stage": 3
+    },
+    {
+      "t": "2026-11-01T17:01:29.867Z",
+      "type": "thinking",
+      "step": 24
+    },
+    {
+      "t": "2026-11-01T17:01:33.457Z",
+      "type": "decide",
+      "step": 24,
+      "action": "type",
+      "args": {
+        "text": "4111 1111 1111 1111"
+      },
+      "thought": "Type sandbox test card number",
+      "thinkMs": 3590
+    },
+    {
+      "t": "2026-11-01T17:01:33.459Z",
+      "type": "target",
+      "step": 24,
+      "box": {
+        "x": 229,
+        "y": 725,
+        "width": 420,
+        "height": 78
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "iframe",
+      "outer": "<iframe allowtransparency=\"true\" name=\"__zoid__paypal_card_number_field__eyJzZW5kZXIiOnsiZG9tYWluIjoiaHR0cDovL3NhbmRib3gtb3V0Zml0dGVycy5sb2NhbGhvc3Q6NDQwMSJ9LCJtZXRhRGF0YSI6eyJ3aW5kb3dSZWYiOnsidHlwZSI6InBhcmVudCIsImRpc3RhbmNlIjowfX0sInJlZmVyZW5jZSI6eyJ0eXBlIjoicmF3IiwidmFsIjoie1widWlkXCI6XCJ6b2lkLXBheXBhbC1jYXJkLW51bWJlci1maWVsZC11aWRfYzlmZTg1MTZmOV9tdGM2bWRlNm10YVwiLFwiY29udGV4dFwiOlwiaWZyYW1lXCIsXCJ0YWdcIjpcInBheXBhbC1jYXJkLW51bWJlci1maWVsZFwiLFwiY2hpbGREb21haW5NYXRjaFwiOlwiaHR0cHM6Ly93d3cuc2FuZGJveC5wYXlwYWwuY29tXCIsXCJ2ZXJzaW9uXCI6XCIxMF82XzFcIixcInByb3BzXCI6e1wicGFyZW50XCI6e1widWlkXCI6XCJ"
+    },
+    {
+      "t": "2026-11-01T17:01:36.644Z",
+      "type": "act",
+      "step": 24,
+      "result": "Typed \"4111 1111 1111 1111\".",
+      "actMs": 182,
+      "keys": 20,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:01:36.718Z",
+      "type": "observe",
+      "step": 25,
+      "path": "/pay",
+      "url": "http://sandbox-outfitters.localhost:4401/pay",
+      "title": "Payment · Sandbox Outfitters",
+      "text": "Page title: Payment · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - paragraph: Items $18.00\n  - paragraph: Delivery $6.00\n  - paragraph:\n    - strong: Total\n    - strong: $24.00\n  - heading \"Pay with PayPal\" [level=2]\n  - iframe:\n    - link \"PayPal\"\n  - heading \"Or pay by card\" [level=2]\n  - paragraph: Card details go to PayPal; this shop never sees them.\n  - iframe:\n    - textbox \"Cardholder Name (optional)\": Alex Morgan\n  - iframe:\n    - textbox \"Card number\": 4111 1111 1111 1111\n    - img\n  - iframe:\n    - textbox \"MM / YY\"\n  - iframe:\n    - textbox \"CVV\"\n  - alert\n  - paragraph:\n    - button \"Pay $24.00\"\n\nKeyboard focus: textbox \"Card number\": 4111 1111 1111 1111 (inside an embedded payment field)",
+      "image": "step-025.jpg",
+      "focus": {
+        "x": 229,
+        "y": 725,
+        "width": 420,
+        "height": 78
+      },
+      "stage": 3
+    },
+    {
+      "t": "2026-11-01T17:01:36.718Z",
+      "type": "thinking",
+      "step": 25
+    },
+    {
+      "t": "2026-11-01T17:01:36.787Z",
+      "type": "decide",
+      "step": 25,
+      "action": "next",
+      "args": {},
+      "thought": "Move to expiry",
+      "thinkMs": 69
+    },
+    {
+      "t": "2026-11-01T17:01:39.883Z",
+      "type": "act",
+      "step": 25,
+      "result": "Focus moved to: textbox \"MM / YY\" (inside an embedded payment field)",
+      "actMs": 94,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:01:39.934Z",
+      "type": "observe",
+      "step": 26,
+      "path": "/pay",
+      "url": "http://sandbox-outfitters.localhost:4401/pay",
+      "title": "Payment · Sandbox Outfitters",
+      "text": "Page title: Payment · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - paragraph: Items $18.00\n  - paragraph: Delivery $6.00\n  - paragraph:\n    - strong: Total\n    - strong: $24.00\n  - heading \"Pay with PayPal\" [level=2]\n  - iframe:\n    - link \"PayPal\"\n  - heading \"Or pay by card\" [level=2]\n  - paragraph: Card details go to PayPal; this shop never sees them.\n  - iframe:\n    - textbox \"Cardholder Name (optional)\": Alex Morgan\n  - iframe:\n    - textbox \"Card number\": •••• •••• •••• 1111\n    - img\n  - iframe:\n    - textbox \"MM / YY\"\n  - iframe:\n    - textbox \"CVV\"\n  - alert\n  - paragraph:\n    - button \"Pay $24.00\"\n\nKeyboard focus: textbox \"MM / YY\" (inside an embedded payment field)",
+      "image": "step-026.jpg",
+      "focus": {
+        "x": 229,
+        "y": 788,
+        "width": 420,
+        "height": 78
+      },
+      "stage": 3
+    },
+    {
+      "t": "2026-11-01T17:01:39.934Z",
+      "type": "thinking",
+      "step": 26
+    },
+    {
+      "t": "2026-11-01T17:01:43.948Z",
+      "type": "decide",
+      "step": 26,
+      "action": "type",
+      "args": {
+        "text": "12/30"
+      },
+      "thought": "Type expiry",
+      "thinkMs": 4014
+    },
+    {
+      "t": "2026-11-01T17:01:43.983Z",
+      "type": "target",
+      "step": 26,
+      "box": {
+        "x": 229,
+        "y": 782,
+        "width": 420,
+        "height": 78
+      },
+      "role": null,
+      "name": null,
+      "scrolled": true,
+      "tag": "iframe",
+      "outer": "<iframe allowtransparency=\"true\" name=\"__zoid__paypal_card_expiry_field__eyJzZW5kZXIiOnsiZG9tYWluIjoiaHR0cDovL3NhbmRib3gtb3V0Zml0dGVycy5sb2NhbGhvc3Q6NDQwMSJ9LCJtZXRhRGF0YSI6eyJ3aW5kb3dSZWYiOnsidHlwZSI6InBhcmVudCIsImRpc3RhbmNlIjowfX0sInJlZmVyZW5jZSI6eyJ0eXBlIjoicmF3IiwidmFsIjoie1widWlkXCI6XCJ6b2lkLXBheXBhbC1jYXJkLWV4cGlyeS1maWVsZC11aWRfNTE0NzBmMWI2Nl9tdGM2bWRlNm10YVwiLFwiY29udGV4dFwiOlwiaWZyYW1lXCIsXCJ0YWdcIjpcInBheXBhbC1jYXJkLWV4cGlyeS1maWVsZFwiLFwiY2hpbGREb21haW5NYXRjaFwiOlwiaHR0cHM6Ly93d3cuc2FuZGJveC5wYXlwYWwuY29tXCIsXCJ2ZXJzaW9uXCI6XCIxMF82XzFcIixcInByb3BzXCI6e1wicGFyZW50XCI6e1widWlkXCI6XCJ",
+      "image": "step-026-t.jpg"
+    },
+    {
+      "t": "2026-11-01T17:01:47.031Z",
+      "type": "act",
+      "step": 26,
+      "result": "Typed \"12/30\".",
+      "actMs": 45,
+      "keys": 6,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:01:47.099Z",
+      "type": "observe",
+      "step": 27,
+      "path": "/pay",
+      "url": "http://sandbox-outfitters.localhost:4401/pay",
+      "title": "Payment · Sandbox Outfitters",
+      "text": "Page title: Payment · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - paragraph: Items $18.00\n  - paragraph: Delivery $6.00\n  - paragraph:\n    - strong: Total\n    - strong: $24.00\n  - heading \"Pay with PayPal\" [level=2]\n  - iframe:\n    - link \"PayPal\"\n  - heading \"Or pay by card\" [level=2]\n  - paragraph: Card details go to PayPal; this shop never sees them.\n  - iframe:\n    - textbox \"Cardholder Name (optional)\": Alex Morgan\n  - iframe:\n    - textbox \"Card number\": •••• •••• •••• 1111\n    - img\n  - iframe:\n    - textbox \"MM / YY\": 12 / 30\n  - iframe:\n    - textbox \"CVV\"\n  - alert\n  - paragraph:\n    - button \"Pay $24.00\"\n\nKeyboard focus: textbox \"MM / YY\": 12 / 30 (inside an embedded payment field)",
+      "image": "step-027.jpg",
+      "focus": {
+        "x": 229,
+        "y": 782,
+        "width": 420,
+        "height": 78
+      },
+      "stage": 3
+    },
+    {
+      "t": "2026-11-01T17:01:47.099Z",
+      "type": "thinking",
+      "step": 27
+    },
+    {
+      "t": "2026-11-01T17:01:47.162Z",
+      "type": "decide",
+      "step": 27,
+      "action": "next",
+      "args": {},
+      "thought": "Move to CVV",
+      "thinkMs": 63
+    },
+    {
+      "t": "2026-11-01T17:01:50.274Z",
+      "type": "act",
+      "step": 27,
+      "result": "Focus moved to: textbox \"CVV\" (inside an embedded payment field)",
+      "actMs": 111,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:01:50.334Z",
+      "type": "observe",
+      "step": 28,
+      "path": "/pay",
+      "url": "http://sandbox-outfitters.localhost:4401/pay",
+      "title": "Payment · Sandbox Outfitters",
+      "text": "Page title: Payment · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - paragraph: Items $18.00\n  - paragraph: Delivery $6.00\n  - paragraph:\n    - strong: Total\n    - strong: $24.00\n  - heading \"Pay with PayPal\" [level=2]\n  - iframe:\n    - link \"PayPal\"\n  - heading \"Or pay by card\" [level=2]\n  - paragraph: Card details go to PayPal; this shop never sees them.\n  - iframe:\n    - textbox \"Cardholder Name (optional)\": Alex Morgan\n  - iframe:\n    - textbox \"Card number\": •••• •••• •••• 1111\n    - img\n  - iframe:\n    - textbox \"MM / YY\": 12 / 30\n  - iframe:\n    - textbox \"CVV\"\n  - alert\n  - paragraph:\n    - button \"Pay $24.00\"\n\nKeyboard focus: textbox \"CVV\" (inside an embedded payment field)",
+      "image": "step-028.jpg",
+      "focus": {
+        "x": 229,
+        "y": 653,
+        "width": 420,
+        "height": 78
+      },
+      "stage": 3
+    },
+    {
+      "t": "2026-11-01T17:01:50.334Z",
+      "type": "thinking",
+      "step": 28
+    },
+    {
+      "t": "2026-11-01T17:01:53.474Z",
+      "type": "decide",
+      "step": 28,
+      "action": "type",
+      "args": {
+        "text": "123"
+      },
+      "thought": "Type security code",
+      "thinkMs": 3140
+    },
+    {
+      "t": "2026-11-01T17:01:53.475Z",
+      "type": "target",
+      "step": 28,
+      "box": {
+        "x": 229,
+        "y": 653,
+        "width": 420,
+        "height": 78
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "iframe",
+      "outer": "<iframe allowtransparency=\"true\" name=\"__zoid__paypal_card_cvv_field__eyJzZW5kZXIiOnsiZG9tYWluIjoiaHR0cDovL3NhbmRib3gtb3V0Zml0dGVycy5sb2NhbGhvc3Q6NDQwMSJ9LCJtZXRhRGF0YSI6eyJ3aW5kb3dSZWYiOnsidHlwZSI6InBhcmVudCIsImRpc3RhbmNlIjowfX0sInJlZmVyZW5jZSI6eyJ0eXBlIjoicmF3IiwidmFsIjoie1widWlkXCI6XCJ6b2lkLXBheXBhbC1jYXJkLWN2di1maWVsZC11aWRfMjc5MWY3MzRkYl9tdGM2bWRlNm10YVwiLFwiY29udGV4dFwiOlwiaWZyYW1lXCIsXCJ0YWdcIjpcInBheXBhbC1jYXJkLWN2di1maWVsZFwiLFwiY2hpbGREb21haW5NYXRjaFwiOlwiaHR0cHM6Ly93d3cuc2FuZGJveC5wYXlwYWwuY29tXCIsXCJ2ZXJzaW9uXCI6XCIxMF82XzFcIixcInByb3BzXCI6e1wicGFyZW50XCI6e1widWlkXCI6XCJ6b2lkLXBheX"
+    },
+    {
+      "t": "2026-11-01T17:01:56.523Z",
+      "type": "act",
+      "step": 28,
+      "result": "Typed \"123\".",
+      "actMs": 46,
+      "keys": 4,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:01:56.601Z",
+      "type": "observe",
+      "step": 29,
+      "path": "/pay",
+      "url": "http://sandbox-outfitters.localhost:4401/pay",
+      "title": "Payment · Sandbox Outfitters",
+      "text": "Page title: Payment · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - paragraph: Items $18.00\n  - paragraph: Delivery $6.00\n  - paragraph:\n    - strong: Total\n    - strong: $24.00\n  - heading \"Pay with PayPal\" [level=2]\n  - iframe:\n    - link \"PayPal\"\n  - heading \"Or pay by card\" [level=2]\n  - paragraph: Card details go to PayPal; this shop never sees them.\n  - iframe:\n    - textbox \"Cardholder Name (optional)\": Alex Morgan\n  - iframe:\n    - textbox \"Card number\": •••• •••• •••• 1111\n    - img\n  - iframe:\n    - textbox \"MM / YY\": 12 / 30\n  - iframe:\n    - textbox \"CVV\": \"123\"\n  - alert\n  - paragraph:\n    - button \"Pay $24.00\"\n\nKeyboard focus: textbox \"CVV\": \"123\" (inside an embedded payment field)",
+      "image": "step-029.jpg",
+      "focus": {
+        "x": 229,
+        "y": 653,
+        "width": 420,
+        "height": 78
+      },
+      "stage": 3
+    },
+    {
+      "t": "2026-11-01T17:01:56.601Z",
+      "type": "thinking",
+      "step": 29
+    },
+    {
+      "t": "2026-11-01T17:01:56.674Z",
+      "type": "decide",
+      "step": 29,
+      "action": "next",
+      "args": {},
+      "thought": "Move on to the next control",
+      "thinkMs": 73
+    },
+    {
+      "t": "2026-11-01T17:01:59.777Z",
+      "type": "act",
+      "step": 29,
+      "result": "Focus moved to: button \"Pay $24.00\"",
+      "actMs": 100,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:01:59.833Z",
+      "type": "observe",
+      "step": 30,
+      "path": "/pay",
+      "url": "http://sandbox-outfitters.localhost:4401/pay",
+      "title": "Payment · Sandbox Outfitters",
+      "text": "Page title: Payment · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - paragraph: Items $18.00\n  - paragraph: Delivery $6.00\n  - paragraph:\n    - strong: Total\n    - strong: $24.00\n  - heading \"Pay with PayPal\" [level=2]\n  - iframe:\n    - link \"PayPal\"\n  - heading \"Or pay by card\" [level=2]\n  - paragraph: Card details go to PayPal; this shop never sees them.\n  - iframe:\n    - textbox \"Cardholder Name (optional)\": Alex Morgan\n  - iframe:\n    - textbox \"Card number\": •••• •••• •••• 1111\n    - img\n  - iframe:\n    - textbox \"MM / YY\": 12 / 30\n  - iframe:\n    - textbox \"CVV\": •••\n  - alert\n  - paragraph:\n    - button \"Pay $24.00\"\n\nKeyboard focus: button \"Pay $24.00\"",
+      "image": "step-030.jpg",
+      "focus": {
+        "x": 229,
+        "y": 753,
+        "width": 114,
+        "height": 44
+      },
+      "stage": 3
+    },
+    {
+      "t": "2026-11-01T17:01:59.833Z",
+      "type": "thinking",
+      "step": 30
+    },
+    {
+      "t": "2026-11-01T17:02:02.655Z",
+      "type": "decide",
+      "step": 30,
+      "action": "activate",
+      "args": {},
+      "thought": "All card details are entered, pay now",
+      "thinkMs": 2822
+    },
+    {
+      "t": "2026-11-01T17:02:02.657Z",
+      "type": "target",
+      "step": 30,
+      "box": {
+        "x": 229,
+        "y": 753,
+        "width": 114,
+        "height": 44
+      },
+      "role": null,
+      "name": null,
+      "scrolled": false,
+      "tag": "button",
+      "outer": "<button type=\"submit\">Pay $24.00</button>"
+    },
+    {
+      "t": "2026-11-01T17:02:06.176Z",
+      "type": "act",
+      "step": 30,
+      "result": "Pressed Enter on the focused element.",
+      "actMs": 516,
+      "keys": 1,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:02:06.248Z",
+      "type": "observe",
+      "step": 31,
+      "path": "/pay",
+      "url": "http://sandbox-outfitters.localhost:4401/pay",
+      "title": "Payment · Sandbox Outfitters",
+      "text": "Page title: Payment · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (1)\"\n- main:\n  - heading \"Payment\" [level=1]\n  - paragraph: Items $18.00\n  - paragraph: Delivery $6.00\n  - paragraph:\n    - strong: Total\n    - strong: $24.00\n  - heading \"Pay with PayPal\" [level=2]\n  - iframe:\n    - link \"PayPal\"\n  - heading \"Or pay by card\" [level=2]\n  - paragraph: Card details go to PayPal; this shop never sees them.\n  - iframe:\n    - textbox \"Cardholder Name (optional)\": Alex Morgan\n  - iframe:\n    - textbox \"Card number\": •••• •••• •••• 1111\n    - img\n  - iframe:\n    - textbox \"MM / YY\": 12 / 30\n  - iframe:\n    - textbox \"CVV\": •••\n  - alert\n  - paragraph:\n    - button \"Pay $24.00\"\n\nKeyboard focus: button \"Pay $24.00\"",
+      "image": "step-031.jpg",
+      "focus": {
+        "x": 229,
+        "y": 753,
+        "width": 114,
+        "height": 44
+      },
+      "stage": 3
+    },
+    {
+      "t": "2026-11-01T17:02:06.248Z",
+      "type": "thinking",
+      "step": 31
+    },
+    {
+      "t": "2026-11-01T17:02:09.378Z",
+      "type": "decide",
+      "step": 31,
+      "action": "read",
+      "args": {},
+      "thought": "Nothing was announced after paying; listen to the page again in case it is still processing",
+      "thinkMs": 3129
+    },
+    {
+      "t": "2026-11-01T17:02:12.381Z",
+      "type": "act",
+      "step": 31,
+      "result": "You read the page again.",
+      "actMs": 0,
+      "keys": 0,
+      "ok": true,
+      "refused": false
+    },
+    {
+      "t": "2026-11-01T17:02:21.438Z",
+      "type": "decide",
+      "step": 32,
+      "action": "done",
+      "args": {},
+      "thought": "The page confirms the order, PayPal order 1G066257D7727414C for $24.00",
+      "final": true
+    },
+    {
+      "t": "2026-11-01T17:02:21.449Z",
+      "type": "end",
+      "outcome": {
+        "status": "purchased",
+        "reason": "The shop's own PayPal sandbox reports the order as COMPLETED."
+      },
+      "findings": [
+        {
+          "page": "Payment · Sandbox Outfitters",
+          "problem": "After pressing Pay nothing was announced: the alert region stayed empty, no processing or busy message, and focus stayed on the Pay button. I only learned the order went through by reading the page again.",
+          "step": 31,
+          "element": {
+            "role": "button",
+            "name": "Pay $24.00"
+          }
+        },
+        {
+          "page": "Payment · Sandbox Outfitters",
+          "problem": "Under Pay with PayPal there were two links with the same name PayPal inside unnamed frames, so I could not tell what each one does. Later one of them disappeared without notice.",
+          "step": 21,
+          "element": {
+            "role": "link",
+            "name": "PayPal"
+          }
+        }
+      ],
+      "steps": 31,
+      "path": "/done/1G066257D7727414C",
+      "url": "http://sandbox-outfitters.localhost:4401/done/1G066257D7727414C",
+      "title": "Order confirmed · Sandbox Outfitters",
+      "text": "Page title: Order confirmed · Sandbox Outfitters\n\nPage as an accessibility tree:\n- paragraph: \"Staging copy: payments run in the PayPal sandbox, no real money moves.\"\n- banner:\n  - link \"Sandbox Outfitters\"\n  - link \"Cart (0)\"\n- main:\n  - heading \"Order confirmed\" [level=1]\n  - paragraph: \"Thank you. Your order is paid: $24.00.\"\n  - paragraph: PayPal order 1G066257D7727414C.\n  - paragraph:\n    - link \"Back to the shop\"\n\nKeyboard focus: nothing focused (top of page)",
+      "image": "step-999.jpg"
+    },
+    {
+      "t": "2026-11-01T17:02:21.451Z",
+      "type": "oracle",
+      "payment": {
+        "mode": "owner-sandbox",
+        "orderId": "1G066257D7727414C",
+        "status": "COMPLETED",
+        "amount": 24,
+        "currency": "USD",
+        "createdAt": "2026-11-01T17:02:08Z",
+        "sdkClientIds": [
+          "Ab7Tma_iEeKmDC6s5sDEn95Zd3HPl2PeG8x5iM8IVt7XMNRziD9QEvHp-S5otncA6o9Ayof42dtlmr9s"
+        ]
+      }
+    },
+    {
+      "t": "2026-11-01T17:02:21.451Z",
+      "type": "finished",
+      "outcome": {
+        "status": "purchased",
+        "reason": "The shop's own PayPal sandbox reports the order as COMPLETED."
+      }
+    }
+  ],
+  "steps": 31,
+  "scan": {
+    "totalViolations": 4,
+    "pages": [
+      {
+        "url": "http://sandbox-outfitters.localhost:4401/",
+        "violations": 1,
+        "rules": [
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "http://sandbox-outfitters.localhost:4401/cart",
+        "violations": 1,
+        "rules": [
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "http://sandbox-outfitters.localhost:4401/checkout",
+        "violations": 1,
+        "rules": [
+          "region"
+        ],
+        "embedded": 0,
+        "embeddedRules": []
+      },
+      {
+        "url": "http://sandbox-outfitters.localhost:4401/pay",
+        "violations": 1,
+        "rules": [
+          "region"
+        ],
+        "embedded": 4,
+        "embeddedRules": [
+          "label-title-only"
+        ]
+      }
+    ],
+    "inRun": true
+  },
+  "payment": {
+    "mode": "owner-sandbox",
+    "orderId": "1G066257D7727414C",
+    "status": "COMPLETED",
+    "amount": 24,
+    "currency": "USD",
+    "createdAt": "2026-11-01T17:02:08Z",
+    "sdkClientIds": [
+      "Ab7Tma_iEeKmDC6s5sDEn95Zd3HPl2PeG8x5iM8IVt7XMNRziD9QEvHp-S5otncA6o9Ayof42dtlmr9s"
+    ]
+  }
+}

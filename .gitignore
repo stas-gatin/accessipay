@@ -1,0 +1,14 @@
+node_modules/
+.env
+.claude/
+*.log
+data/runs/
+.DS_Store
+data/instances/
+console/dist/
+data/archive-dev-runs/
+data/fixes/
+data/reports/
+data/private/
+spike/runs/
+data/owners/
