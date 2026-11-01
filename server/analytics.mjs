@@ -28,6 +28,8 @@ function stageOf(run) {
 }
 
 export function analytics(runs) {
+  // Purchases on an owner's staging shop are their own kind of test, not part of the demo-shop or real-shop figures.
+  runs = runs.filter((r) => !r?.site?.sandbox);
   const done = runs.filter((r) => r && r.status === 'finished' && r.outcome && r.brainKind !== 'scripted' && r.outcome.status !== 'error' && r.outcome.status !== 'stopped' && r.outcome.status !== 'not-testable');
   // Sites behind bot protection are listed, never counted as passed or blocked.
   const untested = runs.filter((r) => r && r.status === 'finished' && r.site && r.outcome?.status === 'not-testable' && r.brainKind !== 'scripted');

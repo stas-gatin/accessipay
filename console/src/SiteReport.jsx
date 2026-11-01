@@ -68,7 +68,9 @@ export default function Results() {
     load();
     return () => { live = false; clearTimeout(timer); };
   }, []);
-  const all = list || [];
+  // Owner staging shops paid in their PayPal sandbox are listed on their own, not among the real shops.
+  const staging = (list || []).filter((s) => s.sandbox);
+  const all = (list || []).filter((s) => !s.sandbox);
   const tested = all.filter((s) => s.tested && !s.running);
   const testing = all.filter((s) => s.running);
   const away = all.filter((s) => s.notTestable && !s.running);
@@ -128,6 +130,15 @@ export default function Results() {
           />
         )}
       </div>
+      {staging.length > 0 && (
+        <>
+          <h2 className="res-h2">Owner staging shops, paid in their PayPal sandbox</h2>
+          <p className="lead">A shop owner connected a staging copy of the shop and its PayPal sandbox app. Here the customers pay with a PayPal test card, and a run passes only when that sandbox reports the order as COMPLETED.</p>
+          <ul className="res-staging">
+            {staging.map((s) => <li key={s.key}><a href={siteHref(s.key)}>{s.key}</a>: {s.running ? 'testing now' : `${s.paid} of ${s.tested} customer types paid`}</li>)}
+          </ul>
+        </>
+      )}
       <p className="note">Click a shop to open its whole analysis: each customer, the stage it reached, its findings and its run step by step. Shops behind bot protection are listed too: AccessiPay never gets past it, and an AI shopping agent may meet the same wall. Their owners can <a href="#/own-site">let the test in</a>. Retailer letters follow the order the shops were added; a missing letter is a shop we did not test.</p>
     </div>
   );

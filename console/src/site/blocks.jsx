@@ -326,7 +326,7 @@ export function OwnerOutputs() {
 const RS_PERSONAS = [['screenreader', 'Screen reader'], ['keyboard', 'Keyboard'], ['agent', 'AI agent']];
 export function RealShops() {
   const [list, setList] = useState(null);
-  useEffect(() => { api('/api/sites').then(setList).catch(() => setList([])); }, []);
+  useEffect(() => { api('/api/sites').then((l) => setList(l.filter((s) => !s.sandbox))).catch(() => setList([])); }, []);
   if (!list) return null;
   const analysed = list.filter((s) => s.complete && !s.notTestable && !s.running);
   const away = list.filter((s) => s.notTestable && !s.running);

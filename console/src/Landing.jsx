@@ -15,7 +15,7 @@ export default function Landing({ meta }) {
   const axe = meta.defects.filter((d) => d.axeExpected).length;
   const [orders, setOrders] = useState(null);
   const [shops, setShops] = useState(null);
-  useEffect(() => { api('/api/sites').then((l) => setShops(l.filter((x) => x.complete && !x.notTestable).length)).catch(() => setShops(null)); }, []);
+  useEffect(() => { api('/api/sites').then((l) => setShops(l.filter((x) => x.complete && !x.notTestable && !x.sandbox).length)).catch(() => setShops(null)); }, []);
   useEffect(() => {
     api('/api/runs')
       .then((list) => setOrders(list.filter((r) => r.payment?.status === 'COMPLETED' && r.payment?.mode === 'sandbox' && !/^MOCK/.test(r.payment.orderId)).length))
