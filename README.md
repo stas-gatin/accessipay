@@ -9,6 +9,7 @@
 Built for the **PayPal AI Hackathon 2026** by Stanislav Gatin.
 
 <p align="center">
+  <a href="https://accessipay.onrender.com"><img src="docs/images/buttons/live.svg" height="64" alt="Try it live: accessipay.onrender.com"></a>&nbsp;
   <a href="https://youtu.be/5SXok5O-q2U"><img src="docs/images/buttons/video.svg" height="64" alt="Watch the demo: 2:34 on YouTube"></a>&nbsp;
   <a href="#run-it"><img src="docs/images/buttons/run.svg" height="64" alt="Run it locally: npm install and npm start"></a>&nbsp;
   <a href="#how-paypal-and-ai-are-used"><img src="docs/images/buttons/paypal.svg" height="64" alt="How PayPal is used: Orders v2, JS SDK, sandbox"></a>
@@ -30,7 +31,7 @@ Built for the **PayPal AI Hackathon 2026** by Stanislav Gatin.
 | **Pass mark** | An order that PayPal (Orders v2, sandbox) reports as `COMPLETED`, with the right item bought. Saying "done" is not enough |
 | **When stuck** | The AI fixer reads the page and the record of the visit, writes a patch, and the same customer tries again |
 | **The owner gets** | Fixes ranked by who they block, ready code, a replay of every step, a screenshot with the problem circled, an accessible PDF |
-| **Start** | `npm install && npx playwright install chromium && npm run build && npm start`, then open http://127.0.0.1:4300 ([Run it](#run-it)) |
+| **Try it** | https://accessipay.onrender.com (no sign-in), or run it yourself: `npm install && npx playwright install chromium && npm run build && npm start`, then http://127.0.0.1:4300 ([Run it](#run-it)) |
 
 > Simulated customers, PayPal sandbox only: no real money moves. Not a WCAG audit or certificate.
 
