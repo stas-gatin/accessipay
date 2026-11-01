@@ -198,6 +198,18 @@ node tools/agent.mjs fix <run id>                          # fix request for a b
 node tools/agent.mjs fix-reply <fix id> reply.json
 ```
 
+### Deploy on Render
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/stas-gatin/accessipay)
+
+`render.yaml` describes one Docker web service (`Dockerfile`: Playwright's image with Chromium, the console built at image time, port 10000, health check `/api/health`). In the Render dashboard choose **New > Blueprint**, pick this repository and set two secrets when asked:
+
+| Variable | Value |
+|---|---|
+| `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` | A PayPal **sandbox** REST app. Without them the demo shop runs in labelled mock mode. |
+
+Leave `ANTHROPIC_API_KEY` unset for a public demo: visitors replay the recorded runs and new runs stay off. The recorded runs in `data/recorded/` are part of the image; anything written at run time (owner sites, new runs) lives on the service's own disk and is gone after a redeploy. The blueprint uses the Starter plan so the demo never sleeps; the free plan also fits (the image runs in about 155 MB with Chromium open) but sleeps after 15 minutes, and the first visitor then waits about a minute.
+
 ## How PayPal and AI are used
 
 - **PayPal JavaScript SDK** (sandbox): the shop's payment page uses PayPal Buttons and PayPal Card Fields (`components=buttons,card-fields`), so card data goes straight to PayPal and the shop's server never sees it. The keyboard and screen reader customers fill those fields inside PayPal's iframes, as real users do.

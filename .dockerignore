@@ -8,3 +8,14 @@ spike/runs
 .env
 .git
 .claude
+data/private
+data/owners
+data/fixes
+data/reports
+data/agent-access
+docs
+examples
+test
+eval
+*.log
+.DS_Store
