@@ -1,0 +1,25 @@
+# Render Blueprint for the public AccessiPay demo (Dashboard: New > Blueprint, pick this repository).
+# One Docker web service. The recorded runs in data/recorded are baked into the image; anything the
+# service writes at run time (owner sites, new runs) lives on its own disk and is lost on redeploy.
+services:
+  - type: web
+    name: accessipay
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    branch: main
+    region: frankfurt
+    # The demo fits in 512 MB (about 155 MB with Chromium open, measured in this image), so the free plan
+    # works too, but a free service sleeps after 15 minutes and the first visitor waits about a minute.
+    # Starter keeps it awake.
+    plan: starter
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # PayPal sandbox REST app. Without them the shop runs in labelled mock mode.
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      # Leave ANTHROPIC_API_KEY unset: the public demo replays recorded runs and does not start new ones.
