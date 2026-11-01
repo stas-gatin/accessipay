@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="72" viewBox="0 0 300 72" role="img" aria-label="How PayPal is used: Orders v2 and the JS SDK">
+  <rect x="1" y="1" width="298" height="70" rx="14" fill="#0070e0"/>
+  <g transform="translate(20 20)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"><rect x="1" y="2" width="38" height="28" rx="5"/><path d="M1 10 H39" stroke-width="4"/><path d="M8 22 H18" stroke-linecap="round"/></g>
+  <text x="74" y="33" fill="#fff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="20" font-weight="700">How PayPal is used</text>
+  <text x="74" y="54" fill="#fff" fill-opacity=".86" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14">Orders v2 · JS SDK · sandbox</text>
+</svg>

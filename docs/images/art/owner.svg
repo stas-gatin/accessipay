@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 350" width="1280" height="350" role="img"
+  aria-label="Test your own shop: prove the site is yours, let the test through your bot protection with one allow rule, optionally connect a staging copy and its PayPal sandbox app, and send the three customers. With the sandbox they pay with a PayPal test card, and a run passes only when your own sandbox reports the order as COMPLETED. On our test staging shop: 3 of 3 customers paid.">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#002a74"/><stop offset="1" stop-color="#0058c7"/></linearGradient>
+    <style>
+      .t { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
+      .m { font-family: SFMono-Regular, Menlo, Consolas, monospace; }
+      .st { opacity: 0.35; animation: on 10s ease-out infinite; }
+      @keyframes on { 0% { opacity: 0.35; } 3% { opacity: 1; } 92% { opacity: 1; } 98%, 100% { opacity: 0.35; } }
+      .ck { opacity: 0; transform-box: fill-box; transform-origin: center; animation: ck 10s ease-out infinite; }
+      @keyframes ck { 0% { opacity: 0; transform: scale(0.3); } 3% { opacity: 1; transform: scale(1.15); } 5% { transform: scale(1); } 92% { opacity: 1; } 98%, 100% { opacity: 0; } }
+      .line { transform-box: fill-box; transform-origin: left center; transform: scaleX(0); animation: ln 10s ease-out infinite; }
+      @keyframes ln { 0% { transform: scaleX(0); } 4% { transform: scaleX(1); } 92% { transform: scaleX(1); opacity: 1; } 98%, 100% { opacity: 0; } }
+    </style>
+  </defs>
+  <rect width="1280" height="350" rx="24" fill="url(#bg)"/>
+  <g class="t">
+    <text x="56" y="58" class="m" font-size="14" letter-spacing="3" fill="#ffc439">YOUR OWN SHOP · ALL THE WAY TO PAYPAL</text>
+    <rect class="line" style="animation-delay:0.9s" x="290" y="150" width="60" height="4" rx="2" fill="#ffffff"/>
+    <rect class="line" style="animation-delay:2.1s" x="590" y="150" width="60" height="4" rx="2" fill="#ffffff"/>
+    <rect class="line" style="animation-delay:3.3s" x="890" y="150" width="60" height="4" rx="2" fill="#ffffff"/>
+    <g class="st" style="animation-delay:0.3s"><rect x="56" y="92" width="234" height="120" rx="16" fill="#ffffff"/>
+      <text x="76" y="124" font-size="13" font-weight="800" fill="#0070e0">1</text><text x="76" y="150" font-size="18" font-weight="700" fill="#0b1b33">Prove it is yours</text>
+      <text x="76" y="174" font-size="13" fill="#4a5a70">a file on the site</text><text x="76" y="194" font-size="13" fill="#4a5a70">or a DNS TXT record</text></g>
+    <g class="st" style="animation-delay:1.5s"><rect x="350" y="92" width="240" height="120" rx="16" fill="#ffffff"/>
+      <text x="370" y="124" font-size="13" font-weight="800" fill="#0070e0">2</text><text x="370" y="150" font-size="18" font-weight="700" fill="#0b1b33">Let the test in</text>
+      <text x="370" y="174" font-size="13" fill="#4a5a70">one allow rule for the</text><text x="370" y="194" font-size="12" class="m" fill="#4a5a70">x-accessipay-key</text></g>
+    <g class="st" style="animation-delay:2.7s"><rect x="650" y="92" width="240" height="120" rx="16" fill="#ffffff"/>
+      <text x="670" y="124" font-size="13" font-weight="800" fill="#0070e0">3</text><text x="670" y="150" font-size="18" font-weight="700" fill="#0b1b33">Connect sandbox</text>
+      <text x="670" y="174" font-size="13" fill="#4a5a70">staging copy + PayPal</text><text x="670" y="194" font-size="13" fill="#4a5a70">sandbox app (no live keys)</text></g>
+    <g class="st" style="animation-delay:3.9s"><rect x="950" y="92" width="274" height="120" rx="16" fill="#ffffff"/>
+      <text x="970" y="124" font-size="13" font-weight="800" fill="#0070e0">4</text><text x="970" y="150" font-size="18" font-weight="700" fill="#0b1b33">Customers pay</text>
+      <text x="970" y="174" font-size="13" fill="#4a5a70">PayPal test card; pass only if</text><text x="970" y="194" font-size="13" fill="#4a5a70">your sandbox says COMPLETED</text></g>
+    <g class="ck" style="animation-delay:5.0s"><rect x="56" y="236" width="660" height="50" rx="14" fill="#ffc439"/>
+      <text x="80" y="268" font-size="19" font-weight="800" fill="#0b1b33">Our test staging shop: 3 of 3 customers paid, 3 orders COMPLETED</text></g>
+    <g class="ck" style="animation-delay:5.6s"><text x="56" y="318" font-size="14" fill="#d6e8ff">Payments may go only to a PayPal checkout loaded with the connected Client ID.</text></g>
+  </g>
+</svg>

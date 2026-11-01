@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="72" viewBox="0 0 300 72" role="img" aria-label="Run it locally: npm start">
+  <style>.c { animation: blink 1s steps(1) infinite; } @keyframes blink { 50% { opacity: 0; } }</style>
+  <rect x="1" y="1" width="298" height="70" rx="14" fill="#0b1b33"/>
+  <rect x="1" y="1" width="298" height="70" rx="14" fill="none" stroke="#5ef1c2" stroke-opacity=".5"/>
+  <g transform="translate(22 20)" fill="none" stroke="#5ef1c2" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="34" height="30" rx="4"/><path d="M8 11 l6 5 -6 5"/></g>
+  <rect class="c" x="40" y="38" width="10" height="3" fill="#5ef1c2"/>
+  <text x="74" y="33" fill="#fff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="20" font-weight="700">Run it locally</text>
+  <text x="74" y="54" fill="#5ef1c2" font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="14">npm install &amp;&amp; npm start</text>
+</svg>
