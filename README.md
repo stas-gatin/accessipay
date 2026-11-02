@@ -237,8 +237,14 @@ Without a model key the public demo replays the recorded runs and new runs stay 
 | `examples/sandbox-shop/` | A separate staging shop on its own PayPal sandbox app, for the owner flow |
 | `data/recorded/` | Recorded runs and fixes shown on the site (real shops anonymized) |
 | `tools/` | Agent seat, sweeps, recording, findings check, leak check |
-| `test/` | `npm test`: 40 tests (the 4 that call the PayPal sandbox skip without keys) |
+| `test/` | `npm test`: 50 tests (the ones that call the PayPal sandbox skip without keys) |
 
 ## License
 
-MIT, see `LICENSE`.
+Copyright (C) 2026 Stanislav Gatin.
+
+AccessiPay is licensed under the GNU Affero General Public License v3.0 only (`AGPL-3.0-only`), see `LICENSE`. You may read, run and change the code. If you run a modified version as a network service, you must offer its complete source code to the users of that service under the same license.
+
+For use without the AGPL terms, for example in a closed commercial product, a separate commercial license is available from the author: open an issue or contact the author through GitHub.
+
+Third-party packages keep their own licenses. AG Grid Enterprise is commercial software and needs its own license key for production use.
