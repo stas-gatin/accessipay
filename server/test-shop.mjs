@@ -40,15 +40,18 @@ const shotOf = (run, which) => {
 
 export function createTestShop({ runs, dataDir }) {
   // The AI fix that was applied after the blocked run.
+  // Fixes made on this computer (data/fixes) and the recorded ones published with the repository.
   function fixFor(runId) {
-    const dir = path.join(dataDir, 'fixes');
-    if (!runId || !fs.existsSync(dir)) return null;
-    for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.json'))) {
-      try {
-        const x = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
-        if (x.runId !== runId || x.status !== 'applied') continue;
-        return { id: x.id, summary: x.summary, changes: (x.accepted || []).map((p) => ({ find: p.find, replace: p.replace, why: p.why })) };
-      } catch {}
+    if (!runId) return null;
+    for (const dir of [path.join(dataDir, 'fixes'), path.join(dataDir, 'recorded', 'fixes')]) {
+      if (!fs.existsSync(dir)) continue;
+      for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.json'))) {
+        try {
+          const x = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+          if (x.runId !== runId || x.status !== 'applied') continue;
+          return { id: x.id, summary: x.summary, changes: (x.accepted || []).map((p) => ({ find: p.find, replace: p.replace, why: p.why })) };
+        } catch {}
+      }
     }
     return null;
   }
