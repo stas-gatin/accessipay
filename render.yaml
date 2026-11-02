@@ -22,4 +22,15 @@ services:
         sync: false
       - key: PAYPAL_CLIENT_SECRET
         sync: false
-      # Leave ANTHROPIC_API_KEY unset: the public demo replays recorded runs and does not start new ones.
+      # Live runs in the public demo: NVIDIA Nemotron decides each step and writes the AI fix. They start only
+      # with ACCESSIPAY_ACCESS_CODE (given to the judges), only on the demo shop, at most 3 at a time and
+      # ACCESSIPAY_DAILY_RUNS a day, and they stay out of the published figures. Without NVIDIA_API_KEY the
+      # demo replays the recorded runs only. Leave ANTHROPIC_API_KEY unset unless Claude should run them.
+      - key: NVIDIA_API_KEY
+        sync: false
+      - key: ACCESSIPAY_ACCESS_CODE
+        sync: false
+      - key: NVIDIA_MODEL
+        value: nvidia/nemotron-3.5-super-vl-120b-a12b
+      - key: ACCESSIPAY_DAILY_RUNS
+        value: "20"

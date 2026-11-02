@@ -180,7 +180,7 @@ function scorecard(run, rerun, baseline) {
 }
 
 function methodNotes(run, fix) {
-  const brain = run.brainKind === 'external' ? 'a Claude Code agent (it reads each turn and replies with one action)' : run.brainKind === 'anthropic' ? `the Claude API (${run.model || 'model not recorded'})` : run.brainKind === 'scripted' ? 'a fixed script (no AI), used for tests' : run.brainKind;
+  const brain = run.brainKind === 'external' ? 'a Claude Code agent (it reads each turn and replies with one action)' : run.brainKind === 'anthropic' ? `the Claude API (${run.model || 'model not recorded'})` : run.brainKind === 'nvidia' ? `NVIDIA Nemotron through the NVIDIA API (${run.model || 'model not recorded'})` : run.brainKind === 'scripted' ? 'a fixed script (no AI), used for tests' : run.brainKind;
   const p = PERSONAS[run.persona];
   const notes = [
     `Customer model: ${p?.label || run.persona}. ${p?.summary || ''}`,

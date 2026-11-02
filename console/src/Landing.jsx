@@ -18,7 +18,7 @@ export default function Landing({ meta }) {
   useEffect(() => { api('/api/sites').then((l) => setShops(l.filter((x) => x.complete && !x.notTestable && !x.sandbox).length)).catch(() => setShops(null)); }, []);
   useEffect(() => {
     api('/api/runs')
-      .then((list) => setOrders(list.filter((r) => r.payment?.status === 'COMPLETED' && r.payment?.mode === 'sandbox' && !/^MOCK/.test(r.payment.orderId)).length))
+      .then((list) => setOrders(list.filter((r) => !r.liveDemo && r.payment?.status === 'COMPLETED' && r.payment?.mode === 'sandbox' && !/^MOCK/.test(r.payment.orderId)).length))
       .catch(() => setOrders(null));
   }, []);
 

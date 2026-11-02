@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { api } from './api.js';
+import { api, accessCode, liveOf } from './api.js';
 
 // Owners test their own shop: prove the domain is theirs, let AccessiPay's browser through their bot
 // protection with an access key, then send the customers. Plus a check of how open any shop is to AI assistants.
@@ -41,8 +41,9 @@ function Locked({ n, title, after }) {
 export function OwnShopSteps({ meta, fixedUrl = null, first = 2 }) {
   const [url, setUrl] = useState(fixedUrl || 'https://');
   const [site, setSite] = useState(null);
-  // Same switch as the other start buttons: without a Claude API key the console does not start live runs.
-  const live = meta.claude || /[?&]agent=1\b/.test(location.search);
+  // Same switch as the other start buttons; a public demo limits live runs to our demo shop.
+  const lv = liveOf(meta);
+  const live = !!lv && !lv.demoOnly;
   const at = fixedUrl ? first - 1 : first; // the number of the address step, real or skipped
   const [how, setHow] = useState('file');
   const [verifyResult, setVerifyResult] = useState(null);
@@ -85,11 +86,11 @@ export function OwnShopSteps({ meta, fixedUrl = null, first = 2 }) {
   useEffect(() => { setPay(!!site?.sandbox); }, [!!site?.sandbox]);
   const paying = pay && !!site?.sandbox;
   const startRun = () => run('run', async () => {
-    const brain = meta.claude ? 'anthropic' : 'external';
+    const brain = lv?.brain || 'external';
     // Every shop is always tested by all three customers, as one site analysis.
     const t = await api('/api/site-tests', paying
-      ? { url: site.sandbox.url, brain, ownerSiteId: site.id, payInSandbox: true }
-      : { url: site.url, brain, ownerSiteId: site.id });
+      ? { url: site.sandbox.url, brain, ownerSiteId: site.id, payInSandbox: true, accessCode: accessCode.get() }
+      : { url: site.url, brain, ownerSiteId: site.id, accessCode: accessCode.get() });
     location.hash = `#/sites/${encodeURIComponent(t.key)}`;
   });
 
@@ -224,7 +225,9 @@ export function OwnShopSteps({ meta, fixedUrl = null, first = 2 }) {
             <p className="note">{paying
               ? 'Each customer buys one product and pays with a PayPal test card on your staging checkout. No real money moves. A run counts as paid only when your PayPal sandbox reports the order as COMPLETED.'
               : 'Each customer goes as far as the payment step and stops: no order is placed and no card data is typed.'} On your verified site the rules meant for search crawlers (robots.txt) are not applied, because you asked for the test.</p>
-            {!live && <p className="note">Starting new tests is turned off in this public demo: each run has an AI model decide every step, and that has a cost.</p>}
+            {!live && <p className="note">{lv?.demoOnly
+              ? 'In this public demo, live runs are limited to our demo shop (Run a test, "Our demo shop"): connecting a shop works here, sending the customers to it does not.'
+              : 'Starting new tests is turned off in this public demo: each run has an AI model decide every step, and that has a cost.'}</p>}
             <button type="button" className="btn primary" onClick={startRun} disabled={busy === 'run' || !live}>{busy === 'run' ? 'Starting…' : 'Start the test'}</button>
           </section>
         )}
