@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { api, OUTCOME, shortDate, accessCode, liveOf } from './api.js';
 import { RUNS } from './site/facts.js';
 import { OwnShopSteps, AgentAccessResult } from './OwnSite.jsx';
+import LivePanel from './run/LivePanel.jsx';
 
 // One page for every test: pick where the customers shop, then who shops.
 // A real shop's address is entered once: it is checked first, then either the customers go, or its owner connects it.
@@ -31,6 +32,8 @@ export default function NewTest({ meta, initialWhere = 'demo' }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [recent, setRecent] = useState([]);
+  // A demo-shop test streams on this page; the form comes back with "Start another test".
+  const [liveId, setLiveId] = useState(null);
   useEffect(() => { setWhere(initialWhere === 'own' ? 'real' : initialWhere); }, [initialWhere]);
   async function checkShop() {
     setChecking(true); setError(''); setAccess(null); setOwn(false);
@@ -62,7 +65,8 @@ export default function NewTest({ meta, initialWhere = 'demo' }) {
         return;
       }
       const r = await api('/api/runs', { persona, brain, defects, goalId: persona === 'agent' ? goalId : 'checkout', accessCode: code });
-      location.hash = `#/runs/${r.id}`;
+      setLiveId(r.id);
+      setBusy(false);
     } catch (e) { setError(e.message); setBusy(false); }
   }
 
@@ -94,6 +98,9 @@ export default function NewTest({ meta, initialWhere = 'demo' }) {
       <p className="eyebrow">Run a test</p>
       <h1>Send customers to buy</h1>
       <p className="lead">Pick where they shop and who shops. The run streams live, step by step; the scanner checks the same pages at the end.</p>
+
+      {liveId && <LivePanel key={liveId} id={liveId} meta={meta} onAgain={() => { setLiveId(null); window.scrollTo({ top: 0 }); }} />}
+      {!liveId && <>
 
       <section aria-labelledby="t-where" style={{ marginBottom: 24 }}>
         <h2 className="section-title" id="t-where"><span className="step-no">1</span>Where do they shop?</h2>
@@ -220,6 +227,7 @@ export default function NewTest({ meta, initialWhere = 'demo' }) {
           {own && <OwnShopSteps meta={meta} fixedUrl={siteUrl} first={3} />}
         </div>
       )}
+      </>}
     </div>
   );
 }
