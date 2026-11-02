@@ -50,17 +50,37 @@ export function fixPrompt({ run, page, html }) {
   ].join('\n');
 }
 
+// JSON objects in a model's reply, in order. Models sometimes repeat the object or drop the last closing brace,
+// so the scan respects strings and closes an object the reply left open.
+export function jsonObjects(raw) {
+  const found = [];
+  let start = -1, stack = [], inStr = false, esc = false;
+  for (let i = 0; i < raw.length; i++) {
+    const ch = raw[i];
+    if (start < 0) { if (ch === '{') { start = i; stack = ['}']; inStr = false; } continue; }
+    if (inStr) { if (esc) esc = false; else if (ch === '\\') esc = true; else if (ch === '"') inStr = false; continue; }
+    if (ch === '"') inStr = true;
+    else if (ch === '{') stack.push('}');
+    else if (ch === '[') stack.push(']');
+    else if (ch === '}' || ch === ']') { stack.pop(); if (!stack.length) { found.push(raw.slice(start, i + 1)); start = -1; } }
+  }
+  if (start >= 0 && !inStr) found.push(raw.slice(start) + stack.reverse().join(''));
+  return found;
+}
+
 export function parseFix(text) {
   const raw = String(text || '');
-  const s = raw.indexOf('{');
-  const e = raw.lastIndexOf('}');
-  if (s < 0 || e <= s) return { summary: '', patches: [], error: 'No JSON object in the reply.' };
-  try {
-    const j = JSON.parse(raw.slice(s, e + 1));
-    return { summary: String(j.summary || ''), patches: Array.isArray(j.patches) ? j.patches : [] };
-  } catch (err) {
-    return { summary: '', patches: [], error: `Invalid JSON: ${err.message}` };
+  const candidates = jsonObjects(raw);
+  if (!candidates.length) return { summary: '', patches: [], error: 'No JSON object in the reply.' };
+  let error = '';
+  for (const c of candidates) {
+    try {
+      const j = JSON.parse(c);
+      if (!Array.isArray(j.patches) && !j.summary) continue;
+      return { summary: String(j.summary || ''), patches: Array.isArray(j.patches) ? j.patches : [] };
+    } catch (err) { error ||= `Invalid JSON: ${err.message}`; }
   }
+  return { summary: '', patches: [], error: error || 'No fix in the reply.' };
 }
 
 // Which patches would apply to this HTML, in order, without changing anything.
@@ -194,7 +214,9 @@ export function createFixes({ shop, runs, origin, fixers = {}, dataDir }) {
       if (!rejected.length && ok) break;
       if (reply.error && !reply.patches?.length && attempt === tries) break;
       job.retries = [...(job.retries || []), { attempt, rejected: rejected.length, error: reply.error || undefined }];
-      prompt = rejected.length ? retryPrompt(job.prompt, reply, rejected) : job.prompt;
+      prompt = rejected.length ? retryPrompt(job.prompt, reply, rejected)
+        : reply.error ? `${job.prompt}\n\nYour previous answer could not be used: ${reply.error} Reply with the JSON object only, keep it short, and escape every double quote inside a string.`
+        : job.prompt;
     }
     job.stage = 'applying';
     return reply;

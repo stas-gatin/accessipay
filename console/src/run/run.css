@@ -371,3 +371,5 @@
 @media (prefers-reduced-motion: reduce) {
   .lp, .lp::before, .lp-window .rv-shot, .lp-said, .lp-moves li, .lp-result, .lp-result-mark { animation: none !important; }
 }
+.fx-fail { border: 1px solid var(--bad-line); background: var(--bad-soft); border-radius: 12px; padding: 14px 16px; display: grid; gap: 8px; justify-items: start; }
+.fx-fail p { margin: 0; }

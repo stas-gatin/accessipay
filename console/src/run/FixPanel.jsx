@@ -135,7 +135,13 @@ export default function FixPanel({ run, meta, onPresence }) {
           ? <p className="note" role="status">Waiting for the fixer. Run <code>node tools/agent.mjs fix-reply {fix.id} reply.json</code> after reading <code>/api/fixes/{fix.id}?full=1</code>.</p>
           : <FixWorking fix={fix} />
       )}
-      {fix?.status === 'error' && <p role="alert" className="pill bad">{fix.error}</p>}
+      {fix?.status === 'error' && (
+        <div className="fx-fail" role="alert">
+          <p><strong>{FIXER_NAME[fix.fixer] || 'The fixer'} did not return a change it could apply{fix.attempt > 1 ? ` after ${fix.attempt} tries` : ''}.</strong> Nothing on the page was changed. AI answers vary, so a new try often works.</p>
+          <p className="note">Detail: {fix.error}</p>
+          <button type="button" className="btn primary" onClick={() => { setFix(null); setError(''); }}>Try again</button>
+        </div>
+      )}
       {fix?.status === 'applied' && (
         <>
           {fix.accepted?.length > 0 && <p className="fx-done" role="status"><span className="fx-check" aria-hidden="true">✓</span>Fix applied{fix.fixer && FIXER_NAME[fix.fixer] ? ` by ${FIXER_NAME[fix.fixer]}` : ''}{fix.retries?.length ? `, on try ${fix.retries.length + 1}` : ''}</p>}
