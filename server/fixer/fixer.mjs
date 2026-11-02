@@ -63,6 +63,39 @@ export function parseFix(text) {
   }
 }
 
+// Which patches would apply to this HTML, in order, without changing anything.
+export function checkPatches(html, patches) {
+  const rejected = [];
+  let ok = 0;
+  for (const p of patches || []) {
+    const find = String(p.find ?? '');
+    const count = find ? html.split(find).length - 1 : 0;
+    if (count !== 1) { rejected.push({ ...p, reason: count === 0 ? 'text not found' : `text occurs ${count} times` }); continue; }
+    html = html.replace(find, () => String(p.replace ?? ''));
+    ok += 1;
+  }
+  return { ok, rejected };
+}
+
+// The follow-up request when some patches did not match the HTML exactly.
+export function retryPrompt(prompt, reply, rejected) {
+  const lines = rejected.map((r) => `- ${r.reason}: ${JSON.stringify(String(r.find ?? '').slice(0, 300))}`);
+  return [
+    prompt,
+    '',
+    `Your previous reply:\n${JSON.stringify({ summary: reply.summary, patches: reply.patches })}`,
+    '',
+    `These "find" strings do not occur exactly once in the HTML above, so they could not be applied:\n${lines.join('\n')}`,
+    'Copy each "find" character for character from <html_source>, with the same tags, attributes and whitespace, and add no wrapper element that is not there. Reply with the whole JSON object again.',
+  ].join('\n');
+}
+
+// Lines of the page shown in the console while the fixer reads it.
+function previewLines(html) {
+  const body = html.slice(Math.max(0, html.search(/<body[\s>]/i)));
+  return body.replace(/<(style|script)\b[\s\S]*?<\/\1>/gi, '').split('\n').map((l) => l.replace(/\s+$/, '')).filter((l) => l.trim()).slice(0, 160).map((l) => l.slice(0, 110));
+}
+
 // Validates patches against the current page HTML and applies the valid ones in order.
 export function applyPatches({ shop, inst, page, base, patches }) {
   // '*' means the shared layout: validate against one page, apply everywhere.
@@ -133,12 +166,14 @@ export function createFixes({ shop, runs, origin, fixers = {}, dataDir }) {
     const base = `/s/${inst.id}`;
     const html = shop.render(inst, page === '*' ? 'catalog' : page, base);
     const id = crypto.randomBytes(4).toString('hex');
-    const job = { id, runId, instanceId: inst.id, page, fixer, status: 'waiting', createdAt: new Date().toISOString(), system: FIXER_SYSTEM, prompt: fixPrompt({ run, page, html }) };
+    const job = { id, runId, instanceId: inst.id, page, fixer, status: 'waiting', createdAt: new Date().toISOString(), system: FIXER_SYSTEM, prompt: fixPrompt({ run, page, html }), preview: previewLines(html), htmlLines: html.split('\n').length };
     jobs.set(id, job);
     persist(job);
     if (fixers[fixer]) {
       job.status = 'working';
-      fixers[fixer]().propose(job.prompt)
+      job.stage = 'writing';
+      job.attempt = 1;
+      autoFix(job, fixers[fixer](), html)
         .then((r) => finish(job, r))
         .catch((e) => { job.status = 'error'; job.error = e.message; persist(job); });
     } else if (fixer !== 'external') {
@@ -147,12 +182,30 @@ export function createFixes({ shop, runs, origin, fixers = {}, dataDir }) {
     return job;
   }
 
+  // An AI fixer gets up to three tries: a reply whose patches do not match the page goes back with the reasons.
+  async function autoFix(job, fixer, html, tries = 3) {
+    let prompt = job.prompt;
+    let reply;
+    for (let attempt = 1; attempt <= tries; attempt++) {
+      Object.assign(job, { stage: attempt === 1 ? 'writing' : 'retrying', attempt });
+      reply = await fixer.propose(prompt);
+      job.stage = 'checking';
+      const { ok, rejected } = checkPatches(html, reply.patches);
+      if (!rejected.length && ok) break;
+      if (reply.error && !reply.patches?.length && attempt === tries) break;
+      job.retries = [...(job.retries || []), { attempt, rejected: rejected.length, error: reply.error || undefined }];
+      prompt = rejected.length ? retryPrompt(job.prompt, reply, rejected) : job.prompt;
+    }
+    job.stage = 'applying';
+    return reply;
+  }
+
   function finish(job, reply) {
     const inst = shop.get(job.instanceId);
     if (!inst) { job.status = 'error'; job.error = 'Shop instance expired'; return job; }
     if (reply.error && !reply.patches?.length) { job.status = 'error'; job.error = reply.error; return job; }
     const r = applyPatches({ shop, inst, page: job.page, base: `/s/${inst.id}`, patches: reply.patches || [] });
-    Object.assign(job, { status: 'applied', summary: reply.summary, accepted: r.accepted, rejected: r.rejected, diff: r.diff, changed: r.changed, finishedAt: new Date().toISOString() });
+    Object.assign(job, { status: 'applied', stage: 'done', summary: reply.summary, accepted: r.accepted, rejected: r.rejected, diff: r.diff, changed: r.changed, finishedAt: new Date().toISOString() });
     persist(job);
     return job;
   }
