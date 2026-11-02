@@ -22,6 +22,7 @@ import { createTestShop } from './test-shop.mjs';
 import { verifyFindings } from './verify.mjs';
 import { detectBotWall } from './engine/preflight.mjs';
 import { createMask } from './anonymize.mjs';
+import { DEFAULT_MODEL as NVIDIA_DEFAULT_MODEL } from './engine/brains/nvidia.mjs';
 
 export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, env = process.env, extend }) {
   const paypal = createPayPal(env);
@@ -49,8 +50,38 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
   app.use('/api', express.json({ limit: '1mb' }));
 
   const claudeReady = () => !!(env.ANTHROPIC_API_KEY || env.ANTHROPIC_AUTH_TOKEN);
+  // Live runs: which model decides each step. In a public demo (ACCESSIPAY_ACCESS_CODE set) a run starts
+  // only with the code, only with that model, only on the demo shop, a few at a time and a few a day,
+  // so visitors cannot spend the key or send our browser to other sites. These runs stay out of the
+  // published figures (Analytics, home page).
+  const liveBrain = env.ACCESSIPAY_LIVE_BRAIN || (claudeReady() ? 'anthropic' : env.NVIDIA_API_KEY ? 'nvidia' : null);
+  const LIVE_LABEL = { anthropic: 'Claude', nvidia: 'NVIDIA Nemotron', external: 'a Claude Code agent' };
+  const accessCode = String(env.ACCESSIPAY_ACCESS_CODE || '').trim();
+  const demoOnly = !!accessCode && env.ACCESSIPAY_LIVE_DEMO_ONLY !== '0';
+  const dailyRuns = Number(env.ACCESSIPAY_DAILY_RUNS || 20);
+  const maxRunning = Number(env.ACCESSIPAY_MAX_RUNNING || 3);
+  const quota = { day: '', used: 0 };
+  const today = () => { const d = new Date().toISOString().slice(0, 10); if (quota.day !== d) Object.assign(quota, { day: d, used: 0 }); return quota; };
+  const refuse = (status, message) => Object.assign(new Error(message), { status });
+  function liveGuard(body, needed, kind = 'run') {
+    if (!accessCode) return {};
+    if (String(body?.accessCode || '').trim() !== accessCode) throw refuse(403, 'Enter the access code for live runs.');
+    const asked = kind === 'fix' ? body.fixer : body.brain;
+    if (asked !== liveBrain) throw refuse(403, `Live runs in this public demo use ${LIVE_LABEL[liveBrain] || 'no model'}.`);
+    if (kind === 'fix') return {};
+    if (demoOnly && (body.url || body.ownerSiteId)) throw refuse(403, 'Live runs in this public demo are limited to our demo shop.');
+    if (runs.list().filter((r) => r.status === 'running').length + needed > maxRunning) throw refuse(429, 'Other live runs are going right now. Try again in a few minutes.');
+    const q = today();
+    if (q.used + needed > dailyRuns) throw refuse(429, 'Today\'s live runs are used up. Every recorded run can still be replayed.');
+    q.used += needed;
+    return { liveDemo: true };
+  }
+  const liveMeta = () => liveBrain ? {
+    brain: liveBrain, label: LIVE_LABEL[liveBrain], model: liveBrain === 'nvidia' ? (env.NVIDIA_MODEL || NVIDIA_DEFAULT_MODEL) : liveBrain === 'anthropic' ? (env.ACCESSIPAY_MODEL || 'claude-opus-5-5') : null,
+    fixer: fixers[liveBrain] ? liveBrain : null, codeRequired: !!accessCode, demoOnly, left: accessCode ? Math.max(0, dailyRuns - today().used) : null,
+  } : null;
   app.get('/api/health', (req, res) => res.json({ ok: true, paypal: paypal.mode, claude: claudeReady(), brains: ['external', 'scripted', ...Object.keys(brains)] }));
-  app.get('/api/meta', (req, res) => res.json({ privateView, defects: DEFECTS, personas: PERSONAS, goal: DEFAULT_GOAL, goals: Object.fromEntries(Object.entries(GOALS).map(([k, g]) => [k, { label: g.label, text: g.text || DEFAULT_GOAL }])), paypal: paypal.mode, claude: claudeReady(), brains: ['external', 'scripted', ...Object.keys(brains)] }));
+  app.get('/api/meta', (req, res) => res.json({ privateView, live: liveMeta(), defects: DEFECTS, personas: PERSONAS, goal: DEFAULT_GOAL, goals: Object.fromEntries(Object.entries(GOALS).map(([k, g]) => [k, { label: g.label, text: g.text || DEFAULT_GOAL }])), paypal: paypal.mode, claude: claudeReady(), brains: ['external', 'scripted', ...Object.keys(brains)] }));
 
   app.post('/api/instances', (req, res) => {
     try {
@@ -66,9 +97,10 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
 
   app.post('/api/runs', (req, res) => {
     try {
-      const rec = runs.start(req.body || {});
+      const guard = liveGuard(req.body || {}, 1);
+      const rec = runs.start({ ...(req.body || {}), ...guard });
       res.json({ id: rec.id, instanceId: rec.instanceId, shopUrl: rec.site ? rec.site.url : `/s/${rec.instanceId}/` });
-    } catch (e) { res.status(400).json({ error: e.message }); }
+    } catch (e) { res.status(e.status || 400).json({ error: e.message }); }
   });
   app.get('/api/runs', (req, res) => res.json(runs.list().map(mask)));
 
@@ -89,9 +121,10 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
     try {
       const b = req.body || {};
       const personas = (b.personas?.length ? b.personas : ['screenreader', 'keyboard', 'agent']).filter((p) => ['screenreader', 'keyboard', 'agent'].includes(p));
-      const started = personas.map((persona) => runs.start({ persona, url: b.url, brain: b.brain || 'external', ownerSiteId: b.ownerSiteId, payInSandbox: !!b.payInSandbox, label: b.payInSandbox ? 'sandbox purchase' : 'site test' }));
+      const guard = liveGuard({ ...b, brain: b.brain || 'external' }, personas.length);
+      const started = personas.map((persona) => runs.start({ persona, url: b.url, brain: b.brain || 'external', ownerSiteId: b.ownerSiteId, payInSandbox: !!b.payInSandbox, label: b.payInSandbox ? 'sandbox purchase' : 'site test', ...guard }));
       res.json({ key: siteKey(started[0].site), runs: started.map((r) => ({ id: r.id, persona: r.persona })) });
-    } catch (e) { res.status(400).json({ error: e.message }); }
+    } catch (e) { res.status(e.status || 400).json({ error: e.message }); }
   });
 
   // Owners test their own site: verify the domain, then let AccessiPay's browser through their bot protection.
@@ -199,6 +232,7 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
   // axe-core scan of the whole flow for a set of defects (and optionally the patches of an instance).
   app.post('/api/scan', async (req, res) => {
     try {
+      if (accessCode && String(req.body?.accessCode || '').trim() !== accessCode) return res.status(403).json({ error: 'Enter the access code for live runs.' });
       const inst = req.body.instanceId ? shop.get(req.body.instanceId) : null;
       res.json(await scanShop({ browser, shop, origin, defects: inst ? inst.defects : (req.body.defects || []), patches: inst ? inst.patches : [] }));
     } catch (e) { res.status(500).json({ error: e.message }); }
@@ -206,9 +240,10 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
 
   app.post('/api/fixes', (req, res) => {
     try {
+      liveGuard(req.body || {}, 0, 'fix');
       const job = fixes.start(req.body || {});
       res.json({ id: job.id, page: job.page, status: job.status });
-    } catch (e) { res.status(400).json({ error: e.message }); }
+    } catch (e) { res.status(e.status || 400).json({ error: e.message }); }
   });
   app.get('/api/fixes', (req, res) => res.json(fixes.list().map(({ prompt, system, ...j }) => j)));
   app.get('/api/fixes/:id', (req, res) => {

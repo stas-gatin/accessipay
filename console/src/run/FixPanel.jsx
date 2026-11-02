@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { api, OUTCOME } from '../api.js';
+import { api, OUTCOME, accessCode, liveOf } from '../api.js';
 
 function Diff({ text }) {
   const lines = (text || '').split('\n').filter((l) => !l.startsWith('===') && !l.startsWith('Index'));
@@ -15,7 +15,8 @@ function Diff({ text }) {
 
 export default function FixPanel({ run, meta, onPresence }) {
   const [fix, setFix] = useState(null);
-  const [fixer, setFixer] = useState(meta.claude ? 'anthropic' : 'external');
+  const lv = liveOf(meta);
+  const [fixer, setFixer] = useState(lv?.fixer || (meta.claude ? 'anthropic' : 'external'));
   const [error, setError] = useState('');
   const [rerunning, setRerunning] = useState(false);
   const [after, setAfter] = useState(null);
@@ -38,12 +39,12 @@ export default function FixPanel({ run, meta, onPresence }) {
 
   async function propose() {
     setError('');
-    try { const j = await api('/api/fixes', { runId: run.id, fixer }); setFix({ ...j, runId: run.id }); } catch (e) { setError(e.message); }
+    try { const j = await api('/api/fixes', { runId: run.id, fixer, accessCode: accessCode.get() }); setFix({ ...j, runId: run.id }); } catch (e) { setError(e.message); }
   }
   async function rerun() {
     setRerunning(true);
     try {
-      const r = await api('/api/runs', { instanceId: run.instanceId, persona: run.persona, brain: run.brainKind === 'scripted' ? 'external' : run.brainKind, label: `re-run after fix ${fix.id}` });
+      const r = await api('/api/runs', { instanceId: run.instanceId, persona: run.persona, brain: run.brainKind === 'scripted' ? 'external' : run.brainKind, label: `re-run after fix ${fix.id}`, accessCode: accessCode.get() });
       location.hash = `#/runs/${r.id}`;
     } catch (e) { setError(e.message); setRerunning(false); }
   }
@@ -61,7 +62,8 @@ export default function FixPanel({ run, meta, onPresence }) {
             <label className="row note">Fixer
               <select value={fixer} onChange={(e) => setFixer(e.target.value)}>
                 {meta.claude && <option value="anthropic">Claude API</option>}
-                <option value="external">Claude Code agent</option>
+                {lv?.fixer === 'nvidia' && <option value="nvidia">NVIDIA Nemotron</option>}
+                {!lv?.codeRequired && <option value="external">Claude Code agent</option>}
               </select>
             </label>
             <button type="button" className="btn primary" onClick={propose}>Propose a fix</button>

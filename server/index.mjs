@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { createApp, loadEnv } from './app.mjs';
 import { anthropicBrain } from './engine/brains/anthropic.mjs';
-import { nvidiaBrain } from './engine/brains/nvidia.mjs';
+import { nvidiaBrain, nvidiaFixer } from './engine/brains/nvidia.mjs';
 import { anthropicFixer } from './fixer/fixer.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -15,7 +15,7 @@ const port = Number(process.env.PORT || 4300);
 const origin = `http://127.0.0.1:${port}`;
 const browser = await chromium.launch({ args: ['--disable-dev-shm-usage'] });
 const brains = { anthropic: (opts) => anthropicBrain({ model: opts.model }), nvidia: (opts) => nvidiaBrain({ model: opts.model }) };
-const { app, paypal } = createApp({ browser, dataDir: path.join(root, 'data'), origin, brains, fixers: { anthropic: () => anthropicFixer() } });
+const { app, paypal } = createApp({ browser, dataDir: path.join(root, 'data'), origin, brains, fixers: { anthropic: () => anthropicFixer(), nvidia: () => nvidiaFixer() } });
 
 // The private view shows real shop names and screenshots: it only listens on this computer.
 const host = process.env.ACCESSIPAY_PRIVATE_VIEW === '1' ? '127.0.0.1' : '0.0.0.0';

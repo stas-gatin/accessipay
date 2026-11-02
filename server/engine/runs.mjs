@@ -138,7 +138,7 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
     const brain = makeBrain(opts.brain || 'external', opts);
     const abort = new AbortController();
     const rec = {
-      id, createdAt: new Date().toISOString(), label: opts.label || '',
+      id, createdAt: new Date().toISOString(), label: opts.label || '', liveDemo: !!opts.liveDemo,
       persona, brainKind: brain.kind, model: brain.model || null,
       instanceId: inst?.id || null, defects: inst ? [...inst.defects] : [], patches: inst ? inst.patches.map((p) => p.id || p.find.slice(0, 40)) : [],
       site: site ? { url: site.href, host: site.hostname, ownerVerified: !!owner, sandbox: !!sandbox } : null,
@@ -253,7 +253,7 @@ export function createRuns({ browser, shop, paypal, dataDir, origin, brains = {}
     const ids = [...new Set([...runs.keys(), ...fromDisk])].sort().reverse();
     return ids.map((id) => {
       const r = get(id);
-      return r && { id: r.id, createdAt: r.createdAt, label: r.label, persona: r.persona, brainKind: r.brainKind, model: r.model, defects: r.defects, patches: r.patches, status: r.status, outcome: r.outcome, steps: r.steps, payment: r.payment, site: r.site, goalId: r.goalId, goalCheck: r.goalCheck, usage: r.usage, findings: r.findings, scan: r.scan && { totalViolations: r.scan.totalViolations }, recorded: !!r.recorded, instanceId: r.instanceId };
+      return r && { id: r.id, createdAt: r.createdAt, label: r.label, liveDemo: !!r.liveDemo, persona: r.persona, brainKind: r.brainKind, model: r.model, defects: r.defects, patches: r.patches, status: r.status, outcome: r.outcome, steps: r.steps, payment: r.payment, site: r.site, goalId: r.goalId, goalCheck: r.goalCheck, usage: r.usage, findings: r.findings, scan: r.scan && { totalViolations: r.scan.totalViolations }, recorded: !!r.recorded, instanceId: r.instanceId };
     }).filter(Boolean);
   }
 

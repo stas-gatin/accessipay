@@ -5,6 +5,15 @@ export async function api(path, body) {
   return j;
 }
 
+// Live runs in a public demo need the access code; it is kept for this browser tab only.
+const CODE_KEY = 'accessipay-access-code';
+export const accessCode = {
+  get() { try { return sessionStorage.getItem(CODE_KEY) || ''; } catch { return ''; } },
+  set(v) { try { sessionStorage.setItem(CODE_KEY, v); } catch {} },
+};
+// Which model starts live runs here, if any, and whether this copy of the site allows it right now.
+export const liveOf = (meta) => meta.live || (/[?&]agent=1\b/.test(location.search) ? { brain: 'external', label: 'a Claude Code agent' } : null);
+
 export const OUTCOME = {
   purchased: { label: 'Paid', tone: 'ok' },
   blocked: { label: 'Blocked', tone: 'bad' },

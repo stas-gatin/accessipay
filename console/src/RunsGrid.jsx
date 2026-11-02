@@ -40,7 +40,7 @@ export default function RunsGrid({ meta }) {
     personaLabel: meta.personas[r.persona]?.label || r.persona,
     scenario: r.site ? r.site.host : r.defects?.length ? r.defects.map((d) => meta.defects.find((x) => x.id === d)?.short || d).join(' + ') : 'Clean shop',
     fixed: r.patches?.length ? 'After AI fix' : 'As built',
-    brain: r.brainKind === 'anthropic' ? `Claude API · ${r.model}` : r.brainKind === 'external' ? 'Claude Code agent' : r.brainKind,
+    brain: r.brainKind === 'anthropic' ? `Claude API · ${r.model}` : r.brainKind === 'nvidia' ? `NVIDIA Nemotron · ${String(r.model || '').replace(/^nvidia\//, '')}` : r.brainKind === 'external' ? 'Claude Code agent' : r.brainKind,
     outcomeStatus: r.outcome?.status,
     scanViolations: r.scan?.totalViolations,
     cost: r.usage?.costUsd,
