@@ -373,3 +373,14 @@
 }
 .fx-fail { border: 1px solid var(--bad-line); background: var(--bad-soft); border-radius: 12px; padding: 14px 16px; display: grid; gap: 8px; justify-items: start; }
 .fx-fail p { margin: 0; }
+.rv-rail-item.checking .rv-rail-dot { position: relative; background: var(--surface); border-color: var(--line-2); }
+.rv-rail-item.checking .rv-rail-dot::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--accent); border-right-color: var(--accent); animation: fx-spin .9s linear infinite; }
+.rv-rail-item.checking .rv-rail-name, .rv-rail-item.checking .rv-rail-note { color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .rv-rail-item.checking .rv-rail-dot::after { animation: none; } }
+.lp-check { padding: 14px; border-radius: 12px; border: 1px solid var(--accent-line); background: var(--accent-soft); animation: lp-rise .35s cubic-bezier(.2, .8, .2, 1); }
+.lp-check ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; font-size: 14px; }
+.lp-check li { display: flex; align-items: center; gap: 10px; }
+.lp-check li span { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line-2); }
+.lp-check li.now span { border-color: transparent; border-top-color: var(--accent); border-right-color: var(--accent); animation: fx-spin .9s linear infinite; }
+.lp-check li.done span { border-color: var(--ok); background: var(--ok); box-shadow: inset 0 0 0 3px var(--surface); animation: fx-pop .35s cubic-bezier(.2, .8, .2, 1.4); }
+@media (prefers-reduced-motion: reduce) { .lp-check, .lp-check li span { animation: none !important; } }

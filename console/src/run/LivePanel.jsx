@@ -49,7 +49,13 @@ export default function LivePanel({ id, meta, onAgain }) {
   const done = !running;
   const o = run?.outcome?.status;
   const paid = done && o === 'purchased' && run.payment?.status === 'COMPLETED';
-  const endT = done ? events.find((e) => e.type === 'end')?.t : null;
+  // After the customer's last step the server asks PayPal about the order and scans the pages; the clock stops at the last step.
+  const endEv = events.find((e) => e.type === 'end');
+  const oracleEv = events.find((e) => e.type === 'oracle');
+  const scanEv = events.find((e) => e.type === 'scan');
+  const wrapping = !done && !!endEv;
+  const claimed = endEv?.outcome?.status === 'purchased';
+  const endT = endEv?.t;
   const elapsed = run?.createdAt ? Math.max(0, Math.round(((endT ? Date.parse(endT) : now) - Date.parse(run.createdAt)) / 1000)) : 0;
   const thinkingSince = !done && current?.thinking && !current.action ? (current.thinkingAt || current.observedAt) : null;
   const thinkSecs = thinkingSince ? Math.max(0, Math.round((now - Date.parse(thinkingSince)) / 1000)) : 0;
@@ -66,7 +72,7 @@ export default function LivePanel({ id, meta, onAgain }) {
           <h2 id="lp-title">{persona.label || 'Customer'}</h2>
           <p>{where}</p>
         </div>
-        <span className={`rv-chip ${done ? (paid ? 'ok' : 'bad') : 'live'}`}>{!done && <span className="rv-live-dot" aria-hidden="true" />}{done ? (paid ? 'Paid' : o === 'reached-payment' ? 'Reached payment' : 'Could not buy') : 'Live'}</span>
+        <span className={`rv-chip ${done ? (paid ? 'ok' : 'bad') : wrapping ? 'ok' : 'live'}`}>{!done && !wrapping && <span className="rv-live-dot" aria-hidden="true" />}{done ? (paid ? 'Paid' : o === 'reached-payment' ? 'Reached payment' : 'Could not buy') : wrapping ? 'Checking' : 'Live'}</span>
         <span className="lp-timer" role="timer" aria-live="off">{Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, '0')}</span>
       </div>
 
@@ -86,6 +92,15 @@ export default function LivePanel({ id, meta, onAgain }) {
                 <p className="lp-result-title">{paid ? 'Paid. PayPal confirmed the order.' : o === 'reached-payment' ? 'Reached the payment step.' : `Could not buy. Stopped at the ${STAGES[current?.stage ?? 0]} step.`}</p>
                 <p className="lp-result-note">{paid ? `PayPal sandbox status COMPLETED, order ${run.payment.orderId}. ` : ''}{c.step} steps, {c.deadEnds} failed, {Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, '0')} min.</p>
               </div>
+            </div>
+          ) : wrapping ? (
+            <div className="lp-check" role="status">
+              <p className="lp-kicker">{claimed ? 'The order page says it is paid' : 'The customer stopped'}</p>
+              <p className="lp-said">{claimed ? 'Checking with PayPal before calling it a pass…' : 'Finishing the run…'}</p>
+              <ul>
+                {claimed && <li className={oracleEv ? 'done' : 'now'}><span aria-hidden="true" />{oracleEv ? `PayPal: ${oracleEv.payment?.status || 'answered'}` : 'Asking PayPal for the order (Orders v2)'}</li>}
+                <li className={scanEv ? 'done' : 'now'}><span aria-hidden="true" />{scanEv ? `axe-core: ${scanEv.totalViolations} violation${scanEv.totalViolations === 1 ? '' : 's'} on the same pages` : 'Scanning the same pages with axe-core'}</li>
+              </ul>
             </div>
           ) : (
             <div className="lp-now" aria-live="polite">
