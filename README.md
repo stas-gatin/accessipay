@@ -185,6 +185,8 @@ Environment (`.env` in the project root, never committed):
 |---|---|
 | `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` | PayPal sandbox REST app. Without them the shop runs in clearly labelled mock mode. |
 | `ANTHROPIC_API_KEY` | Claude API for the live shopper and fixer. Without it, runs can be driven by a Claude Code agent. |
+| `NVIDIA_API_KEY`, `NVIDIA_MODEL` | NVIDIA API for live runs on NVIDIA Nemotron instead (default `nvidia/nemotron-3.5-super-vl-120b-a12b`): the same prompts, for the shopper and the fixer. |
+| `ACCESSIPAY_ACCESS_CODE` | Public demo mode: live runs and fixes start only with this code, only on the demo shop, at most 3 at a time and `ACCESSIPAY_DAILY_RUNS` (default 20) a day. Such runs stay out of Analytics and the home page figures. |
 | `ACCESSIPAY_MODEL`, `ACCESSIPAY_FIX_MODEL` | Model ids for the shopper and the fixer (default `claude-opus-5-5`). |
 | `PORT` | Port of the server (default 4300). |
 | `ACCESSIPAY_LOCAL_SITES` | `1` lets owners connect shops on this computer (`localhost`, `*.localhost`): local development and tests only. |
@@ -208,14 +210,17 @@ node tools/agent.mjs fix-reply <fix id> reply.json
 | Variable | Value |
 |---|---|
 | `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` | A PayPal **sandbox** REST app. Without them the demo shop runs in labelled mock mode. |
+| `NVIDIA_API_KEY` | Optional: live runs on NVIDIA Nemotron. |
+| `ACCESSIPAY_ACCESS_CODE` | With the NVIDIA key: the code visitors need to start a live run. |
 
-Leave `ANTHROPIC_API_KEY` unset for a public demo: visitors replay the recorded runs and new runs stay off. The recorded runs in `data/recorded/` are part of the image; anything written at run time (owner sites, new runs) lives on the service's own disk and is gone after a redeploy. The blueprint uses the Starter plan so the demo never sleeps; the free plan also fits (the image runs in about 155 MB with Chromium open) but sleeps after 15 minutes, and the first visitor then waits about a minute.
+Without a model key the public demo replays the recorded runs and new runs stay off. The live demo at https://accessipay.onrender.com runs live tests on NVIDIA Nemotron with an access code given to the judges. The recorded runs in `data/recorded/` are part of the image; anything written at run time (owner sites, new runs) lives on the service's own disk and is gone after a redeploy. The blueprint uses the Starter plan so the demo never sleeps; the free plan also fits (the image runs in about 155 MB with Chromium open) but sleeps after 15 minutes, and the first visitor then waits about a minute.
 
 ## How PayPal and AI are used
 
 - **PayPal JavaScript SDK** (sandbox): the shop's payment page uses PayPal Buttons and PayPal Card Fields (`components=buttons,card-fields`), so card data goes straight to PayPal and the shop's server never sees it. The keyboard and screen reader customers fill those fields inside PayPal's iframes, as real users do.
 - **PayPal Orders v2** (sandbox): the shop's server creates and captures the order, and the read-back of the order decides whether a run succeeded: only `COMPLETED` counts. On an owner's staging shop the read-back uses the owner's own sandbox keys. Verified against the live sandbox: create, capture, read back as `COMPLETED`, refund (`npm test` includes this when sandbox keys are present). Calls go through a token bucket because the sandbox blocks an IP after about 50 requests a minute.
-- **Claude**: the shopper's decision at each step (one request per step with a cached persona prompt) and the fixer's patch proposal. Prompts live in `server/engine/prompts.mjs` and `server/fixer/fixer.mjs`.
+- **Claude**: the shopper's decision at each step (one request per step with a cached persona prompt) and the fixer's patch proposal. Every recorded run and fix shown on the site came from Claude, driven by Claude Code agents through `tools/agent.mjs`. Prompts live in `server/engine/prompts.mjs` and `server/fixer/fixer.mjs`.
+- **NVIDIA Nemotron** (NVIDIA API): the same prompts run on Nemotron (`server/engine/brains/nvidia.mjs`), and the public demo uses it for live runs and live fixes. In our tests on the demo shop it paid as all three customers, got stuck on the `<div>` Pay button like Claude, and its fix (the `<div>` became a `<button>`) let the same agent pay.
 - **Playwright** drives a real Chromium; **axe-core** is the scanner it is compared with; **AG Grid** powers the runs and defects tables.
 
 ## Repository

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { api, OUTCOME, shortDate } from './api.js';
+import { api, OUTCOME, shortDate, accessCode, liveOf } from './api.js';
 import { RUNS } from './site/facts.js';
 import { OwnShopSteps, AgentAccessResult } from './OwnSite.jsx';
 
@@ -20,9 +20,12 @@ export default function NewTest({ meta, initialWhere = 'demo' }) {
   const [scenario, setScenario] = useState('focus-trap-modal');
   const [custom, setCustom] = useState([]);
   const [persona, setPersona] = useState('screenreader');
-  const brain = meta.claude ? 'anthropic' : 'external';
-  // Without a Claude API key a run would wait for a Claude Code agent (tools/agent.mjs); the console only starts live runs.
-  const live = meta.claude || /[?&]agent=1\b/.test(location.search);
+  // The model that decides live runs on this server (Claude or NVIDIA Nemotron). Without one a run would wait for a
+  // Claude Code agent (tools/agent.mjs), so the console starts runs only when a model is set (or with ?agent=1).
+  const lv = liveOf(meta);
+  const brain = lv?.brain || 'external';
+  const live = !!lv;
+  const [code, setCode] = useState(accessCode.get());
   const [goalId, setGoalId] = useState('checkout');
   const [siteUrl, setSiteUrl] = useState('https://');
   const [busy, setBusy] = useState(false);
@@ -52,22 +55,35 @@ export default function NewTest({ meta, initialWhere = 'demo' }) {
   async function start() {
     setBusy(true); setError('');
     try {
+      accessCode.set(code);
       if (where === 'real') {
-        const t = await api('/api/site-tests', { url: siteUrl, brain });
+        const t = await api('/api/site-tests', { url: siteUrl, brain, accessCode: code });
         location.hash = `#/sites/${encodeURIComponent(t.key)}`;
         return;
       }
-      const r = await api('/api/runs', { persona, brain, defects, goalId: persona === 'agent' ? goalId : 'checkout' });
+      const r = await api('/api/runs', { persona, brain, defects, goalId: persona === 'agent' ? goalId : 'checkout', accessCode: code });
       location.hash = `#/runs/${r.id}`;
     } catch (e) { setError(e.message); setBusy(false); }
   }
 
-  const liveNote = meta.claude ? <p className="note">Claude decides each step of the customer, live.</p> : (
+  const liveNote = live ? (
+    <p className="note">
+      Live: {lv.label}{lv.model ? <> (<span className="mono">{lv.model.replace(/^nvidia\//, '')}</span>)</> : null} decides each step of the customer.
+      {lv.brain !== 'anthropic' && ' The recorded runs elsewhere on this site were decided by Claude.'}
+      {lv.codeRequired && <> In this public demo live runs need the access code from the judging instructions{lv.demoOnly ? ', run on our demo shop only' : ''}, and are limited per day{lv.left != null ? ` (${lv.left} left today)` : ''}.</>}
+    </p>
+  ) : (
     <p className="note">Starting new tests is turned off in this public demo: each run has an AI model decide every step, and that has a cost. Instead, you can replay any recorded run step by step, for example <a href={`#/runs/${RUNS.agentBlocked}`}>the AI agent stopped by a Pay button that is not a real button</a> or <a href={`#/runs/${RUNS.keyboardFixed}`}>the keyboard customer paying after the fix</a>.</p>
   );
+  const blockedHere = live && lv.demoOnly && where === 'real';
   const startButton = (disabled, extra = null) => (
     <p className="row" style={{ marginTop: 14 }}>
-      <button type="button" className="btn primary" onClick={start} disabled={busy || !live || disabled}>{busy ? 'Starting…' : live ? 'Start test' : 'Start test (off in this demo)'}</button>
+      {live && lv.codeRequired && !blockedHere && (
+        <label className="row note" style={{ gap: 8 }}>Access code
+          <input type="password" autoComplete="off" value={code} onChange={(e) => setCode(e.target.value)} style={{ width: 150, padding: '8px 10px', borderRadius: 8, border: '1px solid var(--line-2)', background: 'var(--surface)', color: 'var(--ink)' }} />
+        </label>
+      )}
+      <button type="button" className="btn primary" onClick={start} disabled={busy || !live || disabled || blockedHere || (lv?.codeRequired && !code.trim())}>{busy ? 'Starting…' : blockedHere ? 'Start test (demo shop only here)' : live ? 'Start test' : 'Start test (off in this demo)'}</button>
       {extra}
       {error && <span role="alert" className="pill bad">{error}</span>}
     </p>
