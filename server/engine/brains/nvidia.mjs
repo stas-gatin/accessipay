@@ -14,16 +14,24 @@ export function stripThinking(text) {
   return String(text || '').replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
 }
 
-// One chat completion, retried on rate limits and server errors.
+// One chat completion, retried on rate limits, server errors and dropped connections.
 async function chat({ apiKey, fetchImpl, body }) {
   if (!apiKey) throw new Error('NVIDIA API: set NVIDIA_API_KEY.');
+  const wait = (attempt) => new Promise((ok) => setTimeout(ok, 3000 * (attempt + 1)));
   for (let attempt = 0; attempt < 4; attempt++) {
-    const r = await fetchImpl(`${BASE}/chat/completions`, {
-      method: 'POST',
-      headers: { authorization: `Bearer ${apiKey}`, 'content-type': 'application/json', accept: 'application/json' },
-      body: JSON.stringify(body),
-    });
-    if (r.status === 429 || r.status >= 500) { await new Promise((ok) => setTimeout(ok, 3000 * (attempt + 1))); continue; }
+    let r;
+    try {
+      r = await fetchImpl(`${BASE}/chat/completions`, {
+        method: 'POST',
+        headers: { authorization: `Bearer ${apiKey}`, 'content-type': 'application/json', accept: 'application/json' },
+        body: JSON.stringify(body),
+      });
+    } catch (e) {
+      if (attempt === 3) throw new Error(`NVIDIA API: ${e.message}`);
+      await wait(attempt);
+      continue;
+    }
+    if (r.status === 429 || r.status >= 500) { await wait(attempt); continue; }
     const j = await r.json().catch(() => ({}));
     if (r.status === 401 || r.status === 403) throw new Error('NVIDIA API: no valid credentials (set NVIDIA_API_KEY).');
     if (!r.ok) throw new Error(`NVIDIA API ${r.status}: ${j.detail || j.error?.message || 'request failed'}`);
@@ -79,6 +87,7 @@ export function nvidiaBrain({
 export function nvidiaFixer({
   model = process.env.NVIDIA_FIX_MODEL || process.env.NVIDIA_MODEL || DEFAULT_MODEL,
   apiKey = process.env.NVIDIA_API_KEY,
+  reasoningBudget = Number(process.env.NVIDIA_FIX_REASONING_BUDGET || 4000),
   fetchImpl = fetch,
 } = {}) {
   return {
@@ -89,9 +98,15 @@ export function nvidiaFixer({
         model,
         messages: [{ role: 'system', content: FIXER_SYSTEM }, { role: 'user', content: prompt }],
         temperature: 0.2,
-        max_tokens: 8192,
+        // Nemotron reasons before it answers; unbounded, that took 5,000 to 21,000 tokens and up to 3 minutes on a
+        // checkout page. A reasoning budget keeps a fix under a minute, and max_tokens leaves room for the patches.
+        max_tokens: 32768,
+        chat_template_kwargs: { reasoning_budget: reasoningBudget },
       } });
-      return { ...parseFix(stripThinking(j.choices?.[0]?.message?.content || '')), usage: j.usage };
+      const choice = j.choices?.[0] || {};
+      const fix = parseFix(stripThinking(choice.message?.content || ''));
+      if (fix.error && choice.finish_reason === 'length') fix.error = 'The answer was cut off before it was complete.';
+      return { ...fix, usage: j.usage };
     },
   };
 }

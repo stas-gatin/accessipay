@@ -30,6 +30,12 @@ async function finished(id) {
   throw new Error('run did not finish');
 }
 
+test('parseFix closes an object the reply left open and skips a repeat', () => {
+  assert.equal(parseFix('{"summary":"s","patches":[{"find":"a","replace":"b"}]').patches.length, 1);
+  assert.equal(parseFix('{"summary":"one","patches":[]}\n{"summary":"two","patches":[]}').summary, 'one');
+  assert.match(parseFix('no json here').error, /No JSON/);
+});
+
 test('parseFix tolerates prose around the JSON', () => {
   const r = parseFix('Here you go:\n```json\n{"summary":"s","patches":[{"find":"a","replace":"b"}]}\n```');
   assert.equal(r.patches.length, 1);
