@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { createApp, loadEnv } from './app.mjs';
 import { anthropicBrain } from './engine/brains/anthropic.mjs';
+import { nvidiaBrain } from './engine/brains/nvidia.mjs';
 import { anthropicFixer } from './fixer/fixer.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -13,7 +14,7 @@ const port = Number(process.env.PORT || 4300);
 // The shopper's browser runs next to the server, so it always reaches the shop on loopback.
 const origin = `http://127.0.0.1:${port}`;
 const browser = await chromium.launch({ args: ['--disable-dev-shm-usage'] });
-const brains = { anthropic: (opts) => anthropicBrain({ model: opts.model }) };
+const brains = { anthropic: (opts) => anthropicBrain({ model: opts.model }), nvidia: (opts) => nvidiaBrain({ model: opts.model }) };
 const { app, paypal } = createApp({ browser, dataDir: path.join(root, 'data'), origin, brains, fixers: { anthropic: () => anthropicFixer() } });
 
 // The private view shows real shop names and screenshots: it only listens on this computer.
