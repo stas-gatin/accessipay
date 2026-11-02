@@ -13,9 +13,12 @@ export function PersonaIcon({ persona }) {
 export function StageRail({ step, run, compactLabel }) {
   const cur = step?.stage ?? 0;
   const final = step?.final;
-  const o = run.outcome?.status;
+  // Between the customer's last step and the end of the run the server still asks PayPal about the order and
+  // scans the pages: a claimed purchase is "checking" until then, never "blocked".
+  const checking = final && run.status === 'running' && (step.outcome?.status === 'purchased' || !step.outcome);
+  const o = checking ? null : run.outcome?.status || step?.outcome?.status;
   const paid = final && (o === 'purchased') && (!run.payment || run.payment.status === 'COMPLETED');
-  const blocked = final && !['purchased', 'reached-payment'].includes(o);
+  const blocked = final && !checking && !['purchased', 'reached-payment'].includes(o);
   return (
     <ol className="rv-rail" aria-label="Checkout progress">
       {STAGES.map((name, i) => {
@@ -23,11 +26,12 @@ export function StageRail({ step, run, compactLabel }) {
         if (i === cur && paid && i === 4) state = 'paid';
         if (i === cur && blocked) state = 'blocked';
         if (i === cur && final && o === 'reached-payment') state = 'stop';
-        const note = state === 'paid' ? 'PayPal confirmed' : state === 'blocked' ? 'Blocked here' : state === 'stop' ? 'Stopped here' : state === 'current' ? (step && !final ? `step ${step.n}` : '') : '';
+        if (i === cur && checking) state = 'checking';
+        const note = state === 'paid' ? 'PayPal confirmed' : state === 'blocked' ? 'Blocked here' : state === 'stop' ? 'Stopped here' : state === 'checking' ? 'Checking with PayPal' : state === 'current' ? (step && !final ? `step ${step.n}` : '') : '';
         const sr = state === 'done' ? ', done' : state === 'todo' ? ', not reached' : note ? `, ${note}` : '';
         return (
           <li key={name} className={`rv-rail-item ${state}`} aria-current={i === cur ? 'step' : undefined}>
-            <span className="rv-rail-dot" aria-hidden="true">{state === 'done' || state === 'paid' ? '✓' : state === 'blocked' ? '✕' : i + 1}</span>
+            <span className="rv-rail-dot" aria-hidden="true">{state === 'done' || state === 'paid' ? '✓' : state === 'blocked' ? '✕' : state === 'checking' ? '' : i + 1}</span>
             <span className="rv-rail-name">{name}<span className="sr-only">{sr}</span></span>
             {note && <span className="rv-rail-note" aria-hidden="true">{note}</span>}
           </li>
