@@ -245,7 +245,7 @@ export function createApp({ browser, dataDir, origin, brains = {}, fixers = {}, 
       res.json({ id: job.id, page: job.page, status: job.status });
     } catch (e) { res.status(e.status || 400).json({ error: e.message }); }
   });
-  app.get('/api/fixes', (req, res) => res.json(fixes.list().map(({ prompt, system, ...j }) => j)));
+  app.get('/api/fixes', (req, res) => res.json(fixes.list().map(({ prompt, system, preview, ...j }) => j)));
   app.get('/api/fixes/:id', (req, res) => {
     const job = fixes.get(req.params.id);
     if (!job) return res.status(404).json({ error: 'not found' });
